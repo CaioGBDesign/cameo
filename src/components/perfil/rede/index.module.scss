@@ -1,0 +1,27 @@
+.rede
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+
+    span
+    {
+        color: white;
+
+        &:first-child
+        {
+            opacity: .8;
+            font-size: 16px;
+            font-weight: 100;
+        }
+
+        &:last-child
+        {
+            font-size: 18px;
+            font-weight: 400;
+        }
+    }
+}

@@ -1,0 +1,22 @@
+.dadosPessoais
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+
+    .formDadosPessoais
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 60px;
+
+        width: 85%;
+
+        margin: 150px 0px;
+    }
+}

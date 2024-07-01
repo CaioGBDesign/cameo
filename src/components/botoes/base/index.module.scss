@@ -1,0 +1,33 @@
+.baseBotoes
+{
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+
+    .contBotoes
+    {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+
+        width: 85%;
+        height: 120px;
+
+        .botaoPrimario
+        {
+            width: 100%;
+        }
+
+        .botaoSecundario
+        {
+            width: 35%;
+        }
+    }
+}

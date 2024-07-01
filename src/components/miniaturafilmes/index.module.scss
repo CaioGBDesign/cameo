@@ -1,0 +1,26 @@
+.miniaturafilmes
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    .capaminiatura
+    {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 84px;
+        height: 123px;
+
+        border-radius: 5px;
+        overflow: hidden;
+
+        img
+        {
+            width: 100%;
+        }
+    }
+}

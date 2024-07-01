@@ -1,0 +1,35 @@
+.notasFilmes
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: end;
+    gap: 10px;
+
+    background: rgba(255, 255, 255, 0.062745098);
+    border-radius: 5px;
+
+    padding: 10px 15px;
+
+    .estrelas
+    {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .medianotas
+    {
+        display: flex;
+        
+        span
+        {
+            color: #FEDC33;
+            font-size: 12px;
+
+            margin: 0;
+            padding: 0;
+        }
+    }
+}

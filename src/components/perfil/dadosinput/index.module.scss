@@ -1,0 +1,33 @@
+.dadosPessoais
+{
+    width: 100%;
+
+    input
+    {
+        width: 100%;
+        height: 60px;
+
+        background: none;
+        border: none;
+        border-bottom: solid 1px #ffffff40;
+
+        padding: 0px 10px;
+
+        font-size: 16px;
+
+        &::placeholder
+        {
+            color: white;
+        }
+  
+        &:focus
+        {
+          border-color: transparent;
+        }
+    }
+
+    input[disabled]::placeholder
+    {
+        opacity: .3;
+    }
+}

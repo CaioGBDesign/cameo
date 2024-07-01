@@ -1,0 +1,119 @@
+.background
+{
+    background-color: #250D2F;
+
+    width: 100%;
+
+    .cadastro
+    {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 60px;
+
+        width: 100%;
+        height: 100vh;
+
+        .formulario
+        {
+            width: 85%;
+
+            form
+            {          
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+
+                .inputCameo
+                {
+                    display: flex;
+                    align-items: center;
+
+                    width: 100%;
+                    border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+
+                    input[type=email], input[type=password], input[type=text], input[type=name], select
+                    {
+                        width: 100%;
+                        padding: 10px;
+                        margin: 10px 0;
+                        border: none;
+                        background: none;
+                        font-size: 16px;
+                        outline: none;
+
+                        color: white;
+                    }
+
+                    input[type="name"]::placeholder, input[type="email"]::placeholder, input[type="password"]::placeholder
+                    {
+                        color: rgba(255, 255, 255, 0.4);
+                        font-size: 16px;
+                    }
+
+                    .contSenha
+                    {
+                        display: flex;
+                        justify-content: center;
+
+                        width: 50%;
+
+                        font-size: 14px;
+                        color: #F314FB;
+                        font-weight: bolder;
+                    }
+
+                    select
+                    {
+                        option
+                        {
+                            color: black;
+                        }
+                    }
+                }
+        
+                .loginCadastro
+                {
+                    display: flex;
+                    justify-content: center;
+    
+                    width: 100%;
+                    
+                    span
+                    {
+                        font-size: 14px;
+                        font-weight: 100;
+
+                        color: white;
+        
+                        a
+                        {
+                            color: #F314FB;
+
+                            text-decoration: none;
+                        }
+                    }
+                }
+
+                .loginButtons
+                {
+                    display: flex;
+                    justify-content: space-around;
+
+                    width: 80%;
+
+                    button
+                    {
+                        background: none;
+                        border: none;
+
+                        width: auto;
+                        height: auto;
+                    }
+                }
+            }
+        }
+    }
+}

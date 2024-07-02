@@ -4,11 +4,33 @@
     justify-content: space-between;
     align-items: center;
 
-    width: 100%;
-
-    span
+    .quantidade
     {
-        font-size: 24px;
-        color: white;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        span
+        {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .contagem
+        {
+            font-size: 14px;
+            color: white;
+
+            padding: 5px 8px;
+
+            background: #ffffff20;
+            border-radius: 6px;
+        }
+
+        .tituloPagina
+        {
+            font-size: 24px;
+            color: white;
+        }
     }
 }

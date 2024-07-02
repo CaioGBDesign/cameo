@@ -52,7 +52,7 @@ const PerfilUsuario = () => {
 
                         <div className={styles.cardsPerfil}>
 
-                            <CardsPerfil linkDadosPerfil={"#"} DadosdoPerfil={"Filmes para ver"} imagemPerfil={"/icones/claquete-amarela.svg"} />
+                            <CardsPerfil linkDadosPerfil={"/filmesparaver"} DadosdoPerfil={"Filmes para ver"} imagemPerfil={"/icones/claquete-amarela.svg"} />
 
                             <CardsPerfil linkDadosPerfil={"#"} DadosdoPerfil={"Listas compartilhadas"} imagemPerfil={"/icones/claquete-roxa.svg"} />
 

@@ -1,7 +1,7 @@
 import styles from "./index.module.scss";
 import Estrelas from "@/components/estrelas";
 
-const Miniaturafilmes = ({ capaminiatura, titulofilme }) => {
+const Miniaturafilmes = ({ capaminiatura, titulofilme, mostrarEstrelas = true }) => {
 
     return (
         <div className={styles.miniaturafilmes}>
@@ -10,9 +10,9 @@ const Miniaturafilmes = ({ capaminiatura, titulofilme }) => {
                 <img src={capaminiatura} alt={titulofilme} />
             </div>
 
-            <div className={styles.tamanhoestrelas}>
+            { mostrarEstrelas && <div className={styles.tamanhoestrelas}>
                 <Estrelas estrelas={"3"} starWidth={"10px"} />
-            </div>
+            </div>}
         </div>
     );
 };

@@ -46,15 +46,16 @@
             bottom: 20px;
             left: 20px;
 
-            width: 120px;
+            width: 80%;
+            height: 35px;
 
             &::after
             {
                 content: url('/icones/arrow.svg');
     
                 position: absolute;
-                top: 5px;
-                right: -50px;
+                top: 9px;
+                right: 0px;
     
                 display: inline-block;
             }

@@ -5,10 +5,7 @@ const NotasFilmes = ({ estrelas }) => {
     return (
         <div className={styles.notasFilmes}>
             <div className={styles.estrelas}>
-                <Estrelas estrelas={estrelas} starWidth={"15px"}></Estrelas>
-            </div>
-            <div className={styles.medianotas}>
-                <span>Média {estrelas}</span>
+                <Estrelas estrelas={estrelas} starWidth={"14px"}></Estrelas>
             </div>
         </div>
     );

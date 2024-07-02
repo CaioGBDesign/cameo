@@ -31,10 +31,10 @@ const PerfilUsuario = () => {
                 </div>
 
                 <div className={styles.rede}>
-                    <Rede linkRede={"#"} titulo="Seguidores" valor={200} />
-                    <Rede linkRede={"#"} titulo="Seguindo" valor={200} />
-                    <Rede linkRede={"#"} titulo="Notas" valor={30} />
-                    <Rede linkRede={"#"} titulo="Estilo" valor={"PotterHead"} />
+                    <Rede iconePerfil={"/icones/seguidores.svg"} linkRede={"#"} titulo="Seguidores" valor={200} />
+                    <Rede iconePerfil={"/icones/seguindo.svg"} linkRede={"#"} titulo="Seguindo" valor={200} />
+                    <Rede iconePerfil={"/icones/avaliacoes.svg"} linkRede={"#"} titulo="Notas" valor={30} />
+                    <Rede iconePerfil={"/icones/potterHead.svg"} linkRede={"#"} titulo="Estilo" valor={"PotterHead"} />
                 </div>
 
                 <Search></Search>
@@ -44,17 +44,17 @@ const PerfilUsuario = () => {
                     <div className={styles.contCards}>
                         <div className={styles.cardsPerfil}>
 
-                            <CardsPerfil linkDadosPerfil={"/dadospessoais"} DadosdoPerfil={"Dados pessoais"} mostrarSegundoSpan={true} imagemPerfil={"/icones/perfil.svg"} />
+                            <CardsPerfil linkDadosPerfil={"/dadospessoais"} DadosdoPerfil={"Dados pessoais"} imagemPerfil={"/icones/perfil.svg"} />
 
-                            <CardsPerfil linkDadosPerfil={"/filmesassisti"} DadosdoPerfil={"Filmes que assisti"} mostrarSegundoSpan={false} imagemPerfil={"/icones/claquete-azul.svg"} />
+                            <CardsPerfil linkDadosPerfil={"/filmesassisti"} DadosdoPerfil={"Filmes que assisti"} imagemPerfil={"/icones/claquete-azul.svg"} />
 
                         </div>
 
                         <div className={styles.cardsPerfil}>
 
-                            <CardsPerfil linkDadosPerfil={"#"} DadosdoPerfil={"Filmes para ver"} mostrarSegundoSpan={false} imagemPerfil={"/icones/claquete-amarela.svg"} />
+                            <CardsPerfil linkDadosPerfil={"#"} DadosdoPerfil={"Filmes para ver"} imagemPerfil={"/icones/claquete-amarela.svg"} />
 
-                            <CardsPerfil linkDadosPerfil={"#"} DadosdoPerfil={"Listas compartilhadas"} mostrarSegundoSpan={false} imagemPerfil={"/icones/claquete-roxa.svg"} />
+                            <CardsPerfil linkDadosPerfil={"#"} DadosdoPerfil={"Listas compartilhadas"} imagemPerfil={"/icones/claquete-roxa.svg"} />
 
                         </div>
                     </div>

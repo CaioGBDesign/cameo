@@ -1,7 +1,7 @@
 import styles from "./index.module.scss";
 import Link from "next/link"; 
 
-const CardsPerfil = ({ linkDadosPerfil, imagemPerfil = true, DadosdoPerfil, mostrarSegundoSpan = true }) => {
+const CardsPerfil = ({ linkDadosPerfil, imagemPerfil = true, DadosdoPerfil }) => {
     return (
         <Link href={linkDadosPerfil} className={styles.linkDados}>
             <div className={styles.botaoPerfil}>
@@ -10,7 +10,6 @@ const CardsPerfil = ({ linkDadosPerfil, imagemPerfil = true, DadosdoPerfil, most
                 </div>}
                 <div className={styles.dadosPerfil}>
                     <p>{DadosdoPerfil}</p>
-                    <span>{mostrarSegundoSpan ? 'e-mail, senha...' : ''}</span>
                 </div>
             </div>
         </Link>

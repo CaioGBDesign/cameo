@@ -6,6 +6,7 @@ import FundoTitulos from "@/components/fundotitulos";
 import Search from "@/components/busca";
 import Titulolistagem from "@/components/titulolistagem";
 import Miniaturafilmes from "@/components/miniaturafilmes";
+import BotaoPlay from "@/components/botoes/play";
 
 const FilmesAssisti = () => {
 
@@ -57,6 +58,7 @@ const FilmesAssisti = () => {
 
                 <div className={styles.tituloFilmes}>
                     <div className={styles.contTitulos}>
+                        <BotaoPlay linkTrailer={"#"}></BotaoPlay>
                         <TitulosFilmes titulofilme="Jogador N° 1" generofilme="Ficção científica / Ação" duracaofilme="2h20m"></TitulosFilmes>
                         <NotasFilmes estrelas="3"/>
                     </div>

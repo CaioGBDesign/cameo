@@ -40,6 +40,7 @@ export default function Home() {
               <Sinopse></Sinopse>
               <NotasCameo></NotasCameo>
               <Servicos></Servicos>
+              
             </div>
 
           </div>

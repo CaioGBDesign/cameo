@@ -37,9 +37,9 @@ export default function Home() {
             
 
             <div className={styles.infoFilmes}>
-              <Sinopse></Sinopse>
-              <NotasCameo></NotasCameo>
-              <Servicos></Servicos>
+              <Sinopse/>
+              <NotasCameo/>
+              <Servicos/>
 
             </div>
 

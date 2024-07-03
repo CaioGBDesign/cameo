@@ -1,5 +1,5 @@
 import styles from "./index.module.scss";
-import NomeServico from "@/components/detalhesfilmes/NomeServico";
+import NomeServico from "@/components/detalhesfilmes/nomeservico";
 
 const Servicos = () => {
 

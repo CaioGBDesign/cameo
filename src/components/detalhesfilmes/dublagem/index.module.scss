@@ -1,0 +1,37 @@
+.dublagemCameo {
+  display: flex;
+  justify-content: start;
+
+  width: 85%;
+
+  .contDublagem {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 30px;
+
+    width: 100%;
+
+    h3 {
+      font-size: 24px;
+      color: white;
+
+      opacity: 0.3;
+    }
+
+    .dublagem {
+      display: flex;
+      align-items: start;
+      gap: 20px;
+
+      width: 100%;
+
+      overflow: scroll;
+
+      /* width */
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+}

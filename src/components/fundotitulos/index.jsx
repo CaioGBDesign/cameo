@@ -1,14 +1,18 @@
 import styles from "./index.module.scss";
+import BotaoPlay from "@/components/botoes/play";
 
 const FundoTitulos = ({ capaAssistidos, tituloAssistidos }) => {
+  return (
+    <div className={styles.contCapa}>
+      <div className={styles.play}>
+        <BotaoPlay linkTrailer={"#"}></BotaoPlay>
+      </div>
 
-    return (
-        <div className={styles.contCapa}>
-            <div className={styles.capaAssistidos}>
-                <img src={capaAssistidos} alt={tituloAssistidos} />
-            </div>
-        </div>
-    );
-}
+      <div className={styles.capaAssistidos}>
+        <img src={capaAssistidos} alt={tituloAssistidos} />
+      </div>
+    </div>
+  );
+};
 
 export default FundoTitulos;

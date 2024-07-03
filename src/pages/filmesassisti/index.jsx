@@ -72,7 +72,7 @@ const FilmesAssisti = () => {
                         <Titulolistagem titulolistagem={"Filmes que já assisti"} ></Titulolistagem>
 
                         <div className={styles.listaFilmes}>
-                            { simulacaoBack.map((miniatura) => <Miniaturafilmes capaminiatura={miniatura.url}></Miniaturafilmes> )}            
+                            { simulacaoBack.map((miniatura) => <Miniaturafilmes capaminiatura={miniatura.url}></Miniaturafilmes> )}
                         </div>
 
                     </div>

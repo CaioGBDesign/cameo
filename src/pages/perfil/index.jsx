@@ -1,5 +1,4 @@
 import styles from "./index.module.scss";
-import Link from "next/link"; 
 import Header from "@/components/Header";
 import FotoPrincipal from "@/components/perfil/fotoPrincipal";
 import NomeUsuario from "@/components/perfil/nomeUsuario";
@@ -8,6 +7,7 @@ import Compartilhar from "@/components/botoes/compartilhar";
 import Rede from "@/components/perfil/rede";
 import Search from "@/components/busca";
 import CardsPerfil from "@/components/perfil/cards";
+import FundoTitulos from "@/components/fundotitulos";
 
 const PerfilUsuario = () => {
 
@@ -37,37 +37,43 @@ const PerfilUsuario = () => {
                     <Rede iconePerfil={"/icones/potterHead.svg"} linkRede={"#"} titulo="Estilo" valor={"PotterHead"} />
                 </div>
 
-                <Search></Search>
+                <div className={styles.contDados}>
+                    <div className={styles.botoesDados}>
 
-                <div className={styles.botoesDados}>
+                        <Search></Search>
 
-                    <div className={styles.contCards}>
-                        <div className={styles.cardsPerfil}>
+                        <div className={styles.contCards}>
+                            <div className={styles.cardsPerfil}>
 
-                            <CardsPerfil linkDadosPerfil={"/dadospessoais"} DadosdoPerfil={"Dados pessoais"} imagemPerfil={"/icones/perfil.svg"} />
+                                <CardsPerfil linkDadosPerfil={"/dadospessoais"} DadosdoPerfil={"Dados pessoais"} imagemPerfil={"/icones/perfil.svg"} />
 
-                            <CardsPerfil linkDadosPerfil={"/filmesassisti"} DadosdoPerfil={"Filmes que assisti"} imagemPerfil={"/icones/claquete-azul.svg"} />
+                                <CardsPerfil linkDadosPerfil={"/filmesassisti"} DadosdoPerfil={"Filmes que assisti"} imagemPerfil={"/icones/claquete-azul.svg"} />
 
+                            </div>
+
+                            <div className={styles.cardsPerfil}>
+
+                                <CardsPerfil linkDadosPerfil={"/filmesparaver"} DadosdoPerfil={"Filmes para ver"} imagemPerfil={"/icones/claquete-amarela.svg"} />
+
+                                <CardsPerfil linkDadosPerfil={"#"} DadosdoPerfil={"Listas compartilhadas"} imagemPerfil={"/icones/claquete-roxa.svg"} />
+
+                            </div>
+
+                            <div className={styles.cardsPerfil}>
+
+                                <CardsPerfil linkDadosPerfil={"#"} DadosdoPerfil={"Meus favoritos"} imagemPerfil={"/icones/favoritos.svg"} />
+
+                                <CardsPerfil linkDadosPerfil={"#"} DadosdoPerfil={"Sair"} imagemPerfil={"/icones/sair.svg"} />
+
+                            </div>
                         </div>
 
-                        <div className={styles.cardsPerfil}>
-
-                            <CardsPerfil linkDadosPerfil={"/filmesparaver"} DadosdoPerfil={"Filmes para ver"} imagemPerfil={"/icones/claquete-amarela.svg"} />
-
-                            <CardsPerfil linkDadosPerfil={"#"} DadosdoPerfil={"Listas compartilhadas"} imagemPerfil={"/icones/claquete-roxa.svg"} />
-
-                        </div>
                     </div>
-
-                    <Link href="#" className={styles.botaoSair}>
-                        <div className={styles.sair}>
-                            <span>Sair</span>
-                        </div>                    
-                    </Link>
-
                 </div>
 
             </div>
+
+            <FundoTitulos capaAssistidos={"/background/background-cameo-perfil.png"} tituloAssistidos={"background"}></FundoTitulos>
 
         </div>
     );

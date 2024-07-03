@@ -7,7 +7,7 @@ import TitulosFilmes from "@/components/titulosfilmes";
 import NotasFilmes from "@/components/botoes/notas";
 import Sinopse from "@/components/detalhesfilmes/sinopse";
 import NotasCameo from "@/components/detalhesfilmes/notascameo";
-import Servicos from "@/components/detalhesfilmes/Servicos";
+import Servicos from "@/components/detalhesfilmes/servicos";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -40,7 +40,7 @@ export default function Home() {
               <Sinopse></Sinopse>
               <NotasCameo></NotasCameo>
               <Servicos></Servicos>
-              
+
             </div>
 
           </div>

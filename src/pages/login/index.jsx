@@ -1,68 +1,97 @@
-import styles from "./index.module.scss"
-import Logo from "@/components/logo"
-import EntrarCadastrar from "@/components/botoes/acesso"
-import Header from "@/components/Header"
+import React, { useState } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import Logo from "@/components/logo";
+import EntrarCadastrar from "@/components/botoes/acesso";
+import Header from "@/components/Header";
+import styles from "./index.module.scss";
 
-const login = () => {
+const Login = () => {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
 
-    function inputControler (evento) {
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
 
-        console.log(evento.target.value)
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-    }
+    // Aqui você pode realizar validações do formulário, se necessário
 
-    return <main className={styles["background"]}>
+    // Exibe o e-mail registrado no console antes do redirecionamento
+    console.log(`E-mail registrado: ${email}`);
 
-    {/* Header */}
-    <Header showMiniatura={false} showFotoPerfil={false} />
-        
-    <div className={styles.login}>
+    // Redireciona para a página inicial ("/")
+    router.push("/");
+  };
 
-        {/* logo */}
-        <Logo></Logo>
+  return (
+    <main className={styles["background"]}>
+      <Header showMiniatura={false} showFotoPerfil={false} />
 
-        {/* form */}
+      <div className={styles.login}>
+        <Logo />
+
         <div className={styles.formulario}>
-            <form>
-                
-                <div className={styles.inputCont}>
-                    <div className={styles.inputCameo}>
-                        <input onChange={inputControler} type="email" placeholder="e-mail" id="email" name="email" required />
-                    </div>
-                    <div className={styles.inputCameo}>
-                        <input type="password" placeholder="senha" id="password" name="password" required />
-                        
-                        <div className={styles.contSenha}>
-                            <a href="#" className={styles.esqueciSenha}>Esqueceu a senha?</a>
-                        </div>
-                    </div>
+          <form onSubmit={handleSubmit}>
+            <div className={styles.inputCont}>
+              <div className={styles.inputCameo}>
+                <input
+                  type="email"
+                  placeholder="E-mail"
+                  id="email"
+                  name="email"
+                  value={email}
+                  onChange={handleEmailChange}
+                  required
+                />
+              </div>
+              <div className={styles.inputCameo}>
+                <input
+                  type="password"
+                  placeholder="Senha"
+                  id="password"
+                  name="password"
+                  required
+                />
+                <div className={styles.contSenha}>
+                  <Link href="#" className={styles.esqueciSenha}>
+                    Esqueceu a senha?
+                  </Link>
                 </div>
+              </div>
+            </div>
 
-                <EntrarCadastrar onClick={() => console.log(123)}>Entrar</EntrarCadastrar>
+            <EntrarCadastrar onClick={() => console.log(123)}>
+              Entrar
+            </EntrarCadastrar>
 
-                <div className={styles.loginCadastro}>
-                    <span>Ainda não tem cadastro? <a href="/cadastro">Crie imediatamente.</a></span>
-                </div>
+            <div className={styles.loginCadastro}>
+              <span>
+                Ainda não tem cadastro?{" "}
+                <Link href="/cadastro">Crie imediatamente.</Link>
+              </span>
+            </div>
 
-                <span>Ou</span>
+            <span>Ou</span>
 
-                <div className={styles.loginButtons}>
-                    <button>
-                        <img src="/social/google.png" alt="login google" />
-                    </button>
-                    <button>
-                        <img src="/social/facebook.png" alt="login facebook" />
-                    </button>
-                    <button>
-                        <img src="/social/apple.png" alt="login apple" />
-                    </button>
-                </div>
-
-            </form>
+            <div className={styles.loginButtons}>
+              <button>
+                <img src="/social/google.png" alt="Login Google" />
+              </button>
+              <button>
+                <img src="/social/facebook.png" alt="Login Facebook" />
+              </button>
+              <button>
+                <img src="/social/apple.png" alt="Login Apple" />
+              </button>
+            </div>
+          </form>
         </div>
-    </div>
-
+      </div>
     </main>
-}
+  );
+};
 
-export default login
+export default Login;

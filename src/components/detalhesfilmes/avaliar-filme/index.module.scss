@@ -1,0 +1,21 @@
+.avaliarFilme {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: white;
+  border-radius: 5px;
+
+  padding: 13px 15px;
+
+  .avaliar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    font-size: 14px;
+    font-weight: 700;
+    color: #250d2f;
+  }
+}

@@ -1,0 +1,17 @@
+.favoritarFilme {
+  background: rgba(255, 255, 255, 0.062745098);
+  border-radius: 5px;
+
+  padding: 11px 5px;
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: none;
+    border: none;
+
+    cursor: pointer;
+  }
+}

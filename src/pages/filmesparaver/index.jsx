@@ -7,6 +7,8 @@ import Search from "@/components/busca";
 import Titulolistagem from "@/components/titulolistagem";
 import Miniaturafilmes from "@/components/miniaturafilmes";
 import BotaoPlay from "@/components/botoes/play";
+import FavoritarFilme from "@/components/detalhesfilmes/favoritarfilme";
+import AvaliarFilme from "@/components/detalhesfilmes/avaliar-filme";
 
 const FilmesAssisti = () => {
   const simulacaoBack = [
@@ -50,7 +52,11 @@ const FilmesAssisti = () => {
               generofilme="Ação / Aventura"
               duracaofilme="2h10m"
             ></TitulosFilmes>
-            <NotasFilmes estrelas="4" />
+
+            <div className={styles.NotasFavoritos}>
+              <AvaliarFilme />
+              <FavoritarFilme />
+            </div>
           </div>
         </div>
 

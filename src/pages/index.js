@@ -12,6 +12,7 @@ import Elenco from "@/components/detalhesfilmes/elenco";
 import Direcao from "@/components/detalhesfilmes/direcao";
 import Avaliacao from "@/components/detalhesfilmes/avaliacao";
 import BaseBotoes from "@/components/botoes/base";
+import FavoritarFilme from "@/components/detalhesfilmes/favoritarfilme";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,7 +32,11 @@ export default function Home() {
                   generofilme="Fantasia / animação"
                   duracaofilme="2h"
                 ></TitulosFilmes>
-                <NotasFilmes estrelas="3" />
+
+                <div className={styles.NotasFavoritos}>
+                  <NotasFilmes estrelas="3" />
+                  <FavoritarFilme />
+                </div>
               </div>
             </div>
 

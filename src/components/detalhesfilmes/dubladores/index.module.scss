@@ -25,13 +25,16 @@
     .nomePersonagem {
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
       gap: 5px;
+
+      height: 40px;
 
       p {
         font-size: 12px;
         color: white;
+        text-align: center;
       }
 
       span {

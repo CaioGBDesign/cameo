@@ -43,7 +43,7 @@ const PerfilUsuario = () => {
           <Rede
             iconePerfil={"/icones/avaliacoes.svg"}
             linkRede={"#"}
-            titulo="Notas"
+            titulo="Avaliações"
             valor={30}
           />
           <Rede
@@ -81,7 +81,7 @@ const PerfilUsuario = () => {
                 />
 
                 <CardsPerfil
-                  linkDadosPerfil={"#"}
+                  linkDadosPerfil={"/listas-compartilhadas"}
                   DadosdoPerfil={"Listas compartilhadas"}
                   imagemPerfil={"/icones/claquete-roxa.svg"}
                 />

@@ -1,16 +1,16 @@
 import styles from "./index.module.scss";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 const Botaovoltar = ({ children }) => {
   const router = useRouter();
 
-  function RouterBack() {
+  function routerBack() {
     router.back();
   }
 
   return (
-    <button onClick={RouterBack} className={styles["botao-voltar"]}>
-      <img src="icones/voltar.svg" />
+    <button onClick={routerBack} className={styles["botao-voltar"]}>
+      <img src="/icones/voltar.svg" alt="Voltar" />
       {children}
     </button>
   );

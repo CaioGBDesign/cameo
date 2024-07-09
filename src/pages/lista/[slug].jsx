@@ -76,7 +76,7 @@ const Lista = () => {
     },
     {
       titulo: "Valente",
-      capa: "/background/Valente.jpg",
+      capa: "/background/valente.jpg",
       genero: "Aventura/Fantasia",
       duracao: "1h 33m",
       nota: "4",

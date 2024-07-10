@@ -24,6 +24,7 @@ const BaseBotoes = ({
             <BotaoSecundario
               textoBotaoSecundario={"Filtros"}
               idBsecundario={"filtros"}
+              fonteSecundaria={"14px"}
             />
           </div>
         )}

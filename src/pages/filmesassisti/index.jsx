@@ -73,7 +73,7 @@ const FilmesAssisti = () => {
 
         <div className={styles.todosOsTitulos}>
           <div className={styles.contlista}>
-            <Search></Search>
+            <Search placeholder={"Buscar filmes"}></Search>
 
             <Titulolistagem
               quantidadeFilmes={"12"}

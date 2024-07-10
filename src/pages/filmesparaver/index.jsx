@@ -1,6 +1,5 @@
 import styles from "./index.module.scss";
 import Header from "@/components/Header";
-import NotasFilmes from "@/components/botoes/notas";
 import TitulosFilmes from "@/components/titulosfilmes";
 import FundoTitulos from "@/components/fundotitulos";
 import Search from "@/components/busca";
@@ -62,7 +61,7 @@ const FilmesAssisti = () => {
 
         <div className={styles.todosOsTitulos}>
           <div className={styles.contlista}>
-            <Search></Search>
+            <Search placeholder={"Buscar filmes"}></Search>
 
             <Titulolistagem
               quantidadeFilmes={"8"}

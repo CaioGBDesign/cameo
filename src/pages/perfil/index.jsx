@@ -30,25 +30,25 @@ const PerfilUsuario = () => {
         <div className={styles.rede}>
           <Rede
             iconePerfil={"/icones/seguidores.svg"}
-            linkRede={"#"}
+            linkRede={"/seguidores"}
             titulo="Seguidores"
             valor={200}
           />
           <Rede
             iconePerfil={"/icones/seguindo.svg"}
-            linkRede={"#"}
+            linkRede={"/seguindo"}
             titulo="Seguindo"
             valor={200}
           />
           <Rede
             iconePerfil={"/icones/avaliacoes.svg"}
-            linkRede={"#"}
+            linkRede={"/filmesassisti"}
             titulo="Avaliações"
             valor={30}
           />
           <Rede
             iconePerfil={"/icones/potterHead.svg"}
-            linkRede={"#"}
+            linkRede={"/dadospessoais"}
             titulo="Estilo"
             valor={"PotterHead"}
           />
@@ -56,7 +56,7 @@ const PerfilUsuario = () => {
 
         <div className={styles.contDados}>
           <div className={styles.botoesDados}>
-            <Search></Search>
+            <Search placeholder={"Buscar filmes"}></Search>
 
             <div className={styles.contCards}>
               <div className={styles.cardsPerfil}>

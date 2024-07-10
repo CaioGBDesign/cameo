@@ -1,0 +1,67 @@
+.cardSeguidor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+
+  .perfilSeguidor {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    img {
+      width: 50px;
+      height: 50px;
+
+      border-radius: 50px;
+      border: solid white;
+    }
+
+    .nomeHandle {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      p {
+        font-size: 14px;
+        font-weight: bold;
+        color: white;
+      }
+
+      span {
+        font-size: 14px;
+        color: white;
+        opacity: 0.3;
+      }
+    }
+  }
+
+  .botao {
+    button {
+      background: none;
+      border: none;
+      border-radius: 30px;
+    }
+
+    .naoSeguir {
+      width: 100px;
+      height: 30px;
+
+      font-size: 14px;
+      color: white;
+
+      background: #3b2544;
+    }
+
+    .seguir {
+      width: 100px;
+      height: 30px;
+
+      font-size: 14px;
+      color: white;
+
+      background: #2ba8e2;
+    }
+  }
+}

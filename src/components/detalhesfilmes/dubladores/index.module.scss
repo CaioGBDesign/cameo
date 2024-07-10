@@ -5,6 +5,17 @@
     align-items: center;
     gap: 15px;
 
+    position: relative;
+
+    .setaLink {
+      position: absolute;
+      top: 60px;
+      right: 0px;
+
+      background: #250d2f;
+      border-radius: 50px;
+    }
+
     .dublador {
       display: flex;
       justify-content: center;

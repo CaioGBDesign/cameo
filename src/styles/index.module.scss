@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
 
-  margin-top: 90%;
+  margin-top: 110%;
 
   .informacoes {
     background: #250d2f;
@@ -90,6 +90,15 @@
           padding: 15px 20px;
         }
       }
+    }
+
+    .dublagem {
+      display: flex;
+      justify-content: center;
+
+      width: 100%;
+
+      position: relative;
     }
 
     .elencoGeral {

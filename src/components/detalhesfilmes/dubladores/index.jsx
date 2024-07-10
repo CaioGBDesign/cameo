@@ -5,6 +5,10 @@ const Dubladores = ({ fotoDublador, NomeDublador, Personagem }) => {
   return (
     <div className={styles.cardsDubladores}>
       <div className={styles.contDubladores}>
+        <div className={styles.setaLink}>
+          <img src="/icones/seta-link.svg" />
+        </div>
+
         <div className={styles.dublador}>
           <img
             src={fotoDublador}

@@ -9,6 +9,17 @@
 
   overflow: hidden;
 
+  animation: slideUp 1.5s ease-out;
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
   .play {
     position: absolute;
     top: 30%;

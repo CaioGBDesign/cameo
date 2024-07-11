@@ -5,6 +5,17 @@
 
   margin-top: 110%;
 
+  animation: slideUp 0.3s ease-out;
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(5%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
   .informacoes {
     background: #250d2f;
 

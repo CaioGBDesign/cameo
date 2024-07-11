@@ -79,15 +79,15 @@ export default function Home() {
 
               <div className={styles.detalhes}>
                 <h3>País de origem</h3>
-                <p>Estados unidos</p>
+                <p>Estados Unidos</p>
               </div>
 
               <Avaliacao avaliador={"Caio Goulart"} />
-
-              <BaseBotoes TextoBotao={"Sugerir filme"} />
             </div>
           </div>
         </div>
+
+        <BaseBotoes TextoBotao={"Sugerir filme"} />
 
         <FundoTitulos
           capaAssistidos={"/background/super-mario-bros.jpg"}

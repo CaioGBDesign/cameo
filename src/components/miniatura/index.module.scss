@@ -1,31 +1,27 @@
-.normal
-{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.normal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    transition: .2s;
+  transition: 0.2s;
 
-    img
-    {
-        width: 100%;
+  img {
+    width: 100%;
 
-        transition: .2s;
-    }
+    transition: 0.2s;
+  }
 }
-  
-.small
-{
-    display: flex;
-    justify-content: center;
-    align-items: center;
 
-    transition: .2s;
+.small {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    img
-    {
-        width: 80%;
+  transition: 0.2s;
 
-        transition: .2s;
-    }
+  img {
+    width: 80%;
+
+    transition: 0.2s;
+  }
 }

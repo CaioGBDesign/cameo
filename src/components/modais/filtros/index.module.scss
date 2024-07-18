@@ -1,0 +1,238 @@
+.modal {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: center;
+
+  z-index: 999;
+
+  background: #00000050;
+
+  width: 100%;
+  height: 100vh;
+
+  animation: BG 0.3s ease-out;
+
+  @keyframes BG {
+    from {
+      background: #00000000;
+    }
+    to {
+      background: #00000050;
+    }
+  }
+
+  .contModal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+
+    background: #1f0928;
+    border-radius: 30px 30px 0px 0px;
+
+    width: 100%;
+    height: 70vh;
+
+    overflow: scroll;
+    animation: OpenUp 0.3s ease-out;
+    animation-fill-mode: forwards;
+
+    padding-top: 40px;
+    padding-bottom: 120px;
+
+    @keyframes OpenUp {
+      from {
+        transform: translateY(100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    &.close {
+      animation: CloseDown 0.3s ease-out;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes CloseDown {
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(100%);
+      }
+    }
+
+    .separador {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      gap: 20px;
+
+      width: 85%;
+
+      h3 {
+        font-size: 18px;
+        font-weight: 300;
+        color: white;
+        opacity: 0.5;
+      }
+
+      .seletor {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+
+        label {
+          position: relative;
+
+          padding: 10px 15px;
+
+          border: solid #ffffff20 1px;
+          border-radius: 10px;
+
+          font-size: 16px;
+          font-weight: 200;
+          color: white;
+
+          text-align: center;
+        }
+
+        input {
+          position: absolute;
+          opacity: 0;
+
+          &:checked + label {
+            border: solid #2ba8e280 1px;
+          }
+        }
+      }
+
+      .streaming {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        gap: 20px;
+
+        img {
+          display: block;
+        }
+
+        label {
+          position: relative;
+
+          display: inline-block;
+
+          padding: 0px 20px;
+
+          border: solid #ffffff20 1px;
+          border-radius: 10px;
+
+          font-size: 16px;
+          font-weight: 200;
+          color: white;
+        }
+
+        input {
+          position: absolute;
+          opacity: 0;
+
+          &:checked + label {
+            border: solid #2ba8e280 1px;
+          }
+        }
+      }
+
+      select {
+        width: 100%;
+        height: 60px;
+
+        background: none;
+        border: none;
+        border-bottom: solid 1px #ffffff40;
+
+        padding: 0px 10px;
+
+        font-size: 1rem;
+
+        color: white;
+
+        &:focus {
+          border-color: transparent;
+        }
+
+        option {
+          padding: 0.5rem;
+          background-color: #fff;
+          color: #333;
+        }
+      }
+    }
+  }
+
+  .botoesFiltro {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100px;
+
+    background: linear-gradient(
+      to bottom,
+      rgba(37, 13, 47, 0) 0%,
+      #250d2f 100%
+    );
+
+    .baseBotoes {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+
+      width: 85%;
+
+      .aplicar {
+        width: 80%;
+        height: 45px;
+
+        background: white;
+      }
+
+      .fechar {
+        width: 20%;
+        height: 45px;
+
+        background: #3b2544;
+      }
+
+      button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        background: none;
+        border: none;
+        border-radius: 15px;
+
+        font-size: 20px;
+        font-weight: bold;
+        color: #1a1c22;
+
+        transition: 0.2s;
+
+        &:active {
+          transform: translateY(5px);
+        }
+      }
+    }
+  }
+}

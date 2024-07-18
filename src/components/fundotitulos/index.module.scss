@@ -22,8 +22,13 @@
 
   .play {
     position: absolute;
-    top: 30%;
-    left: 40%;
+
+    width: 100%;
+    height: 500px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .capaAssistidos {

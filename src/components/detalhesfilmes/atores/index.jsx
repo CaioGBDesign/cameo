@@ -1,3 +1,5 @@
+// components/detalhesfilmes/atores/index.jsx
+import React from "react";
 import styles from "./index.module.scss";
 
 const Atores = ({ NomeAtor, fotoAtor, Personagem }) => {
@@ -5,7 +7,7 @@ const Atores = ({ NomeAtor, fotoAtor, Personagem }) => {
     <div className={styles.cardsAtores}>
       <div className={styles.contAtores}>
         <div className={styles.dublador}>
-          <img src={fotoAtor} alt="Nome do usuario" />
+          <img src={fotoAtor} alt={NomeAtor} />
         </div>
 
         <div className={styles.nomePersonagem}>

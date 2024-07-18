@@ -32,11 +32,25 @@
       p {
         font-size: 12px;
         color: white;
+        text-align: center;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        width: 80px;
       }
 
       span {
         font-size: 12px;
         color: #ffffff60;
+        text-align: center;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        width: 80px;
       }
     }
   }

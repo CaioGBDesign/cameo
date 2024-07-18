@@ -1,32 +1,26 @@
+// components/detalhesfilmes/elenco/index.jsx
+import React from "react";
 import styles from "./index.module.scss";
-import Atores from "@/components/detalhesfilmes/atores";
+import Atores from "../atores";
 
-const Elenco = () => {
-  const simulacaoBack = [
-    {
-      url: "/usuario/usuario.jpeg",
-      nome: "Caio Goulart",
-      personagem: "Personagem",
-    },
-    {
-      url: "/usuario/usuario.jpeg",
-      nome: "Caio Goulart",
-      personagem: "Personagem",
-    },
-  ];
-
+const Elenco = ({ elenco }) => {
   return (
     <div className={styles.elencoCameo}>
       <div className={styles.contElenco}>
         <h3>Elenco</h3>
 
         <div className={styles.elenco}>
-          {simulacaoBack.map((elenco) => (
+          {elenco.map((ator, index) => (
             <Atores
-              fotoAtor={elenco.url}
-              NomeAtor={elenco.nome}
-              Personagem={elenco.personagem}
-            ></Atores>
+              key={index}
+              NomeAtor={ator.name}
+              fotoAtor={
+                ator.profile_path
+                  ? `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${ator.profile_path}`
+                  : "https://via.placeholder.com/150"
+              }
+              Personagem={ator.character}
+            />
           ))}
         </div>
       </div>

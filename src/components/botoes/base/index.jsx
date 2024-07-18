@@ -6,6 +6,8 @@ const BaseBotoes = ({
   TextoBotao,
   botaoPrimario = true,
   botaoSecundario = true,
+  onClick,
+  onClickModal,
 }) => {
   return (
     <div className={styles.baseBotoes}>
@@ -15,6 +17,7 @@ const BaseBotoes = ({
             <BotaoPrimario
               textoBotaoPrimario={TextoBotao}
               idBprimario={"Salvar"}
+              onClick={onClick} // Adicione esta linha
             />
           </div>
         )}
@@ -23,8 +26,8 @@ const BaseBotoes = ({
           <div className={styles.botaoSecundario}>
             <BotaoSecundario
               textoBotaoSecundario={"Filtros"}
-              idBsecundario={"filtros"}
               fonteSecundaria={"14px"}
+              onClick={onClickModal} // Adiciona onClickModal para abrir o modal
             />
           </div>
         )}

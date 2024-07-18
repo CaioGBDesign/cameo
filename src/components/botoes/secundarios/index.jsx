@@ -1,3 +1,5 @@
+// BotaoSecundario.jsx
+import React from "react";
 import styles from "./index.module.scss";
 
 const BotaoSecundario = ({
@@ -5,6 +7,7 @@ const BotaoSecundario = ({
   idBsecundario,
   typeBsecundario,
   textoBotaoSecundario,
+  onClick, // Adicione onClick como uma propriedade
 }) => {
   return (
     <button
@@ -12,6 +15,7 @@ const BotaoSecundario = ({
       id={idBsecundario}
       className={styles["botao-secundario"]}
       style={{ fontSize: fonteSecundaria }} // Corrigindo a sintaxe para camelCase
+      onClick={onClick} // Adicione o onClick aqui
     >
       {textoBotaoSecundario}
     </button>

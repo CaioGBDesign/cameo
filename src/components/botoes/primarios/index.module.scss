@@ -1,14 +1,24 @@
-.botao-primario
-{
-    width: 100%;
-    height: 50px;
-    background: linear-gradient(90deg, #1AF5EB 0%, #2BA8E2 100%);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    font-size: 20px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.botao-primario {
+  width: 100%;
+  height: 50px;
+
+  background: linear-gradient(90deg, #1af5eb 0%, #2ba8e2 100%);
+
+  color: white;
+
+  border: none;
+  border-radius: 50px;
+
+  font-size: 20px;
+  text-align: center;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: 0.2s;
+
+  &:active {
+    transform: translateY(5px);
+  }
 }

@@ -10,27 +10,26 @@ import Miniaturafilmes from "@/components/miniaturafilmes";
 import BotaoPlay from "@/components/botoes/play";
 import { useAuth } from "@/contexts/auth";
 
-const FilmesParaVer = () => {
-  const { user, removerAssistir } = useAuth(); // Use o contexto para obter o usuário autenticado e a função para remover favoritos
-  const [assistirFilme, setFilmesAssistidos] = useState([]);
+const Favoritos = () => {
+  const { user, removerFilme } = useAuth(); // Use o contexto para obter o usuário autenticado e a função para remover favoritos
+  const [filmesFavoritos, setFilmesFavoritos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filmeAleatorio, setFilmeAleatorio] = useState(null);
   const [linkTrailer, setLinkTrailer] = useState("#"); // Adicionamos um estado para o link do trailer
   const [mostrarBotaoFechar, setMostrarBotaoFechar] = useState(false);
 
   useEffect(() => {
-    const fetchAssistidos = async () => {
+    const fetchFavoritos = async () => {
       if (!user) {
         console.error("Usuário não autenticado");
-        setLoading(false);
         return;
       }
 
-      // Obter IDs dos filmes para assistir do usuário
-      const ids = user.assistir || []; // Garantir que 'ids' seja um array
+      // Obter IDs dos filmes favoritos do usuário
+      const ids = user.favoritos;
 
-      if (!Array.isArray(ids) || !ids.length) {
-        setFilmesAssistidos([]);
+      if (!ids.length) {
+        setFilmesFavoritos([]);
         setLoading(false);
         return;
       }
@@ -44,7 +43,7 @@ const FilmesParaVer = () => {
         );
 
         const filmesData = await Promise.all(fetchFilmes);
-        setFilmesAssistidos(filmesData);
+        setFilmesFavoritos(filmesData);
 
         // Selecionar um filme aleatório
         const filmeAleatorio =
@@ -60,7 +59,7 @@ const FilmesParaVer = () => {
           const videoId = trailer.key;
           setLinkTrailer(`https://www.youtube.com/watch?v=${videoId}`);
         } else {
-          setLinkTrailer("#"); // Define como "#" se não houver trailer disponível
+          setLinkTrailer(null); // Define como null se não houver trailer disponível
         }
       } catch (error) {
         console.error("Erro ao buscar filmes:", error);
@@ -69,11 +68,11 @@ const FilmesParaVer = () => {
       }
     };
 
-    fetchAssistidos();
+    fetchFavoritos();
   }, [user]);
 
   const handleRemoverClick = () => {
-    setMostrarBotaoFechar(!mostrarBotaoFechar);
+    setMostrarBotaoFechar(!mostrarBotaoFechar); // Alterna o estado de visibilidade do botão
   };
 
   return (
@@ -99,21 +98,22 @@ const FilmesParaVer = () => {
             <Search placeholder={"Buscar filmes"}></Search>
 
             <Titulolistagem
-              quantidadeFilmes={assistirFilme.length}
-              titulolistagem={"Filmes para assistir"}
-              handleRemoverClick={handleRemoverClick}
+              quantidadeFilmes={filmesFavoritos.length}
+              titulolistagem={"Meus favoritos"}
+              configuracoes={true}
+              handleRemoverClick={handleRemoverClick} // Passe a função para o componente Titulolistagem
             ></Titulolistagem>
             <div className={styles.listaFilmes}>
               {loading ? (
                 <p>Carregando...</p>
-              ) : assistirFilme.length ? (
-                assistirFilme.map((filme) => (
+              ) : filmesFavoritos.length ? (
+                filmesFavoritos.map((filme) => (
                   <Miniaturafilmes
                     key={filme.id}
                     capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
                     titulofilme={filme.title}
-                    mostrarBotaoFechar={mostrarBotaoFechar}
-                    excluirFilme={() => removerAssistir(String(filme.id))} // Passe o ID como string
+                    excluirFilme={() => removerFilme(String(filme.id))}
+                    mostrarBotaoFechar={mostrarBotaoFechar} // Passe o estado para o componente Miniaturafilmes
                     mostrarEstrelas={false}
                   />
                 ))
@@ -138,4 +138,4 @@ const FilmesParaVer = () => {
   );
 };
 
-export default FilmesParaVer;
+export default Favoritos;

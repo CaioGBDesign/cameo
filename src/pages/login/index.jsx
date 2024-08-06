@@ -1,30 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Logo from "@/components/logo";
 import EntrarCadastrar from "@/components/botoes/acesso";
 import Header from "@/components/Header";
 import styles from "./index.module.scss";
+import { AuthContext } from "@/contexts/auth";
 
 const Login = () => {
-  const router = useRouter();
   const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [erro, setErro] = useState("");
+  const router = useRouter();
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
+  const { signIn, loadingAuth } = useContext(AuthContext);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  async function handleSignIn(e) {
+    e.preventDefault();
 
-    // Aqui você pode realizar validações do formulário, se necessário
-
-    // Exibe o e-mail registrado no console antes do redirecionamento
-    console.log(`E-mail registrado: ${email}`);
-
-    // Redireciona para a página inicial ("/")
-    router.push("/");
-  };
+    if (email !== "" && senha !== "") {
+      try {
+        await signIn(email, senha);
+      } catch (error) {
+        console.error("Erro capturado no componente de login:", error);
+        if (
+          error.code === "auth/user-not-found" ||
+          error.code === "auth/wrong-password"
+        ) {
+          setErro("Credenciais inválidas. Verifique seu e-mail e senha.");
+        } else {
+          setErro("Erro ao tentar fazer login. Tente novamente.");
+        }
+      }
+    } else {
+      setErro("Por favor, preencha todos os campos.");
+    }
+  }
 
   return (
     <main className={styles["background"]}>
@@ -34,16 +45,14 @@ const Login = () => {
         <Logo />
 
         <div className={styles.formulario}>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSignIn}>
             <div className={styles.inputCont}>
               <div className={styles.inputCameo}>
                 <input
                   type="email"
                   placeholder="E-mail"
-                  id="email"
-                  name="email"
                   value={email}
-                  onChange={handleEmailChange}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -51,20 +60,21 @@ const Login = () => {
                 <input
                   type="password"
                   placeholder="Senha"
-                  id="password"
-                  name="password"
+                  value={senha}
+                  onChange={(e) => setSenha(e.target.value)}
                   required
                 />
                 <div className={styles.contSenha}>
-                  <Link href="#" className={styles.esqueciSenha}>
+                  <Link href="/" className={styles.esqueciSenha}>
                     Esqueceu a senha?
                   </Link>
                 </div>
               </div>
+              {erro && <p className={styles.error}>{erro}</p>}{" "}
             </div>
 
-            <EntrarCadastrar onClick={() => console.log(123)}>
-              Entrar
+            <EntrarCadastrar onClick={handleSignIn}>
+              {loadingAuth ? "Carregando..." : "Acessar"}
             </EntrarCadastrar>
 
             <div className={styles.loginCadastro}>
@@ -77,13 +87,13 @@ const Login = () => {
             <span>Ou</span>
 
             <div className={styles.loginButtons}>
-              <button>
+              <button type="button">
                 <img src="/social/google.png" alt="Login Google" />
               </button>
-              <button>
+              <button type="button">
                 <img src="/social/facebook.png" alt="Login Facebook" />
               </button>
-              <button>
+              <button type="button">
                 <img src="/social/apple.png" alt="Login Apple" />
               </button>
             </div>

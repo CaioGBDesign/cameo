@@ -1,36 +1,45 @@
-.titulolistagem
-{
+.titulolistagem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+
+  .quantidade {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 10px;
 
-    .quantidade
-    {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-
-        span
-        {
-            margin: 0px;
-            padding: 0px;
-        }
-
-        .contagem
-        {
-            font-size: 14px;
-            color: white;
-
-            padding: 5px 8px;
-
-            background: #ffffff20;
-            border-radius: 6px;
-        }
-
-        .tituloPagina
-        {
-            font-size: 24px;
-            color: white;
-        }
+    span {
+      margin: 0px;
+      padding: 0px;
     }
+
+    .contagem {
+      font-size: 14px;
+      color: white;
+
+      padding: 5px 8px;
+
+      background: #ffffff20;
+      border-radius: 6px;
+    }
+
+    .tituloPagina {
+      font-size: 20px;
+      color: white;
+    }
+  }
+
+  .remover {
+    border: solid #ffffff20 1px;
+    border-radius: 5px;
+
+    padding: 10px;
+
+    span {
+      font-size: 14px;
+      color: white;
+    }
+  }
 }

@@ -1,35 +1,23 @@
-.notasFilmes
-{
+.notasFilmes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 0 -5px;
+
+  button {
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: end;
-    gap: 10px;
+    align-items: center;
 
-    background: rgba(255, 255, 255, 0.062745098);
-    border-radius: 5px;
+    background: none;
+    border: none;
 
-    padding: 15px 20px;
+    .estrelas {
+      border: solid #ffffff30 1px;
+      border-radius: 5px;
 
-    .estrelas
-    {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 5px;
+      padding: 14px 20px;
     }
-
-    .medianotas
-    {
-        display: flex;
-        
-        span
-        {
-            color: #FEDC33;
-            font-size: 12px;
-
-            margin: 0;
-            padding: 0;
-        }
-    }
+  }
 }

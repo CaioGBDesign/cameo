@@ -1,0 +1,29 @@
+.assistirFilme {
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: none;
+    border: none;
+
+    cursor: pointer;
+
+    .paraVer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+
+      background: rgba(255, 255, 255, 0.062745098);
+      border-radius: 5px;
+
+      padding: 13px 10px;
+
+      span {
+        font-size: 14px;
+        color: white;
+      }
+    }
+  }
+}

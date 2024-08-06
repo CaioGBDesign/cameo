@@ -1,6 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./index.module.scss";
 
+// Lista estática de países
+const countriesList = [
+  { iso_3166_1: "US", name: "United States" },
+  { iso_3166_1: "GB", name: "United Kingdom" },
+  { iso_3166_1: "FR", name: "France" },
+  { iso_3166_1: "DE", name: "Germany" },
+  { iso_3166_1: "IT", name: "Italy" },
+  { iso_3166_1: "ES", name: "Spain" },
+  // Adicione mais países conforme necessário
+];
+
 const ModalFiltros = ({ onClose }) => {
   const modalRef = useRef(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -232,29 +243,29 @@ const ModalFiltros = ({ onClose }) => {
                 <label htmlFor="livre">Livre</label>
 
                 <input type="radio" id="10 anos" name="classificacao" />
-                <label htmlFor="10 anos">Livre</label>
+                <label htmlFor="10 anos">10 anos</label>
 
                 <input type="radio" id="12 anos" name="classificacao" />
-                <label htmlFor="12 anos">Livre</label>
+                <label htmlFor="12 anos">12 anos</label>
 
                 <input type="radio" id="14 anos" name="classificacao" />
-                <label htmlFor="14 anos">Livre</label>
+                <label htmlFor="14 anos">14 anos</label>
 
                 <input type="radio" id="16 anos" name="classificacao" />
-                <label htmlFor="16 anos">Livre</label>
+                <label htmlFor="16 anos">16 anos</label>
 
                 <input type="radio" id="18 anos" name="classificacao" />
-                <label htmlFor="18 anos">Livre</label>
+                <label htmlFor="18 anos">18 anos</label>
               </div>
             </div>
 
             <div className={styles.separador}>
               <h3>País de origem</h3>
               <select>
-                <option value="">Selecione o gênero</option>
-                {genres.map((genre) => (
-                  <option key={genre.id} value={genre.id}>
-                    {genre.name}
+                <option value="">Selecione o país</option>
+                {countriesList.map((country) => (
+                  <option key={country.iso_3166_1} value={country.iso_3166_1}>
+                    {country.name}
                   </option>
                 ))}
               </select>

@@ -1,5 +1,12 @@
-.dadosPessoais
-{
+.dadosPessoais {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+
+  form {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -7,16 +14,131 @@
 
     width: 100%;
 
-    .formDadosPessoais
-    {
+    .formDadosPessoais {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 60px;
+
+      width: 85%;
+
+      margin: 150px 0px;
+
+      input {
+        width: 100%;
+        height: 60px;
+
+        background: none;
+        border: none;
+        border-bottom: solid 1px #ffffff40;
+
+        padding: 0px 10px;
+
+        font-size: 16px;
+
+        color: white;
+
+        &:focus {
+          border-color: transparent;
+        }
+      }
+
+      select {
+        width: 100%;
+        height: 60px;
+
+        background: none;
+        border: none;
+        border-bottom: solid 1px #ffffff40;
+
+        padding: 0px 10px;
+
+        font-size: 1rem;
+
+        color: white;
+
+        &:focus {
+          border-color: transparent;
+        }
+
+        option {
+          padding: 0.5rem;
+          background-color: #fff;
+          color: #333;
+        }
+      }
+
+      .sair {
+        width: 100%;
+
+        button {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 20px;
+
+          background: none;
+          border: none;
+
+          width: 100%;
+          height: 60px;
+
+          color: white;
+        }
+      }
+    }
+
+    .baseSalvar {
+      position: fixed;
+      bottom: 0px;
+      left: 0px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 100%;
+      height: 120px;
+
+      background: linear-gradient(
+        to bottom,
+        rgba(37, 13, 47, 0) 0%,
+        #250d2f 100%
+      );
+
+      z-index: 1;
+
+      button[type="submit"] {
+        width: 85%;
+        height: 50px;
+
+        background: linear-gradient(90deg, #1af5eb 0%, #2ba8e2 100%);
+
+        color: white;
+
+        border: none;
+        border-radius: 50px;
+
+        font-size: 20px;
+        text-align: center;
+
         display: flex;
-        flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 60px;
 
-        width: 85%;
+        transition: 0.2s;
 
-        margin: 150px 0px;
+        &:active {
+          transform: translateY(5px);
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+          transform: translateY(100px);
+        }
+      }
     }
+  }
 }

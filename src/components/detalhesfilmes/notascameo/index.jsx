@@ -4,7 +4,7 @@ import CardsNotas from "@/components/detalhesfilmes/cardsNotas";
 const NotasCameo = () => {
   const simulacaoBack = [
     {
-      url: "/usuario/usuario.jpeg",
+      url: "/usuario/usuario.jpg",
       nome: "Caio Goulart",
       nota: "3",
     },

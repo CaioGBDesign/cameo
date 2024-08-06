@@ -1,33 +1,68 @@
-.fotoUsuario
-{
+.fotoUsuario {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 5px;
+
+  border-radius: 100px;
+
+  background: linear-gradient(90deg, #f314fb 0%, #fdf57c 100%);
+
+  .fotoPerfil {
+    position: relative;
+
     display: flex;
     justify-content: center;
     align-items: center;
 
-    width: 105px;
-    height: 105px;
+    width: 100px;
+    height: 100px;
 
+    background: none;
+    border: none;
     border-radius: 100px;
 
-    background: linear-gradient(90deg, #F314FB 0%, #FDF57C 100%);
+    .iconEditar {
+      position: absolute;
+      bottom: -8px;
+      right: -8px;
 
-    .fotoPerfil
-    {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    
-        width: 100px;
-        height: 100px;
+      width: 30px;
+      height: 30px;
 
-        border-radius: 100px;
+      background: #1af5eb;
+      border-radius: 30px;
+      border: solid #250d2f 5px;
 
-        overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-        img
-        {
-            width: 100px;
-            height: 100px;
-        }
+      img {
+        width: 15px;
+        height: 15px;
+      }
     }
+
+    .avatarIMG {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 100px;
+      height: 100px;
+
+      border-radius: 100px;
+
+      overflow: hidden;
+      img {
+        width: 100px;
+      }
+    }
+  }
+
+  input {
+    display: none;
+  }
 }

@@ -1,19 +1,16 @@
-.foto-perfil
-{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.foto-perfil {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
+  width: 30px;
+  height: 30px;
+
+  border: solid white;
+  border-radius: 30px;
+  overflow: hidden;
+
+  img {
     width: 30px;
-    height: 30px;
-
-    border: solid white;
-    border-radius: 30px;
-    overflow: hidden;
-
-    img
-    {
-        width: 30px;
-        height: 30px;
-    }
+  }
 }

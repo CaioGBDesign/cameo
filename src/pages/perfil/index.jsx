@@ -1,4 +1,5 @@
 import styles from "./index.module.scss";
+import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import FotoPrincipal from "@/components/perfil/fotoPrincipal";
 import NomeUsuario from "@/components/perfil/nomeUsuario";
@@ -8,15 +9,37 @@ import Rede from "@/components/perfil/rede";
 import Search from "@/components/busca";
 import CardsPerfil from "@/components/perfil/cards";
 import FundoTitulos from "@/components/fundotitulos";
+import SalvarFoto from "@/components/modais/salvarfoto";
 
 const PerfilUsuario = () => {
+  // Estado para controlar se o modal está aberto ou fechado
+  const [modalAberto, setModalAberto] = useState(false);
+
+  useEffect(() => {
+    // Efeito para controlar o overflow do body
+    if (modalAberto) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [modalAberto]);
+
+  // Função para abrir o modal
+  const abrirModal = () => {
+    setModalAberto(true);
+  };
+
+  const fecharModal = () => {
+    setModalAberto(false);
+  };
+
   return (
     <div className={styles.perfilUsuario}>
       {/* Header */}
       <Header showFotoPerfil={false}></Header>
 
       <div className={styles.apresentacao}>
-        <FotoPrincipal></FotoPrincipal>
+        <FotoPrincipal onClickModal={abrirModal}></FotoPrincipal>
 
         <div className={styles.contPerfil}>
           <NomeUsuario></NomeUsuario>
@@ -46,18 +69,16 @@ const PerfilUsuario = () => {
             titulo="Avaliações"
             valor={30}
           />
-          <Rede
+          {/*<Rede
             iconePerfil={"/icones/potterHead.svg"}
             linkRede={"/dadospessoais"}
             titulo="Estilo"
             valor={"PotterHead"}
-          />
+          />*/}
         </div>
 
         <div className={styles.contDados}>
           <div className={styles.botoesDados}>
-            <Search placeholder={"Buscar filmes"}></Search>
-
             <div className={styles.contCards}>
               <div className={styles.cardsPerfil}>
                 <CardsPerfil
@@ -71,9 +92,7 @@ const PerfilUsuario = () => {
                   DadosdoPerfil={"Filmes que assisti"}
                   imagemPerfil={"/icones/claquete-azul.svg"}
                 />
-              </div>
 
-              <div className={styles.cardsPerfil}>
                 <CardsPerfil
                   linkDadosPerfil={"/filmesparaver"}
                   DadosdoPerfil={"Filmes para ver"}
@@ -85,19 +104,11 @@ const PerfilUsuario = () => {
                   DadosdoPerfil={"Listas compartilhadas"}
                   imagemPerfil={"/icones/claquete-roxa.svg"}
                 />
-              </div>
 
-              <div className={styles.cardsPerfil}>
                 <CardsPerfil
-                  linkDadosPerfil={"#"}
+                  linkDadosPerfil={"/favoritos"}
                   DadosdoPerfil={"Meus favoritos"}
                   imagemPerfil={"/icones/favoritos.svg"}
-                />
-
-                <CardsPerfil
-                  linkDadosPerfil={"#"}
-                  DadosdoPerfil={"Sair"}
-                  imagemPerfil={"/icones/sair.svg"}
                 />
               </div>
             </div>
@@ -110,6 +121,8 @@ const PerfilUsuario = () => {
         capaAssistidos={"/background/background-cameo-perfil.png"}
         tituloAssistidos={"background"}
       ></FundoTitulos>
+
+      {modalAberto && <SalvarFoto onClose={() => setModalAberto(false)} />}
     </div>
   );
 };

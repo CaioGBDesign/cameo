@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useAuth } from "@/contexts/auth";
 import Header from "@/components/Header";
 import FundoTitulos from "@/components/fundotitulos";
 import { Inter } from "next/font/google";
 import styles from "@/styles/index.module.scss";
 import TitulosFilmes from "@/components/titulosfilmes";
 import NotasFilmes from "@/components/botoes/notas";
+import AvaliarFilme from "@/components/detalhesfilmes/avaliar-filme";
 import Sinopse from "@/components/detalhesfilmes/sinopse";
 import NotasCameo from "@/components/detalhesfilmes/notascameo";
 import Servicos from "@/components/detalhesfilmes/servicos";
@@ -14,7 +16,8 @@ import Direcao from "@/components/detalhesfilmes/direcao";
 import Avaliacao from "@/components/detalhesfilmes/avaliacao";
 import BaseBotoes from "@/components/botoes/base";
 import FavoritarFilme from "@/components/detalhesfilmes/favoritarfilme";
-import Listafilmes from "@/components/listafilmes/Listafilmes.json";
+import AssistirFilme from "@/components/detalhesfilmes/paraver";
+import Listafilmes from "@/components/listafilmes/listafilmes.json";
 import ModalFiltros from "@/components/modais/filtros";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -87,14 +90,14 @@ const Home = () => {
 
         // Busca informações de elenco
         const elencoResponse = await fetch(
-          `https://api.themoviedb.org/3/movie/${filmeId}/credits?api_key=c95de8d6070dbf1b821185d759532f05`
+          `https://api.themoviedb.org/3/movie/${filmeId}/credits?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR`
         );
         const elencoData = await elencoResponse.json();
         setElenco(elencoData.cast);
 
         // Busca provedores de streaming no Brasil
         const providersResponse = await fetch(
-          `https://api.themoviedb.org/3/movie/${filmeId}/watch/providers?api_key=c95de8d6070dbf1b821185d759532f05`
+          `https://api.themoviedb.org/3/movie/${filmeId}/watch/providers?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR`
         );
         const providersData = await providersResponse.json();
 
@@ -154,6 +157,29 @@ const Home = () => {
     }
   }, [modalAberto]);
 
+  // Exemplo de uso de salvarFilme
+  const {
+    user,
+    salvarFilme,
+    removerFilme,
+    assistirFilme,
+    removerAssistir,
+    avaliarFilme,
+    removerVisto,
+  } = useAuth();
+
+  const handleSalvarFilme = (id) => {
+    salvarFilme(id); // Passe apenas o ID do filme
+  };
+
+  const handleAssistirFilme = (id) => {
+    assistirFilme(id); // Passe apenas o ID do filme
+  };
+
+  const handleAvaliarFilme = (id) => {
+    avaliarFilme(id); // Passe apenas o ID do filme
+  };
+
   if (!filme) return <p>Carregando...</p>;
 
   // Função para abrir o modal
@@ -190,8 +216,29 @@ const Home = () => {
                 />
 
                 <div className={styles.NotasFavoritos}>
-                  <NotasFilmes estrelas="3" />
-                  <FavoritarFilme />
+                  <NotasFilmes
+                    estrelas="3"
+                    filmeId={filmeId}
+                    avaliarFilme={avaliarFilme}
+                    removerVisto={removerVisto}
+                    usuarioFilmeVisto={user?.visto || []} // Passe a lista de filmes vistos do usuário
+                  />
+
+                  {user?.assistir && !user.assistir.includes(filmeId) && (
+                    <AssistirFilme
+                      filmeId={filmeId}
+                      assistirFilme={assistirFilme}
+                      removerAssistir={removerAssistir}
+                      usuarioParaVer={user.assistir || []}
+                    />
+                  )}
+
+                  <FavoritarFilme
+                    filmeId={filmeId}
+                    salvarFilme={salvarFilme}
+                    removerFilme={removerFilme}
+                    usuarioFavoritos={user?.favoritos || []} // Usa [] como fallback se user ou favoritos for null
+                  />
                 </div>
               </div>
             </div>

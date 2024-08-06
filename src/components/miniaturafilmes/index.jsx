@@ -1,20 +1,39 @@
 import styles from "./index.module.scss";
 import Estrelas from "@/components/estrelas";
 
-const Miniaturafilmes = ({ capaminiatura, titulofilme, mostrarEstrelas = true }) => {
-
-    return (
-        <div className={styles.miniaturafilmes}>
-
-            <div className={styles.capaminiatura}>
-                <img src={capaminiatura} alt={titulofilme} />
-            </div>
-
-            { mostrarEstrelas && <div className={styles.tamanhoestrelas}>
-                <Estrelas estrelas={"3"} starWidth={"10px"} />
-            </div>}
+const Miniaturafilmes = ({
+  capaminiatura,
+  titulofilme,
+  mostrarEstrelas = true,
+  botaoFechar = true,
+  excluirFilme,
+  mostrarBotaoFechar,
+  avaliacao = 0, // Adicione a avaliação como prop
+}) => {
+  return (
+    <div className={styles.miniaturafilmes}>
+      <div className={styles.boxminiatura}>
+        <div className={styles.capaminiatura}>
+          <img src={capaminiatura} alt={titulofilme} />
         </div>
-    );
+        {botaoFechar && (
+          <button
+            onClick={excluirFilme}
+            className={mostrarBotaoFechar ? styles.show : ""} // Adiciona a classe se o botão deve ser exibido
+          >
+            <img src="/icones/close.svg" />
+          </button>
+        )}
+      </div>
+
+      {mostrarEstrelas && (
+        <div className={styles.tamanhoestrelas}>
+          <Estrelas estrelas={avaliacao} starWidth={"10px"} />{" "}
+          {/* Passa a avaliação como prop */}
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default Miniaturafilmes;

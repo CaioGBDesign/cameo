@@ -37,8 +37,9 @@
 
     .rede {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
+      gap: 40px;
 
       width: 85%;
 
@@ -85,6 +86,7 @@
 
           .cardsPerfil {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             gap: 10px;
 

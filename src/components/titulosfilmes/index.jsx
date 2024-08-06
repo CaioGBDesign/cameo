@@ -8,7 +8,7 @@ const TitulosFilmes = ({
   paisOrigem,
 }) => {
   // Dividir os gêneros por vírgula para obter um array de gêneros
-  const generos = generofilme.split(", ");
+  const generos = generofilme ? generofilme.split(", ") : [];
   const isBrasileiro = paisOrigem && paisOrigem.includes("BR");
 
   return (
@@ -25,13 +25,14 @@ const TitulosFilmes = ({
       </h1>
       <div className={styles.generoDuracao}>
         <div className={styles.todosOsGeneros}>
-          {generos.map((genero, index) => (
-            <div className={styles.genero} key={index}>
-              <span>{genero}</span>
-            </div>
-          ))}
+          {generos.length > 0 &&
+            generos.map((genero, index) => (
+              <div className={styles.genero} key={index}>
+                <span>{genero}</span>
+              </div>
+            ))}
         </div>
-        <span>{duracaofilme}</span>
+        {duracaofilme && <span>{duracaofilme}</span>}
       </div>
     </div>
   );

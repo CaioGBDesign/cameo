@@ -1,11 +1,11 @@
-import styles from "./index.module.scss"
+import styles from "./index.module.scss";
 
 const EntrarCadastrar = ({ children, onClick }) => {
-    return (
-        <button onClick={onClick} type="submit" className={styles['submit-button']}>
-            {children}
-        </button>
-    );
+  return (
+    <button type="button" onClick={onClick} className={styles["submit-button"]}>
+      {children}
+    </button>
+  );
 };
 
-export default EntrarCadastrar
+export default EntrarCadastrar;

@@ -4,6 +4,7 @@ const Titulolistagem = ({
   quantidadeFilmes,
   titulolistagem,
   configuracoes = true,
+  handleRemoverClick, // Recebe a função para alternar a visibilidade do botão
 }) => {
   return (
     <div className={styles.titulolistagem}>
@@ -13,8 +14,8 @@ const Titulolistagem = ({
       </div>
 
       {configuracoes && (
-        <div className={configuracoes}>
-          <img src="/icones/configuracoes.svg" />
+        <div className={styles.remover} onClick={handleRemoverClick}>
+          <span>Remover filmes</span>
         </div>
       )}
     </div>

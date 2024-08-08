@@ -17,7 +17,7 @@ const BaseBotoes = ({
             <BotaoPrimario
               textoBotaoPrimario={TextoBotao}
               idBprimario={"Salvar"}
-              onClick={onClick} // Adicione esta linha
+              onClick={onClick} // Ação para o botão primário
             />
           </div>
         )}
@@ -27,7 +27,7 @@ const BaseBotoes = ({
             <BotaoSecundario
               textoBotaoSecundario={"Filtros"}
               fonteSecundaria={"14px"}
-              onClick={onClickModal} // Adiciona onClickModal para abrir o modal
+              onClick={onClickModal} // Ação para o botão secundário (modal)
             />
           </div>
         )}

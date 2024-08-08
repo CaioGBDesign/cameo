@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import styles from "./index.module.scss";
 
 const FavoritarFilme = ({
@@ -8,6 +9,7 @@ const FavoritarFilme = ({
   usuarioFavoritos,
 }) => {
   const [favoritado, setFavoritado] = useState(false);
+  const router = useRouter(); // Hook para acessar o roteador
 
   useEffect(() => {
     // Verifica se o filme está na lista de favoritos do usuário
@@ -20,6 +22,12 @@ const FavoritarFilme = ({
 
   const handleClick = (event) => {
     event.preventDefault(); // Evita comportamento padrão
+
+    // Se o usuário não estiver autenticado, redireciona para a página de login
+    if (!usuarioFavoritos) {
+      router.push("/login");
+      return;
+    }
 
     // Se o filme já estiver favoritado, remove da lista
     if (favoritado) {

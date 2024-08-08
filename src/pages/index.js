@@ -6,7 +6,6 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/index.module.scss";
 import TitulosFilmes from "@/components/titulosfilmes";
 import NotasFilmes from "@/components/botoes/notas";
-import AvaliarFilme from "@/components/detalhesfilmes/avaliar-filme";
 import Sinopse from "@/components/detalhesfilmes/sinopse";
 import NotasCameo from "@/components/detalhesfilmes/notascameo";
 import Servicos from "@/components/detalhesfilmes/servicos";
@@ -19,6 +18,7 @@ import FavoritarFilme from "@/components/detalhesfilmes/favoritarfilme";
 import AssistirFilme from "@/components/detalhesfilmes/paraver";
 import Listafilmes from "@/components/listafilmes/listafilmes.json";
 import ModalFiltros from "@/components/modais/filtros";
+import ModalAvaliar from "@/components/modais/avaliar-filmes";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,18 +28,35 @@ const Home = () => {
   const [elenco, setElenco] = useState([]);
   const [diretores, setDiretores] = useState([]);
   const [servicosStreaming, setServicosStreaming] = useState([]);
-  const [trailerLink, setTrailerLink] = useState(null); // Inicializa com null
+  const [trailerLink, setTrailerLink] = useState(null);
   const [recomendacoes, setRecomendacoes] = useState([]);
   const [filmesExibidos, setFilmesExibidos] = useState(new Set());
+  const [filmeIdParaAvaliar, setFilmeIdParaAvaliar] = useState(null);
+  const [notaAtual, setNotaAtual] = useState(0);
+  const [modalAberto, setModalAberto] = useState(null);
 
-  // Estado para controlar se o modal está aberto ou fechado
-  const [modalAberto, setModalAberto] = useState(false);
+  const abrirModal = (modalTipo) => {
+    setModalAberto(modalTipo);
+  };
+
+  const fecharModal = () => {
+    setModalAberto(null);
+  };
+
+  const {
+    user,
+    salvarFilme,
+    removerFilme,
+    assistirFilme,
+    removerAssistir,
+    avaliarFilme,
+    removerVisto,
+  } = useAuth();
 
   const selecionarFilmeAleatorio = () => {
     let randomFilmeId;
 
     if (filmesExibidos.size === Listafilmes.filmes.length) {
-      // Reinicia se todos foram exibidos
       setFilmesExibidos(new Set());
     }
 
@@ -55,78 +72,46 @@ const Home = () => {
     scrollToTop();
   };
 
-  // Chamando a função ao iniciar
   useEffect(() => {
     selecionarFilmeAleatorio();
   }, []);
-
-  const selecionarFilme = (id) => {
-    setFilmeId(id);
-    scrollToTop(); // Opcional: rolar para o topo ao selecionar um novo filme
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth", // Opção para rolagem suave
-    });
-  };
-
-  useEffect(() => {
-    selecionarFilmeAleatorio();
-  }, []); // Executa uma vez quando o componente monta
 
   useEffect(() => {
     if (!filmeId) return;
 
     const fetchFilme = async () => {
       try {
-        // Busca informações do filme
         const filmeResponse = await fetch(
           `https://api.themoviedb.org/3/movie/${filmeId}?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR&append_to_response=videos,release_dates`
         );
         const filmeData = await filmeResponse.json();
         setFilme(filmeData);
 
-        // Busca informações de elenco
         const elencoResponse = await fetch(
           `https://api.themoviedb.org/3/movie/${filmeId}/credits?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR`
         );
         const elencoData = await elencoResponse.json();
         setElenco(elencoData.cast);
 
-        // Busca provedores de streaming no Brasil
         const providersResponse = await fetch(
           `https://api.themoviedb.org/3/movie/${filmeId}/watch/providers?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR`
         );
         const providersData = await providersResponse.json();
+        setServicosStreaming(providersData.results.BR?.flatrate || []);
 
-        if (providersData.results.BR && providersData.results.BR.flatrate) {
-          setServicosStreaming(providersData.results.BR.flatrate);
-        } else {
-          setServicosStreaming([]);
-        }
-
-        // Busca recomendações
         const recomendacoesResponse = await fetch(
           `https://api.themoviedb.org/3/movie/${filmeId}/recommendations?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR`
         );
         const recomendacoesData = await recomendacoesResponse.json();
         setRecomendacoes(recomendacoesData.results);
 
-        // Encontra o link do trailer (se houver)
         const trailer = filmeData.videos.results.find(
           (video) => video.type === "Trailer"
         );
+        setTrailerLink(
+          trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : null
+        );
 
-        if (trailer) {
-          const videoId = trailer.key;
-          setTrailerLink(`https://www.youtube.com/watch?v=${videoId}`);
-        } else {
-          setTrailerLink(null); // Define como null se não houver trailer disponível
-        }
-
-        // Encontra os diretores no array de equipe (crew)...
         const diretoresEncontrados = elencoData.crew
           .filter((member) => member.job === "Director")
           .map((diretor) => ({
@@ -135,11 +120,11 @@ const Home = () => {
               ? `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${diretor.profile_path}`
               : null,
           }));
-        if (diretoresEncontrados.length > 0) {
-          setDiretores(diretoresEncontrados);
-        } else {
-          setDiretores([{ nome: "Diretor não encontrado", imagemUrl: null }]);
-        }
+        setDiretores(
+          diretoresEncontrados.length
+            ? diretoresEncontrados
+            : [{ nome: "Diretor não encontrado", imagemUrl: null }]
+        );
       } catch (error) {
         console.error("Erro ao buscar filme, elenco ou provedores:", error);
       }
@@ -149,52 +134,30 @@ const Home = () => {
   }, [filmeId]);
 
   useEffect(() => {
-    // Efeito para controlar o overflow do body
-    if (modalAberto) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = modalAberto ? "hidden" : "auto";
   }, [modalAberto]);
 
-  // Exemplo de uso de salvarFilme
-  const {
-    user,
-    salvarFilme,
-    removerFilme,
-    assistirFilme,
-    removerAssistir,
-    avaliarFilme,
-    removerVisto,
-  } = useAuth();
-
-  const handleSalvarFilme = (id) => {
-    salvarFilme(id); // Passe apenas o ID do filme
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
-  const handleAssistirFilme = (id) => {
-    assistirFilme(id); // Passe apenas o ID do filme
-  };
+  const handleSalvarFilme = (id) => salvarFilme(id);
+  const handleAssistirFilme = (id) => assistirFilme(id);
+  const handleAvaliarFilme = (id) => avaliarFilme(id);
 
-  const handleAvaliarFilme = (id) => {
-    avaliarFilme(id); // Passe apenas o ID do filme
+  const abrirModalAvaliar = (id) => {
+    setFilmeIdParaAvaliar(id);
+    abrirModal("avaliar-filme");
   };
 
   if (!filme) return <p>Carregando...</p>;
 
-  // Função para abrir o modal
-  const abrirModal = () => {
-    setModalAberto(true);
-  };
-
-  const fecharModal = () => {
-    setModalAberto(false);
-  };
-
   return (
     <>
       <Header />
-
       <main className={`${styles.main} ${inter.className}`}>
         <div className={styles.detalhesFilmes}>
           <div className={styles.informacoes}>
@@ -214,16 +177,14 @@ const Home = () => {
                       : []
                   }
                 />
-
                 <div className={styles.NotasFavoritos}>
                   <NotasFilmes
-                    estrelas="3"
                     filmeId={filmeId}
                     avaliarFilme={avaliarFilme}
                     removerVisto={removerVisto}
-                    usuarioFilmeVisto={user?.visto || []} // Passe a lista de filmes vistos do usuário
+                    usuarioFilmeVisto={user?.visto || []}
+                    onClickModal={() => abrirModalAvaliar(filmeId)}
                   />
-
                   {user?.assistir && !user.assistir.includes(filmeId) && (
                     <AssistirFilme
                       filmeId={filmeId}
@@ -232,30 +193,23 @@ const Home = () => {
                       usuarioParaVer={user.assistir || []}
                     />
                   )}
-
                   <FavoritarFilme
                     filmeId={filmeId}
                     salvarFilme={salvarFilme}
                     removerFilme={removerFilme}
-                    usuarioFavoritos={user?.favoritos || []} // Usa [] como fallback se user ou favoritos for null
+                    usuarioFavoritos={user?.favoritos || []}
                   />
                 </div>
               </div>
             </div>
-
             <div className={styles.infoFilmes}>
-              {filme.overview && filme.overview.length > 0 && (
-                <Sinopse sinopse={filme.overview} />
-              )}
+              {filme.overview && <Sinopse sinopse={filme.overview} />}
               <NotasCameo />
-
               <Avaliacao avaliador={"Caio Goulart"} />
-
-              {servicosStreaming && servicosStreaming.length > 0 && (
+              {servicosStreaming.length > 0 && (
                 <Servicos servicos={servicosStreaming} />
               )}
             </div>
-
             <div className={styles.elencoGeral}>
               <Dublagem />
               <hr />
@@ -267,50 +221,41 @@ const Home = () => {
               <div className={styles.detalhes}>
                 <h3>Produção</h3>
                 <div className={styles.producao}>
-                  {filme.production_companies &&
+                  {filme.production_companies ? (
                     filme.production_companies.map((pc) => (
                       <div className={styles.produtora} key={pc.id}>
                         <p>{pc.name}</p>
                       </div>
-                    ))}
-                  {!filme.production_companies && (
+                    ))
+                  ) : (
                     <p>Produção não disponível</p>
                   )}
                 </div>
               </div>
-
               <div className={styles.detalhes}>
                 <h3>Lançamento</h3>
                 <p>{new Date(filme.release_date).toLocaleDateString()}</p>
               </div>
-
               <div className={styles.detalhes}>
                 <h3>Classificação Indicativa</h3>
                 <p>
-                  {filme.release_dates &&
-                  filme.release_dates.results &&
-                  filme.release_dates.results.length > 0
-                    ? filme.release_dates.results.find(
-                        (result) => result.iso_3166_1 === "BR"
-                      )?.release_dates[0]?.certification || "Não disponível"
-                    : "Não disponível"}
+                  {filme.release_dates?.results?.find(
+                    (result) => result.iso_3166_1 === "BR"
+                  )?.release_dates[0]?.certification || "Não disponível"}
                 </p>
               </div>
-
-              {filme.budget ? (
+              {filme.budget && (
                 <div className={styles.detalhes}>
                   <h3>Orçamento</h3>
                   <p>US$ {filme.budget.toLocaleString()}</p>
                 </div>
-              ) : null}
-
-              {filme.revenue ? (
+              )}
+              {filme.revenue && (
                 <div className={styles.detalhes}>
-                  <h3>Bilheteria</h3>
+                  <h3>Bilheteira</h3>
                   <p>US$ {filme.revenue.toLocaleString()}</p>
                 </div>
-              ) : null}
-
+              )}
               <div className={styles.detalhes}>
                 <h3>País de origem</h3>
                 <p>
@@ -319,7 +264,6 @@ const Home = () => {
                     : "País não disponível"}
                 </p>
               </div>
-
               {recomendacoes.length > 0 && (
                 <div className={styles.recomendacoes}>
                   <h3>Recomendações</h3>
@@ -329,7 +273,9 @@ const Home = () => {
                         <div
                           className={styles.listaRecomendacoes}
                           key={recomendacao.id}
-                          onClick={() => selecionarFilme(recomendacao.id)} // Chama a função ao clicar
+                          onClick={() =>
+                            selecionarFilmeAleatorio(recomendacao.id)
+                          }
                         >
                           <img
                             src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${recomendacao.poster_path}`}
@@ -345,21 +291,28 @@ const Home = () => {
             </div>
           </div>
         </div>
-
         <BaseBotoes
           TextoBotao={"Sugerir filme"}
-          onClick={selecionarFilmeAleatorio}
-          onClickModal={abrirModal} // Passa a função abrirModal para abrir o modal
+          botaoPrimario={true} // Habilita o botão primário
+          botaoSecundario={true} // Habilita o botão secundário
+          onClick={selecionarFilmeAleatorio} // Função para sugerir um filme
+          onClickModal={() => abrirModal("filtros")} // Função para abrir o modal
         />
 
         <FundoTitulos
-          exibirPlay={trailerLink ? true : false} // Define exibirPlay com base na presença de trailerLink
+          exibirPlay={!!trailerLink}
           capaAssistidos={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
           tituloAssistidos={filme.title}
-          trailerLink={trailerLink ? trailerLink : "#"} // Passa o link do trailer para FundoTitulos
+          trailerLink={trailerLink || "#"}
         />
-
-        {modalAberto && <ModalFiltros onClose={() => setModalAberto(false)} />}
+        {modalAberto === "filtros" && <ModalFiltros onClose={fecharModal} />}
+        {modalAberto === "avaliar-filme" && (
+          <ModalAvaliar
+            filmeId={filmeIdParaAvaliar} // Use filmeIdParaAvaliar no lugar de selectedFilmeId
+            nota={notaAtual} // Use notaAtual no lugar de currentNota
+            onClose={fecharModal}
+          />
+        )}
       </main>
     </>
   );

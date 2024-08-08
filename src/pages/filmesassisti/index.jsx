@@ -11,12 +11,27 @@ import BotaoPlay from "@/components/botoes/play";
 import { useAuth } from "@/contexts/auth";
 
 const FilmesAssisti = () => {
-  const { user } = useAuth();
+  const { user, removerAssistir } = useAuth();
   const [filmesVistos, setFilmesVistos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filmeAleatorio, setFilmeAleatorio] = useState(null);
   const [linkTrailer, setLinkTrailer] = useState("#");
   const [mostrarBotaoFechar, setMostrarBotaoFechar] = useState(false);
+
+  useEffect(() => {
+    // Função para buscar filmes já vistos...
+  }, [user]);
+
+  const handleExcluirFilme = async (filmeId) => {
+    try {
+      await removerAssistir(filmeId); // Função para remover o filme
+      setFilmesVistos((prevFilmes) =>
+        prevFilmes.filter((filme) => filme.id !== filmeId)
+      );
+    } catch (error) {
+      console.error("Erro ao excluir filme:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchFilmesVistos = async () => {
@@ -114,6 +129,7 @@ const FilmesAssisti = () => {
                     capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
                     titulofilme={filme.title}
                     mostrarBotaoFechar={mostrarBotaoFechar}
+                    excluirFilme={() => handleExcluirFilme(filme.id)}
                     avaliacao={filme.avaliacao}
                   />
                 ))

@@ -3,8 +3,14 @@ import Estrelas from "@/components/estrelas";
 import AvaliarFilme from "@/components/detalhesfilmes/avaliar-filme";
 import { useAuth } from "@/contexts/auth";
 
-const NotasFilmes = ({ filmeId }) => {
-  const { user, avaliarFilme } = useAuth();
+const NotasFilmes = ({
+  filmeId,
+  avaliarFilme,
+  removerVisto,
+  usuarioFilmeVisto,
+  onClickModal,
+}) => {
+  const { user } = useAuth();
 
   // Verifica se user e suas propriedades estão definidas
   const filmeVisto = user && user.visto && user.visto.hasOwnProperty(filmeId);
@@ -12,9 +18,11 @@ const NotasFilmes = ({ filmeId }) => {
   const handleClick = (event) => {
     event.preventDefault();
 
-    if (filmeVisto) {
-      console.log("Filme já adicionado anteriormente");
-    } else {
+    // Abre o modal independentemente do estado do filme
+    onClickModal();
+
+    // Avalia o filme se ainda não foi avaliado
+    if (!filmeVisto) {
       avaliarFilme(filmeId);
     }
   };

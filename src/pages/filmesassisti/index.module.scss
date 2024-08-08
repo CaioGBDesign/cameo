@@ -73,10 +73,9 @@
         width: 85%;
 
         .listaFilmes {
-          display: grid;
-          grid-template-columns: auto auto auto auto;
-          justify-content: space-between;
-          gap: 20px 0px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
         }
       }
     }

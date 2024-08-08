@@ -7,12 +7,14 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import {
+  updateDoc,
+  doc,
   arrayRemove,
   arrayUnion,
-  doc,
   getDoc,
   setDoc,
 } from "firebase/firestore";
+
 import { useRouter } from "next/router";
 
 export const AuthContext = createContext({});
@@ -334,6 +336,43 @@ function AuthProvider({ children }) {
     }
   }
 
+  // Avaliar com nota
+  async function darNota(filmeId, nota) {
+    if (!user) {
+      console.error("Usuário não autenticado");
+      return;
+    }
+
+    if (typeof filmeId !== "string" || typeof nota !== "number") {
+      console.error(
+        "O ID do filme deve ser uma string e a nota deve ser um número."
+      );
+      return;
+    }
+
+    const userRef = doc(db, "users", user.uid);
+
+    try {
+      console.log("Atualizando a nota do filme:", filmeId, "para", nota);
+
+      await updateDoc(userRef, {
+        [`visto.${filmeId}`]: nota,
+      });
+
+      setUser((prevUser) => ({
+        ...prevUser,
+        visto: {
+          ...prevUser.visto,
+          [filmeId]: nota,
+        },
+      }));
+
+      console.log("Nota do filme atualizada com sucesso no Firebase");
+    } catch (error) {
+      console.error("Erro ao atualizar a nota do filme no Firebase:", error);
+    }
+  }
+
   if (loading) {
     return <div>Carregando...</div>; // Adicionado para mostrar um carregamento inicial
   }
@@ -352,6 +391,7 @@ function AuthProvider({ children }) {
         assistirFilme,
         removerAssistir,
         avaliarFilme,
+        darNota,
         setUser,
       }}
     >

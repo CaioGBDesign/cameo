@@ -19,7 +19,7 @@ const Miniaturafilmes = ({
         {botaoFechar && (
           <button
             onClick={excluirFilme}
-            className={mostrarBotaoFechar ? styles.show : ""} // Adiciona a classe se o botão deve ser exibido
+            className={mostrarBotaoFechar ? styles.show : ""}
           >
             <img src="/icones/close.svg" />
           </button>

@@ -134,6 +134,20 @@ const Home = () => {
   }, [filmeId]);
 
   useEffect(() => {
+    if (filmeIdParaAvaliar && user) {
+      const fetchNota = async () => {
+        const nota =
+          user.visto && user.visto[filmeIdParaAvaliar] !== undefined
+            ? user.visto[filmeIdParaAvaliar]
+            : 0; // Se não houver nota, usa 0 como padrão
+        setNotaAtual(nota);
+      };
+
+      fetchNota();
+    }
+  }, [filmeIdParaAvaliar, user]);
+
+  useEffect(() => {
     document.body.style.overflow = modalAberto ? "hidden" : "auto";
   }, [modalAberto]);
 

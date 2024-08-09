@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/auth";
 import styles from "./index.module.scss";
 
@@ -6,17 +6,16 @@ const ModalAvaliar = ({ filmeId, nota, onClose }) => {
   const [avaliacao, setAvaliacao] = useState(nota);
   const { darNota } = useAuth();
 
+  useEffect(() => {
+    // Atualiza a avaliação quando o modal é aberto ou o filmeId muda
+    setAvaliacao(nota);
+  }, [nota]);
+
   const handleEstrelaClick = (value) => {
     setAvaliacao(value);
   };
 
   const handleSubmit = () => {
-    console.log(
-      "Enviando avaliação para o filme:",
-      filmeId,
-      "com nota:",
-      avaliacao
-    );
     const filmeIdString = String(filmeId); // Força a conversão para string
     darNota(filmeIdString, avaliacao); // Passa o filmeId e a nota
     onClose();

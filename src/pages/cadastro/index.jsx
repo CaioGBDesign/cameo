@@ -31,9 +31,12 @@ const Cadastro = () => {
         <div className={styles.formulario}>
           <form onSubmit={handleSubmit}>
             <div className={styles.inputCameo}>
+              <div className={styles.imgHandle}>
+                <img src="/icones/handle-cadastro.svg" alt="@" />
+              </div>
               <input
                 type="handle"
-                placeholder="@"
+                placeholder="usuário"
                 value={handle}
                 onChange={(e) => setHandle(e.target.value)}
                 required

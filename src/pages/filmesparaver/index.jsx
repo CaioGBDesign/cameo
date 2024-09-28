@@ -9,6 +9,7 @@ import Titulolistagem from "@/components/titulolistagem";
 import Miniaturafilmes from "@/components/miniaturafilmes";
 import BotaoPlay from "@/components/botoes/play";
 import { useAuth } from "@/contexts/auth";
+import Private from "@/components/Private";
 
 const FilmesParaVer = () => {
   const { user, removerAssistir } = useAuth(); // Use o contexto para obter o usuário autenticado e a função para remover favoritos
@@ -77,64 +78,66 @@ const FilmesParaVer = () => {
   };
 
   return (
-    <div className={styles.filmesAssisti}>
-      {/* Header */}
-      <Header />
+    <Private>
+      <div className={styles.filmesAssisti}>
+        {/* Header */}
+        <Header />
 
-      <div className={styles.contFilmes}>
-        <div className={styles.tituloFilmes}>
-          <div className={styles.contTitulos}>
-            <BotaoPlay linkTrailer={linkTrailer}></BotaoPlay>
-            <TitulosFilmes
-              titulofilme={filmeAleatorio ? filmeAleatorio.title : ""}
-            ></TitulosFilmes>
-            <div className={styles.NotasFavoritos}>
-              <NotasFilmes estrelas="3" />
+        <div className={styles.contFilmes}>
+          <div className={styles.tituloFilmes}>
+            <div className={styles.contTitulos}>
+              <BotaoPlay linkTrailer={linkTrailer}></BotaoPlay>
+              <TitulosFilmes
+                titulofilme={filmeAleatorio ? filmeAleatorio.title : ""}
+              ></TitulosFilmes>
+              <div className={styles.NotasFavoritos}>
+                <NotasFilmes estrelas="3" />
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.todosOsTitulos}>
+            <div className={styles.contlista}>
+              <Search placeholder={"Buscar filmes"}></Search>
+
+              <Titulolistagem
+                quantidadeFilmes={assistirFilme.length}
+                titulolistagem={"Filmes para assistir"}
+                handleRemoverClick={handleRemoverClick}
+              ></Titulolistagem>
+              <div className={styles.listaFilmes}>
+                {loading ? (
+                  <p>Carregando...</p>
+                ) : assistirFilme.length ? (
+                  assistirFilme.map((filme) => (
+                    <Miniaturafilmes
+                      key={filme.id}
+                      capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
+                      titulofilme={filme.title}
+                      mostrarBotaoFechar={mostrarBotaoFechar}
+                      excluirFilme={() => removerAssistir(String(filme.id))} // Passe o ID como string
+                      mostrarEstrelas={false}
+                    />
+                  ))
+                ) : (
+                  <p>Você ainda não tem filmes favoritos.</p>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
-        <div className={styles.todosOsTitulos}>
-          <div className={styles.contlista}>
-            <Search placeholder={"Buscar filmes"}></Search>
-
-            <Titulolistagem
-              quantidadeFilmes={assistirFilme.length}
-              titulolistagem={"Filmes para assistir"}
-              handleRemoverClick={handleRemoverClick}
-            ></Titulolistagem>
-            <div className={styles.listaFilmes}>
-              {loading ? (
-                <p>Carregando...</p>
-              ) : assistirFilme.length ? (
-                assistirFilme.map((filme) => (
-                  <Miniaturafilmes
-                    key={filme.id}
-                    capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
-                    titulofilme={filme.title}
-                    mostrarBotaoFechar={mostrarBotaoFechar}
-                    excluirFilme={() => removerAssistir(String(filme.id))} // Passe o ID como string
-                    mostrarEstrelas={false}
-                  />
-                ))
-              ) : (
-                <p>Você ainda não tem filmes favoritos.</p>
-              )}
-            </div>
-          </div>
-        </div>
+        <FundoTitulos
+          exibirPlay={false}
+          capaAssistidos={
+            filmeAleatorio
+              ? `https://image.tmdb.org/t/p/original/${filmeAleatorio.poster_path}`
+              : "fundoAleatorio"
+          }
+          tituloAssistidos={filmeAleatorio}
+        ></FundoTitulos>
       </div>
-
-      <FundoTitulos
-        exibirPlay={false}
-        capaAssistidos={
-          filmeAleatorio
-            ? `https://image.tmdb.org/t/p/original/${filmeAleatorio.poster_path}`
-            : "fundoAleatorio"
-        }
-        tituloAssistidos={filmeAleatorio}
-      ></FundoTitulos>
-    </div>
+    </Private>
   );
 };
 

@@ -18,8 +18,15 @@ const Cadastro = () => {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if (nome !== "" && (email !== "") & (senha !== "")) {
-      await signUp(email, senha, nome, handle);
+    if (nome !== "" && email !== "" && senha !== "" && handle !== "") {
+      try {
+        await signUp(email, senha, nome, handle);
+      } catch (err) {
+        // Aqui você pode definir um erro personalizado se necessário
+        setError("Ocorreu um erro ao cadastrar. Tente novamente.");
+      }
+    } else {
+      setError("Todos os campos são obrigatórios.");
     }
   }
 

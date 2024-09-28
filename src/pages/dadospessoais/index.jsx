@@ -6,6 +6,7 @@ import BotaoSecundario from "@/components/botoes/secundarios";
 import BaseBotoes from "@/components/botoes/base";
 import { doc, updateDoc } from "firebase/firestore";
 import { db, storage } from "@/services/firebaseConection";
+import Private from "@/components/Private";
 
 const DadosPessoais = () => {
   const { user, storageUser, setUser, logout } = useContext(AuthContext);
@@ -123,48 +124,49 @@ const DadosPessoais = () => {
   }
 
   return (
-    <div className={styles.dadosPessoais}>
-      {/* Header */}
-      <Header />
+    <Private>
+      <div className={styles.dadosPessoais}>
+        {/* Header */}
+        <Header />
 
-      <form onSubmit={handleSubmit}>
-        <div className={styles.formDadosPessoais}>
-          <input
-            type="text"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-          />
-          <input
-            type="text"
-            value={handle}
-            onChange={(e) => setHandle(e.target.value)}
-          />
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            disabled
-          />
-          <BotaoSecundario
-            textoBotaoSecundario={"Redefinir senha"}
-            typeBsecundario={"submit"}
-            idBsecundario={"redefinirSenha"}
-          />
+        <form onSubmit={handleSubmit}>
+          <div className={styles.formDadosPessoais}>
+            <input
+              type="text"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+            />
+            <input
+              type="text"
+              value={handle}
+              onChange={(e) => setHandle(e.target.value)}
+            />
+            <input
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled
+            />
+            <BotaoSecundario
+              textoBotaoSecundario={"Redefinir senha"}
+              typeBsecundario={"submit"}
+              idBsecundario={"redefinirSenha"}
+            />
 
-          <select
-            id="selectGenero"
-            value={genero}
-            onChange={(e) => setGenero(e.target.value)}
-          >
-            <option value="">Qual opção melhor descreve você?</option>
-            {selectGenero.map((item, index) => (
-              <option key={`${item.value}-${index}`} value={item.label}>
-                {item.label}
-              </option>
-            ))}
-          </select>
+            <select
+              id="selectGenero"
+              value={genero}
+              onChange={(e) => setGenero(e.target.value)}
+            >
+              <option value="">Qual opção melhor descreve você?</option>
+              {selectGenero.map((item, index) => (
+                <option key={`${item.value}-${index}`} value={item.label}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
 
-          {/*<select
+            {/*<select
             id="selectEstilo"
             value={estilo}
             onChange={(e) => setEstilo(e.target.value)}
@@ -177,21 +179,22 @@ const DadosPessoais = () => {
             ))}
           </select>*/}
 
-          <div className={styles.sair}>
-            <button onClick={() => logout()}>
-              Sair
-              <img src="/icones/sair.svg" />
+            <div className={styles.sair}>
+              <button onClick={() => logout()}>
+                Sair
+                <img src="/icones/sair.svg" />
+              </button>
+            </div>
+          </div>
+
+          <div className={styles.baseSalvar}>
+            <button type="submit" disabled={!alteracoesPendentes}>
+              Salvar alterações
             </button>
           </div>
-        </div>
-
-        <div className={styles.baseSalvar}>
-          <button type="submit" disabled={!alteracoesPendentes}>
-            Salvar alterações
-          </button>
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
+    </Private>
   );
 };
 

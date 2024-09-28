@@ -8,9 +8,16 @@ const Private = ({ children }) => {
   const { user, loadingAuth } = useAuth();
   const router = useRouter();
 
+  // Verifique se a URL atual é uma das que podem ser acessadas sem autenticação
+  const publicPaths = ["/", "/login", "/cadastro"];
+
   useEffect(() => {
+    // Se não estiver carregando e não estiver autenticado
     if (!loadingAuth && !user) {
-      router.replace("/login"); // Redireciona para /login se não estiver autenticado
+      // Se a rota atual não for pública, redireciona para /login
+      if (!publicPaths.includes(router.pathname)) {
+        router.replace("/login");
+      }
     }
   }, [user, loadingAuth, router]);
 
@@ -19,13 +26,13 @@ const Private = ({ children }) => {
     return <div>Carregando...</div>;
   }
 
-  // Se não estiver autenticado, retorna null (ou uma página de carregamento, se preferir)
-  if (!user) {
-    return null;
+  // Se não estiver autenticado e a rota for pública, renderiza o conteúdo
+  if (!user && publicPaths.includes(router.pathname)) {
+    return children;
   }
 
   // Se estiver autenticado, renderiza o conteúdo da rota privada
-  return children;
+  return user ? children : null;
 };
 
 export default Private;

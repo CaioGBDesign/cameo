@@ -1,13 +1,15 @@
-.logo
-{
-    width: 100%;
+.logo {
+  width: 100%;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    img
-    {
-        width: 45%;
+  a {
+    width: 45%;
+
+    img {
+      width: 100%;
     }
+  }
 }

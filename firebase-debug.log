@@ -1,0 +1,309 @@
+[debug] [2024-09-28T22:32:35.782Z] ----------------------------------------------------------------------
+[debug] [2024-09-28T22:32:35.784Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\win11\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2024-09-28T22:32:35.784Z] CLI Version:   13.20.1
+[debug] [2024-09-28T22:32:35.784Z] Platform:      win32
+[debug] [2024-09-28T22:32:35.784Z] Node Version:  v20.16.0
+[debug] [2024-09-28T22:32:35.784Z] Time:          Sat Sep 28 2024 19:32:35 GMT-0300 (Horário Padrão de Brasília)
+[debug] [2024-09-28T22:32:35.784Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-09-28T22:32:35.788Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-09-28T22:32:35.789Z] > authorizing via signed-in user (caio.gbdesign@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\win11\OneDrive\Área de Trabalho\Cameo
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2024-09-28T22:33:53.129Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:33:53.129Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:33:53.131Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2024-09-28T22:33:53.839Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2024-09-28T22:33:53.839Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project cameo-67dc1 (cameo) 
+[info] 
+=== Dataconnect Setup
+[debug] [2024-09-28T22:33:56.812Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:33:56.812Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:33:56.812Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/cameo-67dc1/billingInfo [none]
+[debug] [2024-09-28T22:33:57.903Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/cameo-67dc1/billingInfo 200
+[debug] [2024-09-28T22:33:57.904Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/cameo-67dc1/billingInfo {"name":"projects/cameo-67dc1/billingInfo","projectId":"cameo-67dc1","billingAccountName":"","billingEnabled":false}
+[info] i  dataconnect: ensuring required API sqladmin.googleapis.com is enabled... 
+[debug] [2024-09-28T22:33:57.905Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:33:57.905Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:33:57.905Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/sqladmin.googleapis.com [none]
+[debug] [2024-09-28T22:33:57.905Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/sqladmin.googleapis.com x-goog-quota-user=projects/cameo-67dc1
+[debug] [2024-09-28T22:33:58.973Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/sqladmin.googleapis.com 200
+[debug] [2024-09-28T22:33:58.974Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/sqladmin.googleapis.com [omitted]
+[warn] !  dataconnect: missing required API sqladmin.googleapis.com. Enabling now... 
+[debug] [2024-09-28T22:33:58.974Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:33:58.974Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:33:58.974Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/sqladmin.googleapis.com:enable [none]
+[debug] [2024-09-28T22:33:58.974Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/sqladmin.googleapis.com:enable x-goog-quota-user=projects/cameo-67dc1
+[debug] [2024-09-28T22:33:59.595Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/sqladmin.googleapis.com:enable 200
+[debug] [2024-09-28T22:33:59.595Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/sqladmin.googleapis.com:enable [omitted]
+[debug] [2024-09-28T22:34:09.604Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:34:09.605Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:34:09.605Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/sqladmin.googleapis.com [none]
+[debug] [2024-09-28T22:34:09.605Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/sqladmin.googleapis.com x-goog-quota-user=projects/cameo-67dc1
+[debug] [2024-09-28T22:34:10.611Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/sqladmin.googleapis.com 200
+[debug] [2024-09-28T22:34:10.611Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/sqladmin.googleapis.com [omitted]
+[info] +  dataconnect: required API sqladmin.googleapis.com is enabled 
+[info] i  Setting placeholder values in dataconnect.yaml. You can edit these before you deploy to specify different IDs or regions. 
+[info] +  Wrote dataconnect\dataconnect.yaml 
+[info] +  Wrote dataconnect\schema\schema.gql 
+[info] +  Wrote dataconnect\connector\connector.yaml 
+[info] +  Wrote dataconnect\connector\queries.gql 
+[info] +  Wrote dataconnect\connector\mutations.gql 
+[info] +  Detected WEB app in directory C:\Users\win11\OneDrive\Área de Trabalho\Cameo 
+[info] i  Wrote new config to C:\Users\win11\OneDrive\Área de Trabalho\Cameo\dataconnect\connector/connector.yaml 
+[info] i  dataconnect: downloading dataconnect-emulator-1.4.3.exe... {"metadata":{"emulator":{"name":"dataconnect"},"message":"downloading dataconnect-emulator-1.4.3.exe..."}}
+[debug] [2024-09-28T22:34:39.887Z] >>> [apiv2][query] GET https://storage.googleapis.com/firemat-preview-drop/emulator/dataconnect-emulator-windows-v1.4.3 
+[debug] [2024-09-28T22:34:40.348Z] <<< [apiv2][status] GET https://storage.googleapis.com/firemat-preview-drop/emulator/dataconnect-emulator-windows-v1.4.3 200
+[debug] [2024-09-28T22:34:40.348Z] <<< [apiv2][body] GET https://storage.googleapis.com/firemat-preview-drop/emulator/dataconnect-emulator-windows-v1.4.3 [stream]
+[info] I0928 19:34:42.619571    9000 codegen.go:82] [connector "default" javascriptSdk] Generating sources into "C:\\Users\\win11\\OneDrive\\Área de Trabalho\\Cameo\\generated\\javascript\\default"
+I0928 19:34:42.634588    9000 generate.go:40] Generated all sources. Writing them to disk...
+I0928 19:34:42.637593    9000 collector.go:107] connector "default" javascriptSdk wrote into "C:\\Users\\win11\\OneDrive\\Área de Trabalho\\Cameo\\generated\\javascript\\default"
+Generated sources: index.d.ts [264B] esm\index.esm.js [178B] esm\package.json [17B] index.cjs.js [219B] package.json [624B] 
+I0928 19:34:42.648629    9000 installsdk.go:79] Running command: C:\Program Files\nodejs\npm.cmd install file:generated\javascript\default
+
+[info] i  Generated SDK code for default 
+[info] +  If you'd like to generate additional SDKs later, run firebase init dataconnect:sdk 
+[info] 
+[info] 
+=== Firestore Setup
+[debug] [2024-09-28T22:34:45.614Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:34:45.615Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:34:45.615Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firestore.googleapis.com [none]
+[debug] [2024-09-28T22:34:45.615Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firestore.googleapis.com x-goog-quota-user=projects/cameo-67dc1
+[debug] [2024-09-28T22:34:46.661Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firestore.googleapis.com 200
+[debug] [2024-09-28T22:34:46.661Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firestore.googleapis.com [omitted]
+[debug] [2024-09-28T22:34:46.661Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:34:46.661Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:34:46.661Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/cameo-67dc1/databases/(default) [none]
+[debug] [2024-09-28T22:34:46.938Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/cameo-67dc1/databases/(default) 200
+[debug] [2024-09-28T22:34:46.938Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/cameo-67dc1/databases/(default) {"name":"projects/cameo-67dc1/databases/(default)","uid":"237dbedd-b671-4c61-b6bc-f3f3644d647f","createTime":"2024-07-19T04:53:48.711063Z","updateTime":"2024-07-19T04:53:48.711063Z","locationId":"southamerica-east1","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2024-09-28T21:34:49.200292Z","appEngineIntegrationMode":"DISABLED","keyPrefix":"i","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","etag":"INaA2qLZ5ogDMOjy0viosocD"}
+[debug] [2024-09-28T22:34:46.938Z] database_type: FIRESTORE_NATIVE
+[debug] [2024-09-28T22:34:46.938Z] database_type: FIRESTORE_NATIVE
+[debug] [2024-09-28T22:34:46.939Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-09-28T22:34:46.939Z] > authorizing via signed-in user (caio.gbdesign@gmail.com)
+[debug] [2024-09-28T22:34:46.939Z] [iam] checking project cameo-67dc1 for permissions ["firebase.projects.get"]
+[debug] [2024-09-28T22:34:46.940Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:34:46.940Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:34:46.940Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/cameo-67dc1:testIamPermissions [none]
+[debug] [2024-09-28T22:34:46.940Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/cameo-67dc1:testIamPermissions x-goog-quota-user=projects/cameo-67dc1
+[debug] [2024-09-28T22:34:46.940Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/cameo-67dc1:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-09-28T22:34:47.958Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/cameo-67dc1:testIamPermissions 200
+[debug] [2024-09-28T22:34:47.958Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/cameo-67dc1:testIamPermissions {"permissions":["firebase.projects.get"]}
+[info] 
+[info] Firestore Security Rules allow you to define how and when to allow
+[info] requests. You can keep these rules in your project directory
+[info] and publish them with firebase deploy.
+[info] 
+[debug] [2024-09-28T22:34:52.359Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:34:52.359Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:34:52.359Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/cameo-67dc1/releases pageSize=10&pageToken=
+[debug] [2024-09-28T22:34:52.824Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/cameo-67dc1/releases 200
+[debug] [2024-09-28T22:34:52.824Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/cameo-67dc1/releases {"releases":[{"name":"projects/cameo-67dc1/releases/cloud.firestore","rulesetName":"projects/cameo-67dc1/rulesets/e02c7dde-e8d3-4d71-8e8f-15f5f4c3dd27","createTime":"2024-07-19T04:53:56.394398Z","updateTime":"2024-09-28T00:36:29.946568Z"},{"name":"projects/cameo-67dc1/releases/firebase.storage/cameo-67dc1.appspot.com","rulesetName":"projects/cameo-67dc1/rulesets/5d5a1cdf-25bf-4902-8c72-f760fddf1ec9","createTime":"2024-07-20T05:17:33.947240Z","updateTime":"2024-07-20T05:21:50.204633Z"}]}
+[debug] [2024-09-28T22:34:52.835Z] Found ruleset: projects/cameo-67dc1/rulesets/e02c7dde-e8d3-4d71-8e8f-15f5f4c3dd27
+[debug] [2024-09-28T22:34:52.835Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:34:52.836Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:34:52.836Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/cameo-67dc1/rulesets/e02c7dde-e8d3-4d71-8e8f-15f5f4c3dd27 [none]
+[debug] [2024-09-28T22:34:53.772Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/cameo-67dc1/rulesets/e02c7dde-e8d3-4d71-8e8f-15f5f4c3dd27 200
+[debug] [2024-09-28T22:34:53.772Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/cameo-67dc1/rulesets/e02c7dde-e8d3-4d71-8e8f-15f5f4c3dd27 [omitted]
+[info] 
+[info] Firestore indexes allow you to perform complex queries while
+[info] maintaining performance that scales with the size of the result
+[info] set. You can keep index definitions in your project directory
+[info] and publish them with firebase deploy.
+[info] 
+[debug] [2024-09-28T22:35:16.200Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:35:16.200Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:35:16.200Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:35:16.200Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:35:16.200Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/cameo-67dc1/databases/(default)/collectionGroups/-/indexes [none]
+[debug] [2024-09-28T22:35:16.202Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/cameo-67dc1/databases/(default)/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false OR ttlConfig:* [none]
+[debug] [2024-09-28T22:35:16.339Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/cameo-67dc1/databases/(default)/collectionGroups/-/indexes 200
+[debug] [2024-09-28T22:35:16.339Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/cameo-67dc1/databases/(default)/collectionGroups/-/indexes {}
+[debug] [2024-09-28T22:35:16.340Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/cameo-67dc1/databases/(default)/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false OR ttlConfig:* 200
+[debug] [2024-09-28T22:35:16.340Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/cameo-67dc1/databases/(default)/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false OR ttlConfig:* {"fields":[{"name":"projects/cameo-67dc1/databases/(default)/collectionGroups/__default__/fields/*","indexConfig":{"indexes":[{"queryScope":"COLLECTION","fields":[{"fieldPath":"*","order":"ASCENDING"}],"state":"READY"},{"queryScope":"COLLECTION","fields":[{"fieldPath":"*","order":"DESCENDING"}],"state":"READY"},{"queryScope":"COLLECTION","fields":[{"fieldPath":"*","arrayConfig":"CONTAINS"}],"state":"READY"}]}}]}
+[info] 
+=== Genkit Setup
+[debug] [2024-09-28T22:35:18.872Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-09-28T22:35:18.872Z] > authorizing via signed-in user (caio.gbdesign@gmail.com)
+[debug] [2024-09-28T22:35:18.872Z] [iam] checking project cameo-67dc1 for permissions ["firebase.projects.get"]
+[debug] [2024-09-28T22:35:18.872Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:35:18.872Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:35:18.872Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/cameo-67dc1:testIamPermissions [none]
+[debug] [2024-09-28T22:35:18.872Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/cameo-67dc1:testIamPermissions x-goog-quota-user=projects/cameo-67dc1
+[debug] [2024-09-28T22:35:18.872Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/cameo-67dc1:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-09-28T22:35:19.748Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/cameo-67dc1:testIamPermissions 200
+[debug] [2024-09-28T22:35:19.748Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/cameo-67dc1:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-09-28T22:35:19.748Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:35:19.748Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:35:19.748Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:35:19.748Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:35:19.748Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/cloudfunctions.googleapis.com [none]
+[debug] [2024-09-28T22:35:19.748Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/cameo-67dc1
+[debug] [2024-09-28T22:35:19.750Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/runtimeconfig.googleapis.com [none]
+[debug] [2024-09-28T22:35:19.750Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/runtimeconfig.googleapis.com x-goog-quota-user=projects/cameo-67dc1
+[debug] [2024-09-28T22:35:20.746Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/runtimeconfig.googleapis.com 200
+[debug] [2024-09-28T22:35:20.746Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2024-09-28T22:35:20.783Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/cloudfunctions.googleapis.com 200
+[debug] [2024-09-28T22:35:20.783Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/cloudfunctions.googleapis.com [omitted]
+[debug] [2024-09-28T22:35:20.784Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:35:20.784Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:35:20.784Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/cloudfunctions.googleapis.com:enable [none]
+[debug] [2024-09-28T22:35:20.784Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/cloudfunctions.googleapis.com:enable x-goog-quota-user=projects/cameo-67dc1
+[debug] [2024-09-28T22:35:22.022Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/cloudfunctions.googleapis.com:enable 200
+[debug] [2024-09-28T22:35:22.023Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/cloudfunctions.googleapis.com:enable [omitted]
+[debug] [2024-09-28T22:35:32.037Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:35:32.038Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:35:32.038Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/cloudfunctions.googleapis.com [none]
+[debug] [2024-09-28T22:35:32.038Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/cameo-67dc1
+[debug] [2024-09-28T22:35:33.057Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/cloudfunctions.googleapis.com 200
+[debug] [2024-09-28T22:35:33.057Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/cloudfunctions.googleapis.com [omitted]
+[info] Let's create a new codebase for your functions.
+[info] A directory corresponding to the codebase will be created in your project
+[info] with sample code pre-configured.
+
+[info] See https://firebase.google.com/docs/functions/organize-functions for
+[info] more information on organizing your functions using codebases.
+
+[info] Functions can be deployed with firebase deploy.
+
+[info] +  Wrote functions/package.json 
+[info] +  Wrote functions/.eslintrc.js 
+[info] +  Wrote functions/tsconfig.json 
+[info] +  Wrote functions/tsconfig.dev.json 
+[info] +  Wrote functions/src/index.ts 
+[info] +  Wrote functions/.gitignore 
+[info] 
+[info] Installing Genkit CLI
+[info] Start the Genkit developer experience by running:
+[info]     cd functions && npx genkit start
+[info] 
+=== Functions Setup
+[debug] [2024-09-28T22:38:49.690Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-09-28T22:38:49.690Z] > authorizing via signed-in user (caio.gbdesign@gmail.com)
+[debug] [2024-09-28T22:38:49.690Z] [iam] checking project cameo-67dc1 for permissions ["firebase.projects.get"]
+[debug] [2024-09-28T22:38:49.690Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:38:49.690Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:38:49.690Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/cameo-67dc1:testIamPermissions [none]
+[debug] [2024-09-28T22:38:49.690Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/cameo-67dc1:testIamPermissions x-goog-quota-user=projects/cameo-67dc1
+[debug] [2024-09-28T22:38:49.691Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/cameo-67dc1:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-09-28T22:38:50.523Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/cameo-67dc1:testIamPermissions 200
+[debug] [2024-09-28T22:38:50.523Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/cameo-67dc1:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-09-28T22:38:50.523Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:38:50.523Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:38:50.523Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:38:50.523Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:38:50.524Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/cloudfunctions.googleapis.com [none]
+[debug] [2024-09-28T22:38:50.524Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/cameo-67dc1
+[debug] [2024-09-28T22:38:50.525Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/runtimeconfig.googleapis.com [none]
+[debug] [2024-09-28T22:38:50.525Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/runtimeconfig.googleapis.com x-goog-quota-user=projects/cameo-67dc1
+[debug] [2024-09-28T22:38:51.502Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/cloudfunctions.googleapis.com 200
+[debug] [2024-09-28T22:38:51.502Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/cloudfunctions.googleapis.com [omitted]
+[debug] [2024-09-28T22:38:51.522Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/runtimeconfig.googleapis.com 200
+[debug] [2024-09-28T22:38:51.522Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/runtimeconfig.googleapis.com [omitted]
+[info] 
+Detected existing codebase(s): default
+
+[info] Let's create a new codebase for your functions.
+[info] A directory corresponding to the codebase will be created in your project
+[info] with sample code pre-configured.
+
+[info] See https://firebase.google.com/docs/functions/organize-functions for
+[info] more information on organizing your functions using codebases.
+
+[info] Functions can be deployed with firebase deploy.
+
+[info] +  Wrote cameo-codebase/package.json 
+[info] +  Wrote cameo-codebase/index.js 
+[info] +  Wrote cameo-codebase/.gitignore 
+[info] 
+=== Hosting Setup
+[debug] [2024-09-28T22:40:13.390Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:40:13.390Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:40:13.390Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/cameo-67dc1 [none]
+[debug] [2024-09-28T22:40:13.808Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/cameo-67dc1 200
+[debug] [2024-09-28T22:40:13.808Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/cameo-67dc1 {"projectId":"cameo-67dc1","projectNumber":"115322419429","displayName":"cameo","name":"projects/cameo-67dc1","resources":{"hostingSite":"cameo-67dc1","storageBucket":"cameo-67dc1.appspot.com","locationId":"southamerica-east1"},"state":"ACTIVE","etag":"1_dca98cd3-46f8-457b-8dc7-b0c92f18760a"}
+[info] 
+[info] Your public directory is the folder (relative to your project directory) that
+[info] will contain Hosting assets to be uploaded with firebase deploy. If you
+[info] have a build process for your assets, use your build's output directory.
+[info] 
+[info] +  Wrote private/404.html 
+[debug] [2024-09-28T22:40:41.063Z] >>> [apiv2][query] GET https://www.gstatic.com/firebasejs/releases.json [none]
+[debug] [2024-09-28T22:40:41.232Z] <<< [apiv2][status] GET https://www.gstatic.com/firebasejs/releases.json 200
+[debug] [2024-09-28T22:40:41.232Z] <<< [apiv2][body] GET https://www.gstatic.com/firebasejs/releases.json {"current":{"version":"10.13.2","browserURL":"https://www.gstatic.com/firebasejs/10.13.2/firebase.js","packageURL":"https://www.gstatic.com/firebasejs/10.13.2/firebase.tgz"},"live":{"version":"10.13","browserURL":"https://www.gstatic.com/firebasejs/live/10.13/firebase.js","packageURL":"https://www.gstatic.com/firebasejs/live/10.13/firebase.tgz"},"components":{"analytics":"https://www.gstatic.com/firebasejs/10.13.2/firebase-analytics.js","app":"https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js","app-check":"https://www.gstatic.com/firebasejs/10.13.2/firebase-app-check.js","auth":"https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js","auth/cordova":"https://www.gstatic.com/firebasejs/10.13.2/firebase-auth/cordova.js","auth/web-extension":"https://www.gstatic.com/firebasejs/10.13.2/firebase-auth/web-extension.js","functions":"https://www.gstatic.com/firebasejs/10.13.2/firebase-functions.js","firestore":"https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js","firestore/lite":"https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore/lite.js","installations":"https://www.gstatic.com/firebasejs/10.13.2/firebase-installations.js","storage":"https://www.gstatic.com/firebasejs/10.13.2/firebase-storage.js","performance":"https://www.gstatic.com/firebasejs/10.13.2/firebase-performance.js","remote-config":"https://www.gstatic.com/firebasejs/10.13.2/firebase-remote-config.js","messaging":"https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging.js","messaging/sw":"https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging/sw.js","database":"https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js","vertexai-preview":"https://www.gstatic.com/firebasejs/10.13.2/firebase-vertexai-preview.js","firestore.memory":"https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.memory.js"}}
+[info] +  Wrote private/index.html 
+[info] 
+=== Storage Setup
+[info] 
+[info] Firebase Storage Security Rules allow you to define how and when to allow
+[info] uploads and downloads. You can keep these rules in your project directory
+[info] and publish them with firebase deploy.
+[info] 
+[info] +  Wrote stop 
+[info] 
+=== Emulators Setup
+[info] 
+=== Remoteconfig Setup
+[info] 
+=== Extensions Setup
+[debug] [2024-09-28T22:41:29.782Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-09-28T22:41:29.782Z] > authorizing via signed-in user (caio.gbdesign@gmail.com)
+[debug] [2024-09-28T22:41:29.782Z] [iam] checking project cameo-67dc1 for permissions ["firebase.projects.get"]
+[debug] [2024-09-28T22:41:29.782Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:41:29.782Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:41:29.782Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/cameo-67dc1:testIamPermissions [none]
+[debug] [2024-09-28T22:41:29.782Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/cameo-67dc1:testIamPermissions x-goog-quota-user=projects/cameo-67dc1
+[debug] [2024-09-28T22:41:29.782Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/cameo-67dc1:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-09-28T22:41:30.699Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/cameo-67dc1:testIamPermissions 200
+[debug] [2024-09-28T22:41:30.699Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/cameo-67dc1:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-09-28T22:41:30.699Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:41:30.699Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:41:30.699Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firebaseextensions.googleapis.com [none]
+[debug] [2024-09-28T22:41:30.699Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firebaseextensions.googleapis.com x-goog-quota-user=projects/cameo-67dc1
+[debug] [2024-09-28T22:41:31.777Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firebaseextensions.googleapis.com 200
+[debug] [2024-09-28T22:41:31.777Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firebaseextensions.googleapis.com [omitted]
+[debug] [2024-09-28T22:41:31.777Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:41:31.777Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:41:31.777Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firebaseextensions.googleapis.com:enable [none]
+[debug] [2024-09-28T22:41:31.777Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firebaseextensions.googleapis.com:enable x-goog-quota-user=projects/cameo-67dc1
+[debug] [2024-09-28T22:41:32.676Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firebaseextensions.googleapis.com:enable 200
+[debug] [2024-09-28T22:41:32.676Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firebaseextensions.googleapis.com:enable [omitted]
+[debug] [2024-09-28T22:41:42.677Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:41:42.677Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:41:42.677Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firebaseextensions.googleapis.com [none]
+[debug] [2024-09-28T22:41:42.677Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firebaseextensions.googleapis.com x-goog-quota-user=projects/cameo-67dc1
+[debug] [2024-09-28T22:41:43.642Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firebaseextensions.googleapis.com 200
+[debug] [2024-09-28T22:41:43.642Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firebaseextensions.googleapis.com [omitted]
+[info] 
+=== Database Setup
+[info] i  database: ensuring required API firebasedatabase.googleapis.com is enabled... 
+[debug] [2024-09-28T22:41:43.646Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:41:43.646Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:41:43.646Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firebasedatabase.googleapis.com [none]
+[debug] [2024-09-28T22:41:43.646Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firebasedatabase.googleapis.com x-goog-quota-user=projects/cameo-67dc1
+[debug] [2024-09-28T22:41:44.627Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firebasedatabase.googleapis.com 200
+[debug] [2024-09-28T22:41:44.628Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firebasedatabase.googleapis.com [omitted]
+[warn] !  database: missing required API firebasedatabase.googleapis.com. Enabling now... 
+[debug] [2024-09-28T22:41:44.628Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:41:44.628Z] Checked if tokens are valid: true, expires at: 1727566210103
+[debug] [2024-09-28T22:41:44.628Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firebasedatabase.googleapis.com:enable [none]
+[debug] [2024-09-28T22:41:44.628Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firebasedatabase.googleapis.com:enable x-goog-quota-user=projects/cameo-67dc1
+[debug] [2024-09-28T22:41:45.247Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firebasedatabase.googleapis.com:enable 200
+[debug] [2024-09-28T22:41:45.247Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/cameo-67dc1/services/firebasedatabase.googleapis.com:enable [omitted]

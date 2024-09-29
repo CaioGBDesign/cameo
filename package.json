@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@firebasegen/default": "file:generated/javascript/default",
     "@fontsource/nunito-sans": "^5.0.13",
     "@nextui-org/react": "^2.4.2",
     "date-fns": "^3.6.0",

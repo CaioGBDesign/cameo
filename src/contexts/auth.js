@@ -5,6 +5,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  sendEmailVerification,
 } from "firebase/auth";
 import {
   updateDoc,
@@ -13,9 +14,12 @@ import {
   arrayUnion,
   getDoc,
   setDoc,
+  getDocs,
+  collection,
+  deleteDoc,
 } from "firebase/firestore";
-
 import { useRouter } from "next/router";
+import ModalConfirmacaoCadastro from "@/components/modais/confirmacao-cadastro";
 
 export const AuthContext = createContext({});
 export const useAuth = () => useContext(AuthContext);
@@ -23,14 +27,16 @@ export const useAuth = () => useContext(AuthContext);
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loadingAuth, setLoadingAuth] = useState(false);
-  const [loading, setLoading] = useState(true); // Adicionado para gerenciar o estado de carregamento inicial
+  const [loading, setLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (userAuth) => {
       if (userAuth) {
-        // usuário está autenticado
         const docRef = doc(db, "users", userAuth.uid);
         const docSnap = await getDoc(docRef);
 
@@ -50,7 +56,6 @@ function AuthProvider({ children }) {
         setUser(userData);
         storageUser(userData);
       } else {
-        // nenhum usuário autenticado
         const storedUser = JSON.parse(localStorage.getItem("@ticketsPro"));
         if (storedUser) {
           setUser(storedUser);
@@ -58,7 +63,7 @@ function AuthProvider({ children }) {
           setUser(null);
         }
       }
-      setLoading(false); // Conclui o carregamento inicial
+      setLoading(false);
     });
 
     return () => unsubscribe();
@@ -66,80 +71,84 @@ function AuthProvider({ children }) {
 
   async function signIn(email, senha) {
     setLoadingAuth(true);
+    try {
+      const value = await signInWithEmailAndPassword(auth, email, senha);
 
-    await signInWithEmailAndPassword(auth, email, senha)
-      .then(async (value) => {
-        let uid = value.user.uid;
+      // Verifica se o e-mail está verificado
+      if (!value.user.emailVerified) {
+        throw new Error(
+          "Por favor, verifique seu e-mail antes de fazer login."
+        );
+      }
 
-        const docRef = doc(db, "users", uid);
-        const docSnap = await getDoc(docRef);
+      const uid = value.user.uid;
+      const docRef = doc(db, "users", uid);
+      const docSnap = await getDoc(docRef);
 
-        let data = {
-          uid: uid,
-          handle: docSnap.data().handle,
-          nome: docSnap.data().nome,
-          email: value.user.email,
-          avatarUrl: docSnap.data().avatarUrl,
-          genero: docSnap.data().genero,
-          estilo: docSnap.data().estilo,
-          favoritos: docSnap.data().favoritos || [],
-          assistir: docSnap.data().assistir || [],
-          visto: docSnap.data().visto || {},
-        };
+      if (!docSnap.exists()) {
+        throw new Error("Usuário não encontrado.");
+      }
 
-        setUser(data);
-        storageUser(data);
-        setLoadingAuth(false);
-        router.push("/");
-      })
-      .catch((error) => {
-        console.error("Erro ao tentar fazer login:", error.code, error.message);
-        setLoadingAuth(false);
-        throw error;
-      });
+      let userData = {
+        uid: uid,
+        email: value.user.email,
+        ...docSnap.data(),
+      };
+
+      setUser(userData);
+      storageUser(userData);
+      router.push("/");
+    } catch (error) {
+      console.error("Erro ao tentar fazer login:", error);
+      throw error; // Lança o erro para ser capturado no componente de login
+    } finally {
+      setLoadingAuth(false);
+    }
   }
 
   async function signUp(email, senha, nome, handle) {
     setLoadingAuth(true);
 
-    await createUserWithEmailAndPassword(auth, email, senha)
-      .then(async (value) => {
-        let uid = value.user.uid;
+    try {
+      const value = await createUserWithEmailAndPassword(auth, email, senha);
+      let uid = value.user.uid;
 
-        await setDoc(doc(db, "users", uid), {
-          handle: handle,
-          nome: nome,
-          avatarUrl: null,
-          genero: null,
-          estilo: null,
-          favoritos: [],
-          assistir: [],
-          visto: {},
-        }).then(() => {
-          let data = {
-            uid: uid,
-            handle: handle,
-            nome: nome,
-            email: value.user.email,
-            avatarUrl: null,
-            genero: null,
-            estilo: null,
-            favoritos: [],
-            assistir: [],
-            visto: {},
-          };
-
-          setUser(data);
-          storageUser(data);
-          setLoadingAuth(false);
-          router.push("/");
-        });
-      })
-      .catch((error) => {
-        console.error("Erro ao tentar registrar:", error);
-        setLoadingAuth(false);
+      await setDoc(doc(db, "users", uid), {
+        handle: handle,
+        nome: nome,
+        avatarUrl: null,
+        genero: null,
+        estilo: null,
+        favoritos: [],
+        assistir: [],
+        visto: {},
+        createdAt: new Date(),
+        emailVerified: false,
       });
+
+      const actionCodeSettings = {
+        url: "https://www.cameo.fun",
+        handleCodeInApp: true,
+      };
+
+      await sendEmailVerification(value.user, actionCodeSettings);
+      console.log("E-mail de verificação enviado com sucesso.");
+
+      setModalMessage(
+        "Cadastro realizado! Verifique seu e-mail para ativar sua conta."
+      );
+      setModalVisible(true);
+    } catch (error) {
+      console.error("Erro ao tentar registrar:", error);
+    } finally {
+      setLoadingAuth(false);
+    }
   }
+
+  const handleModalClose = () => {
+    setModalVisible(false);
+    router.push("/login"); // Redireciona após a confirmação
+  };
 
   function storageUser(data) {
     localStorage.setItem("@ticketsPro", JSON.stringify(data));
@@ -152,7 +161,26 @@ function AuthProvider({ children }) {
     router.push("/");
   }
 
-  // Favoritos
+  async function deleteUnverifiedUsers() {
+    const usersRef = collection(db, "users");
+    const querySnapshot = await getDocs(usersRef);
+
+    querySnapshot.forEach(async (userDoc) => {
+      const userData = userDoc.data();
+      const createdAt = userData.createdAt.toDate();
+      const now = new Date();
+      const diffTime = Math.abs(now - createdAt);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (!userData.emailVerified && diffDays > 1) {
+        await deleteDoc(doc(db, "users", userDoc.id));
+        console.log(
+          `Usuário ${userDoc.id} deletado por não verificar o e-mail.`
+        );
+      }
+    });
+  }
+
   async function salvarFilme(filmeId) {
     if (!user) {
       console.error("Usuário não autenticado");
@@ -219,7 +247,6 @@ function AuthProvider({ children }) {
     }
   }
 
-  // Assistir
   async function assistirFilme(filmeId) {
     if (!user) {
       console.error("Usuário não autenticado");
@@ -286,7 +313,6 @@ function AuthProvider({ children }) {
     }
   }
 
-  // Já vistos
   async function avaliarFilme(filmeId) {
     if (!user) {
       console.error("Usuário não autenticado");
@@ -304,13 +330,11 @@ function AuthProvider({ children }) {
       const docSnap = await getDoc(userRef);
       const userData = docSnap.data();
 
-      // Verifica se o filme já foi avaliado
       if (userData.visto && userData.visto[filmeId] !== undefined) {
         console.log("Filme já foi avaliado anteriormente.");
         return;
       }
 
-      // Adiciona o filme com valor 0 (avaliação inicial)
       await setDoc(
         userRef,
         {
@@ -336,7 +360,6 @@ function AuthProvider({ children }) {
     }
   }
 
-  // Avaliar com nota
   async function darNota(filmeId, nota) {
     if (!user) {
       console.error("Usuário não autenticado");
@@ -374,7 +397,7 @@ function AuthProvider({ children }) {
   }
 
   if (loading) {
-    return <div>Carregando...</div>; // Adicionado para mostrar um carregamento inicial
+    return <div>Carregando...</div>;
   }
 
   return (
@@ -396,6 +419,12 @@ function AuthProvider({ children }) {
       }}
     >
       {children}
+      {modalVisible && (
+        <ModalConfirmacaoCadastro
+          message={modalMessage}
+          onClose={handleModalClose}
+        />
+      )}
     </AuthContext.Provider>
   );
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import styles from "./index.module.scss";
 import EntrarCadastrar from "@/components/botoes/acesso";
 import Header from "@/components/Header";
@@ -87,7 +88,7 @@ const Cadastro = () => {
 
             <div className={styles.loginCadastro}>
               <span>
-                Já tenho cadastro. <a href="/login">Entrar.</a>
+                Já tenho cadastro. <Link href="/login">Entrar.</Link>
               </span>
             </div>
           </form>

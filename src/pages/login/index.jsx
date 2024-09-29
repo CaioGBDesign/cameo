@@ -29,7 +29,9 @@ const Login = () => {
         ) {
           setErro("Credenciais inválidas. Verifique seu e-mail e senha.");
         } else {
-          setErro("Erro ao tentar fazer login. Tente novamente.");
+          setErro(
+            error.message || "Erro ao tentar fazer login. Tente novamente."
+          );
         }
       }
     } else {
@@ -56,6 +58,7 @@ const Login = () => {
                   required
                 />
               </div>
+              {erro && <p>{erro}</p>}
               <div className={styles.inputCameo}>
                 <input
                   type="password"
@@ -70,7 +73,6 @@ const Login = () => {
                   </Link>
                 </div>
               </div>
-              {erro && <p className={styles.error}>{erro}</p>}{" "}
             </div>
 
             <EntrarCadastrar onClick={handleSignIn}>

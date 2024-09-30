@@ -1,33 +1,32 @@
-import { useEffect } from "react";
-import { verifyEmail } from "firebase/auth";
-import { auth } from "@/services/firebaseConection"; // ou onde seu firebase estiver configurado
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import styles from "./index.module.scss";
 
 const Confirmacao = () => {
   const router = useRouter();
+  const [showModal, setShowModal] = useState(true); // Inicialmente, a modal é exibida
 
   useEffect(() => {
-    const { oobCode } = router.query;
+    // Redireciona após 3 segundos
+    const timeout = setTimeout(() => {
+      router.push("/");
+    }, 3000); // Ajuste o tempo conforme necessário
 
-    if (oobCode) {
-      verifyEmail(auth, oobCode)
-        .then(() => {
-          // E-mail verificado com sucesso
-          router.push("/"); // redireciona para o seu site
-        })
-        .catch((error) => {
-          console.error("Erro ao verificar o e-mail:", error);
-          // Você pode redirecionar para uma página de erro ou exibir uma mensagem
-        });
-    }
-  }, [router.query]);
+    // Limpeza do timeout ao desmontar o componente
+    return () => clearTimeout(timeout);
+  }, [router]);
 
   return (
     <main>
       <div className={styles.ContVerificacao}>
         <div className={styles.verificacao}>
-          <span>Verificando seu e-mail...</span>
+          {showModal && (
+            <div className={styles.modal}>
+              <iframe src="https://lottie.host/embed/e63e127f-b913-48cb-b2f5-408397b5deba/2fa23oBAHX.json"></iframe>
+
+              <span>E-mail verificado com sucesso</span>
+            </div>
+          )}
         </div>
       </div>
     </main>

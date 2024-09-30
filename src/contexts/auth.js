@@ -100,6 +100,15 @@ function AuthProvider({ children }) {
       router.push("/");
     } catch (error) {
       console.error("Erro ao tentar fazer login:", error);
+
+      // Forçar deslogar o usuário
+      await signOut(auth);
+      setUser(null);
+      localStorage.removeItem("@ticketsPro");
+
+      // Opcional: exibir uma mensagem de erro ao usuário
+      setErrorMessage("Falha ao fazer login. Por favor, tente novamente."); // Você pode usar um estado para exibir essa mensagem em algum lugar da UI
+
       throw error; // Lança o erro para ser capturado no componente de login
     } finally {
       setLoadingAuth(false);
@@ -127,7 +136,7 @@ function AuthProvider({ children }) {
       });
 
       const actionCodeSettings = {
-        url: "https://www.cameo.fun",
+        url: "https://www.cameo.fun/login?emailVerified=true",
         handleCodeInApp: true,
       };
 

@@ -23,11 +23,14 @@ const Login = () => {
         await signIn(email, senha);
       } catch (error) {
         console.error("Erro capturado no componente de login:", error);
-        if (
-          error.code === "auth/user-not-found" ||
-          error.code === "auth/wrong-password"
-        ) {
-          setErro("Credenciais inválidas. Verifique seu e-mail e senha.");
+        if (error.code === "auth/user-not-found") {
+          setErro("E-mail não encontrado. Faça o cadastro ou tente novamente.");
+        } else if (error.code === "auth/wrong-password") {
+          setErro("Senha incorreta. Verifique e tente novamente.");
+        } else if (error.code === "auth/invalid-credential") {
+          setErro(
+            "Usuário não encontrado. Verifique seu e-mail ou faça seu regitro."
+          );
         } else {
           setErro(
             error.message || "Erro ao tentar fazer login. Tente novamente."
@@ -41,8 +44,6 @@ const Login = () => {
 
   return (
     <main className={styles["background"]}>
-      <Header showMiniatura={false} showFotoPerfil={false} />
-
       <div className={styles.login}>
         <Logo />
 

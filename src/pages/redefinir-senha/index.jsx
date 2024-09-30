@@ -1,21 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   getAuth,
   verifyPasswordResetCode,
   confirmPasswordReset,
 } from "firebase/auth";
+import { useRouter } from "next/router"; // Importar o useRouter
 import styles from "./index.module.scss";
 import Header from "@/components/Header";
 
 const RedefinirSenha = () => {
   const [novaSenha, setNovaSenha] = useState("");
   const [erro, setErro] = useState(null);
-  const auth = getAuth();
   const [showPassword, setShowPassword] = useState(false);
-
-  // Extrair o código da URL
-  const queryParams = new URLSearchParams(location.search);
-  const codigo = queryParams.get("oobCode");
+  const router = useRouter(); // Inicializar o useRouter
+  const { oobCode } = router.query; // Extrair o oobCode da URL
 
   const handleRedefinicao = async () => {
     if (!novaSenha) {
@@ -25,13 +23,12 @@ const RedefinirSenha = () => {
 
     try {
       // Verifique o código
-      await verifyPasswordResetCode(auth, codigo);
+      await verifyPasswordResetCode(getAuth(), oobCode);
       // Confirme a redefinição
-      await confirmPasswordReset(auth, codigo, novaSenha);
+      await confirmPasswordReset(getAuth(), oobCode, novaSenha);
       alert("Senha redefinida com sucesso!");
       // Redirecionar após a redefinição de senha
-      // Exemplo de redirecionamento:
-      window.location.href = "/login"; // Ajuste conforme necessário
+      router.push("/login"); // Ajuste conforme necessário
     } catch (error) {
       setErro("Erro ao redefinir a senha: " + error.message);
     }
@@ -44,12 +41,11 @@ const RedefinirSenha = () => {
   return (
     <main className={styles.background}>
       <Header showMiniatura={true} showFotoPerfil={false} />
-
       <div className={styles.RedefinirSenha}>
         <div className={styles.formulario}>
           <div className={styles.inputCameo}>
             <input
-              type={showPassword ? "text" : "password"} // Modificação aqui
+              type={showPassword ? "text" : "password"}
               value={novaSenha}
               onChange={(e) => setNovaSenha(e.target.value)}
               placeholder="Nova Senha"

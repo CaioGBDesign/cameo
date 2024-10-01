@@ -134,7 +134,9 @@ const FilmesAssisti = () => {
                     <div
                       className={styles.BarraGenero}
                       style={{ height: heights[genero] || "0%" }} // Aplica a altura armazenada
-                    ></div>
+                    >
+                      <img src="/icones/estrado.svg" />
+                    </div>
                     <div className={styles.GeneroFilmes}>
                       <span>{genero}</span>
                     </div>
@@ -179,7 +181,7 @@ const FilmesAssisti = () => {
             exibirPlay={false}
             capaAssistidos={`https://image.tmdb.org/t/p/original/${filmeAleatorio.poster_path}`}
             tituloAssistidos={filmeAleatorio.title}
-            style={{ opacity: 0.3 }} // Opacidade aplicada
+            opacidade={0.2}
           />
         )}
       </div>

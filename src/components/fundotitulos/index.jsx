@@ -8,6 +8,7 @@ const FundoTitulos = ({
   capaAssistidos,
   tituloAssistidos,
   trailerLink,
+  opacidade = 1,
 }) => {
   return (
     <div className={styles.contCapa}>
@@ -18,7 +19,7 @@ const FundoTitulos = ({
           </div>
         )}
 
-      <div className={styles.capaAssistidos}>
+      <div className={styles.capaAssistidos} style={{ opacity: opacidade }}>
         <img src={capaAssistidos} alt={tituloAssistidos} />
       </div>
     </div>

@@ -13,7 +13,7 @@
     gap: 20px;
 
     width: 100%;
-    margin-top: 220px;
+    margin-top: 130px;
     margin-bottom: 50px;
 
     .ContGraficosGeneros {
@@ -45,9 +45,11 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-end;
-            gap: 10px;
+            gap: 15px;
 
-            height: 100px;
+            height: 150px;
+
+            padding: 20px 0px;
 
             .quantidadePercentual {
               span {
@@ -61,13 +63,19 @@
             }
 
             .BarraGenero {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
               width: 50px;
-              min-height: 5px;
+              min-height: 1px;
 
               background: #2ba8e2;
               border-radius: 2px;
 
               animation: graph 1s forwards ease-in-out;
+
+              overflow: hidden;
 
               @keyframes graph {
                 0% {

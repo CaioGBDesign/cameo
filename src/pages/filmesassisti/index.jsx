@@ -9,7 +9,7 @@ import { useAuth } from "@/contexts/auth";
 import Private from "@/components/Private";
 
 const FilmesAssisti = () => {
-  const { user, removerAssistir } = useAuth();
+  const { user, removerNota } = useAuth();
   const [filmesVistos, setFilmesVistos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filmeAleatorio, setFilmeAleatorio] = useState(null);
@@ -101,11 +101,22 @@ const FilmesAssisti = () => {
   }, [user, filmesVistos.length]); // Adicionei filmesVistos.length como dependência para recalcular as alturas
 
   const handleExcluirFilme = async (filmeId) => {
+    console.log(
+      "ID do filme sendo excluído:",
+      filmeId,
+      "Tipo:",
+      typeof filmeId
+    );
     try {
-      await removerAssistir(filmeId);
-      setFilmesVistos((prevFilmes) =>
-        prevFilmes.filter((filme) => filme.id !== filmeId)
-      );
+      await removerNota(String(filmeId)); // Converte para string
+
+      // Atualiza a lista de filmes vistos após a remoção
+      setFilmesVistos((prevFilmes) => {
+        const novosFilmes = prevFilmes.filter((filme) => filme.id !== filmeId);
+
+        // Retorna novos filmes, mesmo se a lista ficar vazia
+        return novosFilmes;
+      });
     } catch (error) {
       console.error("Erro ao excluir filme:", error);
     }
@@ -165,7 +176,7 @@ const FilmesAssisti = () => {
                       capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
                       titulofilme={filme.title}
                       mostrarBotaoFechar={mostrarBotaoFechar}
-                      excluirFilme={() => handleExcluirFilme(filme.id)}
+                      excluirFilme={() => handleExcluirFilme(String(filme.id))}
                       avaliacao={filme.avaliacao}
                     />
                   ))

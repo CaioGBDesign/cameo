@@ -20,6 +20,7 @@ import {
 } from "firebase/firestore";
 import { useRouter } from "next/router";
 import ModalConfirmacaoCadastro from "@/components/modais/confirmacao-cadastro";
+import { deleteField } from "firebase/firestore";
 
 export const AuthContext = createContext({});
 export const useAuth = () => useContext(AuthContext);
@@ -38,23 +39,31 @@ function AuthProvider({ children }) {
     const unsubscribe = onAuthStateChanged(auth, async (userAuth) => {
       if (userAuth) {
         const docRef = doc(db, "users", userAuth.uid);
-        const docSnap = await getDoc(docRef);
+        try {
+          const docSnap = await getDoc(docRef);
+          if (!docSnap.exists()) {
+            throw new Error("Usuário não encontrado no Firestore.");
+          }
 
-        let userData = {
-          uid: userAuth.uid,
-          email: userAuth.email,
-          handle: docSnap.data().handle,
-          nome: docSnap.data().nome,
-          avatarUrl: docSnap.data().avatarUrl,
-          genero: docSnap.data().genero,
-          estilo: docSnap.data().estilo,
-          favoritos: docSnap.data().favoritos || [],
-          assistir: docSnap.data().assistir || [],
-          visto: docSnap.data().visto || {},
-        };
+          let userData = {
+            uid: userAuth.uid,
+            email: userAuth.email,
+            handle: docSnap.data().handle,
+            nome: docSnap.data().nome,
+            avatarUrl: docSnap.data().avatarUrl,
+            genero: docSnap.data().genero,
+            estilo: docSnap.data().estilo,
+            favoritos: docSnap.data().favoritos || [],
+            assistir: docSnap.data().assistir || [],
+            visto: docSnap.data().visto || {},
+          };
 
-        setUser(userData);
-        storageUser(userData);
+          setUser(userData);
+          storageUser(userData);
+        } catch (error) {
+          console.error("Erro ao obter dados do usuário:", error);
+          setUser(null); // Limpa o usuário se não conseguir buscar os dados
+        }
       } else {
         const storedUser = JSON.parse(localStorage.getItem("@ticketsPro"));
         if (storedUser) {
@@ -426,6 +435,48 @@ function AuthProvider({ children }) {
     }
   }
 
+  async function removerNota(filmeId) {
+    console.log(
+      "ID recebido na função removerNota:",
+      filmeId,
+      "Tipo:",
+      typeof filmeId
+    ); // Adicione este log
+    if (!user) {
+      console.error("Usuário não autenticado");
+      return;
+    }
+
+    if (typeof filmeId !== "string") {
+      console.error("O ID do filme deve ser uma string.");
+      return;
+    }
+
+    const userRef = doc(db, "users", user.uid);
+
+    try {
+      console.log("Removendo a nota do filme:", filmeId);
+
+      await updateDoc(userRef, {
+        [`visto.${filmeId}`]: deleteField(), // Usa deleteField() para remover o campo
+      });
+
+      setUser((prevUser) => {
+        const updatedVisto = { ...prevUser.visto };
+        delete updatedVisto[filmeId]; // Remove o filme do estado local
+
+        return {
+          ...prevUser,
+          visto: updatedVisto,
+        };
+      });
+
+      console.log("Nota do filme removida com sucesso do Firebase");
+    } catch (error) {
+      console.error("Erro ao remover a nota do filme no Firebase:", error);
+    }
+  }
+
   if (loading) {
     return <div>Carregando...</div>;
   }
@@ -445,6 +496,7 @@ function AuthProvider({ children }) {
         removerAssistir,
         avaliarFilme,
         darNota,
+        removerNota,
         setUser,
       }}
     >

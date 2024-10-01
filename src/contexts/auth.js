@@ -344,12 +344,29 @@ function AuthProvider({ children }) {
         return;
       }
 
+      // Buscando detalhes do filme para pegar os gêneros
+      const filmeResponse = await fetch(
+        `https://api.themoviedb.org/3/movie/${filmeId}?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR`
+      );
+      const filmeData = await filmeResponse.json();
+      const generos = filmeData.genres.map((g) => g.name);
+
+      // Criação do objeto para contar gêneros
+      const generoCounts = generos.reduce((acc, genero) => {
+        acc[genero] = (userData.generos?.[genero] || 0) + 1;
+        return acc;
+      }, {});
+
       await setDoc(
         userRef,
         {
           visto: {
             ...userData.visto,
             [filmeId]: 0,
+          },
+          generos: {
+            ...userData.generos,
+            ...generoCounts, // Mescla os contadores de gêneros
           },
         },
         { merge: true }
@@ -361,9 +378,13 @@ function AuthProvider({ children }) {
           ...prevUser.visto,
           [filmeId]: 0,
         },
+        generos: {
+          ...prevUser.generos,
+          ...generoCounts,
+        },
       }));
 
-      console.log("Filme avaliado com sucesso no Firebase");
+      console.log("Filme avaliado e gêneros salvos com sucesso no Firebase");
     } catch (error) {
       console.error("Erro ao avaliar filme no Firebase:", error);
     }

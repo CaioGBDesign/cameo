@@ -10,33 +10,93 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 40px;
+    gap: 20px;
 
     width: 100%;
     margin-top: 220px;
     margin-bottom: 50px;
 
-    .tituloFilmes {
+    .ContGraficosGeneros {
       display: flex;
       justify-content: center;
-      align-items: center;
 
-      z-index: 1;
-
-      .contTitulos {
+      width: 100%;
+      .GraficosGeneros {
         display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        gap: 20px;
+        justify-content: start;
 
         width: 85%;
 
-        .NotasFavoritos {
+        z-index: 1;
+
+        overflow: scroll;
+
+        .ContGraficos {
           display: flex;
-          justify-content: center;
           align-items: center;
           gap: 10px;
+
+          width: 100%;
+
+          z-index: 1;
+
+          .BoxtGraficos {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+
+            height: 100px;
+
+            .quantidadePercentual {
+              span {
+                color: #fff;
+                font-size: 10px;
+
+                opacity: 0.8;
+                margin: 0;
+                padding: 0;
+              }
+            }
+
+            .BarraGenero {
+              width: 50px;
+              min-height: 5px;
+
+              background: #2ba8e2;
+              border-radius: 2px;
+
+              animation: graph 1s forwards ease-in-out;
+
+              @keyframes graph {
+                0% {
+                  height: 0;
+                }
+              }
+            }
+
+            .GeneroFilmes {
+              display: flex;
+
+              span {
+                width: 45px;
+
+                color: #fff;
+                font-size: 10px;
+
+                opacity: 0.5;
+                margin: 0;
+                padding: 0;
+
+                text-align: center;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                word-wrap: break-word;
+              }
+            }
+          }
         }
       }
     }
@@ -73,9 +133,17 @@
         width: 85%;
 
         .listaFilmes {
-          display: flex;
-          flex-wrap: wrap;
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
           gap: 20px;
+
+          @media (max-width: 768px) {
+            grid-template-columns: repeat(4, 1fr);
+          }
+
+          @media (max-width: 480px) {
+            grid-template-columns: repeat(4, 1fr);
+          }
         }
       }
     }

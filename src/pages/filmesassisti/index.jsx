@@ -1,13 +1,10 @@
 import styles from "./index.module.scss";
 import { useEffect, useState } from "react";
 import Header from "@/components/Header";
-import NotasFilmes from "@/components/botoes/notas";
-import TitulosFilmes from "@/components/titulosfilmes";
 import FundoTitulos from "@/components/fundotitulos";
 import Search from "@/components/busca";
 import Titulolistagem from "@/components/titulolistagem";
 import Miniaturafilmes from "@/components/miniaturafilmes";
-import BotaoPlay from "@/components/botoes/play";
 import { useAuth } from "@/contexts/auth";
 import Private from "@/components/Private";
 
@@ -18,21 +15,8 @@ const FilmesAssisti = () => {
   const [filmeAleatorio, setFilmeAleatorio] = useState(null);
   const [linkTrailer, setLinkTrailer] = useState("#");
   const [mostrarBotaoFechar, setMostrarBotaoFechar] = useState(false);
-
-  useEffect(() => {
-    // Função para buscar filmes já vistos...
-  }, [user]);
-
-  const handleExcluirFilme = async (filmeId) => {
-    try {
-      await removerAssistir(filmeId); // Função para remover o filme
-      setFilmesVistos((prevFilmes) =>
-        prevFilmes.filter((filme) => filme.id !== filmeId)
-      );
-    } catch (error) {
-      console.error("Erro ao excluir filme:", error);
-    }
-  };
+  const [generoCounts, setGeneroCounts] = useState([]);
+  const [heights, setHeights] = useState({}); // Estado para armazenar as alturas das barras
 
   useEffect(() => {
     const fetchFilmesVistos = async () => {
@@ -42,7 +26,6 @@ const FilmesAssisti = () => {
       }
 
       const ids = Object.keys(user.visto);
-
       if (!ids.length) {
         setFilmesVistos([]);
         setLoading(false);
@@ -82,6 +65,31 @@ const FilmesAssisti = () => {
           setFilmeAleatorio(filmesComAvaliacoes[randomIndex]);
           setLinkTrailer(filmesComAvaliacoes[randomIndex]?.trailerLink || "#");
         }
+
+        // Cálculo de gêneros após obter filmes
+        const novosGeneroCounts = {};
+        filmesComAvaliacoes.forEach((filme) => {
+          filme.genres.forEach((genero) => {
+            if (!novosGeneroCounts[genero.name]) {
+              novosGeneroCounts[genero.name] = 0;
+            }
+            novosGeneroCounts[genero.name]++;
+          });
+        });
+
+        // Transformar o objeto em um array, ordenar e definir o estado
+        const generosOrdenados = Object.entries(novosGeneroCounts).sort(
+          (a, b) => b[1] - a[1]
+        );
+
+        setGeneroCounts(generosOrdenados);
+
+        // Define as alturas para as barras de gênero
+        const newHeights = {};
+        generosOrdenados.forEach(([genero, quantidade]) => {
+          newHeights[genero] = `${(quantidade / filmesVistos.length) * 100}%`;
+        });
+        setHeights(newHeights);
       } catch (error) {
         console.error("Erro ao buscar filmes:", error);
       } finally {
@@ -90,7 +98,18 @@ const FilmesAssisti = () => {
     };
 
     fetchFilmesVistos();
-  }, [user]);
+  }, [user, filmesVistos.length]); // Adicionei filmesVistos.length como dependência para recalcular as alturas
+
+  const handleExcluirFilme = async (filmeId) => {
+    try {
+      await removerAssistir(filmeId);
+      setFilmesVistos((prevFilmes) =>
+        prevFilmes.filter((filme) => filme.id !== filmeId)
+      );
+    } catch (error) {
+      console.error("Erro ao excluir filme:", error);
+    }
+  };
 
   const handleRemoverClick = () => {
     setMostrarBotaoFechar(!mostrarBotaoFechar);
@@ -101,17 +120,30 @@ const FilmesAssisti = () => {
       <div className={styles.filmesAssisti}>
         <Header />
         <div className={styles.contFilmes}>
-          <div className={styles.tituloFilmes}>
-            <div className={styles.contTitulos}>
-              <BotaoPlay linkTrailer={linkTrailer} />
-              <TitulosFilmes
-                titulofilme={filmeAleatorio ? filmeAleatorio.title : ""}
-              />
-              <div className={styles.NotasFavoritos}>
-                <NotasFilmes estrelas="3" />
+          <div className={styles.ContGraficosGeneros}>
+            <div className={styles.GraficosGeneros}>
+              <div className={styles.ContGraficos}>
+                {generoCounts.map(([genero, quantidade]) => (
+                  <div key={genero} className={styles.BoxtGraficos}>
+                    <div className={styles.quantidadePercentual}>
+                      <span>
+                        {quantidade} (
+                        {Math.round((quantidade / filmesVistos.length) * 100)}%)
+                      </span>
+                    </div>
+                    <div
+                      className={styles.BarraGenero}
+                      style={{ height: heights[genero] || "0%" }} // Aplica a altura armazenada
+                    ></div>
+                    <div className={styles.GeneroFilmes}>
+                      <span>{genero}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
+
           <div className={styles.todosOsTitulos}>
             <div className={styles.contlista}>
               <Search placeholder={"Buscar filmes"} />
@@ -147,6 +179,7 @@ const FilmesAssisti = () => {
             exibirPlay={false}
             capaAssistidos={`https://image.tmdb.org/t/p/original/${filmeAleatorio.poster_path}`}
             tituloAssistidos={filmeAleatorio.title}
+            style={{ opacity: 0.3 }} // Opacidade aplicada
           />
         )}
       </div>

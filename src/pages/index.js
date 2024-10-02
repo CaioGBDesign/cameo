@@ -53,6 +53,12 @@ const Home = () => {
     removerVisto,
   } = useAuth();
 
+  const selecionarFilmeRecomendado = (id) => {
+    // Use diretamente o ID passado
+    setFilmeId(id);
+    scrollToTop();
+  };
+
   const selecionarFilmeAleatorio = () => {
     let randomFilmeId;
 
@@ -288,8 +294,8 @@ const Home = () => {
                           className={styles.listaRecomendacoes}
                           key={recomendacao.id}
                           onClick={() =>
-                            selecionarFilmeAleatorio(recomendacao.id)
-                          }
+                            selecionarFilmeRecomendado(recomendacao.id)
+                          } // Alterado aqui
                         >
                           <img
                             src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${recomendacao.poster_path}`}

@@ -1,18 +1,44 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Logo from "@/components/logo";
 import EntrarCadastrar from "@/components/botoes/acesso";
 import styles from "./index.module.scss";
 import { AuthContext } from "@/contexts/auth";
+import { auth } from "@/services/firebaseConection";
+import { sendPasswordResetEmail } from "firebase/auth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
   const router = useRouter();
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const { signIn, loadingAuth } = useContext(AuthContext);
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    if (!email) {
+      setErrorMessage("Por favor, preencha o campo de e-mail.");
+      return;
+    }
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setSuccessMessage("Um e-mail de redefinição de senha foi enviado.");
+      setEmail(""); // Limpa o campo após o envio
+    } catch (error) {
+      console.error("Erro ao enviar e-mail de redefinição de senha:", error);
+      setErrorMessage(
+        "Erro ao enviar e-mail. Verifique se o e-mail está correto."
+      );
+    }
+  };
 
   async function handleSignIn(e) {
     e.preventDefault();
@@ -28,7 +54,7 @@ const Login = () => {
           setErro("Senha incorreta. Verifique e tente novamente.");
         } else if (error.code === "auth/invalid-credential") {
           setErro(
-            "Usuário não encontrado. Verifique seu e-mail ou faça seu regitro."
+            "Usuário não encontrado. Verifique seu e-mail ou faça seu registro."
           );
         } else {
           setErro(
@@ -45,7 +71,6 @@ const Login = () => {
     <main className={styles["background"]}>
       <div className={styles.login}>
         <Logo />
-
         <div className={styles.formulario}>
           <form onSubmit={handleSignIn}>
             <div className={styles.inputCont}>
@@ -58,6 +83,9 @@ const Login = () => {
                   required
                 />
               </div>
+              {errorMessage && !email && (
+                <p style={{ color: "red" }}>{errorMessage}</p>
+              )}
               {erro && <p>{erro}</p>}
               <div className={styles.inputCameo}>
                 <input
@@ -68,9 +96,9 @@ const Login = () => {
                   required
                 />
                 <div className={styles.contSenha}>
-                  <Link href="/" className={styles.esqueciSenha}>
-                    Esqueceu a senha?
-                  </Link>
+                  <button type="button" onClick={handleResetPassword}>
+                    Esqueci minha senha
+                  </button>
                 </div>
               </div>
             </div>
@@ -100,6 +128,7 @@ const Login = () => {
               </button>
             </div>
           </form>
+          {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
         </div>
       </div>
     </main>

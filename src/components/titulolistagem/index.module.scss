@@ -31,17 +31,17 @@
     }
   }
 
-  .remover {
-    border: solid #ffffff20 1px;
-    border-radius: 5px;
+  .botoes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 
-    padding: 10px;
+    .remover,
+    .filtros {
+      padding: 5px;
 
-    width: 100px;
-
-    span {
-      font-size: 14px;
-      color: white;
+      border-radius: 5px;
     }
   }
 }

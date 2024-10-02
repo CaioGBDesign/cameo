@@ -199,7 +199,7 @@ const Home = () => {
                     usuarioFilmeVisto={user?.visto || []}
                     onClickModal={() => abrirModalAvaliar(filmeId)}
                   />
-                  {user?.assistir && !user.assistir.includes(filmeId) && (
+                  {user?.assistir && !user.assistir[filmeId] && (
                     <AssistirFilme
                       filmeId={filmeId}
                       assistirFilme={assistirFilme}

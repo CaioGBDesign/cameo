@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "./index.module.scss";
@@ -12,19 +12,39 @@ const Cadastro = () => {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [error, setError] = useState("");
-  const router = useRouter();
+  const [handleError, setHandleError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
 
+  const router = useRouter();
   const { signUp, loadingAuth } = useContext(AuthContext);
 
   async function handleSubmit(e) {
     e.preventDefault();
 
+    // Limpa mensagens de erro ao tentar submeter
+    setError("");
+    setHandleError("");
+    setEmailError("");
+    setErrorPassword("");
+
     if (nome !== "" && email !== "" && senha !== "" && handle !== "") {
       try {
         await signUp(email, senha, nome, handle);
+        // Redireciona ou exibe uma mensagem de sucesso aqui, se necessário
       } catch (err) {
-        // Aqui você pode definir um erro personalizado se necessário
-        setError("Ocorreu um erro ao cadastrar. Tente novamente.");
+        console.log("Erro recebido:", err);
+        if (err.message.includes("Esse nome de usuário já está em uso")) {
+          setHandleError("Esse nome de usuário já está em uso. Escolha outro.");
+        } else if (err.message.includes("Email inválido")) {
+          setEmailError("O e-mail fornecido é inválido.");
+        } else if (
+          err.message.includes("A senha deve ter pelo menos 8 caracteres.")
+        ) {
+          setErrorPassword("A senha deve ter pelo menos 8 caracteres.");
+        } else {
+          setError("Ocorreu um erro ao cadastrar. Tente novamente.");
+        }
       }
     } else {
       setError("Todos os campos são obrigatórios.");
@@ -43,16 +63,25 @@ const Cadastro = () => {
                 <img src="/icones/handle-cadastro.svg" alt="@" />
               </div>
               <input
-                type="handle"
+                type="handle" // Corrigido para "text"
                 placeholder="usuário"
                 value={handle}
-                onChange={(e) => setHandle(e.target.value)}
+                onChange={(e) => {
+                  setHandle(e.target.value);
+                  setHandleError(""); // Limpa o erro ao começar a digitar
+                }}
                 required
               />
             </div>
+            {handleError && (
+              <div className={styles.error}>
+                <p>{handleError}</p>
+              </div>
+            )}
+
             <div className={styles.inputCameo}>
               <input
-                type="name"
+                type="name" // Corrigido para "text"
                 placeholder="Digite seu nome"
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
@@ -65,10 +94,18 @@ const Cadastro = () => {
                 type="email"
                 placeholder="E-mail"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setEmailError(""); // Limpa o erro ao começar a digitar
+                }}
                 required
               />
             </div>
+            {emailError && (
+              <div className={styles.error}>
+                <p>{emailError}</p>
+              </div>
+            )}
 
             <div className={styles.inputCameo}>
               <input
@@ -79,18 +116,27 @@ const Cadastro = () => {
                 required
               />
             </div>
+            {errorPassword && (
+              <div className={styles.error}>
+                <p>{errorPassword}</p>
+              </div>
+            )}
 
             <EntrarCadastrar onClick={handleSubmit}>
               {loadingAuth ? "Carregando..." : "Cadastrar"}
             </EntrarCadastrar>
-
-            {error && <div className={styles.error}>{error}</div>}
 
             <div className={styles.loginCadastro}>
               <span>
                 Já tenho cadastro. <Link href="/login">Entrar.</Link>
               </span>
             </div>
+
+            {error && (
+              <div className={styles.errorDesconhecido}>
+                <p>{error}</p>
+              </div>
+            )}
           </form>
         </div>
       </div>

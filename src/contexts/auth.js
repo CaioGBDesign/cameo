@@ -17,6 +17,8 @@ import {
   getDocs,
   collection,
   deleteDoc,
+  query,
+  where,
 } from "firebase/firestore";
 import { useRouter } from "next/router";
 import ModalConfirmacaoCadastro from "@/components/modais/confirmacao-cadastro";
@@ -32,6 +34,7 @@ function AuthProvider({ children }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
 
   const router = useRouter();
 
@@ -124,10 +127,28 @@ function AuthProvider({ children }) {
     }
   }
 
+  function validatePassword(password) {
+    return password.length >= 8;
+  }
+
   async function signUp(email, senha, nome, handle) {
     setLoadingAuth(true);
 
+    // Valida a senha
+    if (!validatePassword(senha)) {
+      throw new Error("A senha deve ter pelo menos 8 caracteres.");
+    }
+
     try {
+      // Verifica se o handle já está em uso
+      const usersRef = collection(db, "users");
+      const q = query(usersRef, where("handle", "==", handle));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        throw new Error("Esse nome de usuário já está em uso. Escolha outro."); // Aqui é onde você lança o erro
+      }
+
       const value = await createUserWithEmailAndPassword(auth, email, senha);
       let uid = value.user.uid;
 
@@ -158,6 +179,7 @@ function AuthProvider({ children }) {
       setModalVisible(true);
     } catch (error) {
       console.error("Erro ao tentar registrar:", error);
+      throw error; // Lança o erro para ser capturado no componente de cadastro
     } finally {
       setLoadingAuth(false);
     }
@@ -360,22 +382,22 @@ function AuthProvider({ children }) {
       const filmeData = await filmeResponse.json();
       const generos = filmeData.genres.map((g) => g.name);
 
-      // Criação do objeto para contar gêneros
-      const generoCounts = generos.reduce((acc, genero) => {
-        acc[genero] = (userData.generos?.[genero] || 0) + 1;
-        return acc;
-      }, {});
+      // Estrutura do objeto para o filme visto
+      const dataAtual = new Date();
+      const vistoFilme = {
+        nota: 0,
+        data: `${dataAtual.getDate()}/${
+          dataAtual.getMonth() + 1
+        }/${dataAtual.getFullYear()}`, // Formato: dia/mês/ano
+        generos: generos, // Armazenando os gêneros
+      };
 
       await setDoc(
         userRef,
         {
           visto: {
             ...userData.visto,
-            [filmeId]: 0,
-          },
-          generos: {
-            ...userData.generos,
-            ...generoCounts, // Mescla os contadores de gêneros
+            [filmeId]: vistoFilme,
           },
         },
         { merge: true }
@@ -385,15 +407,11 @@ function AuthProvider({ children }) {
         ...prevUser,
         visto: {
           ...prevUser.visto,
-          [filmeId]: 0,
-        },
-        generos: {
-          ...prevUser.generos,
-          ...generoCounts,
+          [filmeId]: vistoFilme,
         },
       }));
 
-      console.log("Filme avaliado e gêneros salvos com sucesso no Firebase");
+      console.log("Filme avaliado com sucesso no Firebase");
     } catch (error) {
       console.error("Erro ao avaliar filme no Firebase:", error);
     }
@@ -415,17 +433,33 @@ function AuthProvider({ children }) {
     const userRef = doc(db, "users", user.uid);
 
     try {
-      console.log("Atualizando a nota do filme:", filmeId, "para", nota);
+      const docSnap = await getDoc(userRef);
+      const userData = docSnap.data();
 
+      if (!userData.visto || !userData.visto[filmeId]) {
+        console.error("Filme não encontrado nos dados do usuário.");
+        return;
+      }
+
+      // Obtém o filme existente
+      const filmeExistente = userData.visto[filmeId];
+
+      // Atualiza a nota e mantém os outros campos
       await updateDoc(userRef, {
-        [`visto.${filmeId}`]: nota,
+        [`visto.${filmeId}`]: {
+          ...filmeExistente,
+          nota: nota, // Atualiza apenas a nota
+        },
       });
 
       setUser((prevUser) => ({
         ...prevUser,
         visto: {
           ...prevUser.visto,
-          [filmeId]: nota,
+          [filmeId]: {
+            ...prevUser.visto[filmeId],
+            nota: nota, // Atualiza a nota no estado local
+          },
         },
       }));
 

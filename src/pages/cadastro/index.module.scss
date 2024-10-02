@@ -80,6 +80,31 @@
           }
         }
 
+        .error {
+          width: 100%;
+          margin-top: -20px;
+          p {
+            font-size: 12px;
+            font-weight: 200;
+            color: #ff0000;
+
+            width: 100%;
+          }
+        }
+
+        .errorDesconhecido {
+          width: 100%;
+
+          p {
+            font-size: 12px;
+            font-weight: 200;
+            color: #ff0000;
+            text-align: center;
+
+            width: 100%;
+          }
+        }
+
         .loginCadastro {
           display: flex;
           justify-content: center;

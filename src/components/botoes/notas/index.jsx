@@ -32,7 +32,8 @@ const NotasFilmes = ({
       <button onClick={handleClick}>
         {filmeVisto ? (
           <div className={styles.estrelas}>
-            <Estrelas estrelas={user.visto[filmeId]} starWidth={"14px"} />
+            {/* Acesse a nota do filme corretamente */}
+            <Estrelas estrelas={user.visto[filmeId].nota} starWidth={"14px"} />
           </div>
         ) : (
           <AvaliarFilme />

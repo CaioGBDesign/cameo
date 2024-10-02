@@ -10,12 +10,11 @@ const AssistirFilme = ({
   const [assistido, setAssistido] = useState(false);
 
   useEffect(() => {
+    // Verifica se usuarioParaVer é um array
+    const filmesParaVer = Array.isArray(usuarioParaVer) ? usuarioParaVer : [];
+
     // Verifica se o filme está na lista de assistidos do usuário
-    if (usuarioParaVer.includes(filmeId)) {
-      setAssistido(true);
-    } else {
-      setAssistido(false);
-    }
+    setAssistido(filmesParaVer.includes(filmeId));
   }, [usuarioParaVer, filmeId]);
 
   const handleClick = (event) => {
@@ -28,6 +27,11 @@ const AssistirFilme = ({
       assistirFilme(filmeId); // Caso contrário, adiciona aos assistidos
     }
   };
+
+  // Não renderiza o botão se o filme já foi assistido
+  if (assistido) {
+    return null; // Ou você pode retornar algo como <span>Assistido</span> se desejar exibir uma mensagem
+  }
 
   return (
     <div className={styles.assistirFilme}>

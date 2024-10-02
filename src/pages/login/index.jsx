@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Logo from "@/components/logo";
 import EntrarCadastrar from "@/components/botoes/acesso";
-import Header from "@/components/Header";
 import styles from "./index.module.scss";
 import { AuthContext } from "@/contexts/auth";
 

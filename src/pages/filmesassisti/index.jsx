@@ -7,6 +7,7 @@ import Titulolistagem from "@/components/titulolistagem";
 import Miniaturafilmes from "@/components/miniaturafilmes";
 import { useAuth } from "@/contexts/auth";
 import Private from "@/components/Private";
+import Link from "next/link";
 
 const FilmesAssisti = () => {
   const { user, removerNota } = useAuth();
@@ -17,6 +18,7 @@ const FilmesAssisti = () => {
   const [mostrarBotaoFechar, setMostrarBotaoFechar] = useState(false);
   const [generoCounts, setGeneroCounts] = useState([]);
   const [heights, setHeights] = useState({}); // Estado para armazenar as alturas das barras
+  const totalFilmesVistos = 22;
 
   useEffect(() => {
     const fetchFilmesVistos = async () => {
@@ -77,7 +79,7 @@ const FilmesAssisti = () => {
           });
         });
 
-        // Transformar o objeto em um array, ordenar e definir o estado
+        // Transformar o objeto em um array e ordenar
         const generosOrdenados = Object.entries(novosGeneroCounts).sort(
           (a, b) => b[1] - a[1]
         );
@@ -87,7 +89,7 @@ const FilmesAssisti = () => {
         // Define as alturas para as barras de gênero
         const newHeights = {};
         generosOrdenados.forEach(([genero, quantidade]) => {
-          newHeights[genero] = `${(quantidade / filmesVistos.length) * 100}%`;
+          newHeights[genero] = `${(quantidade / totalFilmesVistos) * 100}%`; // Usando total fixo
         });
         setHeights(newHeights);
       } catch (error) {
@@ -129,71 +131,97 @@ const FilmesAssisti = () => {
   return (
     <Private>
       <div className={styles.filmesAssisti}>
-        <Header />
-        <div className={styles.contFilmes}>
-          <div className={styles.ContGraficosGeneros}>
-            <div className={styles.GraficosGeneros}>
-              <div className={styles.ContGraficos}>
-                {generoCounts.map(([genero, quantidade]) => (
-                  <div key={genero} className={styles.BoxtGraficos}>
-                    <div className={styles.quantidadePercentual}>
-                      <span>
-                        {quantidade} (
-                        {Math.round((quantidade / filmesVistos.length) * 100)}%)
-                      </span>
-                    </div>
-                    <div
-                      className={styles.BarraGenero}
-                      style={{ height: heights[genero] || "0%" }} // Aplica a altura armazenada
-                    >
-                      <img src="/icones/estrado.svg" />
-                    </div>
-                    <div className={styles.GeneroFilmes}>
-                      <span>{genero}</span>
-                    </div>
+        {filmesVistos.length > 0 ? (
+          <>
+            <Header />
+            <div className={styles.contFilmes}>
+              <div className={styles.ContGraficosGeneros}>
+                <div className={styles.GraficosGeneros}>
+                  <div className={styles.ContGraficos}>
+                    {generoCounts.map(([genero, quantidade]) => (
+                      <div key={genero} className={styles.BoxtGraficos}>
+                        <div className={styles.quantidadePercentual}>
+                          <span>
+                            {quantidade} (
+                            {totalFilmesVistos > 0
+                              ? Math.floor(
+                                  (quantidade / totalFilmesVistos) * 100
+                                )
+                              : 0}
+                            %)
+                          </span>
+                        </div>
+                        <div
+                          className={styles.BarraGenero}
+                          style={{ height: heights[genero] || "0%" }}
+                        >
+                          <img src="/icones/estrado.svg" />
+                        </div>
+                        <div className={styles.GeneroFilmes}>
+                          <span>{genero}</span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div className={styles.todosOsTitulos}>
-            <div className={styles.contlista}>
-              <Search placeholder={"Buscar filmes"} />
-              <Titulolistagem
-                quantidadeFilmes={filmesVistos.length}
-                titulolistagem={"Filmes que já assisti"}
-                configuracoes={true}
-                handleRemoverClick={handleRemoverClick}
-              />
-              <div className={styles.listaFilmes}>
-                {loading ? (
-                  <p>Carregando...</p>
-                ) : filmesVistos.length ? (
-                  filmesVistos.map((filme) => (
-                    <Miniaturafilmes
-                      key={filme.id}
-                      capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
-                      titulofilme={filme.title}
-                      mostrarBotaoFechar={mostrarBotaoFechar}
-                      excluirFilme={() => handleExcluirFilme(String(filme.id))}
-                      avaliacao={filme.avaliacao}
-                    />
-                  ))
-                ) : (
-                  <p>Você ainda não marcou nenhum filme como assistido.</p>
-                )}
+              <div className={styles.todosOsTitulos}>
+                <div className={styles.contlista}>
+                  <Search placeholder={"Buscar filmes"} />
+                  <Titulolistagem
+                    quantidadeFilmes={filmesVistos.length}
+                    titulolistagem={"Filmes que já assisti"}
+                    configuracoes={true}
+                    handleRemoverClick={handleRemoverClick}
+                  />
+                  <div className={styles.listaFilmes}>
+                    {loading ? (
+                      <p>Carregando...</p>
+                    ) : (
+                      filmesVistos.map((filme) => (
+                        <Miniaturafilmes
+                          key={filme.id}
+                          capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
+                          titulofilme={filme.title}
+                          mostrarBotaoFechar={mostrarBotaoFechar}
+                          excluirFilme={() =>
+                            handleExcluirFilme(String(filme.id))
+                          }
+                          avaliacao={filme.avaliacao}
+                        />
+                      ))
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
+            {filmeAleatorio && (
+              <FundoTitulos
+                exibirPlay={false}
+                capaAssistidos={`https://image.tmdb.org/t/p/original/${filmeAleatorio.poster_path}`}
+                tituloAssistidos={filmeAleatorio.title}
+                opacidade={0.2}
+              />
+            )}
+          </>
+        ) : (
+          <div className={styles.blankSlate}>
+            <Header />
+
+            <div className={styles.banner}>
+              <img
+                src="background/banner-blank-slate.png"
+                alt="Filmes já vistos"
+              />
+            </div>
+            <span>Você ainda não tem filmes avaliados.</span>
+            <div className={styles.botaoHome}>
+              <Link href={"/"}>
+                <p>Adicionar filmes</p>
+              </Link>
+            </div>
           </div>
-        </div>
-        {filmeAleatorio && (
-          <FundoTitulos
-            exibirPlay={false}
-            capaAssistidos={`https://image.tmdb.org/t/p/original/${filmeAleatorio.poster_path}`}
-            tituloAssistidos={filmeAleatorio.title}
-            opacidade={0.2}
-          />
         )}
       </div>
     </Private>

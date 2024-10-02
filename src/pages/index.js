@@ -54,10 +54,12 @@ const Home = () => {
   } = useAuth();
 
   const selecionarFilmeRecomendado = (id) => {
-    // Use diretamente o ID passado
-    setFilmeId(id);
+    setFilmeId(String(id)); // Converter id para string
+    setFilme(null); // Limpa o estado do filme para forçar um novo fetch
     scrollToTop();
   };
+
+  const Loader = () => <div>Carregando...</div>;
 
   const selecionarFilmeAleatorio = () => {
     let randomFilmeId;
@@ -164,16 +166,34 @@ const Home = () => {
     });
   };
 
-  const handleSalvarFilme = (id) => salvarFilme(id);
+  const handleSalvarFilme = (id) => {
+    console.log("Salvando filme:", id);
+    salvarFilme(id);
+  };
+
   const handleAssistirFilme = (id) => assistirFilme(id);
-  const handleAvaliarFilme = (id) => avaliarFilme(id);
+
+  const handleAvaliarFilme = (id) => {
+    console.log("Avaliando filme:", id);
+    avaliarFilme(id);
+  };
 
   const abrirModalAvaliar = (id) => {
     setFilmeIdParaAvaliar(id);
     abrirModal("avaliar-filme");
   };
 
-  if (!filme) return <p>Carregando...</p>;
+  useEffect(() => {
+    if (!filmeId) return;
+
+    const fetchFilme = async () => {
+      // código para buscar o filme e definir os estados
+    };
+
+    fetchFilme();
+  }, [filmeId]);
+
+  if (!filme && filmeId) return <Loader />; // Use um componente loader
 
   return (
     <>
@@ -184,15 +204,15 @@ const Home = () => {
             <div className={styles.tituloFilmes}>
               <div className={styles.contTitulos}>
                 <TitulosFilmes
-                  titulofilme={filme.title}
+                  titulofilme={filme ? filme.title : "Título não disponível"} // Adicione a verificação aqui
                   generofilme={
-                    filme.genres
+                    filme && filme.genres
                       ? filme.genres.map((g) => g.name).join(", ")
                       : "Gênero não disponível"
                   }
-                  duracaofilme={`${filme.runtime} min`}
+                  duracaofilme={`${filme ? filme.runtime : 0} min`} // Verifique se filme não é nulo
                   paisOrigem={
-                    filme.production_countries
+                    filme && filme.production_countries
                       ? filme.production_countries.map((pc) => pc.iso_3166_1)
                       : []
                   }
@@ -222,14 +242,16 @@ const Home = () => {
                 </div>
               </div>
             </div>
+
             <div className={styles.infoFilmes}>
-              {filme.overview && <Sinopse sinopse={filme.overview} />}
+              {filme && filme.overview && <Sinopse sinopse={filme.overview} />}
               <NotasCameo />
               <Avaliacao avaliador={"Caio Goulart"} />
               {servicosStreaming.length > 0 && (
                 <Servicos servicos={servicosStreaming} />
               )}
             </div>
+
             <div className={styles.elencoGeral}>
               <Dublagem />
               <hr />
@@ -241,7 +263,7 @@ const Home = () => {
               <div className={styles.detalhes}>
                 <h3>Produção</h3>
                 <div className={styles.producao}>
-                  {filme.production_companies ? (
+                  {filme && filme.production_companies ? (
                     filme.production_companies.map((pc) => (
                       <div className={styles.produtora} key={pc.id}>
                         <p>{pc.name}</p>
@@ -252,38 +274,50 @@ const Home = () => {
                   )}
                 </div>
               </div>
+
               <div className={styles.detalhes}>
                 <h3>Lançamento</h3>
-                <p>{new Date(filme.release_date).toLocaleDateString()}</p>
+                <p>
+                  {filme && filme.release_date
+                    ? new Date(filme.release_date).toLocaleDateString()
+                    : "Data de lançamento não disponível"}
+                </p>
               </div>
+
               <div className={styles.detalhes}>
                 <h3>Classificação Indicativa</h3>
                 <p>
-                  {filme.release_dates?.results?.find(
-                    (result) => result.iso_3166_1 === "BR"
-                  )?.release_dates[0]?.certification || "Não disponível"}
+                  {filme && filme.release_dates && filme.release_dates.results
+                    ? filme.release_dates.results.find(
+                        (result) => result.iso_3166_1 === "BR"
+                      )?.release_dates[0]?.certification || "Não disponível"
+                    : "Classificação não disponível"}
                 </p>
               </div>
-              {filme.budget && (
+
+              {filme && filme.budget && (
                 <div className={styles.detalhes}>
                   <h3>Orçamento</h3>
                   <p>US$ {filme.budget.toLocaleString()}</p>
                 </div>
               )}
-              {filme.revenue && (
+
+              {filme && filme.revenue && (
                 <div className={styles.detalhes}>
                   <h3>Bilheteira</h3>
                   <p>US$ {filme.revenue.toLocaleString()}</p>
                 </div>
               )}
+
               <div className={styles.detalhes}>
                 <h3>País de origem</h3>
                 <p>
-                  {filme.production_countries
+                  {filme && filme.production_countries
                     ? filme.production_countries.map((pc) => pc.name).join(", ")
                     : "País não disponível"}
                 </p>
               </div>
+
               {recomendacoes.length > 0 && (
                 <div className={styles.recomendacoes}>
                   <h3>Recomendações</h3>
@@ -293,9 +327,12 @@ const Home = () => {
                         <div
                           className={styles.listaRecomendacoes}
                           key={recomendacao.id}
-                          onClick={() =>
-                            selecionarFilmeRecomendado(recomendacao.id)
-                          } // Alterado aqui
+                          onClick={
+                            () =>
+                              selecionarFilmeRecomendado(
+                                String(recomendacao.id)
+                              ) // Converter ID para string
+                          }
                         >
                           <img
                             src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${recomendacao.poster_path}`}
@@ -321,10 +358,13 @@ const Home = () => {
 
         <FundoTitulos
           exibirPlay={!!trailerLink}
-          capaAssistidos={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
-          tituloAssistidos={filme.title}
+          capaAssistidos={`https://image.tmdb.org/t/p/original/${
+            filme ? filme.poster_path : ""
+          }`}
+          tituloAssistidos={filme ? filme.title : "Título não disponível"}
           trailerLink={trailerLink || "#"}
         />
+
         {modalAberto === "filtros" && <ModalFiltros onClose={fecharModal} />}
         {modalAberto === "avaliar-filme" && (
           <ModalAvaliar

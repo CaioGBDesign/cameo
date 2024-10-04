@@ -48,11 +48,11 @@ const PerfilUsuario = () => {
 
             <div className={styles.compartilhar}>
               <Handle></Handle>
-              <Compartilhar></Compartilhar>
+              {/* <Compartilhar></Compartilhar> */}
             </div>
           </div>
 
-          <div className={styles.rede}>
+          {/* <div className={styles.rede}>
             <Rede
               iconePerfil={"/icones/seguidores.svg"}
               linkRede={"/seguidores"}
@@ -71,13 +71,13 @@ const PerfilUsuario = () => {
               titulo="Avaliações"
               valor={30}
             />
-            {/*<Rede
+           <Rede
             iconePerfil={"/icones/potterHead.svg"}
             linkRede={"/dadospessoais"}
             titulo="Estilo"
             valor={"PotterHead"}
-          />*/}
-          </div>
+          />
+          </div> */}
 
           <div className={styles.contDados}>
             <div className={styles.botoesDados}>
@@ -101,11 +101,11 @@ const PerfilUsuario = () => {
                     imagemPerfil={"/icones/claquete-amarela.svg"}
                   />
 
-                  <CardsPerfil
+                  {/* <CardsPerfil
                     linkDadosPerfil={"/listas-compartilhadas"}
                     DadosdoPerfil={"Listas compartilhadas"}
                     imagemPerfil={"/icones/claquete-roxa.svg"}
-                  />
+                  /> */}
 
                   <CardsPerfil
                     linkDadosPerfil={"/favoritos"}

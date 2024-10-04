@@ -106,8 +106,10 @@ const DadosPessoais = () => {
               type="text"
               value={handle}
               onChange={(e) => setHandle(e.target.value)}
+              disabled
               placeholder="Handle"
             />
+
             <input
               type="text"
               value={email}
@@ -146,19 +148,6 @@ const DadosPessoais = () => {
               </option>
             ))}
           </select>*/}
-
-            <select
-              id="selectEstilo"
-              value={estilo}
-              onChange={(e) => setEstilo(e.target.value)}
-            >
-              <option value="">Estilo cinéfilo</option>
-              {estiloCinefilo.map((item, index) => (
-                <option key={`${item.value}-${index}`} value={item.value}>
-                  {item.label}
-                </option>
-              ))}
-            </select>
 
             <div className={styles.sair}>
               <button type="button" onClick={logout}>

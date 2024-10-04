@@ -65,6 +65,48 @@
           justify-content: center;
           align-items: center;
           gap: 10px;
+
+          a {
+            text-decoration: none;
+
+            display: flex;
+            gap: 10px;
+
+            .NotasLogin {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              background: white;
+              border-radius: 5px;
+
+              padding: 13px 15px;
+
+              .avaliar {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+
+                font-size: 14px;
+                font-weight: 700;
+                color: #250d2f;
+              }
+            }
+
+            .FavoritarLogin {
+              background: rgba(255, 255, 255, 0.062745098);
+              border-radius: 5px;
+
+              padding: 12px;
+
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              cursor: pointer;
+            }
+          }
         }
       }
     }

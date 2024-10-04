@@ -102,21 +102,15 @@ const DadosPessoais = () => {
               onChange={(e) => setNome(e.target.value)}
               placeholder="Nome"
             />
-            <input
-              type="text"
-              value={handle}
-              onChange={(e) => setHandle(e.target.value)}
-              disabled
-              placeholder="Handle"
-            />
 
-            <input
-              type="text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled
-              placeholder="Email"
-            />
+            <div className={styles.inputDisable}>
+              <p>{handle}</p>
+            </div>
+
+            <div className={styles.inputDisable}>
+              <p>{email}</p>
+            </div>
+
             <BotaoSecundario
               textoBotaoSecundario={"Redefinir senha"}
               typeBsecundario={"button"}

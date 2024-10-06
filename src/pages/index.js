@@ -35,6 +35,31 @@ const Home = () => {
   const [notaAtual, setNotaAtual] = useState(0);
   const [modalAberto, setModalAberto] = useState(null);
 
+  const countryNames = {
+    US: "Estados Unidos",
+    FR: "França",
+    IN: "Índia",
+    JP: "Japão",
+    GB: "Reino Unido",
+    IT: "Itália",
+    DE: "Alemanha",
+    BR: "Brasil",
+    KR: "Coreia do Sul",
+    ES: "Espanha",
+    CN: "China",
+    MX: "México",
+    AU: "Austrália",
+    SE: "Suécia",
+    RU: "Rússia",
+    BE: "Bélgica",
+    NL: "Países Baixos",
+    IR: "Irã",
+    CA: "Canadá",
+    TR: "Turquia",
+    FI: "Finlândia",
+    PT: "Portugal ",
+  };
+
   const abrirModal = (modalTipo) => {
     setModalAberto(modalTipo);
   };
@@ -284,38 +309,63 @@ const Home = () => {
                 </p>
               </div>
 
-              <div className={styles.detalhes}>
-                <h3>Classificação Indicativa</h3>
-                <p>
-                  {filme && filme.release_dates && filme.release_dates.results
-                    ? filme.release_dates.results.find(
-                        (result) => result.iso_3166_1 === "BR"
-                      )?.release_dates[0]?.certification || "Não disponível"
-                    : "Classificação não disponível"}
-                </p>
-              </div>
+              {filme && filme.release_dates && filme.release_dates.results
+                ? (() => {
+                    const brRelease = filme.release_dates.results.find(
+                      (result) => result.iso_3166_1 === "BR"
+                    );
+                    if (
+                      brRelease &&
+                      brRelease.release_dates.length > 0 &&
+                      brRelease.release_dates[0].certification &&
+                      !/^\d+$/.test(brRelease.release_dates[0].certification) // Verifica se a certificação não é apenas um número
+                    ) {
+                      return (
+                        <div className={styles.detalhes}>
+                          <h3>Classificação Indicativa</h3>
+                          <p>{brRelease.release_dates[0].certification}</p>
+                        </div>
+                      );
+                    }
+                    return null; // Não exibe nada se não houver classificação
+                  })()
+                : null}
 
-              {filme && filme.budget && (
-                <div className={styles.detalhes}>
-                  <h3>Orçamento</h3>
-                  <p>US$ {filme.budget.toLocaleString()}</p>
-                </div>
-              )}
+              {filme &&
+                filme.budget > 0 && ( // Verifica se o orçamento é maior que zero
+                  <div className={styles.detalhes}>
+                    <h3>Orçamento</h3>
+                    <p>US$ {filme.budget.toLocaleString()}</p>
+                  </div>
+                )}
 
-              {filme && filme.revenue && (
-                <div className={styles.detalhes}>
-                  <h3>Bilheteira</h3>
-                  <p>US$ {filme.revenue.toLocaleString()}</p>
-                </div>
-              )}
+              {filme &&
+                filme.revenue > 0 && ( // Verifica se a bilheteira é maior que zero
+                  <div className={styles.detalhes}>
+                    <h3>Bilheteira</h3>
+                    <p>US$ {filme.revenue.toLocaleString()}</p>
+                  </div>
+                )}
 
               <div className={styles.detalhes}>
                 <h3>País de origem</h3>
-                <p>
-                  {filme && filme.production_countries
-                    ? filme.production_countries.map((pc) => pc.name).join(", ")
-                    : "País não disponível"}
-                </p>
+                <div className={styles.producao}>
+                  {filme && filme.production_countries.length > 0 ? (
+                    filme.production_countries.map((country) => (
+                      <div
+                        className={styles.produtora}
+                        key={country.iso_3166_1}
+                      >
+                        <p>
+                          {countryNames[country.iso_3166_1] ||
+                            country.iso_3166_1}
+                        </p>
+                      </div>
+                    ))
+                  ) : (
+                    <p>País não disponível</p>
+                  )}
+                </div>
               </div>
 
               {recomendacoes.length > 0 && (

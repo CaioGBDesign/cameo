@@ -67,7 +67,8 @@ const Cadastro = () => {
                 placeholder="usuário"
                 value={handle}
                 onChange={(e) => {
-                  setHandle(e.target.value);
+                  const lowerCaseHandle = e.target.value.toLowerCase();
+                  setHandle(lowerCaseHandle);
                   setHandleError(""); // Limpa o erro ao começar a digitar
                 }}
                 required

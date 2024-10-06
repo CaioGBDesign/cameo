@@ -19,7 +19,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 60px;
+      gap: 40px;
 
       width: 85%;
 
@@ -32,8 +32,6 @@
         background: none;
         border: none;
         border-bottom: solid 1px #ffffff40;
-
-        padding: 0px 10px;
 
         font-size: 16px;
 
@@ -147,12 +145,6 @@
 
         &:active {
           transform: translateY(5px);
-        }
-
-        &:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-          transform: translateY(100px);
         }
       }
     }

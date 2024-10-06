@@ -52,6 +52,8 @@ const DadosPessoais = () => {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    console.log("Tentando atualizar:", { nome, handle, genero, estilo });
+
     if (nome && handle && genero && estilo) {
       const docRef = doc(db, "users", user.uid);
       await updateDoc(docRef, {
@@ -122,26 +124,13 @@ const DadosPessoais = () => {
               value={genero}
               onChange={(e) => setGenero(e.target.value)}
             >
-              <option value="">Qual opção melhor descreve você?</option>
+              <option value="">Gênero</option>
               {selectGenero.map((item, index) => (
                 <option key={`${item.value}-${index}`} value={item.value}>
                   {item.label}
                 </option>
               ))}
             </select>
-
-            {/*<select
-            id="selectEstilo"
-            value={estilo}
-            onChange={(e) => setEstilo(e.target.value)}
-          >
-            <option value="">Estilo cinéfilo</option>
-            {estiloCinefilo.map((item, index) => (
-              <option key={`${item.value}-${index}`} value={item.label}>
-                {item.label}
-              </option>
-            ))}
-          </select>*/}
 
             <div className={styles.sair}>
               <button type="button" onClick={logout}>
@@ -152,9 +141,7 @@ const DadosPessoais = () => {
           </div>
 
           <div className={styles.baseSalvar}>
-            <button type="submit" disabled={!alteracoesPendentes}>
-              Salvar alterações
-            </button>
+            <button type="submit">Salvar alterações</button>
           </div>
         </form>
         {isModalSentVisible && (

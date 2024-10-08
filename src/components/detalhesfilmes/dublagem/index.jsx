@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./index.module.scss";
 import Dubladores from "@/components/detalhesfilmes/dubladores";
 import Link from "next/link";
-
 const simulacaoBack = [
   {
     id: "D-AEB",

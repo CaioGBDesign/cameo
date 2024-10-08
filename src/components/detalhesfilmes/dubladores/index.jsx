@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./index.module.scss";
+import Image from "next/image";
 
 const Dubladores = ({ fotoDublador, NomeDublador, Personagem }) => {
   return (
@@ -10,11 +11,15 @@ const Dubladores = ({ fotoDublador, NomeDublador, Personagem }) => {
         </div>
 
         <div className={styles.dublador}>
-          <img
-            src={fotoDublador}
-            alt={NomeDublador}
-            className={styles.fotoDublador}
-          />
+          <div className={styles.fotoDublador}>
+            <Image
+              src={fotoDublador}
+              alt={NomeDublador}
+              layout="fill" // Usa o layout fill
+              objectFit="cover" // Ajusta a imagem para cobrir o contêiner
+              quality={50} // Ajuste a qualidade se necessário
+            />
+          </div>
         </div>
 
         <div className={styles.nomePersonagem}>

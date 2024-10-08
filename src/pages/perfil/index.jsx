@@ -6,7 +6,6 @@ import NomeUsuario from "@/components/perfil/nomeUsuario";
 import Handle from "@/components/perfil/handle";
 import Compartilhar from "@/components/botoes/compartilhar";
 import Rede from "@/components/perfil/rede";
-import Search from "@/components/busca";
 import CardsPerfil from "@/components/perfil/cards";
 import FundoTitulos from "@/components/fundotitulos";
 import SalvarFoto from "@/components/modais/salvarfoto";

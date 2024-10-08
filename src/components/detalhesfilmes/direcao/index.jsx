@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./index.module.scss";
+import Image from "next/image";
 
 const Direcao = ({ diretores }) => {
   const diretoresComImagem = diretores.filter((diretor) => diretor.imagemUrl);
@@ -15,11 +16,15 @@ const Direcao = ({ diretores }) => {
           {diretoresComImagem.map((diretor, index) => (
             <div key={index} className={styles.diretor}>
               <div className={styles.fotoDiretor}>
-                <img
-                  src={diretor.imagemUrl}
-                  alt={diretor.nome}
-                  className={styles.imagemDiretor}
-                />
+                <div className={styles.imagemDiretor}>
+                  <Image
+                    src={diretor.imagemUrl}
+                    alt={diretor.nome}
+                    layout="fill" // Usa o layout fill
+                    objectFit="cover" // Ajusta a imagem para cobrir o contêiner
+                    quality={50} // Ajuste a qualidade se necessário
+                  />
+                </div>
               </div>
 
               <div className={styles.nomeDiretor}>

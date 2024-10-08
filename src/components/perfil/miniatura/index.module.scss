@@ -10,7 +10,14 @@
   border-radius: 30px;
   overflow: hidden;
 
-  img {
-    width: 30px;
+  .fotoPerfil {
+    position: relative;
+
+    width: 30%;
+    height: 30px;
+
+    border-radius: 100px;
+
+    overflow: hidden;
   }
 }

@@ -2,7 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["image.tmdb.org"], // Adicione esta linha
+    domains: [
+      "image.tmdb.org",
+      "via.placeholder.com",
+      "firebasestorage.googleapis.com",
+    ], // Adicione esta linha
   },
 };
 

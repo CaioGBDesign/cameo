@@ -46,8 +46,12 @@
 
           overflow: hidden;
 
-          img {
+          .imagemDiretor {
+            position: relative;
             width: 100%;
+            height: 100px;
+
+            transition: 0.2s;
           }
         }
 

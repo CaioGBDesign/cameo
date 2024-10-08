@@ -18,6 +18,7 @@ import AssistirFilme from "@/components/detalhesfilmes/paraver";
 import Listafilmes from "@/components/listafilmes/listafilmes.json";
 import ModalFiltros from "@/components/modais/filtros";
 import ModalAvaliar from "@/components/modais/avaliar-filmes";
+import Image from "next/image";
 
 const inter = Inter({ subsets: ["latin"] });
 const FundoTitulos = lazy(() => import("@/components/fundotitulos"));
@@ -279,13 +280,16 @@ const Home = () => {
               )}
             </div>
 
-            <div className={styles.elencoGeral}>
-              <Dublagem />
-              <hr />
-              <Elenco elenco={elenco} />
-              <hr />
-              <Direcao diretores={diretores} />
-            </div>
+            <Suspense fallback={<Loader />}>
+              <div className={styles.elencoGeral}>
+                <Dublagem />
+                <hr />
+                <Elenco elenco={elenco} />
+                <hr />
+                <Direcao diretores={diretores} />
+              </div>
+            </Suspense>
+
             <div className={styles.infoFilmes}>
               <div className={styles.detalhes}>
                 <h3>Produção</h3>
@@ -386,10 +390,17 @@ const Home = () => {
                               ) // Converter ID para string
                           }
                         >
-                          <img
-                            src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${recomendacao.poster_path}`}
-                            alt={recomendacao.title}
-                          />
+                          <Suspense fallback={<Loader />}>
+                            <div className={styles.fotoRecomendacoes}>
+                              <Image
+                                src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${recomendacao.poster_path}`}
+                                alt={recomendacao.title}
+                                layout="fill" // Usa o layout fill
+                                objectFit="cover" // Ajusta a imagem para cobrir o contêiner
+                                quality={50} // Ajuste a qualidade se necessário
+                              />
+                            </div>
+                          </Suspense>
                           <span>{recomendacao.title}</span>
                         </div>
                       ))}

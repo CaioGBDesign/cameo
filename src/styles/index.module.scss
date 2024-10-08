@@ -249,10 +249,14 @@
 
             width: 100px;
 
-            img {
+            .fotoRecomendacoes {
+              position: relative;
               width: 100px;
+              height: 150px;
 
               border-radius: 5px;
+
+              transition: 0.2s;
             }
 
             span {

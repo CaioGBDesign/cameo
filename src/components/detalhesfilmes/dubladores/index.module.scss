@@ -14,6 +14,8 @@
 
       background: #250d2f;
       border-radius: 50px;
+
+      z-index: 1;
     }
 
     .dublador {
@@ -28,8 +30,12 @@
 
       overflow: hidden;
 
-      img {
+      .fotoDublador {
+        position: relative;
         width: 100%;
+        height: 100px;
+
+        transition: 0.2s;
       }
     }
 

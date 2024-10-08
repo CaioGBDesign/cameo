@@ -11,7 +11,7 @@ const FotoPerfil = ({ href = "/perfil", children }) => {
 
   return (
     <Link href={href} className={styles["foto-perfil"]}>
-      <div className={styles.fotoPerfil}>
+      <div className={styles.fotoPerfilMiniatura}>
         <Image
           src={avatarUrl || "/usuario/usuario.jpg"}
           alt={nomeUsuario}

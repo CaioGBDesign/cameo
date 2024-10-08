@@ -23,8 +23,12 @@
 
       border-radius: 5px;
 
-      img {
-        width: 110%;
+      .imageContainer {
+        position: relative;
+        width: 100%;
+        height: 100px;
+
+        transition: 0.2s;
       }
     }
 

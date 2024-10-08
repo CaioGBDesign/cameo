@@ -1,5 +1,6 @@
 import styles from "./index.module.scss";
 import Estrelas from "@/components/estrelas";
+import Image from "next/image";
 
 const Miniaturafilmes = ({
   capaminiatura,
@@ -14,7 +15,15 @@ const Miniaturafilmes = ({
     <div className={styles.miniaturafilmes}>
       <div className={styles.boxminiatura}>
         <div className={styles.capaminiatura}>
-          <img src={capaminiatura} alt={titulofilme} />
+          <div className={styles.imageContainer}>
+            <Image
+              src={capaminiatura}
+              alt={titulofilme}
+              layout="fill" // Usa o layout fill
+              objectFit="cover" // Ajusta a imagem para cobrir o contêiner
+              quality={50} // Ajuste a qualidade se necessário
+            />
+          </div>
         </div>
         {botaoFechar && (
           <button

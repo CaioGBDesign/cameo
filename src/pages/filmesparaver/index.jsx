@@ -1,16 +1,20 @@
 import styles from "./index.module.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import Header from "@/components/Header";
 import NotasFilmes from "@/components/botoes/notas";
 import TitulosFilmes from "@/components/titulosfilmes";
 import FundoTitulos from "@/components/fundotitulos";
 import Search from "@/components/busca";
 import Titulolistagem from "@/components/titulolistagem";
-import Miniaturafilmes from "@/components/miniaturafilmes";
-import BotaoPlay from "@/components/botoes/play";
+import Trailer from "@/components/botoes/trailer";
 import { useAuth } from "@/contexts/auth";
 import Private from "@/components/Private";
 import Link from "next/link";
+import ServicosMiniatura from "@/components/detalhesfilmes/servicos-miniatura";
+
+const Miniaturafilmes = lazy(() => import("@/components/miniaturafilmes"));
+
+const Loader = () => <div>Carregando...</div>;
 
 const FilmesParaVer = () => {
   const { user, removerAssistir } = useAuth(); // Use o contexto para obter o usuário autenticado e a função para remover favoritos
@@ -19,6 +23,7 @@ const FilmesParaVer = () => {
   const [filmeAleatorio, setFilmeAleatorio] = useState(null);
   const [linkTrailer, setLinkTrailer] = useState("#"); // Adicionamos um estado para o link do trailer
   const [mostrarBotaoFechar, setMostrarBotaoFechar] = useState(false);
+  const [servicosStreaming, setServicosStreaming] = useState([]);
 
   useEffect(() => {
     const fetchAssistidos = async () => {
@@ -52,6 +57,13 @@ const FilmesParaVer = () => {
         const filmeAleatorio =
           filmesData[Math.floor(Math.random() * filmesData.length)];
         setFilmeAleatorio(filmeAleatorio);
+
+        // buscando streaming do serviço que disponibiliza o filme aleatório
+        const providersResponse = await fetch(
+          `https://api.themoviedb.org/3/movie/${filmeAleatorio.id}/watch/providers?api_key=${apiKey}&language=pt-BR`
+        );
+        const providersData = await providersResponse.json();
+        setServicosStreaming(providersData.results.BR?.flatrate || []);
 
         // Encontrar o trailer do filme aleatório (se houver)
         const trailer = filmeAleatorio.videos.results.find(
@@ -107,13 +119,16 @@ const FilmesParaVer = () => {
             <div className={styles.contFilmes}>
               <div className={styles.tituloFilmes}>
                 <div className={styles.contTitulos}>
-                  <BotaoPlay linkTrailer={linkTrailer}></BotaoPlay>
                   <TitulosFilmes
                     titulofilme={filmeAleatorio ? filmeAleatorio.title : ""}
                   ></TitulosFilmes>
                   <div className={styles.NotasFavoritos}>
                     <NotasFilmes estrelas="3" />
+                    <Trailer linkTrailer={linkTrailer}></Trailer>
                   </div>
+                  {servicosStreaming.length > 0 && (
+                    <ServicosMiniatura servicos={servicosStreaming} />
+                  )}
                 </div>
               </div>
               <div className={styles.todosOsTitulos}>
@@ -126,14 +141,16 @@ const FilmesParaVer = () => {
                   ></Titulolistagem>
                   <div className={styles.listaFilmes}>
                     {assistirFilme.map((filme) => (
-                      <Miniaturafilmes
-                        key={filme.id}
-                        capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
-                        titulofilme={filme.title}
-                        mostrarBotaoFechar={mostrarBotaoFechar}
-                        excluirFilme={() => removerAssistir(String(filme.id))}
-                        mostrarEstrelas={false}
-                      />
+                      <Suspense fallback={<Loader />}>
+                        <Miniaturafilmes
+                          key={filme.id}
+                          capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
+                          titulofilme={filme.title}
+                          mostrarBotaoFechar={mostrarBotaoFechar}
+                          excluirFilme={() => removerAssistir(String(filme.id))}
+                          mostrarEstrelas={false}
+                        />
+                      </Suspense>
                     ))}
                   </div>
                 </div>
@@ -147,6 +164,7 @@ const FilmesParaVer = () => {
                   : "fundoAleatorio"
               }
               tituloAssistidos={filmeAleatorio}
+              opacidade={0.5}
             ></FundoTitulos>
           </>
         )}

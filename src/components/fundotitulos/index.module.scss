@@ -29,6 +29,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    z-index: 1;
   }
 
   .capaAssistidos {
@@ -54,8 +56,11 @@
       opacity: 0.5;
     }
 
-    img {
-      width: 100%;
+    .imageContainer {
+      position: relative; // Necessário para o layout fill funcionar
+      width: 100%; // A imagem ocupará 100% da largura do contêiner
+      height: 430px; // Defina uma altura desejada, ou use uma unidade relativa como vh
+      // Exemplo de altura
 
       transition: 0.2s;
     }

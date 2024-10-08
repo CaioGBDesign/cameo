@@ -1,0 +1,92 @@
+.ContGraficosGeneros {
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+  .GraficosGeneros {
+    display: flex;
+    justify-content: start;
+
+    width: 85%;
+
+    z-index: 1;
+
+    overflow: scroll;
+
+    .ContGraficos {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      width: 100%;
+
+      z-index: 1;
+
+      .BoxtGraficos {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 15px;
+
+        height: 150px;
+
+        padding: 20px 0px;
+
+        .quantidadePercentual {
+          span {
+            color: #fff;
+            font-size: 10px;
+
+            opacity: 0.8;
+            margin: 0;
+            padding: 0;
+          }
+        }
+
+        .BarraGenero {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          width: 50px;
+          min-height: 1px;
+
+          background: #2ba8e2;
+          border-radius: 2px;
+
+          animation: graph 1s forwards ease-in-out;
+
+          overflow: hidden;
+
+          @keyframes graph {
+            0% {
+              height: 0;
+            }
+          }
+        }
+
+        .GeneroFilmes {
+          display: flex;
+
+          span {
+            width: 45px;
+
+            color: #fff;
+            font-size: 10px;
+
+            opacity: 0.5;
+            margin: 0;
+            padding: 0;
+
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-wrap: break-word;
+          }
+        }
+      }
+    }
+  }
+}

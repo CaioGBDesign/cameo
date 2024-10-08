@@ -1,6 +1,7 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/auth";
 import Header from "@/components/Header";
+import FundoTitulos from "@/components/fundotitulos";
 import { Inter } from "next/font/google";
 import styles from "@/styles/index.module.scss";
 import TitulosFilmes from "@/components/titulosfilmes";
@@ -20,11 +21,8 @@ import ModalFiltros from "@/components/modais/filtros";
 import ModalAvaliar from "@/components/modais/avaliar-filmes";
 
 const inter = Inter({ subsets: ["latin"] });
-const FundoTitulos = lazy(() => import("@/components/fundotitulos"));
 
-const Loader = () => <div>Carregando...</div>;
-
-const Home = () => {
+const FiltrosResultados = () => {
   const [filmeId, setFilmeId] = useState(null);
   const [filme, setFilme] = useState(null);
   const [elenco, setElenco] = useState([]);
@@ -36,6 +34,50 @@ const Home = () => {
   const [filmeIdParaAvaliar, setFilmeIdParaAvaliar] = useState(null);
   const [notaAtual, setNotaAtual] = useState(0);
   const [modalAberto, setModalAberto] = useState(null);
+
+  const [filtros, setFiltros] = useState({ anoLancamento: "" });
+
+  const aplicarFiltros = (novosFiltros) => {
+    setFiltros(novosFiltros);
+    selecionarFilmeFiltrado(novosFiltros); // Chama a função para buscar um filme com base nos filtros
+
+    // Se necessário, adicione lógica para filtrar por serviço de streaming aqui
+    if (novosFiltros.servicoStreaming) {
+      // Adicione lógica para filtrar filmes por serviço de streaming
+    }
+  };
+
+  const selecionarFilmeFiltrado = async (filtros) => {
+    try {
+      const apiKey = "c95de8d6070dbf1b821185d759532f05";
+      const discoverEndpoint = "https://api.themoviedb.org/3/discover/movie";
+
+      let query = `${discoverEndpoint}?api_key=${apiKey}`;
+
+      // Adiciona o filtro de ano de lançamento se estiver presente
+      if (filtros.anoLancamento) {
+        query += `&primary_release_year=${filtros.anoLancamento}`;
+      }
+
+      // Adiciona o filtro de serviço de streaming se estiver presente
+      if (filtros.servicoStreaming) {
+        query += `&with_watch_providers=${filtros.servicoStreaming}`;
+      }
+
+      const response = await fetch(query);
+      const data = await response.json();
+
+      if (data.results.length > 0) {
+        const randomIndex = Math.floor(Math.random() * data.results.length);
+        const randomFilme = data.results[randomIndex];
+        setFilmeId(randomFilme.id);
+      } else {
+        console.log("Nenhum filme encontrado com os filtros aplicados.");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar filmes filtrados:", error);
+    }
+  };
 
   const countryNames = {
     US: "Estados Unidos",
@@ -408,18 +450,19 @@ const Home = () => {
           onClickModal={() => abrirModal("filtros")} // Função para abrir o modal
         />
 
-        <Suspense fallback={<Loader />}>
-          <FundoTitulos
-            exibirPlay={!!trailerLink}
-            capaAssistidos={`https://image.tmdb.org/t/p/original/${
-              filme ? filme.poster_path : ""
-            }`}
-            tituloAssistidos={filme ? filme.title : "Título não disponível"}
-            trailerLink={trailerLink || "#"}
-          />
-        </Suspense>
+        <FundoTitulos
+          exibirPlay={!!trailerLink}
+          capaAssistidos={`https://image.tmdb.org/t/p/original/${
+            filme ? filme.poster_path : ""
+          }`}
+          tituloAssistidos={filme ? filme.title : "Título não disponível"}
+          trailerLink={trailerLink || "#"}
+        />
 
-        {modalAberto === "filtros" && <ModalFiltros onClose={fecharModal} />}
+        {modalAberto === "filtros" && (
+          <ModalFiltros onClose={fecharModal} onApplyFilters={aplicarFiltros} />
+        )}
+
         {modalAberto === "avaliar-filme" && (
           <ModalAvaliar
             filmeId={filmeIdParaAvaliar} // Use filmeIdParaAvaliar no lugar de selectedFilmeId
@@ -432,4 +475,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default FiltrosResultados;

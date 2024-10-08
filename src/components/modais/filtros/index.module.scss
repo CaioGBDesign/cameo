@@ -117,20 +117,16 @@
       }
 
       .streaming {
-        display: grid;
-        grid-template-columns: auto auto auto;
-        gap: 20px;
-
-        img {
-          display: block;
-        }
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
 
         label {
           position: relative;
 
           display: inline-block;
 
-          padding: 0px 20px;
+          padding: 10px 10px;
 
           border: solid #ffffff20 1px;
           border-radius: 10px;
@@ -138,6 +134,11 @@
           font-size: 16px;
           font-weight: 200;
           color: white;
+
+          img {
+            width: 35px;
+            display: block;
+          }
         }
 
         input {

@@ -1,24 +1,25 @@
 import styles from "./index.module.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import Header from "@/components/Header";
-import FundoTitulos from "@/components/fundotitulos";
 import Search from "@/components/busca";
 import Titulolistagem from "@/components/titulolistagem";
-import Miniaturafilmes from "@/components/miniaturafilmes";
+import GraficoVistos from "@/components/detalhesfilmes/grafico-vistos";
 import { useAuth } from "@/contexts/auth";
 import Private from "@/components/Private";
 import Link from "next/link";
+
+const FundoTitulos = lazy(() => import("@/components/fundotitulos"));
+const Miniaturafilmes = lazy(() => import("@/components/miniaturafilmes"));
+
+const Loader = () => <div>Carregando...</div>;
 
 const FilmesAssisti = () => {
   const { user, removerNota } = useAuth();
   const [filmesVistos, setFilmesVistos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filmeAleatorio, setFilmeAleatorio] = useState(null);
-  const [linkTrailer, setLinkTrailer] = useState("#");
   const [mostrarBotaoFechar, setMostrarBotaoFechar] = useState(false);
-  const [generoCounts, setGeneroCounts] = useState([]);
-  const [heights, setHeights] = useState({}); // Estado para armazenar as alturas das barras
-  const totalFilmesVistos = 22;
+  const totalFilmesVistos = filmesVistos.length; // Total de filmes vistos
 
   useEffect(() => {
     const fetchFilmesVistos = async () => {
@@ -58,6 +59,8 @@ const FilmesAssisti = () => {
           };
         });
 
+        console.log("Filmes com avaliações:", filmesComAvaliacoes);
+
         setFilmesVistos(filmesComAvaliacoes);
 
         if (filmesComAvaliacoes.length > 0) {
@@ -65,33 +68,7 @@ const FilmesAssisti = () => {
             Math.random() * filmesComAvaliacoes.length
           );
           setFilmeAleatorio(filmesComAvaliacoes[randomIndex]);
-          setLinkTrailer(filmesComAvaliacoes[randomIndex]?.trailerLink || "#");
         }
-
-        // Cálculo de gêneros após obter filmes
-        const novosGeneroCounts = {};
-        filmesComAvaliacoes.forEach((filme) => {
-          filme.genres.forEach((genero) => {
-            if (!novosGeneroCounts[genero.name]) {
-              novosGeneroCounts[genero.name] = 0;
-            }
-            novosGeneroCounts[genero.name]++;
-          });
-        });
-
-        // Transformar o objeto em um array e ordenar
-        const generosOrdenados = Object.entries(novosGeneroCounts).sort(
-          (a, b) => b[1] - a[1]
-        );
-
-        setGeneroCounts(generosOrdenados);
-
-        // Define as alturas para as barras de gênero
-        const newHeights = {};
-        generosOrdenados.forEach(([genero, quantidade]) => {
-          newHeights[genero] = `${(quantidade / totalFilmesVistos) * 100}%`; // Usando total fixo
-        });
-        setHeights(newHeights);
       } catch (error) {
         console.error("Erro ao buscar filmes:", error);
       } finally {
@@ -100,25 +77,14 @@ const FilmesAssisti = () => {
     };
 
     fetchFilmesVistos();
-  }, [user, filmesVistos.length]); // Adicionei filmesVistos.length como dependência para recalcular as alturas
+  }, [user]);
 
   const handleExcluirFilme = async (filmeId) => {
-    console.log(
-      "ID do filme sendo excluído:",
-      filmeId,
-      "Tipo:",
-      typeof filmeId
-    );
     try {
-      await removerNota(String(filmeId)); // Converte para string
-
-      // Atualiza a lista de filmes vistos após a remoção
-      setFilmesVistos((prevFilmes) => {
-        const novosFilmes = prevFilmes.filter((filme) => filme.id !== filmeId);
-
-        // Retorna novos filmes, mesmo se a lista ficar vazia
-        return novosFilmes;
-      });
+      await removerNota(String(filmeId));
+      setFilmesVistos((prevFilmes) =>
+        prevFilmes.filter((filme) => filme.id !== filmeId)
+      );
     } catch (error) {
       console.error("Erro ao excluir filme:", error);
     }
@@ -135,36 +101,10 @@ const FilmesAssisti = () => {
           <>
             <Header />
             <div className={styles.contFilmes}>
-              <div className={styles.ContGraficosGeneros}>
-                <div className={styles.GraficosGeneros}>
-                  <div className={styles.ContGraficos}>
-                    {generoCounts.map(([genero, quantidade]) => (
-                      <div key={genero} className={styles.BoxtGraficos}>
-                        <div className={styles.quantidadePercentual}>
-                          <span>
-                            {quantidade} (
-                            {totalFilmesVistos > 0
-                              ? Math.floor(
-                                  (quantidade / totalFilmesVistos) * 100
-                                )
-                              : 0}
-                            %)
-                          </span>
-                        </div>
-                        <div
-                          className={styles.BarraGenero}
-                          style={{ height: heights[genero] || "0%" }}
-                        >
-                          <img src="/icones/estrado.svg" />
-                        </div>
-                        <div className={styles.GeneroFilmes}>
-                          <span>{genero}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              <GraficoVistos
+                filmesVistos={filmesVistos}
+                totalFilmesVistos={totalFilmesVistos} // Passando totalFilmesVistos como prop
+              />
 
               <div className={styles.todosOsTitulos}>
                 <div className={styles.contlista}>
@@ -180,16 +120,19 @@ const FilmesAssisti = () => {
                       <p>Carregando...</p>
                     ) : (
                       filmesVistos.map((filme) => (
-                        <Miniaturafilmes
-                          key={filme.id}
-                          capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
-                          titulofilme={filme.title}
-                          mostrarBotaoFechar={mostrarBotaoFechar}
-                          excluirFilme={() =>
-                            handleExcluirFilme(String(filme.id))
-                          }
-                          avaliacao={filme.avaliacao}
-                        />
+                        <Suspense fallback={<Loader />}>
+                          <Miniaturafilmes
+                            key={filme.id}
+                            capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
+                            titulofilme={filme.title}
+                            mostrarEstrelas={true}
+                            mostrarBotaoFechar={mostrarBotaoFechar}
+                            excluirFilme={() =>
+                              handleExcluirFilme(String(filme.id))
+                            }
+                            avaliacao={filme.avaliacao.nota}
+                          />
+                        </Suspense>
                       ))
                     )}
                   </div>
@@ -197,18 +140,19 @@ const FilmesAssisti = () => {
               </div>
             </div>
             {filmeAleatorio && (
-              <FundoTitulos
-                exibirPlay={false}
-                capaAssistidos={`https://image.tmdb.org/t/p/original/${filmeAleatorio.poster_path}`}
-                tituloAssistidos={filmeAleatorio.title}
-                opacidade={0.2}
-              />
+              <Suspense fallback={<Loader />}>
+                <FundoTitulos
+                  exibirPlay={false}
+                  capaAssistidos={`https://image.tmdb.org/t/p/original/${filmeAleatorio.poster_path}`}
+                  tituloAssistidos={filmeAleatorio.title}
+                  opacidade={0.2}
+                />
+              </Suspense>
             )}
           </>
         ) : (
           <div className={styles.blankSlate}>
             <Header />
-
             <div className={styles.banner}>
               <img
                 src="background/banner-blank-slate.png"

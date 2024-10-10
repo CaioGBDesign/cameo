@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import styles from "./index.module.scss";
 import NotasFilmes from "@/components/botoes/notas";
+import Image from "next/image";
 
 const FilmesCarousel = ({ filmes, selectedFilm, onClose }) => {
   const [imagemFoco, setImagemFoco] = useState(0);
@@ -94,9 +95,12 @@ const FilmesCarousel = ({ filmes, selectedFilm, onClose }) => {
                 onClick={() => handleImageClick(index)} // Atualiza imagemFoco ao clicar
               >
                 <div className={styles.capaFilme}>
-                  <img
+                  <Image
                     src={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
                     alt={`Capa do filme ${filme.title}`}
+                    layout="fill" // Usa o layout fill
+                    objectFit="cover" // Ajusta a imagem para cobrir o contêiner
+                    quality={50} // Ajuste a qualidade se necessário
                   />
                 </div>
               </div>

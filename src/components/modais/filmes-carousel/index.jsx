@@ -22,7 +22,47 @@ const FilmesCarousel = ({ filmes, selectedFilm, onClose }) => {
       const itemWidth = carouselRef.current.scrollWidth / filmes.length;
       carouselRef.current.scrollLeft = imagemFoco * itemWidth; // Ajusta a rolagem para a imagem em foco
     }
+
+    // Log do filme em foco
+    console.log("Filme em foco:", filmes[imagemFoco]?.title);
   }, [imagemFoco, filmes]);
+
+  const handleImageClick = (index) => {
+    setImagemFoco(index);
+    console.log("Filme selecionado:", filmes[index]?.title); // Log do filme ao clicar
+  };
+
+  // Debounce para o evento de rolagem
+  const debounceScroll = (func, delay) => {
+    let timeout;
+    return function (...args) {
+      const context = this;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(context, args), delay);
+    };
+  };
+
+  const handleScroll = () => {
+    if (carouselRef.current) {
+      const itemWidth = carouselRef.current.scrollWidth / filmes.length;
+      const newIndex = Math.round(carouselRef.current.scrollLeft / itemWidth);
+      if (newIndex !== imagemFoco) {
+        setImagemFoco(newIndex);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const carouselElement = carouselRef.current;
+    if (carouselElement) {
+      const debouncedScroll = debounceScroll(handleScroll, 100); // 100ms de debounce
+      carouselElement.addEventListener("scroll", debouncedScroll);
+
+      return () => {
+        carouselElement.removeEventListener("scroll", debouncedScroll);
+      };
+    }
+  }, [filmes]); // Dependências para garantir que o efeito seja re-executado ao mudar filmes
 
   return (
     <div className={styles.modalListagem}>
@@ -51,6 +91,7 @@ const FilmesCarousel = ({ filmes, selectedFilm, onClose }) => {
                 }`}
                 key={index}
                 style={{ scrollSnapAlign: "center" }}
+                onClick={() => handleImageClick(index)} // Atualiza imagemFoco ao clicar
               >
                 <div className={styles.capaFilme}>
                   <img

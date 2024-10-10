@@ -16,16 +16,12 @@
 
   &::after {
     content: "";
-
     width: 100%;
     height: 100vh;
-
     position: absolute;
     top: 0;
     left: 0;
-
     background: #250d2f;
-
     opacity: 0.7;
   }
 
@@ -33,14 +29,11 @@
     position: absolute;
     top: 20px;
     right: 22px;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     width: 30px;
     height: 30px;
-
     z-index: 1;
 
     img {
@@ -54,7 +47,6 @@
     justify-content: center;
     align-items: center;
     gap: 20px;
-
     z-index: 1;
 
     .tituloFilme {
@@ -73,7 +65,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-
         padding: 5px;
         border: solid #fff 1px;
         border-radius: 5px;
@@ -89,10 +80,9 @@
 
   .contCarousel {
     width: 100%;
-
     display: flex;
-    justify-content: center; // Centraliza o carrossel
-    overflow-x: visible;
+    justify-content: center;
+    overflow-x: hidden; // Alterado para hidden
 
     z-index: 1;
 
@@ -110,7 +100,7 @@
 
       scroll-behavior: smooth;
 
-      /* Estilo para esconder a scrollbar */
+      // Estilo para esconder a scrollbar
       &::-webkit-scrollbar {
         display: none; // Você pode remover esta linha se quiser ver a barra de rolagem
       }
@@ -125,18 +115,15 @@
 
         .imagens {
           width: 280px;
-
           scroll-snap-align: center;
+          transition: transform 0.3s ease; // Adiciona transição suave
 
           .capaFilme {
             display: flex;
             justify-content: center;
             align-items: center;
-
             width: 100%;
-
             overflow: hidden;
-
             border: solid 1px #ffffff50;
             border-radius: 10px;
 
@@ -155,9 +142,7 @@
     justify-content: center;
     align-items: center;
     gap: 20px;
-
     width: 60%;
-
     z-index: 1;
   }
 
@@ -165,19 +150,15 @@
     position: absolute;
     top: 0;
     left: 0;
-
     width: 100%;
     height: 100vh;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     overflow: hidden;
 
     img {
       height: 130vh;
-
       filter: blur(20px);
     }
   }

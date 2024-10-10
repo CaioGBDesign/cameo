@@ -50,10 +50,18 @@
     z-index: 1;
 
     .tituloFilme {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 80%;
+
       span {
         font-size: 22px;
         font-weight: bold;
         color: #ffffff;
+
+        text-align: center;
       }
     }
 

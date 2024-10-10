@@ -11,6 +11,7 @@ import { useAuth } from "@/contexts/auth";
 import Private from "@/components/Private";
 import Link from "next/link";
 import ServicosMiniatura from "@/components/detalhesfilmes/servicos-miniatura";
+import FilmesCarousel from "@/components/modais/filmes-carousel";
 
 const Miniaturafilmes = lazy(() => import("@/components/miniaturafilmes"));
 
@@ -24,6 +25,8 @@ const Favoritos = () => {
   const [linkTrailer, setLinkTrailer] = useState("#");
   const [mostrarBotaoFechar, setMostrarBotaoFechar] = useState(false);
   const [servicosStreaming, setServicosStreaming] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedFilm, setSelectedFilm] = useState(null);
 
   useEffect(() => {
     const fetchFavoritos = async () => {
@@ -85,6 +88,11 @@ const Favoritos = () => {
   const handleExcluirFilme = async (filmeId) => {
     await removerFilme(filmeId);
     setFilmesFavoritos((prev) => prev.filter((filme) => filme.id !== filmeId));
+  };
+
+  const openModal = (filme) => {
+    setSelectedFilm(filme);
+    setModalOpen(true);
   };
 
   return (
@@ -151,6 +159,7 @@ const Favoritos = () => {
                           }
                           mostrarBotaoFechar={mostrarBotaoFechar}
                           mostrarEstrelas={false}
+                          onClick={() => openModal(filme)}
                         />
                       ))
                     ) : (
@@ -169,6 +178,13 @@ const Favoritos = () => {
               }
               tituloAssistidos={filmeAleatorio}
             ></FundoTitulos>
+            {modalOpen && (
+              <FilmesCarousel
+                filmes={filmesFavoritos}
+                selectedFilm={selectedFilm} // Mantenha esta linha
+                onClose={() => setModalOpen(false)}
+              />
+            )}
           </>
         )}
       </div>

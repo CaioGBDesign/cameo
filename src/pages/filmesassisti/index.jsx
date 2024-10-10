@@ -7,6 +7,7 @@ import GraficoVistos from "@/components/detalhesfilmes/grafico-vistos";
 import { useAuth } from "@/contexts/auth";
 import Private from "@/components/Private";
 import Link from "next/link";
+import FilmesCarousel from "@/components/modais/filmes-carousel";
 
 const FundoTitulos = lazy(() => import("@/components/fundotitulos"));
 const Miniaturafilmes = lazy(() => import("@/components/miniaturafilmes"));
@@ -20,6 +21,8 @@ const FilmesAssisti = () => {
   const [filmeAleatorio, setFilmeAleatorio] = useState(null);
   const [mostrarBotaoFechar, setMostrarBotaoFechar] = useState(false);
   const totalFilmesVistos = filmesVistos.length; // Total de filmes vistos
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedFilm, setSelectedFilm] = useState(null);
 
   useEffect(() => {
     const fetchFilmesVistos = async () => {
@@ -94,6 +97,11 @@ const FilmesAssisti = () => {
     setMostrarBotaoFechar(!mostrarBotaoFechar);
   };
 
+  const openModal = (filme) => {
+    setSelectedFilm(filme);
+    setModalOpen(true);
+  };
+
   return (
     <Private>
       <div className={styles.filmesAssisti}>
@@ -131,6 +139,7 @@ const FilmesAssisti = () => {
                               handleExcluirFilme(String(filme.id))
                             }
                             avaliacao={filme.avaliacao.nota}
+                            onClick={() => openModal(filme)}
                           />
                         </Suspense>
                       ))
@@ -148,6 +157,13 @@ const FilmesAssisti = () => {
                   opacidade={0.2}
                 />
               </Suspense>
+            )}
+            {modalOpen && (
+              <FilmesCarousel
+                filmes={filmesVistos}
+                selectedFilm={selectedFilm} // Mantenha esta linha
+                onClose={() => setModalOpen(false)}
+              />
             )}
           </>
         ) : (

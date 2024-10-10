@@ -3,13 +3,7 @@ import Estrelas from "@/components/estrelas";
 import AvaliarFilme from "@/components/detalhesfilmes/avaliar-filme";
 import { useAuth } from "@/contexts/auth";
 
-const NotasFilmes = ({
-  filmeId,
-  avaliarFilme,
-  removerVisto,
-  usuarioFilmeVisto,
-  onClickModal,
-}) => {
+const NotasFilmes = ({ filmeId, avaliarFilme, onClickModal }) => {
   const { user } = useAuth();
 
   // Verifica se user e suas propriedades estão definidas

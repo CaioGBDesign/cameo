@@ -1,0 +1,53 @@
+.detalhes {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 30px;
+
+  width: 85%;
+
+  h3 {
+    font-size: 24px;
+    color: white;
+
+    opacity: 0.3;
+
+    margin: 0;
+  }
+
+  .livre,
+  .dezAnos,
+  .dozeAnos,
+  .quatorzeAnos,
+  .dezesseisAnos,
+  .dezoitoAnos {
+    padding: 15px 20px;
+    border-radius: 10px;
+
+    color: #ffffff;
+  }
+
+  .livre {
+    background: #24ff0030;
+  }
+
+  .dezAnos {
+    background: #00c0ff50;
+  }
+
+  .dozeAnos {
+    background: #ffcb0150;
+  }
+
+  .quatorzeAnos {
+    background: #ff5f0150;
+  }
+
+  .dezesseisAnos {
+    background: #ff010350;
+  }
+
+  .dezoitoAnos {
+    background: #00000050;
+  }
+}

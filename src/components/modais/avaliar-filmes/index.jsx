@@ -7,8 +7,8 @@ const ModalAvaliar = ({ filmeId, nota, onClose }) => {
   const { darNota } = useAuth();
 
   useEffect(() => {
-    // Atualiza a avaliação quando o modal é aberto ou o filmeId muda
-    setAvaliacao(nota);
+    console.log("Nota recebida:", nota); // Adicione esta linha
+    setAvaliacao(nota.nota);
   }, [nota]);
 
   const handleEstrelaClick = (value) => {

@@ -18,6 +18,7 @@ import AssistirFilme from "@/components/detalhesfilmes/paraver";
 import Listafilmes from "@/components/listafilmes/listafilmes.json";
 import ModalFiltros from "@/components/modais/filtros";
 import ModalAvaliar from "@/components/modais/avaliar-filmes";
+import Classificacao from "@/components/detalhesfilmes/classificacao";
 import Image from "next/image";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -37,31 +38,7 @@ const Home = () => {
   const [filmeIdParaAvaliar, setFilmeIdParaAvaliar] = useState(null);
   const [notaAtual, setNotaAtual] = useState(0);
   const [modalAberto, setModalAberto] = useState(null);
-
-  const countryNames = {
-    US: "Estados Unidos",
-    FR: "França",
-    IN: "Índia",
-    JP: "Japão",
-    GB: "Reino Unido",
-    IT: "Itália",
-    DE: "Alemanha",
-    BR: "Brasil",
-    KR: "Coreia do Sul",
-    ES: "Espanha",
-    CN: "China",
-    MX: "México",
-    AU: "Austrália",
-    SE: "Suécia",
-    RU: "Rússia",
-    BE: "Bélgica",
-    NL: "Países Baixos",
-    IR: "Irã",
-    CA: "Canadá",
-    TR: "Turquia",
-    FI: "Finlândia",
-    PT: "Portugal ",
-  };
+  const [countryNames, setCountryNames] = useState({});
 
   const abrirModal = (modalTipo) => {
     setModalAberto(modalTipo);
@@ -171,15 +148,8 @@ const Home = () => {
 
   useEffect(() => {
     if (filmeIdParaAvaliar && user) {
-      const fetchNota = async () => {
-        const nota =
-          user.visto && user.visto[filmeIdParaAvaliar] !== undefined
-            ? user.visto[filmeIdParaAvaliar]
-            : 0; // Se não houver nota, usa 0 como padrão
-        setNotaAtual(nota);
-      };
-
-      fetchNota();
+      const nota = user.visto[filmeIdParaAvaliar] || 0; // Acesso direto ao objeto
+      setNotaAtual(nota);
     }
   }, [filmeIdParaAvaliar, user]);
 
@@ -207,7 +177,9 @@ const Home = () => {
   };
 
   const abrirModalAvaliar = (id) => {
+    const nota = user?.visto?.[id] || 0; // Obtém a nota do filme
     setFilmeIdParaAvaliar(id);
+    setNotaAtual(nota); // Armazena a nota atual no estado
     abrirModal("avaliar-filme");
   };
 
@@ -220,6 +192,26 @@ const Home = () => {
 
     fetchFilme();
   }, [filmeId]);
+
+  useEffect(() => {
+    const fetchCountryNames = async () => {
+      try {
+        const response = await fetch(
+          `https://api.themoviedb.org/3/watch/providers/regions?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR`
+        );
+        const data = await response.json();
+        const countries = {};
+        data.results.forEach((country) => {
+          countries[country.iso_3166_1] = country.native_name; // Armazena native_name
+        });
+        setCountryNames(countries);
+      } catch (error) {
+        console.error("Erro ao buscar nomes dos países:", error);
+      }
+    };
+
+    fetchCountryNames();
+  }, []);
 
   if (!filme && filmeId) return <Loader />; // Use um componente loader
 
@@ -251,8 +243,9 @@ const Home = () => {
                     avaliarFilme={avaliarFilme}
                     removerVisto={removerVisto}
                     usuarioFilmeVisto={user?.visto || []}
-                    onClickModal={() => abrirModalAvaliar(filmeId)}
+                    onClickModal={() => abrirModalAvaliar(filmeId)} // aqui você deve garantir que a nota está sendo passada corretamente
                   />
+
                   {user?.assistir && !user.assistir[filmeId] && (
                     <AssistirFilme
                       filmeId={filmeId}
@@ -315,27 +308,9 @@ const Home = () => {
                 </p>
               </div>
 
-              {filme && filme.release_dates && filme.release_dates.results
-                ? (() => {
-                    const brRelease = filme.release_dates.results.find(
-                      (result) => result.iso_3166_1 === "BR"
-                    );
-                    if (
-                      brRelease &&
-                      brRelease.release_dates.length > 0 &&
-                      brRelease.release_dates[0].certification &&
-                      !/^\d+$/.test(brRelease.release_dates[0].certification) // Verifica se a certificação não é apenas um número
-                    ) {
-                      return (
-                        <div className={styles.detalhes}>
-                          <h3>Classificação Indicativa</h3>
-                          <p>{brRelease.release_dates[0].certification}</p>
-                        </div>
-                      );
-                    }
-                    return null; // Não exibe nada se não houver classificação
-                  })()
-                : null}
+              {filme && filme.release_dates && (
+                <Classificacao releaseDates={filme.release_dates.results} />
+              )}
 
               {filme &&
                 filme.budget > 0 && ( // Verifica se o orçamento é maior que zero

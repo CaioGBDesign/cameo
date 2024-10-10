@@ -10,9 +10,10 @@ const Miniaturafilmes = ({
   excluirFilme,
   mostrarBotaoFechar,
   avaliacao = 0, // Adicione a avaliação como prop
+  onClick, // Adicione a prop onClick
 }) => {
   return (
-    <div className={styles.miniaturafilmes}>
+    <div className={styles.miniaturafilmes} onClick={onClick}>
       <div className={styles.boxminiatura}>
         <div className={styles.capaminiatura}>
           <div className={styles.imageContainer}>

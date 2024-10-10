@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useRouter } from "next/router";
 import styles from "./index.module.scss";
 import NotasFilmes from "@/components/botoes/notas";
 import Image from "next/image";
@@ -28,9 +29,11 @@ const FilmesCarousel = ({ filmes, selectedFilm, onClose }) => {
     console.log("Filme em foco:", filmes[imagemFoco]?.title);
   }, [imagemFoco, filmes]);
 
+  const router = useRouter();
+
   const handleImageClick = (index) => {
-    setImagemFoco(index);
-    console.log("Filme selecionado:", filmes[index]?.title); // Log do filme ao clicar
+    const selectedFilmeId = filmes[index].id; // Obtenha o ID do filme
+    router.push(`/?filmeId=${selectedFilmeId}`); // Redireciona para a home com o ID do filme
   };
 
   // Debounce para o evento de rolagem

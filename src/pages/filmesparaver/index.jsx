@@ -4,7 +4,6 @@ import Header from "@/components/Header";
 import NotasFilmes from "@/components/botoes/notas";
 import TitulosFilmes from "@/components/titulosfilmes";
 import FundoTitulos from "@/components/fundotitulos";
-import Search from "@/components/busca";
 import Titulolistagem from "@/components/titulolistagem";
 import Trailer from "@/components/botoes/trailer";
 import { useAuth } from "@/contexts/auth";
@@ -133,7 +132,6 @@ const FilmesParaVer = () => {
               </div>
               <div className={styles.todosOsTitulos}>
                 <div className={styles.contlista}>
-                  <Search placeholder={"Buscar filmes"} />
                   <Titulolistagem
                     quantidadeFilmes={assistirFilme.length}
                     titulolistagem={"Filmes para assistir"}

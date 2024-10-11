@@ -1,0 +1,43 @@
+main {
+  .searchPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 100px;
+
+    width: 100%;
+
+    .conteudo {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 50px;
+
+      width: 85%;
+
+      .search {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+      }
+
+      .resultado {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+
+        @media (max-width: 768px) {
+          grid-template-columns: repeat(4, 1fr);
+        }
+
+        @media (max-width: 480px) {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+    }
+  }
+}

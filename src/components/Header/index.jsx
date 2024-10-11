@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import styles from './index.module.scss';
-import BotaoVoltar from '@/components/botoes/voltar';
-import Miniatura from '@/components/miniatura';
-import FotoPerfil from '@/components/perfil/miniatura';
+import React, { useEffect, useState } from "react";
+import styles from "./index.module.scss";
+import BotaoBuscar from "@/components/botoes/buscar";
+import Miniatura from "@/components/miniatura";
+import FotoPerfil from "@/components/perfil/miniatura";
 
-const Header = ({ showMiniatura = true, showFotoPerfil = true }) => {
+const Header = ({
+  showBuscar = true,
+  showMiniatura = true,
+  showFotoPerfil = true,
+}) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -17,11 +21,11 @@ const Header = ({ showMiniatura = true, showFotoPerfil = true }) => {
 
     // Adiciona um listener para verificar o scroll inicial quando a página carregar
     checkInitialScroll();
-    window.addEventListener('scroll', checkInitialScroll);
+    window.addEventListener("scroll", checkInitialScroll);
 
     // Remove o listener quando o componente for desmontado
     return () => {
-      window.removeEventListener('scroll', checkInitialScroll);
+      window.removeEventListener("scroll", checkInitialScroll);
     };
   }, []);
 
@@ -32,18 +36,22 @@ const Header = ({ showMiniatura = true, showFotoPerfil = true }) => {
       setIsScrolled(scrollY > 0); // Define o estado isScrolled baseado na posição do scroll
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []); // [] vazio assegura que o useEffect só será executado uma vez
 
   return (
-    <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
+    <header className={`${styles.header} ${isScrolled ? styles.scrolled : ""}`}>
       <div className={styles.headerContent}>
-        <div><BotaoVoltar className={styles.botaoVoltar} /></div>
+        <div>
+          {showBuscar && <BotaoBuscar className={styles.botaoBuscar} />}
+        </div>
         <div>{showMiniatura && <Miniatura className={styles.miniatura} />}</div>
-        <div>{showFotoPerfil && <FotoPerfil className={styles.fotoPerfil} />}</div>
+        <div>
+          {showFotoPerfil && <FotoPerfil className={styles.fotoPerfil} />}
+        </div>
       </div>
     </header>
   );

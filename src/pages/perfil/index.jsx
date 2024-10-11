@@ -37,7 +37,7 @@ const PerfilUsuario = () => {
     <Private>
       <div className={styles.perfilUsuario}>
         {/* Header */}
-        <Header showFotoPerfil={false}></Header>
+        <Header showBuscar={false} showFotoPerfil={false}></Header>
 
         <div className={styles.apresentacao}>
           <FotoPrincipal onClickModal={abrirModal}></FotoPrincipal>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
-import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/auth";
 import Header from "@/components/Header";
 import { Inter } from "next/font/google";
@@ -40,7 +39,6 @@ const Home = () => {
   const [notaAtual, setNotaAtual] = useState(0);
   const [modalAberto, setModalAberto] = useState(null);
   const [countryNames, setCountryNames] = useState({});
-  const router = useRouter();
 
   const abrirModal = (modalTipo) => {
     setModalAberto(modalTipo);
@@ -65,6 +63,8 @@ const Home = () => {
     setFilme(null); // Limpa o estado do filme para forçar um novo fetch
     scrollToTop();
   };
+
+  const Loader = () => <div>Carregando...</div>;
 
   const selecionarFilmeAleatorio = () => {
     let randomFilmeId;
@@ -212,16 +212,6 @@ const Home = () => {
 
     fetchCountryNames();
   }, []);
-
-  const { query } = router;
-  const routerFilmeId = query.filmeId;
-
-  // Use o filmeId para buscar as informações do filme
-  useEffect(() => {
-    if (routerFilmeId) {
-      setFilmeId(routerFilmeId); // Atualiza o estado com o ID do filme
-    }
-  }, [routerFilmeId]);
 
   if (!filme && filmeId) return <Loader />; // Use um componente loader
 

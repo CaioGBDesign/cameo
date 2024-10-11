@@ -1,7 +1,6 @@
 import styles from "./index.module.scss";
 import { useEffect, useState, lazy, Suspense } from "react";
 import Header from "@/components/Header";
-import Search from "@/components/busca";
 import Titulolistagem from "@/components/titulolistagem";
 import GraficoVistos from "@/components/detalhesfilmes/grafico-vistos";
 import { useAuth } from "@/contexts/auth";
@@ -116,7 +115,6 @@ const FilmesAssisti = () => {
 
               <div className={styles.todosOsTitulos}>
                 <div className={styles.contlista}>
-                  <Search placeholder={"Buscar filmes"} />
                   <Titulolistagem
                     quantidadeFilmes={filmesVistos.length}
                     titulolistagem={"Filmes que já assisti"}

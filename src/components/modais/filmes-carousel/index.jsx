@@ -7,7 +7,16 @@ import Image from "next/image";
 const FilmesCarousel = ({ filmes, selectedFilm, onClose }) => {
   const [imagemFoco, setImagemFoco] = useState(0);
   const carouselRef = useRef(null);
+  const router = useRouter();
 
+  // Monitora mudanças em imagemFoco e loga o filme correspondente
+  useEffect(() => {
+    if (filmes[imagemFoco]) {
+      console.log("Filme em foco mudou:", filmes[imagemFoco]);
+    }
+  }, [imagemFoco, filmes]);
+
+  // Atualiza imagemFoco com base no selectedFilm
   useEffect(() => {
     if (selectedFilm && filmes.length > 0) {
       const selectedIndex = filmes.findIndex(
@@ -19,24 +28,22 @@ const FilmesCarousel = ({ filmes, selectedFilm, onClose }) => {
     }
   }, [selectedFilm, filmes]);
 
+  // Atualiza a posição de rolagem do carrossel para a imagem em foco
   useEffect(() => {
     if (carouselRef.current) {
       const itemWidth = carouselRef.current.scrollWidth / filmes.length;
       carouselRef.current.scrollLeft = imagemFoco * itemWidth; // Ajusta a rolagem para a imagem em foco
     }
-
-    // Log do filme em foco
     console.log("Filme em foco:", filmes[imagemFoco]?.title);
   }, [imagemFoco, filmes]);
 
-  const router = useRouter();
-
+  // Função para redirecionar ao clicar em uma imagem
   const handleImageClick = (index) => {
     const selectedFilmeId = filmes[index].id; // Obtenha o ID do filme
     router.push(`/?filmeId=${selectedFilmeId}`); // Redireciona para a home com o ID do filme
   };
 
-  // Debounce para o evento de rolagem
+  // Função para limitar a frequência com que a função de rolagem é chamada
   const debounceScroll = (func, delay) => {
     let timeout;
     return function (...args) {
@@ -46,16 +53,28 @@ const FilmesCarousel = ({ filmes, selectedFilm, onClose }) => {
     };
   };
 
+  // Calcula o índice da imagem em foco com base na posição de rolagem
   const handleScroll = () => {
     if (carouselRef.current) {
       const itemWidth = carouselRef.current.scrollWidth / filmes.length;
-      const newIndex = Math.round(carouselRef.current.scrollLeft / itemWidth);
-      if (newIndex !== imagemFoco) {
+      const scrollPosition = carouselRef.current.scrollLeft;
+      const newIndex = Math.round(scrollPosition / itemWidth);
+
+      console.log("Scroll Position:", scrollPosition);
+      console.log("Item Width:", itemWidth);
+      console.log("New Index:", newIndex);
+
+      // Atualiza imagemFoco se newIndex for diferente de 0
+      if (newIndex === 0 || newIndex !== imagemFoco) {
         setImagemFoco(newIndex);
+        console.log("Imagem em foco atualizada para:", newIndex);
+      } else {
+        console.log("Retornando ao mesmo filme:", filmes[imagemFoco]);
       }
     }
   };
 
+  // Configura o listener de rolagem e garante que seja removido quando o componente for desmontado
   useEffect(() => {
     const carouselElement = carouselRef.current;
     if (carouselElement) {
@@ -66,7 +85,10 @@ const FilmesCarousel = ({ filmes, selectedFilm, onClose }) => {
         carouselElement.removeEventListener("scroll", debouncedScroll);
       };
     }
-  }, [filmes]); // Dependências para garantir que o efeito seja re-executado ao mudar filmes
+  }, [filmes]);
+
+  // Verificações de renderização
+  console.log("Renderizando filme em foco:", filmes[imagemFoco]);
 
   return (
     <div className={styles.modalListagem}>
@@ -75,14 +97,14 @@ const FilmesCarousel = ({ filmes, selectedFilm, onClose }) => {
       </div>
       <div className={styles.tituloGeneroDuracao}>
         <div className={styles.tituloFilme}>
-          <span>{filmes[imagemFoco]?.title}</span>
+          <span>{filmes[imagemFoco]?.title || "Título não disponível"}</span>
         </div>
         <div className={styles.filmeGeneros}>
           {filmes[imagemFoco]?.genres?.map((item, index) => (
             <div className={styles.genero} key={index}>
               <span>{item.name}</span>
             </div>
-          ))}
+          )) || <span>Gêneros não disponíveis</span>}
         </div>
       </div>
       <div className={styles.contCarousel}>
@@ -95,15 +117,15 @@ const FilmesCarousel = ({ filmes, selectedFilm, onClose }) => {
                 }`}
                 key={index}
                 style={{ scrollSnapAlign: "center" }}
-                onClick={() => handleImageClick(index)} // Atualiza imagemFoco ao clicar
+                onClick={() => handleImageClick(index)}
               >
                 <div className={styles.capaFilme}>
                   <Image
                     src={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
                     alt={`Capa do filme ${filme.title}`}
-                    layout="fill" // Usa o layout fill
-                    objectFit="cover" // Ajusta a imagem para cobrir o contêiner
-                    quality={50} // Ajuste a qualidade se necessário
+                    layout="fill"
+                    objectFit="cover"
+                    quality={50}
                   />
                 </div>
               </div>
@@ -117,10 +139,12 @@ const FilmesCarousel = ({ filmes, selectedFilm, onClose }) => {
       </div>
 
       <div className={styles.fundoFilmeFoco}>
-        <img
-          src={`https://image.tmdb.org/t/p/original/${filmes[imagemFoco]?.poster_path}`}
-          alt={`Fundo do filme ${filmes[imagemFoco]?.title}`}
-        />
+        {filmes[imagemFoco] && (
+          <img
+            src={`https://image.tmdb.org/t/p/original/${filmes[imagemFoco]?.poster_path}`}
+            alt={`Fundo do filme ${filmes[imagemFoco]?.title}`}
+          />
+        )}
       </div>
     </div>
   );

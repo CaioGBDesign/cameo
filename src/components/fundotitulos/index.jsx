@@ -24,9 +24,10 @@ const FundoTitulos = ({
           <Image
             src={capaAssistidos}
             alt={tituloAssistidos}
-            layout="fill" // Usa o layout fill
-            objectFit="cover" // Ajusta a imagem para cobrir o contêiner
+            fill
             quality={50} // Ajuste a qualidade se necessário
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className={styles.objectFit}
           />
         </div>
       </div>

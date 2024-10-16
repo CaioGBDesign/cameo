@@ -1,23 +1,28 @@
 .search {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  input {
     width: 100%;
+    height: 35px;
+    background: #ffffff20; // Cor de fundo do input
+    border: none;
+    border-radius: 60px;
+    padding: 10px 30px;
 
-    input {
-        width: 100%;
-        height: 35px;
-        background: #ffffff20;
-        border: none;
-        border-radius: 60px;
-        padding: 10px 30px;
+    font-size: 24px;
+    color: #ffffff; // Ajuste esta cor conforme necessário para um tom mais claro
 
-        font-size: 24px;
-        color: #ffffff30;
-
-        &::placeholder {
-            font-size: 24px;
-            color: #ffffff40;
-        }
+    &::placeholder {
+      font-size: 24px;
+      color: #ffffff40; // Cor do placeholder
     }
+
+    &:focus {
+      outline: none; // Remove a borda padrão do foco
+      background: #ffffff20; // Mantém a cor de fundo ao focar
+    }
+  }
 }

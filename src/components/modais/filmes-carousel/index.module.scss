@@ -55,6 +55,7 @@
       align-items: center;
 
       width: 80%;
+      height: 50px;
 
       span {
         font-size: 22px;
@@ -125,7 +126,7 @@
         .imagens {
           width: 280px;
           scroll-snap-align: center;
-          transition: transform 0.3s ease; // Adiciona transição suave
+          transition: transform 0.1s ease; // Adiciona transição suave
 
           .capaFilme {
             display: flex;

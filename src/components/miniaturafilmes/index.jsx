@@ -20,9 +20,9 @@ const Miniaturafilmes = ({
             <Image
               src={capaminiatura}
               alt={titulofilme}
-              layout="fill" // Usa o layout fill
-              objectFit="cover" // Ajusta a imagem para cobrir o contêiner
-              quality={50} // Ajuste a qualidade se necessário
+              layout="fill"
+              objectFit="cover"
+              quality={50}
             />
           </div>
         </div>
@@ -35,7 +35,6 @@ const Miniaturafilmes = ({
           </button>
         )}
       </div>
-
       {mostrarEstrelas && (
         <div className={styles.tamanhoestrelas}>
           <Estrelas estrelas={avaliacao} starWidth={"10px"} />{" "}

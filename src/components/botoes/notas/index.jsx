@@ -4,11 +4,27 @@ import Estrelas from "@/components/estrelas";
 import AvaliarFilme from "@/components/detalhesfilmes/avaliar-filme";
 import { useAuth } from "@/contexts/auth";
 
-const NotasFilmes = ({ filmeId, avaliarFilme, onClickModal }) => {
+const NotasFilmes = ({
+  filmeId,
+  avaliarFilme,
+  usuarioFilmeVisto,
+  onClickModal,
+}) => {
   const { user } = useAuth();
   const [mensagem, setMensagem] = useState("");
+  const [nota, setNota] = useState(user?.visto[filmeId]?.nota || 0);
+  const [isClosing, setIsClosing] = useState(false);
 
   const filmeVisto = user && user.visto && user.visto.hasOwnProperty(filmeId);
+
+  const closeModal = () => {
+    console.log("Fechando o modal...");
+    setIsClosing(true);
+    setTimeout(() => {
+      console.log("Chamando onClose após animação...");
+      onClose();
+    }, 300);
+  };
 
   const handleClick = async (event) => {
     event.preventDefault();

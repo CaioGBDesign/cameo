@@ -6,9 +6,6 @@ const Miniaturafilmes = ({
   capaminiatura,
   titulofilme,
   mostrarEstrelas = true,
-  botaoFechar = true,
-  excluirFilme,
-  mostrarBotaoFechar,
   avaliacao = 0, // Adicione a avaliação como prop
   onClick, // Adicione a prop onClick
 }) => {
@@ -26,14 +23,6 @@ const Miniaturafilmes = ({
             />
           </div>
         </div>
-        {botaoFechar && (
-          <button
-            onClick={excluirFilme}
-            className={mostrarBotaoFechar ? styles.show : ""}
-          >
-            <img src="/icones/close.svg" />
-          </button>
-        )}
       </div>
       {mostrarEstrelas && (
         <div className={styles.tamanhoestrelas}>

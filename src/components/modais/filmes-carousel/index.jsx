@@ -1,13 +1,52 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
+import { useAuth } from "@/contexts/auth";
 import styles from "./index.module.scss";
 import NotasFilmes from "@/components/botoes/notas";
 import Image from "next/image";
+import DeletarFilme from "@/components/modais/deletar-filmes";
+import ModalAvaliar from "@/components/modais/avaliar-filmes";
 
-const FilmesCarousel = ({ filmes, selectedFilm, onClose }) => {
+const FilmesCarousel = ({
+  filmes,
+  selectedFilm,
+  onClose,
+  excluirFilme,
+  onClick,
+}) => {
   const [imagemFoco, setImagemFoco] = useState(0);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const carouselRef = useRef(null);
   const router = useRouter();
+  const { user, salvarFilme, removerFilme, avaliarFilme } = useAuth();
+  const [modalAberto, setModalAberto] = useState(null);
+  const [filmeIdParaAvaliar, setFilmeIdParaAvaliar] = useState(null);
+  const [notaAtual, setNotaAtual] = useState(0);
+
+  // Atualiza a nota ao abrir o modal
+  const abrirModalAvaliar = (id) => {
+    const nota = user?.visto?.[id] || 0; // Obtém a nota do filme
+    setFilmeIdParaAvaliar(id);
+    setNotaAtual(nota); // Armazena a nota atual no estado
+    setModalAberto("avaliar-filme"); // Altera o estado do modal para aberto
+  };
+
+  // Função para avaliar filme
+  const handleAvaliarFilme = (nota) => {
+    console.log("Avaliando filme:", filmeIdParaAvaliar, "com nota:", nota);
+    avaliarFilme(filmeIdParaAvaliar, nota); // Chama a função para avaliar o filme
+    setModalAberto(null); // Fecha o modal
+  };
+
+  const handleSalvarFilme = (id) => {
+    if (typeof id === "string") {
+      console.log("Salvando filme:", id);
+      salvarFilme(id);
+    } else {
+      console.error("O ID do filme deve ser uma string. Recebido:", id);
+      salvarFilme(String(id)); // Converte o ID para string, se necessário
+    }
+  };
 
   // Monitora mudanças em imagemFoco e loga o filme correspondente
   useEffect(() => {
@@ -90,6 +129,22 @@ const FilmesCarousel = ({ filmes, selectedFilm, onClose }) => {
   // Verificações de renderização
   console.log("Renderizando filme em foco:", filmes[imagemFoco]);
 
+  // Função para abrir o modal de confirmação
+  const handleOpenDeleteModal = () => {
+    setShowConfirmDelete(true);
+  };
+
+  // Função para confirmar a exclusão do filme
+  const handleConfirmDelete = () => {
+    excluirFilme(); // Chama a função para excluir o filme
+    setShowConfirmDelete(false); // Fecha o modal
+  };
+
+  // Função para cancelar a exclusão
+  const handleCancelDelete = () => {
+    setShowConfirmDelete(false); // Fecha o modal
+  };
+
   return (
     <div className={styles.modalListagem}>
       <div className={styles.fecharModalFilmes} onClick={onClose}>
@@ -135,7 +190,22 @@ const FilmesCarousel = ({ filmes, selectedFilm, onClose }) => {
       </div>
 
       <div className={styles.avaliacaoFilme}>
-        <NotasFilmes avaliarFilme={filmes[imagemFoco]?.rating} />
+        <div className={styles.deletarFilme} onClick={handleOpenDeleteModal}>
+          <img src="icones/deletar.svg" alt="" />
+        </div>
+
+        <NotasFilmes
+          filmeId={String(filmes[imagemFoco]?.id)}
+          avaliarFilme={avaliarFilme}
+          usuarioFilmeVisto={user?.visto || []}
+          onClickModal={() => abrirModalAvaliar(filmes[imagemFoco]?.id)}
+        />
+        {/* <FavoritarFilme
+          filmeId={String(filmes[imagemFoco]?.id)}
+          salvarFilme={salvarFilme}
+          removerFilme={removerFilme}
+          usuarioFavoritos={user?.favoritos || []}
+        /> */}
       </div>
 
       <div className={styles.fundoFilmeFoco}>
@@ -146,6 +216,21 @@ const FilmesCarousel = ({ filmes, selectedFilm, onClose }) => {
           />
         )}
       </div>
+
+      {showConfirmDelete && (
+        <DeletarFilme
+          TituloFilme={filmes[imagemFoco]?.title} // Passe o título do filme
+          onClose={handleCancelDelete}
+          onConfirm={handleConfirmDelete}
+        />
+      )}
+      {modalAberto === "avaliar-filme" && (
+        <ModalAvaliar
+          filmeId={filmeIdParaAvaliar}
+          nota={notaAtual}
+          onClose={() => setModalAberto(null)} // Fecha o modal
+        />
+      )}
     </div>
   );
 };

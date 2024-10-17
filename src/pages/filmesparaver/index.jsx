@@ -145,7 +145,6 @@ const FilmesParaVer = () => {
                           capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
                           titulofilme={filme.title}
                           mostrarBotaoFechar={mostrarBotaoFechar}
-                          excluirFilme={() => removerAssistir(String(filme.id))}
                           mostrarEstrelas={false}
                           onClick={() => openModal(filme)}
                         />
@@ -170,6 +169,10 @@ const FilmesParaVer = () => {
                 filmes={assistirFilme}
                 selectedFilm={selectedFilm} // Mantenha esta linha
                 onClose={() => setModalOpen(false)}
+                excluirFilme={() => {
+                  removerAssistir(String(selectedFilm.id)); // Chama a função de remoção passando o ID do filme em foco
+                  setModalOpen(false); // Fecha o modal após a exclusão
+                }}
               />
             )}
           </>

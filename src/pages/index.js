@@ -24,7 +24,17 @@ import Image from "next/image";
 const inter = Inter({ subsets: ["latin"] });
 const FundoTitulos = lazy(() => import("@/components/fundotitulos"));
 
-const Loader = () => <div>Carregando...</div>;
+const Loader = () => (
+  <div className={styles.loading}>
+    <div className={styles.loadingCont}>
+      <div className={styles.loadBola}></div>
+      <div className={styles.loadBola}></div>
+      <div className={styles.loadBola}></div>
+      <div className={styles.loadBola}></div>
+      <div className={styles.loadBola}></div>
+    </div>
+  </div>
+);
 
 const Home = () => {
   const [filmeId, setFilmeId] = useState(null);
@@ -63,8 +73,6 @@ const Home = () => {
     setFilme(null); // Limpa o estado do filme para forçar um novo fetch
     scrollToTop();
   };
-
-  const Loader = () => <div>Carregando...</div>;
 
   const selecionarFilmeAleatorio = () => {
     let randomFilmeId;

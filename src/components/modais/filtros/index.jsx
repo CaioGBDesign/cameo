@@ -42,9 +42,11 @@ const ModalFiltros = ({ onClose }) => {
       setModalVisible(true);
     }, 50);
 
+    // Esta função verifica se o clique foi fora do modal
     const handleClickOutside = (event) => {
+      // Se o modal está aberto e o clique foi fora dele, fecha o modal
       if (modalRef.current && !modalRef.current.contains(event.target)) {
-        closeModal();
+        closeModal(); // Chama a função para fechar o modal
       }
     };
 

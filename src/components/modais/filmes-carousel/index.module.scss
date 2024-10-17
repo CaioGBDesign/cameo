@@ -92,6 +92,7 @@
     display: flex;
     justify-content: center;
     overflow-x: hidden; // Alterado para hidden
+    scroll-behavior: smooth;
 
     z-index: 1;
 
@@ -101,7 +102,7 @@
       align-items: center;
 
       width: auto;
-      height: 425px;
+      height: 427px;
 
       overflow-y: hidden;
       overflow-x: auto; // Habilita o scroll horizontal
@@ -150,10 +151,18 @@
 
   .avaliacaoFilme {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    gap: 10px;
 
     z-index: 1;
+
+    .deletarFilme {
+      background: rgba(255, 255, 255, 0.062745098);
+      border-radius: 5px;
+
+      padding: 7px 7px;
+    }
   }
 
   .fundoFilmeFoco {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import { useAuth } from "@/contexts/auth";
+import { useRouter } from "next/router";
 import Header from "@/components/Header";
 import { Inter } from "next/font/google";
 import styles from "@/styles/index.module.scss";
@@ -37,6 +38,9 @@ const Loader = () => (
 );
 
 const Home = () => {
+  const router = useRouter();
+  const { filmeId: queryFilmeId } = router.query;
+  console.log("Query Filme ID:", queryFilmeId);
   const [filmeId, setFilmeId] = useState(null);
   const [filme, setFilme] = useState(null);
   const [elenco, setElenco] = useState([]);
@@ -94,18 +98,33 @@ const Home = () => {
   };
 
   useEffect(() => {
-    selecionarFilmeAleatorio();
-  }, []);
+    // Verifica se há um filmeId na query
+    if (queryFilmeId && queryFilmeId !== filmeId) {
+      console.log("Definindo filmeId a partir da query:", queryFilmeId);
+      setFilmeId(queryFilmeId);
+    }
+  }, [queryFilmeId, filmeId]);
+
+  useEffect(() => {
+    // Somente seleciona um filme aleatório se filmeId não estiver definido
+    if (!filmeId) {
+      console.log("Selecionando filme aleatório");
+      selecionarFilmeAleatorio();
+    }
+  }, [filmeId]);
 
   useEffect(() => {
     if (!filmeId) return;
 
     const fetchFilme = async () => {
+      console.log("Buscando filme com ID:", filmeId);
+
       try {
         const filmeResponse = await fetch(
           `https://api.themoviedb.org/3/movie/${filmeId}?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR&append_to_response=videos,release_dates`
         );
         const filmeData = await filmeResponse.json();
+        console.log("Dados do filme:", filmeData);
         setFilme(filmeData);
 
         const elencoResponse = await fetch(

@@ -37,7 +37,7 @@ const Busca = () => {
     const { id, title } = filme;
     router.push({
       pathname: "/",
-      query: { filmeId: id, titulo: title },
+      query: { filmeId: id },
     });
   };
 

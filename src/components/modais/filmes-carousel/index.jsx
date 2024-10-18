@@ -16,10 +16,10 @@ const FilmesCarousel = ({
   onClick,
   showDeletar = true,
 }) => {
+  const router = useRouter();
   const [imagemFoco, setImagemFoco] = useState(0);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const carouselRef = useRef(null);
-  const router = useRouter();
   const { user, salvarFilme, removerFilme, avaliarFilme } = useAuth();
   const [modalAberto, setModalAberto] = useState(null);
   const [filmeIdParaAvaliar, setFilmeIdParaAvaliar] = useState(null);
@@ -79,6 +79,16 @@ const FilmesCarousel = ({
     }
     console.log("Filme em foco:", filmes[imagemFoco]?.title);
   }, [imagemFoco, filmes]);
+
+  useEffect(() => {
+    const { filmeId } = router.query;
+    if (filmeId) {
+      const selectedIndex = filmes.findIndex((filme) => filme.id === filmeId);
+      if (selectedIndex !== -1) {
+        setImagemFoco(selectedIndex);
+      }
+    }
+  }, [router.query, filmes]);
 
   // Função para redirecionar ao clicar em uma imagem
   const handleImageClick = (index) => {

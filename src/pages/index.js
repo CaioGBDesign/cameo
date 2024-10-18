@@ -102,8 +102,9 @@ const Home = () => {
     if (queryFilmeId && queryFilmeId !== filmeId) {
       console.log("Definindo filmeId a partir da query:", queryFilmeId);
       setFilmeId(queryFilmeId);
+      router.push(`/?filmeId=${queryFilmeId}`);
     }
-  }, [queryFilmeId, filmeId]);
+  }, [queryFilmeId, filmeId, router]);
 
   useEffect(() => {
     // Somente seleciona um filme aleatório se filmeId não estiver definido

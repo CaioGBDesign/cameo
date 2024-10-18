@@ -108,11 +108,11 @@ const Home = () => {
 
   useEffect(() => {
     // Somente seleciona um filme aleatório se filmeId não estiver definido
-    if (!filmeId) {
+    if (!filmeId && !queryFilmeId) {
       console.log("Selecionando filme aleatório");
       selecionarFilmeAleatorio();
     }
-  }, [filmeId]);
+  }, [filmeId, queryFilmeId]);
 
   useEffect(() => {
     if (!filmeId) return;

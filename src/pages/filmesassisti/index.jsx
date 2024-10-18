@@ -161,6 +161,10 @@ const FilmesAssisti = () => {
                 filmes={filmesVistos}
                 selectedFilm={selectedFilm} // Mantenha esta linha
                 onClose={() => setModalOpen(false)}
+                excluirFilme={() => {
+                  removerNota(String(selectedFilm.id)); // Chama a função de remoção passando o ID do filme em foco
+                  setModalOpen(false); // Fecha o modal após a exclusão
+                }}
               />
             )}
           </>

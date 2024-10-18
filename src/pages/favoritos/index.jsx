@@ -178,9 +178,14 @@ const Favoritos = () => {
             ></FundoTitulos>
             {modalOpen && (
               <FilmesCarousel
+                showDeletar={false}
                 filmes={filmesFavoritos}
                 selectedFilm={selectedFilm} // Mantenha esta linha
                 onClose={() => setModalOpen(false)}
+                excluirFilme={() => {
+                  removerFilme(String(selectedFilm.id)); // Chama a função de remoção passando o ID do filme em foco
+                  setModalOpen(false); // Fecha o modal após a exclusão
+                }}
               />
             )}
           </>

@@ -5,6 +5,7 @@ import styles from "./index.module.scss";
 import NotasFilmes from "@/components/botoes/notas";
 import Image from "next/image";
 import DeletarFilme from "@/components/modais/deletar-filmes";
+import FavoritarFilme from "@/components/detalhesfilmes/favoritarfilme";
 import ModalAvaliar from "@/components/modais/avaliar-filmes";
 
 const FilmesCarousel = ({
@@ -13,6 +14,7 @@ const FilmesCarousel = ({
   onClose,
   excluirFilme,
   onClick,
+  showDeletar = true,
 }) => {
   const [imagemFoco, setImagemFoco] = useState(0);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
@@ -22,6 +24,7 @@ const FilmesCarousel = ({
   const [modalAberto, setModalAberto] = useState(null);
   const [filmeIdParaAvaliar, setFilmeIdParaAvaliar] = useState(null);
   const [notaAtual, setNotaAtual] = useState(0);
+  const [autoScroll, setAutoScroll] = useState(true); // Estado para controle da rolagem automática
 
   // Atualiza a nota ao abrir o modal
   const abrirModalAvaliar = (id) => {
@@ -29,6 +32,7 @@ const FilmesCarousel = ({
     setFilmeIdParaAvaliar(id);
     setNotaAtual(nota); // Armazena a nota atual no estado
     setModalAberto("avaliar-filme"); // Altera o estado do modal para aberto
+    setAutoScroll(false); // Desativa a rolagem automática ao abrir o modal
   };
 
   // Função para avaliar filme
@@ -136,8 +140,10 @@ const FilmesCarousel = ({
 
   // Função para confirmar a exclusão do filme
   const handleConfirmDelete = () => {
-    excluirFilme(); // Chama a função para excluir o filme
-    setShowConfirmDelete(false); // Fecha o modal
+    if (selectedFilm) {
+      excluirFilme(selectedFilm.id); // Passando o ID do filme
+    }
+    setShowConfirmDelete(false);
   };
 
   // Função para cancelar a exclusão
@@ -190,22 +196,28 @@ const FilmesCarousel = ({
       </div>
 
       <div className={styles.avaliacaoFilme}>
-        <div className={styles.deletarFilme} onClick={handleOpenDeleteModal}>
-          <img src="icones/deletar.svg" alt="" />
-        </div>
+        {showDeletar && (
+          <div className={styles.deletarFilme} onClick={handleOpenDeleteModal}>
+            <img src="icones/deletar.svg" alt="" />
+          </div>
+        )}
 
         <NotasFilmes
           filmeId={String(filmes[imagemFoco]?.id)}
           avaliarFilme={avaliarFilme}
           usuarioFilmeVisto={user?.visto || []}
-          onClickModal={() => abrirModalAvaliar(filmes[imagemFoco]?.id)}
+          onClickModal={() => {
+            abrirModalAvaliar(filmes[imagemFoco]?.id);
+            setAutoScroll(false); // Desativa a rolagem automática ao abrir o modal
+          }}
         />
-        {/* <FavoritarFilme
+        <FavoritarFilme
           filmeId={String(filmes[imagemFoco]?.id)}
           salvarFilme={salvarFilme}
           removerFilme={removerFilme}
           usuarioFavoritos={user?.favoritos || []}
-        /> */}
+          onClick={() => setAutoScroll(false)}
+        />
       </div>
 
       <div className={styles.fundoFilmeFoco}>

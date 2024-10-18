@@ -112,6 +112,7 @@ const Home = () => {
       console.log("Selecionando filme aleatório");
       selecionarFilmeAleatorio();
     }
+    router.push("/"); // adicionado para a home perder o link da query ao selecionar um filme aleatório
   }, [filmeId, queryFilmeId]);
 
   useEffect(() => {

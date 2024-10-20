@@ -52,45 +52,42 @@ const DadosPessoais = () => {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    console.log("Tentando atualizar:", { nome, handle, genero, estilo });
+    console.log("Tentando atualizar:", { nome, genero, estilo });
 
-    if (nome && handle && genero && estilo) {
+    const updatedData = {};
+    if (nome !== user.nome) updatedData.nome = nome;
+    if (genero !== user.genero) updatedData.genero = genero;
+    if (estilo !== user.estilo) updatedData.estilo = estilo;
+
+    if (Object.keys(updatedData).length > 0) {
       const docRef = doc(db, "users", user.uid);
-      await updateDoc(docRef, {
-        nome: nome,
-        handle: handle,
-        genero: genero,
-        estilo: estilo,
-      })
-        .then(() => {
-          let updatedUser = {
-            ...user,
-            nome: nome,
-            handle: handle,
-            genero: genero,
-            estilo: estilo,
-          };
+      try {
+        await updateDoc(docRef, updatedData);
 
-          setUser(updatedUser);
-          storageUser(updatedUser);
-          setAlteracoesPendentes(false);
-        })
-        .catch((error) => {
-          console.error("Erro ao atualizar dados:", error);
-        });
+        let updatedUser = {
+          ...user,
+          ...updatedData,
+        };
+
+        setUser(updatedUser);
+        storageUser(updatedUser);
+        setAlteracoesPendentes(false);
+        console.log("Dados atualizados com sucesso.");
+      } catch (error) {
+        console.error("Erro ao atualizar dados:", error);
+      }
+    } else {
+      console.log("Nenhuma alteração detectada.");
     }
   }
 
   useEffect(() => {
     if (user) {
       setAlteracoesPendentes(
-        nome !== user.nome ||
-          handle !== user.handle ||
-          genero !== user.genero ||
-          estilo !== user.estilo
+        nome !== user.nome || genero !== user.genero || estilo !== user.estilo
       );
     }
-  }, [nome, handle, genero, estilo, user]);
+  }, [nome, genero, estilo, user]);
 
   return (
     <Private>

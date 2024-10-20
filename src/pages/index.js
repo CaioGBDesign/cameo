@@ -20,48 +20,40 @@ import Listafilmes from "@/components/listafilmes/listafilmes.json";
 import ModalFiltros from "@/components/modais/filtros";
 import ModalAvaliar from "@/components/modais/avaliar-filmes";
 import Classificacao from "@/components/detalhesfilmes/classificacao";
+import Loading from "@/components/loading";
 import Image from "next/image";
 
 const inter = Inter({ subsets: ["latin"] });
 const FundoTitulos = lazy(() => import("@/components/fundotitulos"));
 
-const Loader = () => (
-  <div className={styles.loading}>
-    <div className={styles.loadingCont}>
-      <div className={styles.loadBola}></div>
-      <div className={styles.loadBola}></div>
-      <div className={styles.loadBola}></div>
-      <div className={styles.loadBola}></div>
-      <div className={styles.loadBola}></div>
-    </div>
-  </div>
-);
-
 const Home = () => {
   const router = useRouter();
-  const { filmeId: queryFilmeId } = router.query;
-  console.log("Query Filme ID:", queryFilmeId);
-  const [filmeId, setFilmeId] = useState(null);
-  const [filme, setFilme] = useState(null);
-  const [elenco, setElenco] = useState([]);
-  const [diretores, setDiretores] = useState([]);
-  const [servicosStreaming, setServicosStreaming] = useState([]);
-  const [trailerLink, setTrailerLink] = useState(null);
-  const [recomendacoes, setRecomendacoes] = useState([]);
-  const [filmesExibidos, setFilmesExibidos] = useState(new Set());
-  const [filmeIdParaAvaliar, setFilmeIdParaAvaliar] = useState(null);
-  const [notaAtual, setNotaAtual] = useState(0);
-  const [modalAberto, setModalAberto] = useState(null);
-  const [countryNames, setCountryNames] = useState({});
+  const { filmeId: queryFilmeId } = router.query; // Captura o ID do filme da query string
+  // console.log("Query Filme ID:", queryFilmeId); // Log do ID do filme da query
+  const [filmeId, setFilmeId] = useState(null); // Estado para armazenar o ID do filme
+  const [filme, setFilme] = useState(null); // Estado para armazenar os dados do filme
+  const [elenco, setElenco] = useState([]); // Estado para o elenco do filme
+  const [diretores, setDiretores] = useState([]); // Estado para os diretores do filme
+  const [servicosStreaming, setServicosStreaming] = useState([]); // Estado para serviços de streaming
+  const [trailerLink, setTrailerLink] = useState(null); // Estado para link do trailer
+  const [recomendacoes, setRecomendacoes] = useState([]); // Estado para recomendações de filmes
+  const [filmesExibidos, setFilmesExibidos] = useState(new Set()); // Estado para controlar filmes exibidos
+  const [filmeIdParaAvaliar, setFilmeIdParaAvaliar] = useState(null); // Estado para ID do filme a ser avaliado
+  const [notaAtual, setNotaAtual] = useState(0); // Estado para nota atual do filme
+  const [modalAberto, setModalAberto] = useState(null); // Estado para controlar modais abertos
+  const [countryNames, setCountryNames] = useState({}); // Estado para nomes dos países
 
+  // Função para abrir um modal
   const abrirModal = (modalTipo) => {
-    setModalAberto(modalTipo);
+    setModalAberto(modalTipo); // Define o tipo do modal aberto
   };
 
+  // Função para fechar um modal
   const fecharModal = () => {
-    setModalAberto(null);
+    setModalAberto(null); // Reseta o estado do modal
   };
 
+  // Obtém funções de autenticação do contexto
   const {
     user,
     salvarFilme,
@@ -72,156 +64,173 @@ const Home = () => {
     removerVisto,
   } = useAuth();
 
-  const selecionarFilmeRecomendado = (id) => {
-    setFilmeId(String(id)); // Converter id para string
-    setFilme(null); // Limpa o estado do filme para forçar um novo fetch
-    scrollToTop();
+  const handleSelectMovie = (movieId) => {
+    setFilmeId(movieId);
+    // Aqui você pode buscar os dados do filme usando o ID, se necessário
+    console.log("Filme selecionado:", movieId);
   };
 
+  // Seleciona um filme recomendado ao clicar
+  const selecionarFilmeRecomendado = (id) => {
+    setFilmeId(String(id)); // Converter id para string
+    setFilme(null); // Limpa o estado do filme atual
+    scrollToTop(); // Rola a página para o topo
+  };
+
+  // Seleciona um filme aleatório
   const selecionarFilmeAleatorio = () => {
     let randomFilmeId;
 
+    // Se todos os filmes já foram exibidos, reinicia a lista
     if (filmesExibidos.size === Listafilmes.filmes.length) {
       setFilmesExibidos(new Set());
     }
 
     do {
+      // Seleciona um filme aleatório
       randomFilmeId =
         Listafilmes.filmes[
           Math.floor(Math.random() * Listafilmes.filmes.length)
         ];
-    } while (filmesExibidos.has(randomFilmeId));
+    } while (filmesExibidos.has(randomFilmeId)); // Evita repetir filmes exibidos
 
-    setFilmeId(randomFilmeId);
-    setFilmesExibidos((prev) => new Set(prev).add(randomFilmeId));
-    scrollToTop();
+    setFilmeId(randomFilmeId); // Define o filme selecionado
+    setFilmesExibidos((prev) => new Set(prev).add(randomFilmeId)); // Adiciona filme à lista de exibidos
+    scrollToTop(); // Rola para o topo da página
   };
 
+  // Efeito que monitora mudanças na query do filme
   useEffect(() => {
     // Verifica se há um filmeId na query
     if (queryFilmeId && queryFilmeId !== filmeId) {
-      console.log("Definindo filmeId a partir da query:", queryFilmeId);
-      setFilmeId(queryFilmeId);
-      router.push(`/?filmeId=${queryFilmeId}`);
+      setFilmeId(queryFilmeId); // Define o filmeId a partir da query
+      router.push(`/?filmeId=${queryFilmeId}`); // Atualiza a URL
     }
   }, [queryFilmeId, filmeId, router]);
 
+  // Efeito que seleciona um filme aleatório se nenhum filme estiver definido
   useEffect(() => {
-    // Somente seleciona um filme aleatório se filmeId não estiver definido
     if (!filmeId && !queryFilmeId) {
-      console.log("Selecionando filme aleatório");
-      selecionarFilmeAleatorio();
+      selecionarFilmeAleatorio(); // Seleciona um filme aleatório
     }
-    router.push("/"); // adicionado para a home perder o link da query ao selecionar um filme aleatório
+    router.push("/"); // Remove a query da URL ao selecionar aleatório
   }, [filmeId, queryFilmeId]);
 
+  // Efeito que busca detalhes do filme quando o filmeId é definido
   useEffect(() => {
-    if (!filmeId) return;
+    if (!filmeId) return; // Se não houver filmeId, sai da função
 
     const fetchFilme = async () => {
-      console.log("Buscando filme com ID:", filmeId);
-
       try {
+        // Fetch dos detalhes do filme
         const filmeResponse = await fetch(
           `https://api.themoviedb.org/3/movie/${filmeId}?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR&append_to_response=videos,release_dates`
         );
-        const filmeData = await filmeResponse.json();
+        const filmeData = await filmeResponse.json(); // Converte resposta em JSON
         console.log("Dados do filme:", filmeData);
-        setFilme(filmeData);
+        setFilme(filmeData); // Define o estado do filme
 
+        // Fetch do elenco do filme
         const elencoResponse = await fetch(
           `https://api.themoviedb.org/3/movie/${filmeId}/credits?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR`
         );
         const elencoData = await elencoResponse.json();
-        setElenco(elencoData.cast);
+        setElenco(elencoData.cast); // Define o elenco
 
+        // Fetch dos provedores de streaming
         const providersResponse = await fetch(
           `https://api.themoviedb.org/3/movie/${filmeId}/watch/providers?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR`
         );
         const providersData = await providersResponse.json();
-        setServicosStreaming(providersData.results.BR?.flatrate || []);
+        setServicosStreaming(providersData.results.BR?.flatrate || []); // Define os serviços de streaming
 
+        // Fetch de recomendações
         const recomendacoesResponse = await fetch(
           `https://api.themoviedb.org/3/movie/${filmeId}/recommendations?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR`
         );
         const recomendacoesData = await recomendacoesResponse.json();
         setRecomendacoes(recomendacoesData.results);
 
+        // Busca o trailer do filme a partir dos dados recebidos
         const trailer = filmeData.videos.results.find(
-          (video) => video.type === "Trailer"
+          (video) => video.type === "Trailer" // Filtra apenas os vídeos do tipo "Trailer"
         );
+
+        // Define o link do trailer, se encontrado, ou null se não houver trailer
         setTrailerLink(
           trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : null
         );
 
+        // Filtra e mapeia os membros da equipe para encontrar os diretores
         const diretoresEncontrados = elencoData.crew
-          .filter((member) => member.job === "Director")
+          .filter((member) => member.job === "Director") // Mantém apenas os membros que são diretores
           .map((diretor) => ({
-            nome: diretor.name,
+            nome: diretor.name, // Nome do diretor
             imagemUrl: diretor.profile_path
-              ? `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${diretor.profile_path}`
+              ? `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${diretor.profile_path}` // URL da imagem do diretor, se disponível
               : null,
           }));
+
+        // Define o estado dos diretores encontrados; se nenhum diretor for encontrado, define uma mensagem padrão
         setDiretores(
           diretoresEncontrados.length
-            ? diretoresEncontrados
-            : [{ nome: "Diretor não encontrado", imagemUrl: null }]
+            ? diretoresEncontrados // Se diretores foram encontrados, usa-os
+            : [{ nome: "Diretor não encontrado", imagemUrl: null }] // Caso contrário, define mensagem padrão
         );
       } catch (error) {
-        console.error("Erro ao buscar filme, elenco ou provedores:", error);
+        // Trata erros que podem ocorrer durante a busca de filme, elenco ou provedores
       }
     };
 
+    // Chama a função fetchFilme para buscar os dados do filme
     fetchFilme();
-  }, [filmeId]);
+  }, [filmeId]); // O efeito depende do filmeId
 
   useEffect(() => {
+    // Verifica se há um filmeId para avaliar e se o usuário está logado
     if (filmeIdParaAvaliar && user) {
-      const nota = user.visto[filmeIdParaAvaliar] || 0; // Acesso direto ao objeto
-      setNotaAtual(nota);
+      const nota = user.visto[filmeIdParaAvaliar] || 0; // Acessa a nota do filme, padrão 0 se não encontrado
+      setNotaAtual(nota); // Atualiza o estado com a nota atual
     }
-  }, [filmeIdParaAvaliar, user]);
+  }, [filmeIdParaAvaliar, user]); // O efeito depende do filmeIdParaAvaliar e do usuário
 
   useEffect(() => {
+    // Altera o estilo do corpo da página para ocultar o scroll quando um modal está aberto
     document.body.style.overflow = modalAberto ? "hidden" : "auto";
-  }, [modalAberto]);
+  }, [modalAberto]); // O efeito depende do modalAberto
 
   const scrollToTop = () => {
+    // Função para rolar a página até o topo suavemente
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
   };
 
+  // Função para salvar um filme na lista do usuário
   const handleSalvarFilme = (id) => {
     console.log("Salvando filme:", id);
-    salvarFilme(id);
+    salvarFilme(id); // Chama a função de salvar filme
   };
 
-  const handleAssistirFilme = (id) => assistirFilme(id);
+  // Função para marcar um filme como assistido
+  const handleAssistirFilme = (id) => assistirFilme(id); // Chama a função de assistir filme
 
+  // Função para avaliar um filme
   const handleAvaliarFilme = (id) => {
     console.log("Avaliando filme:", id);
-    avaliarFilme(id);
+    avaliarFilme(id); // Chama a função de avaliar filme
   };
 
+  // Abre o modal de avaliação de filme
   const abrirModalAvaliar = (id) => {
-    const nota = user?.visto?.[id] || 0; // Obtém a nota do filme
-    setFilmeIdParaAvaliar(id);
-    setNotaAtual(nota); // Armazena a nota atual no estado
-    abrirModal("avaliar-filme");
+    const nota = user?.visto?.[id] || 0; // Obtém a nota do filme, padrão 0 se não encontrado
+    setFilmeIdParaAvaliar(id); // Define o filmeId que será avaliado
+    setNotaAtual(nota); // Atualiza a nota atual no estado
+    abrirModal("avaliar-filme"); // Abre o modal de avaliação
   };
 
-  useEffect(() => {
-    if (!filmeId) return;
-
-    const fetchFilme = async () => {
-      // código para buscar o filme e definir os estados
-    };
-
-    fetchFilme();
-  }, [filmeId]);
-
+  // Efeito para buscar os nomes dos países que têm provedores de streaming
   useEffect(() => {
     const fetchCountryNames = async () => {
       try {
@@ -242,7 +251,7 @@ const Home = () => {
     fetchCountryNames();
   }, []);
 
-  if (!filme && filmeId) return <Loader />; // Use um componente loader
+  if (!filme && filmeId) return <Loading />; // Use um componente loader
 
   return (
     <>
@@ -302,7 +311,7 @@ const Home = () => {
               )}
             </div>
 
-            <Suspense fallback={<Loader />}>
+            <Suspense fallback={<Loading />}>
               <div className={styles.elencoGeral}>
                 <Dublagem />
                 <hr />
@@ -360,7 +369,9 @@ const Home = () => {
               <div className={styles.detalhes}>
                 <h3>País de origem</h3>
                 <div className={styles.producao}>
-                  {filme && filme.production_countries.length > 0 ? (
+                  {filme &&
+                  filme.production_countries &&
+                  filme.production_countries.length > 0 ? (
                     filme.production_countries.map((country) => (
                       <div
                         className={styles.produtora}
@@ -394,7 +405,7 @@ const Home = () => {
                               ) // Converter ID para string
                           }
                         >
-                          <Suspense fallback={<Loader />}>
+                          <Suspense fallback={<Loading />}>
                             <div className={styles.fotoRecomendacoes}>
                               <Image
                                 src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${recomendacao.poster_path}`}
@@ -424,18 +435,25 @@ const Home = () => {
           onClickModal={() => abrirModal("filtros")} // Função para abrir o modal
         />
 
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={<Loading />}>
           <FundoTitulos
             exibirPlay={!!trailerLink}
             capaAssistidos={`https://image.tmdb.org/t/p/original/${
               filme ? filme.poster_path : ""
             }`}
+            // {"/background/super-mario-bros.jpg"}
             tituloAssistidos={filme ? filme.title : "Título não disponível"}
             trailerLink={trailerLink || "#"}
           />
         </Suspense>
 
-        {modalAberto === "filtros" && <ModalFiltros onClose={fecharModal} />}
+        {modalAberto === "filtros" && (
+          <ModalFiltros
+            onClose={fecharModal}
+            user={user}
+            onSelectMovie={handleSelectMovie}
+          />
+        )}
         {modalAberto === "avaliar-filme" && (
           <ModalAvaliar
             filmeId={filmeIdParaAvaliar} // Use filmeIdParaAvaliar no lugar de selectedFilmeId

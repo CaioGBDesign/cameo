@@ -12,13 +12,15 @@ const countriesList = [
   // Adicione mais países conforme necessário
 ];
 
-const ModalFiltros = ({ onClose }) => {
+const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
   const modalRef = useRef(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [closing, setClosing] = useState(false);
   const [genres, setGenres] = useState([]); // Estado para armazenar os gêneros
   const [anoLancamento, setAnoLancamento] = useState(""); // Estado para armazenar o ano de lançamento selecionado
   const [anoInicial, setAnoInicial] = useState(1937); // Definindo 1937 como o ano inicial
+  const [selectedStatus, setSelectedStatus] = useState("todos"); // Estado para rastrear o status selecionado
+  const [nowPlayingMovies, setNowPlayingMovies] = useState([]); // Estado para filmes em cartaz
 
   useEffect(() => {
     // Função para buscar os gêneros na API do TMDb
@@ -36,6 +38,27 @@ const ModalFiltros = ({ onClose }) => {
         console.error("Erro ao obter os gêneros:", error);
       }
     };
+
+    // Atualiza a função para buscar filmes em cartaz com a nova URL
+    const fetchNowPlayingMovies = async () => {
+      try {
+        const apiKey = "c95de8d6070dbf1b821185d759532f05";
+        const nowPlayingEndpoint =
+          "https://api.themoviedb.org/3/movie/now_playing";
+
+        const response = await fetch(
+          `${nowPlayingEndpoint}?api_key=${apiKey}&region=BR&language=pt-BR`
+        );
+        const data = await response.json();
+
+        setNowPlayingMovies(data.results);
+      } catch (error) {
+        console.error("Erro ao obter filmes em cartaz:", error);
+      }
+    };
+
+    fetchGenres();
+    fetchNowPlayingMovies();
 
     // Mostra o modal após um pequeno atraso para garantir a animação de abertura
     setTimeout(() => {
@@ -83,10 +106,39 @@ const ModalFiltros = ({ onClose }) => {
     }
   };
 
-  // Função para aplicar o filtro por ano de lançamento
   const aplicarFiltro = () => {
-    if (anoLancamento) {
-      fetchMoviesByYear(anoLancamento);
+    const { visto, assistir } = user; // Obtém as listas de filmes já assistidos e a assistir do usuário
+    console.log("Filmes vistos:", visto);
+    console.log("Filmes a assistir:", assistir);
+
+    if (selectedStatus === "JaAssisti" && visto) {
+      const vistosIds = Object.keys(visto); // Assume que as chaves são os IDs
+      if (vistosIds.length > 0) {
+        const randomIndex = Math.floor(Math.random() * vistosIds.length);
+        const randomMovieId = vistosIds[randomIndex];
+        console.log("Filme aleatório a ser assistido:", randomMovieId);
+        onSelectMovie(randomMovieId);
+      } else {
+        console.log("Nenhum filme visto disponível.");
+      }
+    } else if (
+      selectedStatus === "NaoAssisti" &&
+      assistir &&
+      Object.keys(assistir).length > 0
+    ) {
+      // Extraindo apenas os IDs dos filmes a assistir
+      const assistirIds = Object.values(assistir); // Aqui você pega os valores que representam os IDs
+      const randomIndex = Math.floor(Math.random() * assistirIds.length);
+      const randomMovieId = assistirIds[randomIndex];
+      console.log("Filme aleatório a assistir:", randomMovieId);
+      onSelectMovie(randomMovieId);
+    } else if (selectedStatus === "NosCinemas" && nowPlayingMovies.length > 0) {
+      const randomIndex = Math.floor(Math.random() * nowPlayingMovies.length);
+      const randomMovieId = nowPlayingMovies[randomIndex].id; // ID do filme em cartaz
+      console.log("Filme aleatório em cartaz:", randomMovieId);
+      onSelectMovie(randomMovieId);
+    } else {
+      console.log("Nenhum filme disponível para a seleção.");
     }
   };
 
@@ -104,9 +156,23 @@ const ModalFiltros = ({ onClose }) => {
               <div className={styles.seletor}>
                 <input type="radio" id="todos" name="status" />
                 <label htmlFor="todos">Todos</label>
-                <input type="radio" id="NaoAssisti" name="status" />
-                <label htmlFor="NaoAssisti">Não assisti</label>
-                <input type="radio" id="JaAssisti" name="status" />
+                <input
+                  type="radio"
+                  id="NaoAssisti"
+                  name="status"
+                  value="NaoAssisti"
+                  onChange={() => setSelectedStatus("NaoAssisti")}
+                  checked={selectedStatus === "NaoAssisti"}
+                />
+                <label htmlFor="NaoAssisti">Quero assistir</label>
+                <input
+                  type="radio"
+                  id="JaAssisti"
+                  name="status"
+                  value="JaAssisti"
+                  onChange={() => setSelectedStatus("JaAssisti")}
+                  checked={selectedStatus === "JaAssisti"}
+                />
                 <label htmlFor="JaAssisti">Já assisti</label>
               </div>
             </div>
@@ -117,178 +183,16 @@ const ModalFiltros = ({ onClose }) => {
               <div className={styles.seletor}>
                 <input type="radio" id="todosCinema" name="cinema" />
                 <label htmlFor="todosCinema">Todos</label>
-                <input type="radio" id="NosCinemas" name="cinema" />
-                <label htmlFor="NosCinemas">Assistir nos cinemas</label>
-              </div>
-            </div>
-
-            <div className={styles.separador}>
-              <h3>Streaming</h3>
-
-              <div className={styles.streaming}>
-                <input type="radio" id="netflix" name="servicos" />
-                <label htmlFor="netflix">
-                  <img src="/icones/servicos/netflix.svg" alt="Netflix" />
-                </label>
-                <input type="radio" id="prime-video" name="servicos" />
-                <label htmlFor="prime-video">
-                  <img
-                    src="/icones/servicos/prime-video.svg"
-                    alt="prime video"
-                  />
-                </label>
-                <input type="radio" id="hbo" name="servicos" />
-                <label htmlFor="hbo">
-                  <img src="/icones/servicos/hbo.svg" alt="hbo" />
-                </label>
-                <input type="radio" id="disney" name="servicos" />
-                <label htmlFor="disney">
-                  <img
-                    src="/icones/servicos/disney-plus.svg"
-                    alt="disney plus"
-                  />
-                </label>
-                <input type="radio" id="star" name="servicos" />
-                <label htmlFor="star">
-                  <img src="/icones/servicos/star-plus.svg" alt="star plus" />
-                </label>
-                <input type="radio" id="youtube" name="servicos" />
-                <label htmlFor="youtube">
-                  <img src="/icones/servicos/youtube.svg" alt="youtube" />
-                </label>
-                <input type="radio" id="apple" name="servicos" />
-                <label htmlFor="apple">
-                  <img src="/icones/servicos/apple-tv.svg" alt="apple tv" />
-                </label>
-                <input type="radio" id="paramount" name="servicos" />
-                <label htmlFor="paramount">
-                  <img src="/icones/servicos/paramount.svg" alt="paramount" />
-                </label>
-              </div>
-            </div>
-
-            <div className={styles.separador}>
-              <h3>Categoria</h3>
-
-              <div className={styles.seletor}>
-                <input type="radio" id="todosCategoria" name="categoria" />
-                <label htmlFor="todosCategoria">Todos</label>
-
-                <input type="radio" id="animacao" name="categoria" />
-                <label htmlFor="animacao">Animação</label>
-
-                <input type="radio" id="aventura" name="categoria" />
-                <label htmlFor="aventura">Aventura</label>
-
-                <input type="radio" id="acao" name="categoria" />
-                <label htmlFor="acao">Ação</label>
-
-                <input type="radio" id="comedia" name="categoria" />
-                <label htmlFor="comedia">Comédia</label>
-
-                <input type="radio" id="crime" name="categoria" />
-                <label htmlFor="crime">Crime</label>
-
-                <input type="radio" id="documentarios" name="categoria" />
-                <label htmlFor="documentarios">Documentarios</label>
-
-                <input type="radio" id="drama" name="categoria" />
-                <label htmlFor="drama">Drama</label>
-
-                <input type="radio" id="familia" name="categoria" />
-                <label htmlFor="familia">Família</label>
-
-                <input type="radio" id="fantasia" name="categoria" />
-                <label htmlFor="fantasia">Fantasia</label>
-
-                <input type="radio" id="faroeste" name="categoria" />
-                <label htmlFor="faroeste">Faroeste</label>
-
-                <input type="radio" id="ficcao-cientifica" name="categoria" />
-                <label htmlFor="ficcao-cientifica">Ficção científica</label>
-
-                <input type="radio" id="guerra" name="categoria" />
-                <label htmlFor="guerra">Guerra</label>
-
-                <input type="radio" id="historia" name="categoria" />
-                <label htmlFor="historia">História</label>
-
-                <input type="radio" id="misterio" name="categoria" />
-                <label htmlFor="misterio">Mistério</label>
-
-                <input type="radio" id="musical" name="categoria" />
-                <label htmlFor="musical">Musical</label>
-
-                <input type="radio" id="romance" name="categoria" />
-                <label htmlFor="romance">Romance</label>
-
-                <input type="radio" id="terror" name="categoria" />
-                <label htmlFor="terror">Terror</label>
-
-                <input type="radio" id="thriller" name="categoria" />
-                <label htmlFor="thriller">Thriller</label>
-              </div>
-            </div>
-
-            <div className={styles.separador}>
-              <h3>Classificação indicativa</h3>
-
-              <div className={styles.seletor}>
                 <input
                   type="radio"
-                  id="todosClassificacao"
-                  name="classificacao"
+                  id="NosCinemas"
+                  name="cinema"
+                  value="NosCinemas"
+                  onChange={() => setSelectedStatus("NosCinemas")}
+                  checked={selectedStatus === "NosCinemas"}
                 />
-                <label htmlFor="todosClassificacao">Todos</label>
-
-                <input type="radio" id="livre" name="classificacao" />
-                <label htmlFor="livre">Livre</label>
-
-                <input type="radio" id="10 anos" name="classificacao" />
-                <label htmlFor="10 anos">10 anos</label>
-
-                <input type="radio" id="12 anos" name="classificacao" />
-                <label htmlFor="12 anos">12 anos</label>
-
-                <input type="radio" id="14 anos" name="classificacao" />
-                <label htmlFor="14 anos">14 anos</label>
-
-                <input type="radio" id="16 anos" name="classificacao" />
-                <label htmlFor="16 anos">16 anos</label>
-
-                <input type="radio" id="18 anos" name="classificacao" />
-                <label htmlFor="18 anos">18 anos</label>
+                <label htmlFor="NosCinemas">Assistir nos cinemas</label>
               </div>
-            </div>
-
-            <div className={styles.separador}>
-              <h3>País de origem</h3>
-              <select>
-                <option value="">Selecione o país</option>
-                {countriesList.map((country) => (
-                  <option key={country.iso_3166_1} value={country.iso_3166_1}>
-                    {country.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className={styles.separador}>
-              <h3>Ano de lançamento</h3>
-              <select
-                value={anoLancamento}
-                onChange={(e) => setAnoLancamento(e.target.value)}
-              >
-                <option value="">Selecione o ano</option>
-                {Array.from(
-                  { length: new Date().getFullYear() - anoInicial + 1 },
-                  (_, index) => new Date().getFullYear() - index
-                ).map((year) => (
-                  <option key={year} value={year}>
-                    {year}
-                  </option>
-                ))}
-              </select>
             </div>
           </div>
 

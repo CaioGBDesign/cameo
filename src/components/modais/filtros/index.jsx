@@ -23,6 +23,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
   const [selectedStatus, setSelectedStatus] = useState("todos"); // Estado para rastrear o status selecionado
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]); // Estado para filmes em cartaz
   const [providerId, setProviderId] = useState(null); // Estado para filmes com base no streaming
+  const [selectedGenre, setSelectedGenre] = useState(null); // Estado para o gênero
 
   useEffect(() => {
     // Função para buscar os gêneros na API do TMDb
@@ -31,7 +32,9 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
         const apiKey = "c95de8d6070dbf1b821185d759532f05";
         const genreEndpoint = "https://api.themoviedb.org/3/genre/movie/list";
 
-        const response = await fetch(`${genreEndpoint}?api_key=${apiKey}`);
+        const response = await fetch(
+          `${genreEndpoint}?api_key=${apiKey}&language=pt-BR`
+        );
         const data = await response.json();
 
         // Atualiza o estado com os gêneros obtidos
@@ -132,6 +135,49 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
     }
   };
 
+  // Função para buscar o ID do filme por gênero
+  const fetchMoviesByGenre = async (genreId) => {
+    try {
+      const apiKey = "c95de8d6070dbf1b821185d759532f05";
+      const discoverEndpoint = "https://api.themoviedb.org/3/discover/movie";
+
+      // Definindo a data limite para 2024-12-31
+      const releaseDateLimit = "2024-12-31";
+
+      // Gerando a URL com o filtro de data
+      const url = `${discoverEndpoint}?api_key=${apiKey}&language=pt-BR&sort_by=primary_release_date.desc&page=1&with_watch_genre=${genreId}&primary_release_date.lte=${releaseDateLimit}`;
+
+      // Log da URL gerada
+      console.log("URL da requisição:", url);
+
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        console.error("Erro na requisição:", response.statusText);
+        return;
+      }
+
+      const data = await response.json();
+      console.log("Dados da API:", data);
+
+      // Filtrando filmes com base no gênero selecionado
+      const moviesByGenre = data.results.filter(
+        (movie) => movie.genre_ids && movie.genre_ids.includes(genreId)
+      );
+
+      console.log("Filmes encontrados pelo gênero:", moviesByGenre);
+      if (moviesByGenre.length > 0) {
+        const randomMovie =
+          moviesByGenre[Math.floor(Math.random() * moviesByGenre.length)];
+        onSelectMovie(randomMovie.id);
+      } else {
+        console.log("Nenhum filme encontrado para este gênero.");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar filmes por gênero:", error);
+    }
+  };
+
   const aplicarFiltro = () => {
     const { visto, assistir } = user; // Obtém as listas de filmes já assistidos e a assistir do usuário
     console.log("Filmes vistos:", visto);
@@ -141,6 +187,11 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
     if (providerId) {
       buscarFilmeAleatorio(); // Chama a função para buscar um filme aleatório
       return; // Sai da função para evitar execução de outras condições
+    }
+
+    if (selectedGenre) {
+      fetchMoviesByGenre(selectedGenre); // Chama a função para buscar filmes pelo gênero
+      return;
     }
 
     if (selectedStatus === "JaAssisti" && visto) {
@@ -186,26 +237,43 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
               <h3>Exibir filmes que</h3>
 
               <div className={styles.seletor}>
-                <input type="radio" id="todos" name="status" />
-                <label htmlFor="todos">Todos</label>
-                <input
-                  type="radio"
-                  id="NaoAssisti"
-                  name="status"
-                  value="NaoAssisti"
-                  onChange={() => setSelectedStatus("NaoAssisti")}
-                  checked={selectedStatus === "NaoAssisti"}
-                />
-                <label htmlFor="NaoAssisti">Quero assistir</label>
-                <input
-                  type="radio"
-                  id="JaAssisti"
-                  name="status"
-                  value="JaAssisti"
-                  onChange={() => setSelectedStatus("JaAssisti")}
-                  checked={selectedStatus === "JaAssisti"}
-                />
-                <label htmlFor="JaAssisti">Já assisti</label>
+                <div className={styles.opcao}>
+                  <input type="radio" id="todos" name="status" />
+                  <label htmlFor="todos">Todos</label>
+                </div>
+                <div className={styles.opcao}>
+                  <input
+                    type="radio"
+                    id="NaoAssisti"
+                    name="status"
+                    value="NaoAssisti"
+                    onChange={() => setSelectedStatus("NaoAssisti")}
+                    checked={selectedStatus === "NaoAssisti"}
+                  />
+                  <label htmlFor="NaoAssisti">Quero assistir</label>
+                </div>
+                <div className={styles.opcao}>
+                  <input
+                    type="radio"
+                    id="JaAssisti"
+                    name="status"
+                    value="JaAssisti"
+                    onChange={() => setSelectedStatus("JaAssisti")}
+                    checked={selectedStatus === "JaAssisti"}
+                  />
+                  <label htmlFor="JaAssisti">Já assisti</label>
+                </div>
+                <div className={styles.opcao}>
+                  <input
+                    type="radio"
+                    id="favoritos"
+                    name="status"
+                    value="favoritos"
+                    onChange={() => setSelectedStatus("favoritos")}
+                    checked={selectedStatus === "favoritos"}
+                  />
+                  <label htmlFor="favoritos">Meus favoritos</label>
+                </div>
               </div>
             </div>
 
@@ -213,17 +281,21 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
               <h3>Disponível nos cinemas</h3>
 
               <div className={styles.seletor}>
-                <input type="radio" id="todosCinema" name="cinema" />
-                <label htmlFor="todosCinema">Todos</label>
-                <input
-                  type="radio"
-                  id="NosCinemas"
-                  name="cinema"
-                  value="NosCinemas"
-                  onChange={() => setSelectedStatus("NosCinemas")}
-                  checked={selectedStatus === "NosCinemas"}
-                />
-                <label htmlFor="NosCinemas">Assistir nos cinemas</label>
+                <div className={styles.opcao}>
+                  <input type="radio" id="todosCinema" name="cinema" />
+                  <label htmlFor="todosCinema">Todos</label>
+                </div>
+                <div className={styles.opcao}>
+                  <input
+                    type="radio"
+                    id="NosCinemas"
+                    name="cinema"
+                    value="NosCinemas"
+                    onChange={() => setSelectedStatus("NosCinemas")}
+                    checked={selectedStatus === "NosCinemas"}
+                  />
+                  <label htmlFor="NosCinemas">Assistir nos cinemas</label>
+                </div>
               </div>
             </div>
 
@@ -231,7 +303,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
               <h3>Streaming</h3>
               <div className={styles.streaming}>
                 {streamingServices.map((service) => (
-                  <div key={service.provider_id}>
+                  <div className={styles.opcao} key={service.provider_id}>
                     <input
                       type="radio"
                       id={service.provider_name}
@@ -246,6 +318,25 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                         alt={service.provider_name}
                       />
                     </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className={styles.separador}>
+              <h3>Gênero</h3>
+
+              <div className={styles.seletor}>
+                {genres.map((genre) => (
+                  <div className={styles.opcao} key={genre.id}>
+                    <input
+                      type="radio"
+                      id={`genre-${genre.id}`}
+                      name="genero"
+                      value={genre.id}
+                      onChange={() => setSelectedGenre(genre.id)}
+                    />
+                    <label htmlFor={`genre-${genre.id}`}>{genre.name}</label>
                   </div>
                 ))}
               </div>

@@ -1,0 +1,37 @@
+[
+  {
+    "provider_id": 8,
+    "provider_name": "Netflix",
+    "logo_path": "/icones/servicos/netflix.svg"
+  },
+  {
+    "provider_id": 119,
+    "provider_name": "Amazon Prime Video",
+    "logo_path": "/icones/servicos/prime-video.svg"
+  },
+  {
+    "provider_id": 1899,
+    "provider_name": "Max",
+    "logo_path": "/icones/servicos/hbo.svg"
+  },
+  {
+    "provider_id": 337,
+    "provider_name": "Disney Plus",
+    "logo_path": "/icones/servicos/disney-plus.svg"
+  },
+  {
+    "provider_id": 350,
+    "provider_name": "Apple TV Plus",
+    "logo_path": "/icones/servicos/apple-tv.svg"
+  },
+  {
+    "provider_id": 531,
+    "provider_name": "Paramount Plus",
+    "logo_path": "/icones/servicos/paramount.svg"
+  },
+  {
+    "provider_id": 307,
+    "provider_name": "Globoplay",
+    "logo_path": "/icones/servicos/globoplay.svg"
+  }
+]

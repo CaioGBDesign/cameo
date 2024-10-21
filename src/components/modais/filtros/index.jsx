@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./index.module.scss";
+import streamingServices from "@/components/listas/streamings/streaming.json"; // Importe a lista de serviços
 
 // Lista estática de países
 const countriesList = [
@@ -21,6 +22,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
   const [anoInicial, setAnoInicial] = useState(1937); // Definindo 1937 como o ano inicial
   const [selectedStatus, setSelectedStatus] = useState("todos"); // Estado para rastrear o status selecionado
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]); // Estado para filmes em cartaz
+  const [providerId, setProviderId] = useState(null); // Estado para filmes com base no streaming
 
   useEffect(() => {
     // Função para buscar os gêneros na API do TMDb
@@ -106,10 +108,40 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
     }
   };
 
+  // Função para buscar o ID do filme dentro dos serviços de streaming
+  const buscarFilmeAleatorio = async () => {
+    if (!providerId) return;
+
+    try {
+      const apiKey = "c95de8d6070dbf1b821185d759532f05";
+      const response = await fetch(
+        `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=pt-BR&sort_by=primary_release_date.desc&page=1&with_watch_providers=${providerId}&watch_region=BR`
+      );
+      const data = await response.json();
+
+      if (data.results.length > 0) {
+        const randomMovie =
+          data.results[Math.floor(Math.random() * data.results.length)];
+        console.log("ID do filme selecionado:", randomMovie.id);
+        onSelectMovie(randomMovie.id); // Adiciona esta linha para enviar o ID do filme
+      } else {
+        console.log("Nenhum filme encontrado para este provedor.");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar filme:", error);
+    }
+  };
+
   const aplicarFiltro = () => {
     const { visto, assistir } = user; // Obtém as listas de filmes já assistidos e a assistir do usuário
     console.log("Filmes vistos:", visto);
     console.log("Filmes a assistir:", assistir);
+
+    // Verifica se um serviço de streaming foi selecionado
+    if (providerId) {
+      buscarFilmeAleatorio(); // Chama a função para buscar um filme aleatório
+      return; // Sai da função para evitar execução de outras condições
+    }
 
     if (selectedStatus === "JaAssisti" && visto) {
       const vistosIds = Object.keys(visto); // Assume que as chaves são os IDs
@@ -192,6 +224,30 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                   checked={selectedStatus === "NosCinemas"}
                 />
                 <label htmlFor="NosCinemas">Assistir nos cinemas</label>
+              </div>
+            </div>
+
+            <div className={styles.separador}>
+              <h3>Streaming</h3>
+              <div className={styles.streaming}>
+                {streamingServices.map((service) => (
+                  <div key={service.provider_id}>
+                    <input
+                      type="radio"
+                      id={service.provider_name}
+                      name="servicos"
+                      value={service.provider_id}
+                      onChange={() => setProviderId(service.provider_id)}
+                    />
+
+                    <label htmlFor={service.provider_name}>
+                      <img
+                        src={service.logo_path}
+                        alt={service.provider_name}
+                      />
+                    </label>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

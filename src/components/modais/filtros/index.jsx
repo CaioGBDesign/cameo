@@ -24,6 +24,65 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]); // Estado para filmes em cartaz
   const [providerId, setProviderId] = useState(null); // Estado para filmes com base no streaming
   const [selectedGenre, setSelectedGenre] = useState(null); // Estado para o gênero
+  const [certificacoes, setCertificacoes] = useState([]); // Estado para classificação indicativa
+  const [selectedCertification, setSelectedCertification] = useState("");
+
+  useEffect(() => {
+    const fetchCertifications = async () => {
+      try {
+        const apiKey = "c95de8d6070dbf1b821185d759532f05";
+        const certificationEndpoint =
+          "https://api.themoviedb.org/3/certification/movie/list";
+
+        const response = await fetch(
+          `${certificationEndpoint}?api_key=${apiKey}&language=pt-BR&region=BR`
+        );
+        const data = await response.json();
+
+        // Filtrar apenas as certificações para o Brasil
+        const certificationsBR = data.certifications.BR || [];
+        setCertificacoes(certificationsBR);
+      } catch (error) {
+        console.error("Erro ao obter certificações:", error);
+      }
+    };
+
+    fetchCertifications();
+  }, []);
+
+  const fetchMoviesByCertification = async (certification) => {
+    try {
+      const apiKey = "c95de8d6070dbf1b821185d759532f05";
+      const discoverEndpoint = "https://api.themoviedb.org/3/discover/movie";
+
+      const response = await fetch(
+        `${discoverEndpoint}?api_key=${apiKey}&certification=${certification}&certification_country=BR&language=pt-BR&page=1`
+      );
+
+      if (!response.ok) {
+        console.error("Erro na requisição:", response.statusText);
+        return;
+      }
+
+      const data = await response.json();
+      console.log("Dados da API:", data);
+
+      // Verifica se há filmes disponíveis
+      if (data.results.length > 0) {
+        const randomMovie =
+          data.results[Math.floor(Math.random() * data.results.length)];
+        console.log(
+          "Filme aleatório encontrado pela certificação:",
+          randomMovie.id
+        );
+        onSelectMovie(randomMovie.id); // Seleciona o filme
+      } else {
+        console.log("Nenhum filme encontrado para esta certificação.");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar filmes por certificação:", error);
+    }
+  };
 
   useEffect(() => {
     // Função para buscar os gêneros na API do TMDb
@@ -220,6 +279,10 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
       const randomMovieId = nowPlayingMovies[randomIndex].id; // ID do filme em cartaz
       console.log("Filme aleatório em cartaz:", randomMovieId);
       onSelectMovie(randomMovieId);
+    } else if (selectedCertification) {
+      // Verifica se uma certificação foi selecionada
+      fetchMoviesByCertification(selectedCertification); // Chama a função para buscar filmes pela certificação
+      return;
     } else {
       console.log("Nenhum filme disponível para a seleção.");
     }
@@ -339,6 +402,48 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                     <label htmlFor={`genre-${genre.id}`}>{genre.name}</label>
                   </div>
                 ))}
+              </div>
+            </div>
+
+            <div className={styles.separador}>
+              <h3>Classificação indicativa</h3>
+
+              <div className={styles.seletor}>
+                <div className={styles.opcao}>
+                  <input
+                    type="radio"
+                    id="todosClassificacao"
+                    name="classificacao"
+                  />
+                  <label htmlFor="todosClassificacao">Todos</label>
+                </div>
+
+                {certificacoes.map((certificacao) => {
+                  const certClass = `cert-${certificacao.certification}`;
+                  return (
+                    <div
+                      key={certificacao.certification}
+                      className={styles.opcao}
+                    >
+                      <input
+                        type="radio"
+                        id={certificacao.certification}
+                        name="classificacao"
+                        value={certificacao.certification}
+                        className={styles[certClass]} // Classe gerada
+                        onChange={() =>
+                          setSelectedCertification(certificacao.certification)
+                        } // Adicione esta linha
+                      />
+                      <label
+                        htmlFor={certificacao.certification}
+                        className={styles[certClass]} // Classe gerada
+                      >
+                        {certificacao.certification}
+                      </label>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>

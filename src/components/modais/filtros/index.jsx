@@ -274,6 +274,16 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
       const randomMovieId = assistirIds[randomIndex];
       console.log("Filme aleatório a assistir:", randomMovieId);
       onSelectMovie(randomMovieId);
+    } else if (selectedStatus === "favoritos" && user.favoritos) {
+      const favoritosIds = user.favoritos; // Use a lista diretamente
+      if (favoritosIds.length > 0) {
+        const randomIndex = Math.floor(Math.random() * favoritosIds.length);
+        const randomMovieId = favoritosIds[randomIndex]; // Obtenha o ID real
+        console.log("Filme aleatório favorito:", randomMovieId);
+        onSelectMovie(randomMovieId);
+      } else {
+        console.log("Nenhum filme favorito disponível.");
+      }
     } else if (selectedStatus === "NosCinemas" && nowPlayingMovies.length > 0) {
       const randomIndex = Math.floor(Math.random() * nowPlayingMovies.length);
       const randomMovieId = nowPlayingMovies[randomIndex].id; // ID do filme em cartaz

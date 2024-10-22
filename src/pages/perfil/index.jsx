@@ -1,6 +1,7 @@
 import styles from "./index.module.scss";
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
+import HeaderDesktop from "@/components/HeaderDesktop";
 import FotoPrincipal from "@/components/perfil/fotoPrincipal";
 import NomeUsuario from "@/components/perfil/nomeUsuario";
 import Handle from "@/components/perfil/handle";
@@ -14,6 +15,27 @@ import Private from "@/components/Private";
 const PerfilUsuario = () => {
   // Estado para controlar se o modal está aberto ou fechado
   const [modalAberto, setModalAberto] = useState(false);
+
+  const useIsMobile = () => {
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 768); // Altere o valor conforme necessário
+      };
+
+      handleResize(); // Verifica inicialmente
+      window.addEventListener("resize", handleResize); // Adiciona o listener
+
+      return () => {
+        window.removeEventListener("resize", handleResize); // Limpa o listener
+      };
+    }, []);
+
+    return isMobile;
+  };
+
+  const isMobile = useIsMobile(); // Chame o Hook aqui
 
   useEffect(() => {
     // Efeito para controlar o overflow do body
@@ -37,7 +59,7 @@ const PerfilUsuario = () => {
     <Private>
       <div className={styles.perfilUsuario}>
         {/* Header */}
-        <Header showBuscar={false} showFotoPerfil={false}></Header>
+        {isMobile ? <Header /> : <HeaderDesktop />}
 
         <div className={styles.apresentacao}>
           <FotoPrincipal onClickModal={abrirModal}></FotoPrincipal>

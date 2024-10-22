@@ -1,5 +1,4 @@
-// components/Classificacao.js
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 
 const certificationMap = {
@@ -13,6 +12,28 @@ const certificationMap = {
 
 const Classificacao = ({ releaseDates }) => {
   if (!releaseDates) return null;
+
+  // define se desktop ou mobile
+  const useIsMobile = () => {
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 768);
+      };
+
+      handleResize();
+      window.addEventListener("resize", handleResize);
+
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }, []);
+
+    return isMobile;
+  };
+
+  const isMobile = useIsMobile();
 
   const brRelease = releaseDates.find((result) => result.iso_3166_1 === "BR");
 
@@ -28,7 +49,8 @@ const Classificacao = ({ releaseDates }) => {
 
     return (
       <div className={styles.detalhes}>
-        <h3>Classificação Indicativa</h3>
+        {isMobile ? <h3>Classificação Indicativa</h3> : null}
+
         {certificationDisplay}
       </div>
     );

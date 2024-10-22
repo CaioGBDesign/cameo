@@ -1,6 +1,7 @@
 import styles from "./index.module.scss";
 import { useEffect, useState, lazy, Suspense } from "react";
 import Header from "@/components/Header";
+import HeaderDesktop from "@/components/HeaderDesktop";
 import NotasFilmes from "@/components/botoes/notas";
 import TitulosFilmes from "@/components/titulosfilmes";
 import FundoTitulos from "@/components/fundotitulos";
@@ -26,6 +27,28 @@ const Favoritos = () => {
   const [servicosStreaming, setServicosStreaming] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedFilm, setSelectedFilm] = useState(null);
+
+  // define se desktop ou mobile
+  const useIsMobile = () => {
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 768); // Altere o valor conforme necessário
+      };
+
+      handleResize(); // Verifica inicialmente
+      window.addEventListener("resize", handleResize); // Adiciona o listener
+
+      return () => {
+        window.removeEventListener("resize", handleResize); // Limpa o listener
+      };
+    }, []);
+
+    return isMobile;
+  };
+
+  const isMobile = useIsMobile(); // Chame o Hook aqui
 
   useEffect(() => {
     const fetchFavoritos = async () => {
@@ -101,7 +124,7 @@ const Favoritos = () => {
           <p>Carregando...</p>
         ) : filmesFavoritos.length === 0 ? (
           <div className={styles.blankSlate}>
-            <Header />
+            {isMobile ? <Header /> : <HeaderDesktop />}
 
             <div className={styles.banner}>
               <img
@@ -118,7 +141,7 @@ const Favoritos = () => {
           </div>
         ) : (
           <>
-            <Header />
+            {isMobile ? <Header /> : <HeaderDesktop />}
             <div className={styles.contFilmes}>
               <div className={styles.tituloFilmes}>
                 <div className={styles.contTitulos}>

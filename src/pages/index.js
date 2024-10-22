@@ -2,6 +2,7 @@ import React, { useState, useEffect, lazy, Suspense } from "react";
 import { useAuth } from "@/contexts/auth";
 import { useRouter } from "next/router";
 import Header from "@/components/Header";
+import HeaderDesktop from "@/components/HeaderDesktop";
 import { Inter } from "next/font/google";
 import styles from "@/styles/index.module.scss";
 import TitulosFilmes from "@/components/titulosfilmes";
@@ -20,8 +21,10 @@ import Listafilmes from "@/components/listafilmes/listafilmes.json";
 import ModalFiltros from "@/components/modais/filtros";
 import ModalAvaliar from "@/components/modais/avaliar-filmes";
 import Classificacao from "@/components/detalhesfilmes/classificacao";
+import FundoTitulosDesktop from "@/components/fundotitulos-desktop";
 import Loading from "@/components/loading";
 import Image from "next/image";
+import { useIsMobile } from "@/components/DeviceProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 const FundoTitulos = lazy(() => import("@/components/fundotitulos"));
@@ -42,6 +45,9 @@ const Home = () => {
   const [notaAtual, setNotaAtual] = useState(0); // Estado para nota atual do filme
   const [modalAberto, setModalAberto] = useState(null); // Estado para controlar modais abertos
   const [countryNames, setCountryNames] = useState({}); // Estado para nomes dos países
+
+  // define se desktop ou mobile
+  const isMobile = useIsMobile();
 
   // Função para abrir um modal
   const abrirModal = (modalTipo) => {
@@ -255,7 +261,7 @@ const Home = () => {
 
   return (
     <>
-      <Header />
+      {isMobile ? <Header /> : <HeaderDesktop />}
       <main className={`${styles.main} ${inter.className}`}>
         <div className={styles.detalhesFilmes}>
           <div className={styles.informacoes}>
@@ -274,7 +280,23 @@ const Home = () => {
                       ? filme.production_countries.map((pc) => pc.iso_3166_1)
                       : []
                   }
+                  releaseDates={
+                    filme &&
+                    filme.release_dates &&
+                    filme.release_dates.results.length > 0
+                      ? filme.release_dates.results
+                      : null
+                  }
+                  backdropUrl={`https://image.tmdb.org/t/p/original/${
+                    filme ? filme.backdrop_path : ""
+                  }`}
+                  trailerLink={trailerLink || "#"}
                 />
+
+                {!isMobile && filme && filme.overview ? (
+                  <Sinopse sinopse={filme.overview} />
+                ) : null}
+
                 <div className={styles.NotasFavoritos}>
                   <NotasFilmes
                     filmeId={filmeId}
@@ -303,7 +325,10 @@ const Home = () => {
             </div>
 
             <div className={styles.infoFilmes}>
-              {filme && filme.overview && <Sinopse sinopse={filme.overview} />}
+              {isMobile && filme && filme.overview && (
+                <Sinopse sinopse={filme.overview} />
+              )}
+
               <NotasCameo />
               <Avaliacao avaliador={"Caio Goulart"} />
               {servicosStreaming.length > 0 && (
@@ -346,7 +371,7 @@ const Home = () => {
                 </p>
               </div>
 
-              {filme && filme.release_dates && (
+              {isMobile && filme && filme.release_dates && (
                 <Classificacao releaseDates={filme.release_dates.results} />
               )}
 
@@ -427,25 +452,33 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <BaseBotoes
-          TextoBotao={"Sugerir filme"}
-          botaoPrimario={true} // Habilita o botão primário
-          botaoSecundario={true} // Habilita o botão secundário
-          onClick={selecionarFilmeAleatorio} // Função para sugerir um filme
-          onClickModal={() => abrirModal("filtros")} // Função para abrir o modal
-        />
-
-        <Suspense fallback={<Loading />}>
-          <FundoTitulos
-            exibirPlay={!!trailerLink}
-            capaAssistidos={`https://image.tmdb.org/t/p/original/${
-              filme ? filme.poster_path : ""
-            }`}
-            // {"/background/super-mario-bros.jpg"}
-            tituloAssistidos={filme ? filme.title : "Título não disponível"}
-            trailerLink={trailerLink || "#"}
+        {isMobile ? (
+          <BaseBotoes
+            TextoBotao={"Sugerir filme"}
+            botaoPrimario={true} // Habilita o botão primário
+            botaoSecundario={true} // Habilita o botão secundário
+            onClick={selecionarFilmeAleatorio} // Função para sugerir um filme
+            onClickModal={() => abrirModal("filtros")} // Função para abrir o modal
           />
-        </Suspense>
+        ) : null}
+        {isMobile ? (
+          <Suspense fallback={<Loading />}>
+            <FundoTitulos
+              exibirPlay={!!trailerLink}
+              capaAssistidos={`https://image.tmdb.org/t/p/original/${
+                filme ? filme.poster_path : ""
+              }`}
+              tituloAssistidos={filme ? filme.title : "Título não disponível"}
+              trailerLink={trailerLink || "#"}
+            />
+          </Suspense>
+        ) : (
+          <FundoTitulosDesktop
+            capaAssistidos={`https://image.tmdb.org/t/p/original/${
+              filme ? filme.backdrop_path : ""
+            }`}
+          />
+        )}
 
         {modalAberto === "filtros" && (
           <ModalFiltros

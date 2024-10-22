@@ -2,6 +2,7 @@ import { useEffect, useState, lazy, Suspense } from "react";
 import { useRouter } from "next/router"; // Importação necessária
 import styles from "./index.module.scss";
 import Header from "@/components/Header";
+import HeaderDesktop from "@/components/HeaderDesktop";
 import Search from "@/components/busca";
 
 const Miniaturafilmes = lazy(() => import("@/components/miniaturafilmes"));
@@ -10,6 +11,28 @@ const Busca = () => {
   const router = useRouter(); // Inicialização do router
   const [query, setQuery] = useState("");
   const [filmes, setFilmes] = useState([]);
+
+  // define se desktop ou mobile
+  const useIsMobile = () => {
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 768); // Altere o valor conforme necessário
+      };
+
+      handleResize(); // Verifica inicialmente
+      window.addEventListener("resize", handleResize); // Adiciona o listener
+
+      return () => {
+        window.removeEventListener("resize", handleResize); // Limpa o listener
+      };
+    }, []);
+
+    return isMobile;
+  };
+
+  const isMobile = useIsMobile(); // Chame o Hook aqui
 
   const fetchFilmes = async (searchQuery) => {
     if (!searchQuery) {
@@ -43,7 +66,7 @@ const Busca = () => {
 
   return (
     <main className={styles.mainSearch}>
-      <Header showBuscar={false} />
+      {isMobile ? <Header showBuscar={false} /> : <HeaderDesktop />}
       <div className={styles.searchPage}>
         <div className={styles.conteudo}>
           <div className={styles.search}>

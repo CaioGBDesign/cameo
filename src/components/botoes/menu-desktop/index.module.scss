@@ -1,0 +1,34 @@
+.menuBotoes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+
+  a {
+    display: flex;
+
+    text-decoration: none;
+
+    span {
+      display: flex;
+
+      width: auto;
+
+      color: #fff;
+
+      font-size: 16px;
+      font-weight: 200;
+
+      opacity: 0.5;
+
+      white-space: nowrap;
+
+      &.active {
+        color: #1af5eb;
+        font-weight: bold;
+
+        opacity: 1;
+      }
+    }
+  }
+}

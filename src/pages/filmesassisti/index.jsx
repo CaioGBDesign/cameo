@@ -1,6 +1,7 @@
 import styles from "./index.module.scss";
 import { useEffect, useState, lazy, Suspense } from "react";
 import Header from "@/components/Header";
+import HeaderDesktop from "@/components/HeaderDesktop";
 import Titulolistagem from "@/components/titulolistagem";
 import GraficoVistos from "@/components/detalhesfilmes/grafico-vistos";
 import { useAuth } from "@/contexts/auth";
@@ -22,6 +23,28 @@ const FilmesAssisti = () => {
   const totalFilmesVistos = filmesVistos.length; // Total de filmes vistos
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedFilm, setSelectedFilm] = useState(null);
+
+  // define se desktop ou mobile
+  const useIsMobile = () => {
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 768); // Altere o valor conforme necessário
+      };
+
+      handleResize(); // Verifica inicialmente
+      window.addEventListener("resize", handleResize); // Adiciona o listener
+
+      return () => {
+        window.removeEventListener("resize", handleResize); // Limpa o listener
+      };
+    }, []);
+
+    return isMobile;
+  };
+
+  const isMobile = useIsMobile(); // Chame o Hook aqui
 
   useEffect(() => {
     const fetchFilmesVistos = async () => {
@@ -106,7 +129,7 @@ const FilmesAssisti = () => {
       <div className={styles.filmesAssisti}>
         {filmesVistos.length > 0 ? (
           <>
-            <Header />
+            {isMobile ? <Header /> : <HeaderDesktop />}
             <div className={styles.contFilmes}>
               <GraficoVistos
                 filmesVistos={filmesVistos}
@@ -170,7 +193,7 @@ const FilmesAssisti = () => {
           </>
         ) : (
           <div className={styles.blankSlate}>
-            <Header />
+            {isMobile ? <Header /> : <HeaderDesktop />}
             <div className={styles.banner}>
               <img
                 src="background/banner-blank-slate.png"

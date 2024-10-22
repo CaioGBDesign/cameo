@@ -1,60 +1,108 @@
 .titulosFilmes {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 15px;
-
-  h1 {
-    font-size: 24px;
-    font-weight: 300;
-    color: white;
-
-    text-align: center;
-  }
-
-  .generoDuracao {
+  gap: 30px;
+  .backdrop {
+    position: relative;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
 
-    gap: 20px;
+    width: 267px;
+    height: 150px;
 
-    .todosOsGeneros {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    img {
+      width: 100%;
+    }
+
+    .play {
+      position: absolute;
+      top: 23%;
+      left: 35%;
+    }
+  }
+  .informacoes {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 40px;
+
+    @media only screen and (max-width: 600px) {
       align-items: center;
+      gap: 15px;
+    }
+    h1 {
+      font-size: 35px;
+      font-weight: 900;
+      color: white;
 
-      gap: 10px;
+      text-align: left;
 
-      .genero {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      @media only screen and (max-width: 600px) {
+        font-size: 24px;
+        font-weight: 300;
+        color: white;
 
-        border: solid #ffffff30 1px;
-        border-radius: 5px;
-
-        padding: 5px;
-
-        span {
-          font-size: 14px;
-          font-weight: 200;
-          color: white;
-
-          text-align: center;
-        }
+        text-align: center;
       }
     }
 
-    span {
-      font-size: 14px;
-      font-weight: 200;
-      color: white;
+    .generoDuracao {
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-      text-align: center;
+      gap: 20px;
+
+      .divisor {
+        font-size: 24px;
+      }
+
+      @media only screen and (max-width: 600px) {
+        flex-direction: column;
+      }
+
+      .todosOsGeneros {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+
+        gap: 10px;
+
+        .genero {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          border: solid #ffffff30 1px;
+          border-radius: 5px;
+
+          padding: 5px;
+
+          span {
+            font-size: 14px;
+            font-weight: 200;
+            color: white;
+
+            text-align: center;
+          }
+        }
+      }
+
+      span {
+        font-size: 14px;
+        font-weight: 200;
+        color: white;
+
+        text-align: center;
+      }
     }
   }
 }

@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
 
-  margin-top: 110%;
+  margin-top: 10%;
 
   animation: slideUp 0.3s ease-out;
 
@@ -16,8 +16,12 @@
     }
   }
 
+  @media only screen and (max-width: 600px) {
+    margin-top: 110%;
+  }
+
   .informacoes {
-    background: #250d2f;
+    background: none;
 
     width: 100%;
 
@@ -31,17 +35,21 @@
 
     position: relative;
 
-    &::after {
-      content: "";
+    @media only screen and (max-width: 600px) {
+      background: #250d2f;
 
-      position: absolute;
-      top: 0px;
-      left: 0px;
+      &::after {
+        content: "";
 
-      background: linear-gradient(270deg, #fdf57c 0%, #f314fb 100%);
+        position: absolute;
+        top: 0px;
+        left: 0px;
 
-      width: 100%;
-      height: 5px;
+        background: linear-gradient(270deg, #fdf57c 0%, #f314fb 100%);
+
+        width: 100%;
+        height: 5px;
+      }
     }
 
     .tituloFilmes {
@@ -55,10 +63,14 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        align-items: center;
-        gap: 20px;
+        align-items: start;
+        gap: 40px;
 
         width: 85%;
+
+        @media only screen and (max-width: 600px) {
+          align-items: center;
+        }
 
         .NotasFavoritos {
           display: flex;

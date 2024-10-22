@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./index.module.scss";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 const Miniatura = ({ children }) => {
   const [logoSize, setLogoSize] = useState("normal");

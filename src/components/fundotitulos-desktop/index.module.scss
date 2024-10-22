@@ -1,0 +1,104 @@
+.contCapa {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+
+  width: 100%;
+
+  // overflow: hidden;
+
+  animation: slideUp 1.5s ease-out;
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .play {
+    position: absolute;
+
+    width: 100%;
+    height: 500px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 1;
+  }
+
+  .capaAssistidos {
+    width: 100%;
+
+    display: flex;
+    justify-content: end;
+
+    transition: 0.2s;
+
+    .imageContainer {
+      position: relative; // Necessário para o layout fill funcionar
+      width: 80%; // A imagem ocupará 100% da largura do contêiner
+      height: 860px; // Defina uma altura desejada, ou use uma unidade relativa como vh
+      // Exemplo de altura
+
+      transition: 0.2s;
+
+      .objectFit {
+        object-fit: cover;
+      }
+
+      .fundoA {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+
+        width: 100%;
+        height: 860px;
+
+        background: linear-gradient(
+          to left,
+          rgba(37, 13, 47, 0) 0%,
+          #250d2f 100%
+        );
+        z-index: 1;
+      }
+
+      .fundoB {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+
+        width: 100%;
+        height: 260px;
+
+        background: linear-gradient(
+          to top,
+          rgba(37, 13, 47, 0) 0%,
+          #250d2f 100%
+        );
+        z-index: 1;
+      }
+
+      .fundoC {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+
+        width: 100%;
+        height: 860px;
+
+        background: linear-gradient(
+          to bottom,
+          rgba(37, 13, 47, 0) 0%,
+          #250d2f 100%
+        );
+        z-index: 1;
+      }
+    }
+  }
+}

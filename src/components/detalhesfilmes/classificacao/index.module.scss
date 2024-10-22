@@ -4,7 +4,9 @@
   align-items: start;
   gap: 30px;
 
-  width: 85%;
+  @media only screen and (max-width: 600px) {
+    width: 85%;
+  }
 
   h3 {
     font-size: 24px;

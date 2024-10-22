@@ -4,12 +4,13 @@ import streamingServices from "@/components/listas/streamings/streaming.json"; /
 
 // Lista estática de países
 const countriesList = [
-  { iso_3166_1: "US", name: "United States" },
-  { iso_3166_1: "GB", name: "United Kingdom" },
-  { iso_3166_1: "FR", name: "France" },
-  { iso_3166_1: "DE", name: "Germany" },
-  { iso_3166_1: "IT", name: "Italy" },
-  { iso_3166_1: "ES", name: "Spain" },
+  { iso_3166_1: "BR", name: "Brasil" },
+  { iso_3166_1: "US", name: "Estados Unidos" },
+  { iso_3166_1: "GB", name: "Reino Unido" },
+  { iso_3166_1: "FR", name: "França" },
+  { iso_3166_1: "DE", name: "Alemanha" },
+  { iso_3166_1: "IT", name: "Itália" },
+  { iso_3166_1: "ES", name: "Espanha" },
   // Adicione mais países conforme necessário
 ];
 
@@ -26,6 +27,9 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
   const [selectedGenre, setSelectedGenre] = useState(null); // Estado para o gênero
   const [certificacoes, setCertificacoes] = useState([]); // Estado para classificação indicativa
   const [selectedCertification, setSelectedCertification] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState(""); // Estado para armazenar o país selecionado
+  const [assistir, setAssistir] = useState({});
+  const [visto, setVisto] = useState({}); // Exemplo de definição
 
   useEffect(() => {
     const fetchCertifications = async () => {
@@ -152,19 +156,31 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
     }, 300); // Tempo deve ser o mesmo que a duração da animação CloseDown
   };
 
-  // Função para buscar filmes por ano de lançamento
+  // Nova função para buscar filmes por ano
   const fetchMoviesByYear = async (year) => {
     try {
       const apiKey = "c95de8d6070dbf1b821185d759532f05";
       const discoverEndpoint = "https://api.themoviedb.org/3/discover/movie";
 
       const response = await fetch(
-        `${discoverEndpoint}?api_key=${apiKey}&primary_release_year=${year}`
+        `${discoverEndpoint}?api_key=${apiKey}&primary_release_date.gte=${year}-01-01&primary_release_date.lte=${year}-12-31&language=pt-BR`
       );
+
+      if (!response.ok) {
+        console.error("Erro na requisição:", response.statusText);
+        return;
+      }
+
       const data = await response.json();
 
-      // Aqui você pode tratar os dados ou atualizar outro estado com os filmes encontrados
-      console.log("Filmes encontrados:", data.results);
+      if (data.results.length > 0) {
+        const randomMovie =
+          data.results[Math.floor(Math.random() * data.results.length)];
+        console.log("ID do filme aleatório encontrado:", randomMovie.id);
+        onSelectMovie(randomMovie.id); // Você pode também selecionar o filme se necessário
+      } else {
+        console.log("Nenhum filme encontrado para este ano.");
+      }
     } catch (error) {
       console.error("Erro ao buscar filmes por ano:", error);
     }
@@ -237,65 +253,149 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
     }
   };
 
-  const aplicarFiltro = () => {
-    const { visto, assistir } = user; // Obtém as listas de filmes já assistidos e a assistir do usuário
-    console.log("Filmes vistos:", visto);
-    console.log("Filmes a assistir:", assistir);
+  // Função para verificar o país de origem selecionado
+  const fetchMovieByCountry = async () => {
+    if (!selectedCountry) return; // Verifica se um país foi selecionado
 
-    // Verifica se um serviço de streaming foi selecionado
+    try {
+      const apiKey = "c95de8d6070dbf1b821185d759532f05";
+      const discoverEndpoint = "https://api.themoviedb.org/3/discover/movie";
+
+      const response = await fetch(
+        `${discoverEndpoint}?api_key=${apiKey}&with_origin_country=${selectedCountry}&language=pt-BR`
+      );
+
+      if (!response.ok) {
+        console.error("Erro na requisição:", response.statusText);
+        return;
+      }
+
+      const data = await response.json();
+
+      if (data.results.length > 0) {
+        const randomMovie =
+          data.results[Math.floor(Math.random() * data.results.length)];
+        console.log("ID do filme aleatório encontrado:", randomMovie.id);
+        onSelectMovie(randomMovie.id); // Você pode também selecionar o filme se necessário
+      } else {
+        console.log("Nenhum filme encontrado para o país selecionado.");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar filme pelo país:", error);
+    }
+  };
+
+  // Função para montar a URL
+  const buildUrl = () => {
+    const baseUrl = "https://api.themoviedb.org/3/discover/movie";
+    const apiKey = "c95de8d6070dbf1b821185d759532f05";
+    const params = new URLSearchParams({
+      api_key: apiKey,
+      language: "pt-BR",
+      watch_region: "BR",
+    });
+
     if (providerId) {
-      buscarFilmeAleatorio(); // Chama a função para buscar um filme aleatório
-      return; // Sai da função para evitar execução de outras condições
+      params.append("with_watch_providers", providerId);
     }
-
     if (selectedGenre) {
-      fetchMoviesByGenre(selectedGenre); // Chama a função para buscar filmes pelo gênero
-      return;
+      params.append("with_genres", selectedGenre); // Correção aqui
+    }
+    if (selectedCertification) {
+      params.append("certification", selectedCertification);
+      params.append("certification_country", "BR"); // Adicionando o país fixo aqui
     }
 
+    if (selectedCountry) {
+      params.append("with_origin_country", selectedCountry);
+    }
+    if (anoLancamento) {
+      params.append("primary_release_date.gte", `${anoLancamento}-01-01`);
+      params.append("primary_release_date.lte", `${anoLancamento}-12-31`);
+    }
+
+    return `${baseUrl}?${params.toString()}`;
+  };
+
+  // Função para aplicar filtros
+  const aplicarFiltro = async () => {
+    const { visto, assistir } = user;
+    const filters = [];
+    const url = buildUrl();
+    console.log("URL da requisição:", url);
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        console.error("Erro na requisição:", response.statusText);
+        return;
+      }
+
+      const data = await response.json();
+      console.log("Dados da API:", data);
+
+      if (data.results.length > 0) {
+        const randomMovie =
+          data.results[Math.floor(Math.random() * data.results.length)];
+        console.log("Filme aleatório encontrado:", randomMovie.id);
+        onSelectMovie(randomMovie.id);
+      } else {
+        console.log("Nenhum filme encontrado com os filtros aplicados.");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar filmes com filtros:", error);
+    }
+
+    // Verifica o status selecionado primeiro
     if (selectedStatus === "JaAssisti" && visto) {
-      const vistosIds = Object.keys(visto); // Assume que as chaves são os IDs
+      const vistosIds = Object.keys(visto);
       if (vistosIds.length > 0) {
         const randomIndex = Math.floor(Math.random() * vistosIds.length);
         const randomMovieId = vistosIds[randomIndex];
         console.log("Filme aleatório a ser assistido:", randomMovieId);
         onSelectMovie(randomMovieId);
+        return;
       } else {
         console.log("Nenhum filme visto disponível.");
+        return;
       }
     } else if (
       selectedStatus === "NaoAssisti" &&
       assistir &&
       Object.keys(assistir).length > 0
     ) {
-      // Extraindo apenas os IDs dos filmes a assistir
-      const assistirIds = Object.values(assistir); // Aqui você pega os valores que representam os IDs
+      const assistirIds = Object.values(assistir);
       const randomIndex = Math.floor(Math.random() * assistirIds.length);
       const randomMovieId = assistirIds[randomIndex];
       console.log("Filme aleatório a assistir:", randomMovieId);
       onSelectMovie(randomMovieId);
+      return;
     } else if (selectedStatus === "favoritos" && user.favoritos) {
-      const favoritosIds = user.favoritos; // Use a lista diretamente
+      const favoritosIds = user.favoritos;
       if (favoritosIds.length > 0) {
         const randomIndex = Math.floor(Math.random() * favoritosIds.length);
-        const randomMovieId = favoritosIds[randomIndex]; // Obtenha o ID real
+        const randomMovieId = favoritosIds[randomIndex];
         console.log("Filme aleatório favorito:", randomMovieId);
         onSelectMovie(randomMovieId);
+        return;
       } else {
         console.log("Nenhum filme favorito disponível.");
+        return;
       }
     } else if (selectedStatus === "NosCinemas" && nowPlayingMovies.length > 0) {
       const randomIndex = Math.floor(Math.random() * nowPlayingMovies.length);
-      const randomMovieId = nowPlayingMovies[randomIndex].id; // ID do filme em cartaz
+      const randomMovieId = nowPlayingMovies[randomIndex].id;
       console.log("Filme aleatório em cartaz:", randomMovieId);
       onSelectMovie(randomMovieId);
-    } else if (selectedCertification) {
-      // Verifica se uma certificação foi selecionada
-      fetchMoviesByCertification(selectedCertification); // Chama a função para buscar filmes pela certificação
       return;
-    } else {
-      console.log("Nenhum filme disponível para a seleção.");
     }
+
+    if (selectedCertification) {
+      fetchMoviesByCertification(selectedCertification);
+      return;
+    }
+
+    console.log("Nenhum filme disponível para a seleção.");
   };
 
   return (
@@ -455,6 +555,36 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                   );
                 })}
               </div>
+            </div>
+
+            <div className={styles.separador}>
+              <h3>País de origem</h3>
+              <select onChange={(e) => setSelectedCountry(e.target.value)}>
+                <option value="">Selecione o país</option>
+                {countriesList.map((country) => (
+                  <option key={country.iso_3166_1} value={country.iso_3166_1}>
+                    {country.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className={styles.separador}>
+              <h3>Ano de lançamento</h3>
+              <select
+                value={anoLancamento}
+                onChange={(e) => setAnoLancamento(e.target.value)}
+              >
+                <option value="">Selecione o ano</option>
+                {Array.from(
+                  { length: new Date().getFullYear() - anoInicial + 1 },
+                  (_, index) => new Date().getFullYear() - index
+                ).map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 

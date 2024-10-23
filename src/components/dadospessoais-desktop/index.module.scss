@@ -1,0 +1,275 @@
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: center;
+
+  z-index: 999;
+
+  // background: #00000050;
+
+  width: 912px;
+  height: 653px;
+
+  animation: BG 0.3s ease-out;
+
+  .fecharDesktop {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    z-index: 1;
+
+    animation: fecharDesk 1.5s ease-in;
+
+    @keyframes fecharDesk {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    button {
+      background: none;
+      border: none;
+    }
+  }
+
+  .contModal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+
+    background: #1f0928;
+    border-radius: 30px;
+    border: solid #ffffff50 1px;
+
+    width: 912px;
+    height: 60vh;
+
+    overflow: scroll;
+    animation: OpenUp 0.3s ease-out;
+    animation-fill-mode: forwards;
+
+    padding-top: 40px;
+    padding-bottom: 120px;
+
+    position: relative;
+
+    /* width */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @keyframes OpenUp {
+      from {
+        transform: translateY(100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    &.close {
+      animation: CloseDown 0.3s ease-out;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes CloseDown {
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(100%);
+      }
+    }
+
+    .tituloFiltros {
+      width: 85%;
+
+      h2 {
+        font-size: 25px;
+        font-weight: bold;
+
+        color: #fff;
+      }
+    }
+
+    .FotoNomeHandle {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      gap: 40px;
+
+      width: 85%;
+
+      .NomeHandle {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: start;
+        gap: 20px;
+      }
+    }
+
+    .contInfos {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+
+      width: 85%;
+
+      .separador {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+
+        form {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          width: 360px;
+
+          .formDadosPessoais {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+
+            width: 100%;
+
+            input {
+              width: 100%;
+              height: 60px;
+
+              background: none;
+              border: none;
+              border-bottom: solid 1px #ffffff40;
+
+              font-size: 16px;
+
+              color: white;
+
+              &:focus {
+                border-color: transparent;
+              }
+            }
+
+            .inputDisable {
+              display: flex;
+              align-items: center;
+
+              width: 100%;
+              height: 60px;
+
+              border-bottom: solid 1px #ffffff40;
+
+              p {
+                color: #ffffff40;
+
+                margin-left: 10px;
+              }
+            }
+
+            select {
+              width: 100%;
+              height: 60px;
+
+              background: none;
+              border: none;
+              border-bottom: solid 1px #ffffff40;
+
+              padding: 0px 10px;
+
+              font-size: 1rem;
+
+              color: white;
+
+              &:focus {
+                border-color: transparent;
+              }
+
+              option {
+                padding: 0.5rem;
+                background-color: #fff;
+                color: #333;
+              }
+            }
+
+            .sair {
+              width: 100%;
+
+              button {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 20px;
+
+                background: none;
+                border: none;
+
+                width: 100%;
+                height: 60px;
+
+                color: white;
+              }
+            }
+          }
+
+          .baseSalvar {
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: 100%;
+            height: 120px;
+
+            z-index: 1;
+
+            button[type="submit"] {
+              width: 85%;
+              height: 50px;
+
+              background: linear-gradient(90deg, #1af5eb 0%, #2ba8e2 100%);
+
+              color: white;
+
+              border: none;
+              border-radius: 50px;
+
+              font-size: 20px;
+              text-align: center;
+
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              transition: 0.2s;
+
+              &:active {
+                transform: translateY(5px);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

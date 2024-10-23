@@ -336,83 +336,141 @@ const Home = () => {
               )}
             </div>
 
+            {isMobile ? null : (
+              <div className={styles.infoFilmes}>
+                <div className={styles.detalhesDispositivo}>
+                  <div className={styles.detalhes}>
+                    <h3>Lançamento</h3>
+                    <p>
+                      {filme && filme.release_date
+                        ? new Date(filme.release_date).toLocaleDateString()
+                        : "Data de lançamento não disponível"}
+                    </p>
+                  </div>
+
+                  {filme && filme.budget > 0 && (
+                    <div className={styles.detalhes}>
+                      <h3>Orçamento</h3>
+                      <p>US$ {filme.budget.toLocaleString()}</p>
+                    </div>
+                  )}
+
+                  {filme && filme.revenue > 0 && (
+                    <div className={styles.detalhes}>
+                      <h3>Bilheteira</h3>
+                      <p>US$ {filme.revenue.toLocaleString()}</p>
+                    </div>
+                  )}
+
+                  <div className={styles.detalhes}>
+                    <h3>País de origem</h3>
+                    <div className={styles.origemDeskop}>
+                      {filme &&
+                      filme.production_countries &&
+                      filme.production_countries.length > 0 ? (
+                        filme.production_countries.map((country) => (
+                          <div
+                            className={styles.produtora}
+                            key={country.iso_3166_1}
+                          >
+                            <p>
+                              {countryNames[country.iso_3166_1] ||
+                                country.iso_3166_1}
+                            </p>
+                          </div>
+                        ))
+                      ) : (
+                        <p>País não disponível</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <Suspense fallback={<Loading />}>
               <div className={styles.elencoGeral}>
                 <Dublagem />
-                <hr />
+
+                {isMobile ? <hr /> : null}
                 <Elenco elenco={elenco} />
-                <hr />
+
+                {isMobile ? <hr /> : null}
                 <Direcao diretores={diretores} />
               </div>
             </Suspense>
 
             <div className={styles.infoFilmes}>
-              <div className={styles.detalhes}>
-                <h3>Produção</h3>
-                <div className={styles.producao}>
-                  {filme && filme.production_companies ? (
-                    filme.production_companies.map((pc) => (
-                      <div className={styles.produtora} key={pc.id}>
-                        <p>{pc.name}</p>
-                      </div>
-                    ))
-                  ) : (
-                    <p>Produção não disponível</p>
-                  )}
+              <div className={styles.detalhesDispositivo}>
+                <div className={styles.detalhes}>
+                  <h3>Produção</h3>
+                  <div className={styles.producao}>
+                    {filme && filme.production_companies ? (
+                      filme.production_companies.map((pc) => (
+                        <div className={styles.produtora} key={pc.id}>
+                          <p>{pc.name}</p>
+                        </div>
+                      ))
+                    ) : (
+                      <p>Produção não disponível</p>
+                    )}
+                  </div>
                 </div>
               </div>
 
-              <div className={styles.detalhes}>
-                <h3>Lançamento</h3>
-                <p>
-                  {filme && filme.release_date
-                    ? new Date(filme.release_date).toLocaleDateString()
-                    : "Data de lançamento não disponível"}
-                </p>
-              </div>
-
-              {isMobile && filme && filme.release_dates && (
-                <Classificacao releaseDates={filme.release_dates.results} />
-              )}
-
-              {filme &&
-                filme.budget > 0 && ( // Verifica se o orçamento é maior que zero
+              {isMobile ? (
+                <div className={styles.detalhesDispositivo}>
                   <div className={styles.detalhes}>
-                    <h3>Orçamento</h3>
-                    <p>US$ {filme.budget.toLocaleString()}</p>
+                    <h3>Lançamento</h3>
+                    <p>
+                      {filme && filme.release_date
+                        ? new Date(filme.release_date).toLocaleDateString()
+                        : "Data de lançamento não disponível"}
+                    </p>
                   </div>
-                )}
 
-              {filme &&
-                filme.revenue > 0 && ( // Verifica se a bilheteira é maior que zero
-                  <div className={styles.detalhes}>
-                    <h3>Bilheteira</h3>
-                    <p>US$ {filme.revenue.toLocaleString()}</p>
-                  </div>
-                )}
-
-              <div className={styles.detalhes}>
-                <h3>País de origem</h3>
-                <div className={styles.producao}>
-                  {filme &&
-                  filme.production_countries &&
-                  filme.production_countries.length > 0 ? (
-                    filme.production_countries.map((country) => (
-                      <div
-                        className={styles.produtora}
-                        key={country.iso_3166_1}
-                      >
-                        <p>
-                          {countryNames[country.iso_3166_1] ||
-                            country.iso_3166_1}
-                        </p>
-                      </div>
-                    ))
-                  ) : (
-                    <p>País não disponível</p>
+                  {filme && filme.release_dates && (
+                    <Classificacao releaseDates={filme.release_dates.results} />
                   )}
+
+                  {filme && filme.budget > 0 && (
+                    <div className={styles.detalhes}>
+                      <h3>Orçamento</h3>
+                      <p>US$ {filme.budget.toLocaleString()}</p>
+                    </div>
+                  )}
+
+                  {filme && filme.revenue > 0 && (
+                    <div className={styles.detalhes}>
+                      <h3>Bilheteira</h3>
+                      <p>US$ {filme.revenue.toLocaleString()}</p>
+                    </div>
+                  )}
+
+                  <div className={styles.detalhes}>
+                    <h3>País de origem</h3>
+                    <div className={styles.producao}>
+                      {filme &&
+                      filme.production_countries &&
+                      filme.production_countries.length > 0 ? (
+                        filme.production_countries.map((country) => (
+                          <div
+                            className={styles.produtora}
+                            key={country.iso_3166_1}
+                          >
+                            <p>
+                              {countryNames[country.iso_3166_1] ||
+                                country.iso_3166_1}
+                            </p>
+                          </div>
+                        ))
+                      ) : (
+                        <p>País não disponível</p>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ) : null}
 
               {recomendacoes.length > 0 && (
                 <div className={styles.recomendacoes}>
@@ -452,15 +510,13 @@ const Home = () => {
             </div>
           </div>
         </div>
-        {isMobile ? (
-          <BaseBotoes
-            TextoBotao={"Sugerir filme"}
-            botaoPrimario={true} // Habilita o botão primário
-            botaoSecundario={true} // Habilita o botão secundário
-            onClick={selecionarFilmeAleatorio} // Função para sugerir um filme
-            onClickModal={() => abrirModal("filtros")} // Função para abrir o modal
-          />
-        ) : null}
+        <BaseBotoes
+          TextoBotao={"Sugerir filme"}
+          botaoPrimario={true} // Habilita o botão primário
+          botaoSecundario={true} // Habilita o botão secundário
+          onClick={selecionarFilmeAleatorio} // Função para sugerir um filme
+          onClickModal={() => abrirModal("filtros")} // Função para abrir o modal
+        />
         {isMobile ? (
           <Suspense fallback={<Loading />}>
             <FundoTitulos

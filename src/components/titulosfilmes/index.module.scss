@@ -16,14 +16,49 @@
 
     overflow: hidden;
 
-    img {
-      width: 100%;
+    .imagemFundo {
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 267px;
+      height: 150px;
+
+      img {
+        width: 100%;
+
+        opacity: 1;
+
+        transition: 0.2s;
+      }
     }
 
-    .play {
-      position: absolute;
-      top: 23%;
-      left: 35%;
+    .basePlay {
+      z-index: 1;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 100%;
+      height: 150px;
+
+      .play {
+      }
+    }
+
+    &:hover {
+      .imagemFundo {
+        img {
+          width: 120%;
+
+          opacity: 0.5;
+        }
+      }
     }
   }
   .informacoes {

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./index.module.scss";
 import streamingServices from "@/components/listas/streamings/streaming.json"; // Importe a lista de serviços
+import { useIsMobile } from "@/components/DeviceProvider";
 
 // Lista estática de países
 const countriesList = [
@@ -30,6 +31,9 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
   const [selectedCountry, setSelectedCountry] = useState(""); // Estado para armazenar o país selecionado
   const [assistir, setAssistir] = useState({});
   const [visto, setVisto] = useState({}); // Exemplo de definição
+
+  // define se desktop ou mobile
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const fetchCertifications = async () => {
@@ -151,9 +155,10 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
   // Função para fechar o modal
   const closeModal = () => {
     setClosing(true); // Marca o modal como fechando para aplicar a animação de fechamento
+    const closeDelay = isMobile ? 300 : 0; // Define o delay com base no tipo de dispositivo
     setTimeout(() => {
       onClose(); // Chama onClose após a animação de fechamento
-    }, 300); // Tempo deve ser o mesmo que a duração da animação CloseDown
+    }, closeDelay);
   };
 
   // Nova função para buscar filmes por ano
@@ -402,10 +407,24 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
     <>
       {modalVisible && (
         <div className={styles.modal}>
+          {isMobile ? null : (
+            <div className={styles.fecharDesktop}>
+              <button onClick={closeModal}>
+                <img src="/icones/fechar-filtros.svg" />
+              </button>
+            </div>
+          )}
+
           <div
             ref={modalRef}
             className={`${styles.contModal} ${closing && styles.close}`}
           >
+            {isMobile ? null : (
+              <div className={styles.tituloFiltros}>
+                <h2>Filtros</h2>
+              </div>
+            )}
+
             <div className={styles.separador}>
               <h3>Exibir filmes que</h3>
 
@@ -449,7 +468,6 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                 </div>
               </div>
             </div>
-
             <div className={styles.separador}>
               <h3>Disponível nos cinemas</h3>
 
@@ -471,7 +489,6 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                 </div>
               </div>
             </div>
-
             <div className={styles.separador}>
               <h3>Streaming</h3>
               <div className={styles.streaming}>
@@ -495,7 +512,6 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                 ))}
               </div>
             </div>
-
             <div className={styles.separador}>
               <h3>Gênero</h3>
 
@@ -514,7 +530,6 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                 ))}
               </div>
             </div>
-
             <div className={styles.separador}>
               <h3>Classificação indicativa</h3>
 
@@ -556,35 +571,36 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                 })}
               </div>
             </div>
+            <div className={styles.paisAno}>
+              <div className={styles.separador}>
+                <h3>País de origem</h3>
+                <select onChange={(e) => setSelectedCountry(e.target.value)}>
+                  <option value="">Selecione o país</option>
+                  {countriesList.map((country) => (
+                    <option key={country.iso_3166_1} value={country.iso_3166_1}>
+                      {country.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-            <div className={styles.separador}>
-              <h3>País de origem</h3>
-              <select onChange={(e) => setSelectedCountry(e.target.value)}>
-                <option value="">Selecione o país</option>
-                {countriesList.map((country) => (
-                  <option key={country.iso_3166_1} value={country.iso_3166_1}>
-                    {country.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className={styles.separador}>
-              <h3>Ano de lançamento</h3>
-              <select
-                value={anoLancamento}
-                onChange={(e) => setAnoLancamento(e.target.value)}
-              >
-                <option value="">Selecione o ano</option>
-                {Array.from(
-                  { length: new Date().getFullYear() - anoInicial + 1 },
-                  (_, index) => new Date().getFullYear() - index
-                ).map((year) => (
-                  <option key={year} value={year}>
-                    {year}
-                  </option>
-                ))}
-              </select>
+              <div className={styles.separador}>
+                <h3>Ano de lançamento</h3>
+                <select
+                  value={anoLancamento}
+                  onChange={(e) => setAnoLancamento(e.target.value)}
+                >
+                  <option value="">Selecione o ano</option>
+                  {Array.from(
+                    { length: new Date().getFullYear() - anoInicial + 1 },
+                    (_, index) => new Date().getFullYear() - index
+                  ).map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
 
@@ -593,9 +609,12 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
               <button className={styles.aplicar} onClick={aplicarFiltro}>
                 Aplicar filtros
               </button>
-              <button className={styles.fechar} onClick={closeModal}>
-                <img src="/icones/fechar-filtros.svg" />
-              </button>
+
+              {isMobile ? (
+                <button className={styles.fechar} onClick={closeModal}>
+                  <img src="/icones/fechar-filtros.svg" />
+                </button>
+              ) : null}
             </div>
           </div>
         </div>

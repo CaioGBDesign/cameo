@@ -23,7 +23,16 @@
 
       white-space: nowrap;
 
+      transition: 0.2s;
+
       &.active {
+        color: #1af5eb;
+        font-weight: bold;
+
+        opacity: 1;
+      }
+
+      &:hover {
         color: #1af5eb;
         font-weight: bold;
 

@@ -1,17 +1,28 @@
 .baseBotoes {
   position: fixed;
-  bottom: 0px;
-  left: 0px;
+  bottom: 30px;
+  right: 50px;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  width: 100%;
-
-  background: linear-gradient(to bottom, rgba(37, 13, 47, 0) 0%, #250d2f 100%);
+  width: auto;
 
   z-index: 1;
+
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+
+    bottom: 0px;
+    left: 0px;
+
+    background: linear-gradient(
+      to bottom,
+      rgba(37, 13, 47, 0) 0%,
+      #250d2f 100%
+    );
+  }
 
   .contBotoes {
     display: flex;
@@ -19,15 +30,25 @@
     align-items: center;
     gap: 15px;
 
-    width: 85%;
+    width: auto;
     height: 120px;
 
+    @media only screen and (max-width: 600px) {
+      width: 85%;
+    }
+
     .botaoPrimario {
-      width: 100%;
+      width: auto;
+
+      @media only screen and (max-width: 600px) {
+        width: 100%;
+      }
     }
 
     .botaoSecundario {
-      width: 35%;
+      @media only screen and (max-width: 600px) {
+        width: 35%;
+      }
     }
   }
 }

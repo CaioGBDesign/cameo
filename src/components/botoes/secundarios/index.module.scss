@@ -1,6 +1,6 @@
 .botao-secundario {
-  width: 100%;
-  height: 50px;
+  width: 64px;
+  height: 64px;
 
   background: #3b2544;
 
@@ -17,6 +17,11 @@
   align-items: center;
 
   transition: 0.2s;
+
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+    height: 50px;
+  }
 
   &:active {
     transform: translateY(5px);

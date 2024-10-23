@@ -1,5 +1,6 @@
 // BotaoSecundario.jsx
 import React from "react";
+import { useIsMobile } from "@/components/DeviceProvider";
 import styles from "./index.module.scss";
 
 const BotaoSecundario = ({
@@ -7,17 +8,29 @@ const BotaoSecundario = ({
   idBsecundario,
   typeBsecundario,
   textoBotaoSecundario,
-  onClick, // Adicione onClick como uma propriedade
+  onClick,
 }) => {
-  return (
+  const isMobile = useIsMobile();
+
+  return isMobile ? (
     <button
       type={typeBsecundario}
       id={idBsecundario}
       className={styles["botao-secundario"]}
-      style={{ fontSize: fonteSecundaria }} // Corrigindo a sintaxe para camelCase
-      onClick={onClick} // Adicione o onClick aqui
+      style={{ fontSize: fonteSecundaria }}
+      onClick={onClick}
     >
       {textoBotaoSecundario}
+    </button>
+  ) : (
+    <button
+      type={typeBsecundario}
+      id={idBsecundario}
+      className={styles["botao-secundario"]}
+      style={{ fontSize: fonteSecundaria }}
+      onClick={onClick}
+    >
+      <img src="/icones/filtros.svg" />
     </button>
   );
 };

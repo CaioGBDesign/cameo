@@ -1,4 +1,5 @@
 import styles from "./index.module.scss";
+import { useIsMobile } from "@/components/DeviceProvider";
 import { useEffect, useState, lazy, Suspense } from "react";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
@@ -29,26 +30,7 @@ const Favoritos = () => {
   const [selectedFilm, setSelectedFilm] = useState(null);
 
   // define se desktop ou mobile
-  const useIsMobile = () => {
-    const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-      const handleResize = () => {
-        setIsMobile(window.innerWidth <= 768); // Altere o valor conforme necessário
-      };
-
-      handleResize(); // Verifica inicialmente
-      window.addEventListener("resize", handleResize); // Adiciona o listener
-
-      return () => {
-        window.removeEventListener("resize", handleResize); // Limpa o listener
-      };
-    }, []);
-
-    return isMobile;
-  };
-
-  const isMobile = useIsMobile(); // Chame o Hook aqui
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const fetchFavoritos = async () => {

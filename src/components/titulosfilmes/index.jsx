@@ -26,13 +26,17 @@ const TitulosFilmes = ({
         ? null
         : releaseDates && (
             <div className={styles.backdrop}>
-              <div className={styles.play}>
-                <BotaoPlay linkTrailer={trailerLink}></BotaoPlay>
+              <div className={styles.basePlay}>
+                <div className={styles.play}>
+                  <BotaoPlay linkTrailer={trailerLink}></BotaoPlay>
+                </div>
               </div>
-              <img
-                src={backdropUrl} // Use a prop aqui
-                alt="Backdrop do filme"
-              />
+              <div className={styles.imagemFundo}>
+                <img
+                  src={backdropUrl} // Use a prop aqui
+                  alt="Backdrop do filme"
+                />
+              </div>
             </div>
           )}
       <div className={styles.informacoes}>

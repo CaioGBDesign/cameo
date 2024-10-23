@@ -131,48 +131,87 @@
 
       width: 100%;
 
-      .detalhes {
+      .detalhesDispositivo {
         display: flex;
-        flex-direction: column;
-        align-items: start;
-        gap: 30px;
+        gap: 50px;
 
         width: 85%;
 
-        .producao {
+        @media only screen and (max-width: 600px) {
           display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
+          flex-direction: column;
+          align-items: center;
+          gap: 50px;
 
-          .produtora {
+          width: 100%;
+        }
+
+        .detalhes {
+          display: flex;
+          flex-direction: column;
+          align-items: start;
+          gap: 30px;
+
+          @media only screen and (max-width: 600px) {
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
+            align-items: start;
+            gap: 30px;
 
-            border: solid #ffffff30 1px;
-            border-radius: 5px;
+            width: 85%;
+          }
 
-            padding: 10px;
+          .origemDeskop {
+            display: flex;
+            gap: 20px;
 
-            p {
-              font-size: 18px;
-              color: white;
+            .produtora {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              p {
+                font-size: 18px;
+                color: white;
+              }
             }
           }
-        }
 
-        h3 {
-          font-size: 24px;
-          color: white;
+          .producao {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
 
-          opacity: 0.3;
+            .produtora {
+              display: flex;
+              justify-content: center;
+              align-items: center;
 
-          margin: 0;
-        }
+              border: solid #ffffff30 1px;
+              border-radius: 5px;
 
-        p {
-          font-size: 18px;
-          color: white;
+              padding: 10px;
+
+              p {
+                font-size: 18px;
+                color: white;
+              }
+            }
+          }
+
+          h3 {
+            font-size: 24px;
+            color: white;
+
+            opacity: 0.3;
+
+            margin: 0;
+          }
+
+          p {
+            font-size: 18px;
+            color: white;
+          }
         }
       }
     }
@@ -187,7 +226,6 @@
     }
 
     .elencoGeral {
-      background: #00000020;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -196,6 +234,10 @@
       width: 100%;
 
       padding: 40px 0px;
+
+      @media only screen and (max-width: 600px) {
+        background: #00000020;
+      }
 
       hr {
         width: 85%;

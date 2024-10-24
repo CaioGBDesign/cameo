@@ -155,10 +155,9 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
   // Função para fechar o modal
   const closeModal = () => {
     setClosing(true); // Marca o modal como fechando para aplicar a animação de fechamento
-    const closeDelay = isMobile ? 300 : 0; // Define o delay com base no tipo de dispositivo
     setTimeout(() => {
       onClose(); // Chama onClose após a animação de fechamento
-    }, closeDelay);
+    }, 300); // Tempo deve ser o mesmo que a duração da animação CloseDown
   };
 
   // Nova função para buscar filmes por ano
@@ -324,8 +323,6 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
 
   // Função para aplicar filtros
   const aplicarFiltro = async () => {
-    const { visto, assistir } = user;
-    const filters = [];
     const url = buildUrl();
     console.log("URL da requisição:", url);
 
@@ -339,11 +336,12 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
       const data = await response.json();
       console.log("Dados da API:", data);
 
+      // Aqui, não deve filtrar apenas por gênero (Animação)
       if (data.results.length > 0) {
         const randomMovie =
           data.results[Math.floor(Math.random() * data.results.length)];
         console.log("Filme aleatório encontrado:", randomMovie.id);
-        onSelectMovie(randomMovie.id);
+        onSelectMovie(String(randomMovie.id));
       } else {
         console.log("Nenhum filme encontrado com os filtros aplicados.");
       }
@@ -358,7 +356,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
         const randomIndex = Math.floor(Math.random() * vistosIds.length);
         const randomMovieId = vistosIds[randomIndex];
         console.log("Filme aleatório a ser assistido:", randomMovieId);
-        onSelectMovie(randomMovieId);
+        onSelectMovie(String(randomMovie.id));
         return;
       } else {
         console.log("Nenhum filme visto disponível.");
@@ -373,7 +371,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
       const randomIndex = Math.floor(Math.random() * assistirIds.length);
       const randomMovieId = assistirIds[randomIndex];
       console.log("Filme aleatório a assistir:", randomMovieId);
-      onSelectMovie(randomMovieId);
+      onSelectMovie(String(randomMovie.id));
       return;
     } else if (selectedStatus === "favoritos" && user.favoritos) {
       const favoritosIds = user.favoritos;
@@ -381,7 +379,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
         const randomIndex = Math.floor(Math.random() * favoritosIds.length);
         const randomMovieId = favoritosIds[randomIndex];
         console.log("Filme aleatório favorito:", randomMovieId);
-        onSelectMovie(randomMovieId);
+        onSelectMovie(String(randomMovie.id));
         return;
       } else {
         console.log("Nenhum filme favorito disponível.");
@@ -391,7 +389,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
       const randomIndex = Math.floor(Math.random() * nowPlayingMovies.length);
       const randomMovieId = nowPlayingMovies[randomIndex].id;
       console.log("Filme aleatório em cartaz:", randomMovieId);
-      onSelectMovie(randomMovieId);
+      onSelectMovie(String(randomMovie.id));
       return;
     }
 
@@ -414,7 +412,6 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
               </button>
             </div>
           )}
-
           <div
             ref={modalRef}
             className={`${styles.contModal} ${closing && styles.close}`}
@@ -424,7 +421,6 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                 <h2>Filtros</h2>
               </div>
             )}
-
             <div className={styles.separador}>
               <h3>Exibir filmes que</h3>
 
@@ -468,6 +464,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                 </div>
               </div>
             </div>
+
             <div className={styles.separador}>
               <h3>Disponível nos cinemas</h3>
 
@@ -489,6 +486,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                 </div>
               </div>
             </div>
+
             <div className={styles.separador}>
               <h3>Streaming</h3>
               <div className={styles.streaming}>
@@ -512,6 +510,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                 ))}
               </div>
             </div>
+
             <div className={styles.separador}>
               <h3>Gênero</h3>
 
@@ -530,6 +529,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                 ))}
               </div>
             </div>
+
             <div className={styles.separador}>
               <h3>Classificação indicativa</h3>
 
@@ -571,36 +571,35 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                 })}
               </div>
             </div>
-            <div className={styles.paisAno}>
-              <div className={styles.separador}>
-                <h3>País de origem</h3>
-                <select onChange={(e) => setSelectedCountry(e.target.value)}>
-                  <option value="">Selecione o país</option>
-                  {countriesList.map((country) => (
-                    <option key={country.iso_3166_1} value={country.iso_3166_1}>
-                      {country.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
 
-              <div className={styles.separador}>
-                <h3>Ano de lançamento</h3>
-                <select
-                  value={anoLancamento}
-                  onChange={(e) => setAnoLancamento(e.target.value)}
-                >
-                  <option value="">Selecione o ano</option>
-                  {Array.from(
-                    { length: new Date().getFullYear() - anoInicial + 1 },
-                    (_, index) => new Date().getFullYear() - index
-                  ).map((year) => (
-                    <option key={year} value={year}>
-                      {year}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <div className={styles.separador}>
+              <h3>País de origem</h3>
+              <select onChange={(e) => setSelectedCountry(e.target.value)}>
+                <option value="">Selecione o país</option>
+                {countriesList.map((country) => (
+                  <option key={country.iso_3166_1} value={country.iso_3166_1}>
+                    {country.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className={styles.separador}>
+              <h3>Ano de lançamento</h3>
+              <select
+                value={anoLancamento}
+                onChange={(e) => setAnoLancamento(e.target.value)}
+              >
+                <option value="">Selecione o ano</option>
+                {Array.from(
+                  { length: new Date().getFullYear() - anoInicial + 1 },
+                  (_, index) => new Date().getFullYear() - index
+                ).map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
@@ -609,7 +608,6 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
               <button className={styles.aplicar} onClick={aplicarFiltro}>
                 Aplicar filtros
               </button>
-
               {isMobile ? (
                 <button className={styles.fechar} onClick={closeModal}>
                   <img src="/icones/fechar-filtros.svg" />

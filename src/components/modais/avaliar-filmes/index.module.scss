@@ -5,7 +5,7 @@
 
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  justify-content: center;
   align-items: center;
 
   z-index: 999;
@@ -15,6 +15,15 @@
 
   animation: BG 0.3s ease-out;
 
+  /* width */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media only screen and (max-width: 600px) {
+    justify-content: end;
+  }
+
   .modalContainer {
     display: flex;
     flex-direction: column;
@@ -22,16 +31,36 @@
     gap: 50px;
 
     background: #1f0928;
-    border-radius: 15px 15px 0px 0px;
-    border-top: solid #f314fb;
+    border-radius: 30px;
+    border: solid #ffffff50 1px;
 
-    width: 100%;
+    width: 912px;
 
     overflow: scroll;
     animation: OpenUp 0.3s ease-out;
     animation-fill-mode: forwards;
 
     position: relative;
+
+    .fecharDesktop {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+
+      button {
+        background: none;
+        border: none;
+
+        cursor: pointer;
+      }
+    }
+
+    @media only screen and (max-width: 600px) {
+      width: 100%;
+
+      border-radius: 15px 15px 0px 0px;
+      border-top: solid #f314fb;
+    }
 
     @keyframes OpenUp {
       from {
@@ -56,6 +85,11 @@
       width: 80%;
 
       padding: 40px;
+
+      @media only screen and (min-width: 600px) {
+        align-items: center;
+      }
+
       .tituloModal {
         display: flex;
         justify-content: center;
@@ -101,7 +135,13 @@
 
         .estrelas {
           display: flex;
-          justify-content: space-between;
+          justify-content: center;
+          gap: 50px;
+
+          @media only screen and (max-width: 600px) {
+            justify-content: space-between;
+            gap: none;
+          }
 
           .estrela {
             width: 40px;
@@ -112,7 +152,7 @@
       }
 
       button {
-        width: 100%;
+        width: 50%;
         height: 50px;
 
         background: linear-gradient(90deg, #1af5eb 0%, #2ba8e2 100%);
@@ -124,6 +164,11 @@
 
         font-size: 20px;
         text-align: center;
+
+        @media only screen and (max-width: 600px) {
+          width: 100%;
+          height: 50px;
+        }
       }
     }
   }

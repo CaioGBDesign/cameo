@@ -29,26 +29,7 @@
 
       transition: 0.5s;
 
-      &::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-
-        width: 180px;
-        height: 265px;
-
-        border: solid #fff 3px;
-        border-radius: 16px;
-
-        opacity: 0;
-      }
-
-      &:hover {
-        transform: scale(1.1);
-        opacity: 0.8;
-
+      @media only screen and (min-width: 600px) {
         &::after {
           content: "";
           position: absolute;
@@ -56,15 +37,36 @@
           left: 50%;
           transform: translate(-50%, -50%);
 
-          width: 185px;
-          height: 270px;
+          width: 180px;
+          height: 265px;
 
           border: solid #fff 3px;
           border-radius: 16px;
 
-          opacity: 1;
+          opacity: 0;
+        }
 
-          transition: 0.8s;
+        &:hover {
+          transform: scale(1.1);
+          opacity: 0.8;
+
+          &::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            width: 185px;
+            height: 270px;
+
+            border: solid #fff 3px;
+            border-radius: 16px;
+
+            opacity: 1;
+
+            transition: 0.8s;
+          }
         }
       }
 

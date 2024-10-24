@@ -9,13 +9,16 @@ import { useAuth } from "@/contexts/auth";
 import Private from "@/components/Private";
 import Link from "next/link";
 import FilmesCarousel from "@/components/modais/filmes-carousel";
+import Loading from "@/components/loading";
+import PosterInfoDesktop from "@/components/PosterInfoDesktop";
+import FundoTitulosDesktop from "@/components/fundotitulos-desktop";
+import { useRouter } from "next/router";
 
 const FundoTitulos = lazy(() => import("@/components/fundotitulos"));
 const Miniaturafilmes = lazy(() => import("@/components/miniaturafilmes"));
 
-const Loader = () => <div>Carregando...</div>;
-
 const FilmesAssisti = () => {
+  const router = useRouter();
   const { user, removerNota } = useAuth();
   const [filmesVistos, setFilmesVistos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,6 +27,8 @@ const FilmesAssisti = () => {
   const totalFilmesVistos = filmesVistos.length; // Total de filmes vistos
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedFilm, setSelectedFilm] = useState(null);
+  const [trailerLink, setTrailerLink] = useState(null); // Estado para link do trailer
+  const [filme, setFilme] = useState(null); // Estado para armazenar os dados do filme
 
   // define se desktop ou mobile
   const isMobile = useIsMobile();
@@ -52,19 +57,37 @@ const FilmesAssisti = () => {
 
         const filmesData = await Promise.all(fetchFilmes);
 
-        const filmesComAvaliacoes = filmesData.map((filme) => {
-          const trailer = filme.videos.results.find(
-            (video) => video.type === "Trailer"
-          );
-          const trailerLink = trailer
-            ? `https://www.youtube.com/watch?v=${trailer.key}`
-            : "#";
-          return {
-            ...filme,
-            avaliacao: user.visto[filme.id] || 0,
-            trailerLink,
-          };
-        });
+        const filmesComAvaliacoes = filmesData
+          .map((filme) => {
+            const trailer =
+              filme.videos && filme.videos.results
+                ? filme.videos.results.find((video) => video.type === "Trailer")
+                : null;
+
+            const trailerLink = trailer
+              ? `https://www.youtube.com/watch?v=${trailer.key}`
+              : "#";
+
+            // Pega a certificação para o Brasil
+            const certification =
+              filme.release_dates && filme.release_dates.results
+                ? filme.release_dates.results.find(
+                    (release) => release.iso_3166_1 === "BR"
+                  )
+                : null;
+
+            return {
+              ...filme,
+              avaliacao: user.visto[filme.id] || 0,
+              trailerLink,
+              generos: filme.genres,
+              duracao: filme.runtime,
+              classificacao: certification
+                ? certification.certification
+                : "N/A",
+            };
+          })
+          .filter(Boolean); // Remove filmes inválidos
 
         console.log("Filmes com avaliações:", filmesComAvaliacoes);
 
@@ -86,6 +109,12 @@ const FilmesAssisti = () => {
     fetchFilmesVistos();
   }, [user]);
 
+  const convertDuracao = (duracao) => {
+    const horas = Math.floor(duracao / 60);
+    const minutos = duracao % 60;
+    return `${horas}h ${minutos}min`;
+  };
+
   const handleExcluirFilme = async (filmeId) => {
     try {
       await removerNota(String(filmeId));
@@ -106,6 +135,12 @@ const FilmesAssisti = () => {
     setModalOpen(true);
   };
 
+  const handleFilmClick = (filmeId) => {
+    router.push(`/?filmeId=${String(filmeId)}`); // Convertendo para string
+  };
+
+  if (!filmesVistos.length && loading) return <Loading />;
+
   return (
     <Private>
       <div className={styles.filmesAssisti}>
@@ -113,10 +148,26 @@ const FilmesAssisti = () => {
           <>
             {isMobile ? <Header /> : <HeaderDesktop />}
             <div className={styles.contFilmes}>
-              <GraficoVistos
-                filmesVistos={filmesVistos}
-                totalFilmesVistos={totalFilmesVistos} // Passando totalFilmesVistos como prop
-              />
+              <div className={styles.topoInfos}>
+                {isMobile ? null : (
+                  <PosterInfoDesktop
+                    exibirPlay={false}
+                    capaAssistidos={`https://image.tmdb.org/t/p/original/${filmeAleatorio.poster_path}`}
+                    tituloAssistidos={filmeAleatorio.title}
+                    generofilme={filmeAleatorio.generos
+                      .map((genre) => genre.name)
+                      .join(", ")}
+                    duracao={convertDuracao(filmeAleatorio.duracao)}
+                  />
+                )}
+
+                <div className={styles.graficosGeneroMes}>
+                  <GraficoVistos
+                    filmesVistos={filmesVistos}
+                    totalFilmesVistos={totalFilmesVistos} // Passando totalFilmesVistos como prop
+                  />
+                </div>
+              </div>
 
               <div className={styles.todosOsTitulos}>
                 <div className={styles.contlista}>
@@ -127,40 +178,72 @@ const FilmesAssisti = () => {
                     handleRemoverClick={handleRemoverClick}
                   />
                   <div className={styles.listaFilmes}>
-                    {loading ? (
-                      <p>Carregando...</p>
-                    ) : (
-                      filmesVistos.map((filme) => (
-                        <Suspense fallback={<Loader />}>
-                          <Miniaturafilmes
-                            key={filme.id}
-                            capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
-                            titulofilme={filme.title}
-                            mostrarEstrelas={true}
-                            mostrarBotaoFechar={mostrarBotaoFechar}
-                            excluirFilme={() =>
-                              handleExcluirFilme(String(filme.id))
-                            }
-                            avaliacao={filme.avaliacao.nota}
-                            onClick={() => openModal(filme)}
-                          />
-                        </Suspense>
-                      ))
+                    {filmesVistos && (
+                      <>
+                        {isMobile ? (
+                          loading ? (
+                            <p>Carregando...</p>
+                          ) : (
+                            filmesVistos.map((filme) => (
+                              <Suspense key={filme.id} fallback={<Loading />}>
+                                <Miniaturafilmes
+                                  capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
+                                  titulofilme={filme.title}
+                                  mostrarEstrelas={true}
+                                  mostrarBotaoFechar={mostrarBotaoFechar}
+                                  excluirFilme={() =>
+                                    handleExcluirFilme(String(filme.id))
+                                  }
+                                  avaliacao={filme.avaliacao.nota}
+                                  onClick={() => openModal(filme)}
+                                />
+                              </Suspense>
+                            ))
+                          )
+                        ) : (
+                          filmesVistos.map((filme) => (
+                            <Suspense key={filme.id} fallback={<Loading />}>
+                              <Miniaturafilmes
+                                capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
+                                titulofilme={filme.title}
+                                mostrarEstrelas={true}
+                                mostrarBotaoFechar={mostrarBotaoFechar}
+                                excluirFilme={() =>
+                                  handleExcluirFilme(String(filme.id))
+                                }
+                                avaliacao={filme.avaliacao.nota}
+                                onClick={() =>
+                                  handleFilmClick(String(filme.id))
+                                }
+                              />
+                            </Suspense>
+                          ))
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
               </div>
             </div>
-            {filmeAleatorio && (
-              <Suspense fallback={<Loader />}>
-                <FundoTitulos
-                  exibirPlay={false}
-                  capaAssistidos={`https://image.tmdb.org/t/p/original/${filmeAleatorio.poster_path}`}
-                  tituloAssistidos={filmeAleatorio.title}
-                  opacidade={0.2}
+            {isMobile ? (
+              filmeAleatorio ? (
+                <Suspense fallback={<Loading />}>
+                  <FundoTitulos
+                    exibirPlay={false}
+                    capaAssistidos={`https://image.tmdb.org/t/p/original/${filmeAleatorio.poster_path}`}
+                    tituloAssistidos={filmeAleatorio.title}
+                    opacidade={0.2}
+                  />
+                </Suspense>
+              ) : null
+            ) : (
+              filmeAleatorio && (
+                <FundoTitulosDesktop
+                  capaAssistidos={`https://image.tmdb.org/t/p/original/${filmeAleatorio.backdrop_path}`}
                 />
-              </Suspense>
+              )
             )}
+
             {modalOpen && (
               <FilmesCarousel
                 filmes={filmesVistos}

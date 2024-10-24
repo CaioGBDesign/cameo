@@ -4,7 +4,11 @@ import { AuthContext } from "@/contexts/auth";
 import FotoPrincipal from "@/components/perfil/fotoPrincipal";
 import NomeUsuario from "@/components/perfil/nomeUsuario";
 import Handle from "@/components/perfil/handle";
-import BotaoSecundario from "@/components/botoes/secundarios";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "@/services/firebaseConection";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth"; // Importação necessária
+import Private from "@/components/Private";
+import { toast } from "react-toastify";
 
 const DadosPessoaisModalDesktop = ({ closeModal, isClosing }) => {
   const { user, storageUser, setUser, logout } = useContext(AuthContext);
@@ -38,6 +42,7 @@ const DadosPessoaisModalDesktop = ({ closeModal, isClosing }) => {
 
     try {
       await sendPasswordResetEmail(auth, email, actionCodeSettings);
+      toast.success("E-mail de redefinição de senha enviado!");
       setModalSentVisible(true);
     } catch (error) {
       console.error("Erro ao enviar e-mail de redefinição:", error);
@@ -85,83 +90,84 @@ const DadosPessoaisModalDesktop = ({ closeModal, isClosing }) => {
   }, [nome, genero, estilo, user]);
 
   return (
-    <div className={`${styles.modal} ${isClosing ? styles.close : ""}`}>
-      <div className={styles.fecharDesktop}>
-        <button onClick={closeModal}>
-          <img src="/icones/fechar-filtros.svg" />
-        </button>
+    <Private>
+      <div className={`${styles.modal} ${isClosing ? styles.close : ""}`}>
+        <div className={styles.fecharDesktop}>
+          <button onClick={closeModal}>
+            <img src="/icones/fechar-filtros.svg" />
+          </button>
+        </div>
+        <div className={styles.contModal}>
+          <div className={styles.tituloFiltros}>
+            <h2>Dados pessoais</h2>
+          </div>
+
+          <div className={styles.FotoNomeHandle}>
+            <FotoPrincipal></FotoPrincipal>
+            <div className={styles.NomeHandle}>
+              <NomeUsuario></NomeUsuario>
+              <Handle></Handle>
+            </div>
+          </div>
+
+          <div className={styles.contInfos}>
+            <div className={styles.separador}>
+              <form onSubmit={handleSubmit}>
+                <div className={styles.formDadosPessoais}>
+                  <input
+                    type="text"
+                    value={nome}
+                    onChange={(e) => setNome(e.target.value)}
+                    placeholder="Nome"
+                  />
+
+                  <div className={styles.inputDisable}>
+                    <p>{handle}</p>
+                  </div>
+
+                  <div className={styles.inputDisable}>
+                    <p>{email}</p>
+                  </div>
+                  <select
+                    id="selectGenero"
+                    value={genero}
+                    onChange={(e) => setGenero(e.target.value)}
+                  >
+                    <option value="">Gênero</option>
+                    {selectGenero.map((item, index) => (
+                      <option key={`${item.value}-${index}`} value={item.value}>
+                        {item.label}
+                      </option>
+                    ))}
+                  </select>
+
+                  <div className={styles.sair}>
+                    <button type="button" onClick={logout}>
+                      Sair
+                      <img src="/icones/sair.svg" />
+                    </button>
+                  </div>
+
+                  <div className={styles.redefinirSenha}>
+                    <button
+                      type={"button"}
+                      id={"redefinirSenha"}
+                      onClick={handleRedefinirSenha}
+                    >
+                      Redefinir senha
+                    </button>
+                  </div>
+                </div>
+
+                <div className={styles.baseSalvar}>
+                  <button type="submit">Salvar alterações</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className={styles.contModal}>
-        <div className={styles.tituloFiltros}>
-          <h2>Dados pessoais</h2>
-        </div>
-
-        <div className={styles.FotoNomeHandle}>
-          <FotoPrincipal></FotoPrincipal>
-          <div className={styles.NomeHandle}>
-            <NomeUsuario></NomeUsuario>
-            <Handle></Handle>
-          </div>
-        </div>
-
-        <div className={styles.contInfos}>
-          <div className={styles.separador}>
-            <form onSubmit={handleSubmit}>
-              <div className={styles.formDadosPessoais}>
-                <input
-                  type="text"
-                  value={nome}
-                  onChange={(e) => setNome(e.target.value)}
-                  placeholder="Nome"
-                />
-
-                <div className={styles.inputDisable}>
-                  <p>{handle}</p>
-                </div>
-
-                <div className={styles.inputDisable}>
-                  <p>{email}</p>
-                </div>
-              </div>
-
-              <div className={styles.baseSalvar}>
-                <button type="submit">Salvar alterações</button>
-              </div>
-            </form>
-          </div>
-
-          <div className={styles.separador}>
-            <form onSubmit={handleSubmit}>
-              <div className={styles.formDadosPessoais}>
-                <select
-                  id="selectGenero"
-                  value={genero}
-                  onChange={(e) => setGenero(e.target.value)}
-                >
-                  <option value="">Gênero</option>
-                  {selectGenero.map((item, index) => (
-                    <option key={`${item.value}-${index}`} value={item.value}>
-                      {item.label}
-                    </option>
-                  ))}
-                </select>
-
-                <div className={styles.sair}>
-                  <button type="button" onClick={logout}>
-                    Sair
-                    <img src="/icones/sair.svg" />
-                  </button>
-                </div>
-              </div>
-
-              <div className={styles.baseSalvar}>
-                <button type="submit">Salvar alterações</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+    </Private>
   );
 };
 

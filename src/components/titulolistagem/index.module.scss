@@ -8,7 +8,7 @@
   .quantidade {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
 
     span {
       margin: 0px;
@@ -16,18 +16,28 @@
     }
 
     .contagem {
-      font-size: 14px;
+      font-size: 20px;
       color: white;
 
-      padding: 5px 8px;
+      padding: 15px 20px;
 
       background: #ffffff20;
       border-radius: 6px;
+
+      @media only screen and (max-width: 600px) {
+        font-size: 14px;
+
+        padding: 5px 8px;
+      }
     }
 
     .tituloPagina {
-      font-size: 20px;
+      font-size: 30px;
       color: white;
+
+      @media only screen and (max-width: 600px) {
+        font-size: 20px;
+      }
     }
   }
 
@@ -39,9 +49,26 @@
 
     .remover,
     .filtros {
-      padding: 5px;
+      @media only screen and (min-width: 600px) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-      border-radius: 5px;
+        padding: 20px;
+        background: #ffffff20;
+
+        border-radius: 50px;
+      }
+
+      img {
+        width: 24px;
+      }
+
+      @media only screen and (max-width: 600px) {
+        padding: 5px;
+
+        border-radius: 5px;
+      }
     }
   }
 }

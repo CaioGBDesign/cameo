@@ -1,5 +1,6 @@
 import styles from "./index.module.scss";
 import Estrelas from "@/components/estrelas";
+import { useIsMobile } from "@/components/DeviceProvider";
 import Image from "next/image";
 
 const Miniaturafilmes = ({
@@ -9,6 +10,9 @@ const Miniaturafilmes = ({
   avaliacao = 0, // Adicione a avaliação como prop
   onClick, // Adicione a prop onClick
 }) => {
+  // define se desktop ou mobile
+  const isMobile = useIsMobile();
+
   return (
     <div className={styles.miniaturafilmes} onClick={onClick}>
       <div className={styles.boxminiatura}>
@@ -24,10 +28,15 @@ const Miniaturafilmes = ({
           </div>
         </div>
       </div>
-      {mostrarEstrelas && (
+      {isMobile ? (
+        mostrarEstrelas && (
+          <div className={styles.tamanhoestrelas}>
+            <Estrelas estrelas={avaliacao} starWidth={"10px"} />
+          </div>
+        )
+      ) : (
         <div className={styles.tamanhoestrelas}>
-          <Estrelas estrelas={avaliacao} starWidth={"10px"} />{" "}
-          {/* Passa a avaliação como prop */}
+          <Estrelas estrelas={avaliacao} starWidth={"20px"} />
         </div>
       )}
     </div>

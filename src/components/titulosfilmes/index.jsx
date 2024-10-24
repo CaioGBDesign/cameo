@@ -41,7 +41,7 @@ const TitulosFilmes = ({
           )}
       <div className={styles.informacoes}>
         <h1>
-          {titulofilme} &nbsp;
+          {titulofilme}
           {isBrasileiro && (
             <img
               src="/icones/flag-brasil.png"

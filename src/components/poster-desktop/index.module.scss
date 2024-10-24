@@ -1,0 +1,31 @@
+.contPoster {
+  position: relative;
+
+  width: 154px;
+  height: 230px;
+
+  border-radius: 10px;
+
+  overflow: hidden;
+
+  .play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 1;
+  }
+  .posterAssistidos {
+    width: 154px;
+    height: 230px;
+
+    .imageContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 100%;
+    }
+  }
+}

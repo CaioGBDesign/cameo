@@ -1,6 +1,7 @@
 import styles from "./index.module.scss";
 import { useIsMobile } from "@/components/DeviceProvider";
 import { useEffect, useState, lazy, Suspense } from "react";
+import { useAuth } from "@/contexts/auth";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import NotasFilmes from "@/components/botoes/notas";
@@ -8,15 +9,15 @@ import TitulosFilmes from "@/components/titulosfilmes";
 import FundoTitulos from "@/components/fundotitulos";
 import Titulolistagem from "@/components/titulolistagem";
 import Trailer from "@/components/botoes/trailer";
-import { useAuth } from "@/contexts/auth";
 import Private from "@/components/Private";
+import Loading from "@/components/loading";
 import Link from "next/link";
 import ServicosMiniatura from "@/components/detalhesfilmes/servicos-miniatura";
 import FilmesCarousel from "@/components/modais/filmes-carousel";
+import FundoTitulosDesktop from "@/components/fundotitulos-desktop";
+import PosterInfoDesktop from "@/components/PosterInfoDesktop";
 
 const Miniaturafilmes = lazy(() => import("@/components/miniaturafilmes"));
-
-const Loader = () => <div>Carregando...</div>;
 
 const Favoritos = () => {
   const { user, removerFilme } = useAuth();
@@ -99,6 +100,8 @@ const Favoritos = () => {
     setModalOpen(true);
   };
 
+  if (!filmesFavoritos.length && loading) return <Loading />;
+
   return (
     <Private>
       <div className={styles.filmesAssisti}>
@@ -126,18 +129,31 @@ const Favoritos = () => {
             {isMobile ? <Header /> : <HeaderDesktop />}
             <div className={styles.contFilmes}>
               <div className={styles.tituloFilmes}>
-                <div className={styles.contTitulos}>
-                  <TitulosFilmes
-                    titulofilme={filmeAleatorio ? filmeAleatorio.title : ""}
-                  ></TitulosFilmes>
-                  <div className={styles.NotasFavoritos}>
-                    <NotasFilmes estrelas="3" />
-                    <Trailer linkTrailer={linkTrailer}></Trailer>
+                {isMobile ? (
+                  <div className={styles.contTitulos}>
+                    <TitulosFilmes
+                      titulofilme={filmeAleatorio ? filmeAleatorio.title : ""}
+                    ></TitulosFilmes>
+                    <div className={styles.NotasFavoritos}>
+                      <NotasFilmes estrelas="3" />
+                      <Trailer linkTrailer={linkTrailer}></Trailer>
+                    </div>
+                    {servicosStreaming.length > 0 && (
+                      <ServicosMiniatura servicos={servicosStreaming} />
+                    )}
                   </div>
-                  {servicosStreaming.length > 0 && (
-                    <ServicosMiniatura servicos={servicosStreaming} />
-                  )}
-                </div>
+                ) : (
+                  <PosterInfoDesktop
+                    exibirPlay={false}
+                    capaAssistidos={`https://image.tmdb.org/t/p/original/${filmeAleatorio.poster_path}`}
+                    tituloAssistidos={filmeAleatorio.title}
+                    trailerLink={linkTrailer}
+                    generofilme={filmeAleatorio.genres
+                      .map((genre) => genre.name)
+                      .join(", ")} // Assumindo que você tenha uma propriedade genres
+                    duracao={filmeAleatorio.runtime} // Assumindo que você tenha uma propriedade runtime
+                  />
+                )}
               </div>
 
               <div className={styles.todosOsTitulos}>
@@ -172,15 +188,24 @@ const Favoritos = () => {
                 </div>
               </div>
             </div>
-            <FundoTitulos
-              exibirPlay={false}
-              capaAssistidos={
-                filmeAleatorio
-                  ? `https://image.tmdb.org/t/p/original/${filmeAleatorio.poster_path}`
-                  : "fundoAleatorio"
-              }
-              tituloAssistidos={filmeAleatorio}
-            ></FundoTitulos>
+            {isMobile ? (
+              filmeAleatorio ? (
+                <Suspense fallback={<Loading />}>
+                  <FundoTitulos
+                    exibirPlay={false}
+                    capaAssistidos={`https://image.tmdb.org/t/p/original/${filmeAleatorio.poster_path}`}
+                    tituloAssistidos={filmeAleatorio.title}
+                    opacidade={0.2}
+                  />
+                </Suspense>
+              ) : null
+            ) : (
+              filmeAleatorio && (
+                <FundoTitulosDesktop
+                  capaAssistidos={`https://image.tmdb.org/t/p/original/${filmeAleatorio.backdrop_path}`}
+                />
+              )
+            )}
             {modalOpen && (
               <FilmesCarousel
                 showDeletar={false}

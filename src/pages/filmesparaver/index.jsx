@@ -1,6 +1,7 @@
 import styles from "./index.module.scss";
 import { useEffect, useState, lazy, Suspense } from "react";
 import { useIsMobile } from "@/components/DeviceProvider";
+import { useRouter } from "next/router";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import NotasFilmes from "@/components/botoes/notas";
@@ -13,12 +14,14 @@ import Private from "@/components/Private";
 import Link from "next/link";
 import ServicosMiniatura from "@/components/detalhesfilmes/servicos-miniatura";
 import FilmesCarousel from "@/components/modais/filmes-carousel";
+import FundoTitulosDesktop from "@/components/fundotitulos-desktop";
+import PosterInfoDesktop from "@/components/PosterInfoDesktop";
+import Loading from "@/components/loading";
 
 const Miniaturafilmes = lazy(() => import("@/components/miniaturafilmes"));
 
-const Loader = () => <div>Carregando...</div>;
-
 const FilmesParaVer = () => {
+  const router = useRouter();
   const { user, removerAssistir } = useAuth();
   const [assistirFilme, setFilmesAssistidos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -96,6 +99,8 @@ const FilmesParaVer = () => {
     setModalOpen(true);
   };
 
+  if (!assistirFilme.length && loading) return <Loading />;
+
   return (
     <Private>
       <div className={styles.filmesAssisti}>
@@ -122,18 +127,31 @@ const FilmesParaVer = () => {
             {isMobile ? <Header /> : <HeaderDesktop />}
             <div className={styles.contFilmes}>
               <div className={styles.tituloFilmes}>
-                <div className={styles.contTitulos}>
-                  <TitulosFilmes
-                    titulofilme={filmeAleatorio ? filmeAleatorio.title : ""}
-                  />
-                  <div className={styles.NotasFavoritos}>
-                    <NotasFilmes estrelas="3" />
-                    <Trailer linkTrailer={linkTrailer} />
+                {isMobile ? (
+                  <div className={styles.contTitulos}>
+                    <TitulosFilmes
+                      titulofilme={filmeAleatorio ? filmeAleatorio.title : ""}
+                    />
+                    <div className={styles.NotasFavoritos}>
+                      <NotasFilmes estrelas="3" />
+                      <Trailer linkTrailer={linkTrailer} />
+                    </div>
+                    {servicosStreaming.length > 0 && (
+                      <ServicosMiniatura servicos={servicosStreaming} />
+                    )}
                   </div>
-                  {servicosStreaming.length > 0 && (
-                    <ServicosMiniatura servicos={servicosStreaming} />
-                  )}
-                </div>
+                ) : (
+                  <PosterInfoDesktop
+                    exibirPlay={false}
+                    capaAssistidos={`https://image.tmdb.org/t/p/original/${filmeAleatorio.poster_path}`}
+                    tituloAssistidos={filmeAleatorio.title}
+                    trailerLink={linkTrailer}
+                    generofilme={filmeAleatorio.genres
+                      .map((genre) => genre.name)
+                      .join(", ")} // Assumindo que você tenha uma propriedade genres
+                    duracao={filmeAleatorio.runtime} // Assumindo que você tenha uma propriedade runtime
+                  />
+                )}
               </div>
               <div className={styles.todosOsTitulos}>
                 <div className={styles.contlista}>
@@ -143,32 +161,50 @@ const FilmesParaVer = () => {
                     handleRemoverClick={handleRemoverClick}
                   />
                   <div className={styles.listaFilmes}>
-                    <Suspense fallback={<Loader />}>
-                      {assistirFilme.map((filme) => (
-                        <Miniaturafilmes
-                          key={filme.id}
-                          capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
-                          titulofilme={filme.title}
-                          mostrarBotaoFechar={mostrarBotaoFechar}
-                          mostrarEstrelas={false}
-                          onClick={() => openModal(filme)}
-                        />
-                      ))}
-                    </Suspense>
+                    {assistirFilme && (
+                      <>
+                        {loading ? (
+                          <p>Carregando...</p>
+                        ) : (
+                          assistirFilme.map((filme) => (
+                            <Suspense fallback={<Loading />}>
+                              {assistirFilme.map((filme) => (
+                                <Miniaturafilmes
+                                  key={filme.id}
+                                  capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
+                                  titulofilme={filme.title}
+                                  mostrarBotaoFechar={mostrarBotaoFechar}
+                                  mostrarEstrelas={false}
+                                  onClick={() => openModal(filme)}
+                                />
+                              ))}
+                            </Suspense>
+                          ))
+                        )}
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
-            <FundoTitulos
-              exibirPlay={false}
-              capaAssistidos={
-                filmeAleatorio
-                  ? `https://image.tmdb.org/t/p/original/${filmeAleatorio.poster_path}`
-                  : "fundoAleatorio"
-              }
-              tituloAssistidos={filmeAleatorio}
-              opacidade={0.5}
-            />
+            {isMobile ? (
+              filmeAleatorio ? (
+                <Suspense fallback={<Loading />}>
+                  <FundoTitulos
+                    exibirPlay={false}
+                    capaAssistidos={`https://image.tmdb.org/t/p/original/${filmeAleatorio.poster_path}`}
+                    tituloAssistidos={filmeAleatorio.title}
+                    opacidade={0.2}
+                  />
+                </Suspense>
+              ) : null
+            ) : (
+              filmeAleatorio && (
+                <FundoTitulosDesktop
+                  capaAssistidos={`https://image.tmdb.org/t/p/original/${filmeAleatorio.backdrop_path}`}
+                />
+              )
+            )}
             {modalOpen && (
               <FilmesCarousel
                 filmes={assistirFilme}

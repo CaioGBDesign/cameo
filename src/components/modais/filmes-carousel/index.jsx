@@ -7,6 +7,8 @@ import Image from "next/image";
 import DeletarFilme from "@/components/modais/deletar-filmes";
 import FavoritarFilme from "@/components/detalhesfilmes/favoritarfilme";
 import ModalAvaliar from "@/components/modais/avaliar-filmes";
+import ModalAvaliarDesktop from "@/components/modais/avaliar-filmes-desktop";
+import { useIsMobile } from "@/components/DeviceProvider";
 
 const FilmesCarousel = ({
   filmes,
@@ -25,6 +27,11 @@ const FilmesCarousel = ({
   const [filmeIdParaAvaliar, setFilmeIdParaAvaliar] = useState(null);
   const [notaAtual, setNotaAtual] = useState(0);
   const [autoScroll, setAutoScroll] = useState(true); // Estado para controle da rolagem automática
+  const [isPrevDisabled, setIsPrevDisabled] = useState(true);
+  const [isNextDisabled, setIsNextDisabled] = useState(false);
+
+  // define se desktop ou mobile
+  const isMobile = useIsMobile();
 
   // Atualiza a nota ao abrir o modal
   const abrirModalAvaliar = (id) => {
@@ -161,8 +168,28 @@ const FilmesCarousel = ({
     setShowConfirmDelete(false); // Fecha o modal
   };
 
+  // Navegação
+  const handlePrevious = () => {
+    setImagemFoco((prev) => (prev > 0 ? prev - 1 : filmes.length - 1)); // Volta um filme ou vai para o último
+  };
+
+  const handleNext = () => {
+    setImagemFoco((prev) => (prev < filmes.length - 1 ? prev + 1 : 0)); // Avança um filme ou volta para o primeiro
+  };
+
   return (
     <div className={styles.modalListagem}>
+      {isMobile ? null : (
+        <div className={styles.navegacao}>
+          <button onClick={handlePrevious}>
+            <img src="/icones/anterior.svg" alt="Anterior" />
+          </button>
+          <button onClick={handleNext}>
+            <img src="/icones/proximo.svg" alt="Próximo" />
+          </button>
+        </div>
+      )}
+
       <div className={styles.fecharModalFilmes} onClick={onClose}>
         <img src="/icones/close.svg" alt="Fechar" />
       </div>
@@ -191,13 +218,23 @@ const FilmesCarousel = ({
                 onClick={() => handleImageClick(index)}
               >
                 <div className={styles.capaFilme}>
-                  <Image
-                    src={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
-                    alt={`Capa do filme ${filme.title}`}
-                    layout="fill"
-                    objectFit="cover"
-                    quality={50}
-                  />
+                  {isMobile ? (
+                    <Image
+                      src={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
+                      alt={`Capa do filme ${filme.title}`}
+                      layout="fill"
+                      objectFit="cover"
+                      quality={50}
+                    />
+                  ) : (
+                    <Image
+                      src={`https://image.tmdb.org/t/p/original/${filme.backdrop_path}`}
+                      alt={`Capa do filme ${filme.title}`}
+                      layout="fill"
+                      objectFit="cover"
+                      quality={50}
+                    />
+                  )}
                 </div>
               </div>
             ))}
@@ -230,14 +267,16 @@ const FilmesCarousel = ({
         />
       </div>
 
-      <div className={styles.fundoFilmeFoco}>
-        {filmes[imagemFoco] && (
-          <img
-            src={`https://image.tmdb.org/t/p/original/${filmes[imagemFoco]?.poster_path}`}
-            alt={`Fundo do filme ${filmes[imagemFoco]?.title}`}
-          />
-        )}
-      </div>
+      {isMobile ? (
+        <div className={styles.fundoFilmeFoco}>
+          {filmes[imagemFoco] && (
+            <img
+              src={`https://image.tmdb.org/t/p/original/${filmes[imagemFoco]?.poster_path}`}
+              alt={`Fundo do filme ${filmes[imagemFoco]?.title}`}
+            />
+          )}
+        </div>
+      ) : null}
 
       {showConfirmDelete && (
         <DeletarFilme
@@ -246,13 +285,21 @@ const FilmesCarousel = ({
           onConfirm={handleConfirmDelete}
         />
       )}
-      {modalAberto === "avaliar-filme" && (
-        <ModalAvaliar
-          filmeId={filmeIdParaAvaliar}
-          nota={notaAtual}
-          onClose={() => setModalAberto(null)} // Fecha o modal
-        />
-      )}
+      {isMobile
+        ? modalAberto === "avaliar-filme" && (
+            <ModalAvaliar
+              filmeId={filmeIdParaAvaliar}
+              nota={notaAtual}
+              onClose={() => setModalAberto(null)} // Fecha o modal
+            />
+          )
+        : modalAberto === "avaliar-filme" && (
+            <ModalAvaliarDesktop
+              filmeId={filmeIdParaAvaliar}
+              nota={notaAtual}
+              onClose={() => setModalAberto(null)} // Fecha o modal
+            />
+          )}
     </div>
   );
 };

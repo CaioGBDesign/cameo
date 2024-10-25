@@ -24,21 +24,22 @@ const Miniaturafilmes = ({
               layout="fill"
               objectFit="cover"
               quality={50}
+              sizes={isMobile ? "100vw" : "50vw"}
             />
           </div>
         </div>
       </div>
-      {isMobile ? (
-        mostrarEstrelas && (
-          <div className={styles.tamanhoestrelas}>
-            <Estrelas estrelas={avaliacao} starWidth={"10px"} />
-          </div>
-        )
-      ) : (
-        <div className={styles.tamanhoestrelas}>
-          <Estrelas estrelas={avaliacao} starWidth={"20px"} />
-        </div>
-      )}
+      {isMobile
+        ? mostrarEstrelas && (
+            <div className={styles.tamanhoestrelas}>
+              <Estrelas estrelas={avaliacao} starWidth={"10px"} />
+            </div>
+          )
+        : mostrarEstrelas && (
+            <div className={styles.tamanhoestrelas}>
+              <Estrelas estrelas={avaliacao} starWidth={"20px"} />
+            </div>
+          )}
     </div>
   );
 };

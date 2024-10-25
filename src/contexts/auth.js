@@ -253,7 +253,7 @@ function AuthProvider({ children }) {
 
       console.log("Filme salvo com sucesso no Firebase");
 
-      toast.success("Filme adicionado aos favoritos com sucesso!", {
+      toast.success("Filme adicionado aos favoritos!", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -329,7 +329,7 @@ function AuthProvider({ children }) {
 
       console.log("Filme salvo com sucesso no Firebase");
 
-      toast.success("Filme adicionado a lista para ver com sucesso!", {
+      toast.success("Filme adicionado a lista para ver!", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -435,16 +435,6 @@ function AuthProvider({ children }) {
       }));
 
       console.log("Filme avaliado com sucesso no Firebase");
-
-      toast.success("Filme adicionado a lista de vistos com sucesso!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "dark", // Mude para "dark" se quiser o fundo escuro
-      });
     } catch (error) {
       console.error("Erro ao avaliar filme no Firebase:", error);
     }

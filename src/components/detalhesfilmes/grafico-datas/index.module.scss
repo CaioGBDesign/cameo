@@ -1,0 +1,90 @@
+.ContGraficosDatas {
+  display: flex;
+  justify-content: center;
+
+  background: linear-gradient(
+      0deg,
+      rgba(31, 9, 40, 0.4) 0%,
+      rgba(31, 9, 40, 0.4) 100%
+    ),
+    rgba(255, 255, 255, 0.1);
+
+  padding: 20px;
+
+  border: solid #ffffff50 1px;
+  border-radius: 20px;
+
+  width: 450px;
+  height: 175px;
+
+  .GraficosDatas {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 20px;
+
+    width: 100%;
+
+    .headerGrafico {
+      display: flex;
+      align-items: center;
+
+      height: 30px;
+      h1 {
+        font-size: 14px;
+
+        color: #ffffff;
+
+        opacity: 0.5;
+      }
+    }
+
+    .RelacaoMes {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+
+      width: 100%;
+
+      .mes {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 100%;
+
+        .data {
+          width: 40px;
+        }
+
+        span {
+          font-size: 20px;
+
+          color: #fff;
+
+          opacity: 0.5;
+        }
+
+        .contPercentualGrafico {
+          width: 365px;
+          height: 12px;
+
+          border-radius: 30px;
+
+          overflow: hidden;
+
+          .percentualGrafico {
+            height: 12px;
+
+            background: #2ba8e2;
+
+            border-radius: 30px;
+          }
+        }
+      }
+    }
+  }
+}

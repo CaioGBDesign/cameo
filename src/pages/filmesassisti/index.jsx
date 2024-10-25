@@ -1,18 +1,19 @@
 import styles from "./index.module.scss";
 import { useEffect, useState, lazy, Suspense } from "react";
 import { useIsMobile } from "@/components/DeviceProvider";
+import { useAuth } from "@/contexts/auth";
+import { useRouter } from "next/router";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import Titulolistagem from "@/components/titulolistagem";
 import GraficoVistos from "@/components/detalhesfilmes/grafico-vistos";
-import { useAuth } from "@/contexts/auth";
+import GraficoDatas from "@/components/detalhesfilmes/grafico-datas";
 import Private from "@/components/Private";
 import Link from "next/link";
 import FilmesCarousel from "@/components/modais/filmes-carousel";
 import Loading from "@/components/loading";
 import PosterInfoDesktop from "@/components/PosterInfoDesktop";
 import FundoTitulosDesktop from "@/components/fundotitulos-desktop";
-import { useRouter } from "next/router";
 
 const FundoTitulos = lazy(() => import("@/components/fundotitulos"));
 const Miniaturafilmes = lazy(() => import("@/components/miniaturafilmes"));
@@ -135,10 +136,6 @@ const FilmesAssisti = () => {
     setModalOpen(true);
   };
 
-  const handleFilmClick = (filmeId) => {
-    router.push(`/?filmeId=${String(filmeId)}`); // Convertendo para string
-  };
-
   if (!filmesVistos.length && loading) return <Loading />;
 
   return (
@@ -166,6 +163,12 @@ const FilmesAssisti = () => {
                     filmesVistos={filmesVistos}
                     totalFilmesVistos={totalFilmesVistos} // Passando totalFilmesVistos como prop
                   />
+                  {isMobile ? null : (
+                    <GraficoDatas
+                      filmesVistos={filmesVistos}
+                      totalFilmesVistos={totalFilmesVistos}
+                    />
+                  )}
                 </div>
               </div>
 
@@ -180,26 +183,8 @@ const FilmesAssisti = () => {
                   <div className={styles.listaFilmes}>
                     {filmesVistos && (
                       <>
-                        {isMobile ? (
-                          loading ? (
-                            <p>Carregando...</p>
-                          ) : (
-                            filmesVistos.map((filme) => (
-                              <Suspense key={filme.id} fallback={<Loading />}>
-                                <Miniaturafilmes
-                                  capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
-                                  titulofilme={filme.title}
-                                  mostrarEstrelas={true}
-                                  mostrarBotaoFechar={mostrarBotaoFechar}
-                                  excluirFilme={() =>
-                                    handleExcluirFilme(String(filme.id))
-                                  }
-                                  avaliacao={filme.avaliacao.nota}
-                                  onClick={() => openModal(filme)}
-                                />
-                              </Suspense>
-                            ))
-                          )
+                        {loading ? (
+                          <p>Carregando...</p>
                         ) : (
                           filmesVistos.map((filme) => (
                             <Suspense key={filme.id} fallback={<Loading />}>
@@ -212,9 +197,7 @@ const FilmesAssisti = () => {
                                   handleExcluirFilme(String(filme.id))
                                 }
                                 avaliacao={filme.avaliacao.nota}
-                                onClick={() =>
-                                  handleFilmClick(String(filme.id))
-                                }
+                                onClick={() => openModal(filme)}
                               />
                             </Suspense>
                           ))

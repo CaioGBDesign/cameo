@@ -95,7 +95,10 @@
         display: flex;
       }
       .graficosGeneroMes {
-        width: 340px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
 
         @media only screen and (max-width: 600px) {
           width: 100%;

@@ -1,0 +1,174 @@
+.modal {
+  position: fixed;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 999;
+
+  width: 100%;
+  height: 100vh;
+
+  animation: BG 0.3s ease-out;
+
+  /* width */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media only screen and (max-width: 600px) {
+    justify-content: end;
+  }
+
+  .modalContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+
+    background: #1f0928;
+    border-radius: 30px;
+    border: solid #ffffff50 1px;
+
+    width: 912px;
+
+    overflow: scroll;
+    animation: OpenUp 0.3s ease-out;
+    animation-fill-mode: forwards;
+
+    position: relative;
+
+    .fecharDesktop {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+
+      button {
+        background: none;
+        border: none;
+
+        cursor: pointer;
+      }
+    }
+
+    @media only screen and (max-width: 600px) {
+      width: 100%;
+
+      border-radius: 15px 15px 0px 0px;
+      border-top: solid #f314fb;
+    }
+
+    @keyframes OpenUp {
+      from {
+        transform: translateY(100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    &.close {
+      animation: CloseDown 0.3s ease-out;
+      animation-fill-mode: forwards;
+    }
+
+    .contModal {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 60px;
+
+      width: 80%;
+
+      padding: 40px;
+
+      @media only screen and (min-width: 600px) {
+        align-items: center;
+      }
+
+      .tituloModal {
+        display: flex;
+        justify-content: center;
+
+        position: relative;
+
+        h2 {
+          font-size: 16px;
+          color: white;
+          text-align: center;
+        }
+
+        button {
+          position: absolute;
+          right: 0;
+          top: 0;
+
+          width: 30px;
+          height: 30px;
+
+          background: none;
+          border: none;
+        }
+      }
+
+      .contEstrelas {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 20px;
+
+        .notaEscala {
+          display: flex;
+          justify-content: space-between;
+
+          span {
+            font-size: 14px;
+            font-weight: 200;
+
+            color: white;
+          }
+        }
+
+        .estrelas {
+          display: flex;
+          justify-content: center;
+          gap: 50px;
+
+          @media only screen and (max-width: 600px) {
+            justify-content: space-between;
+            gap: none;
+          }
+
+          .estrela {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+          }
+        }
+      }
+
+      button {
+        width: 50%;
+        height: 50px;
+
+        background: linear-gradient(90deg, #1af5eb 0%, #2ba8e2 100%);
+
+        color: white;
+
+        border: none;
+        border-radius: 50px;
+
+        font-size: 20px;
+        text-align: center;
+
+        @media only screen and (max-width: 600px) {
+          width: 100%;
+          height: 50px;
+        }
+      }
+    }
+  }
+}

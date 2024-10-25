@@ -20,8 +20,8 @@ const DadosPessoaisModalDesktop = ({ closeModal, isClosing }) => {
   const [alteracoesPendentes, setAlteracoesPendentes] = useState(false);
 
   const selectGenero = [
-    { value: "Mulher", label: "Mulher" },
-    { value: "Homem", label: "Homem" },
+    { value: "Feminino", label: "Feminino" },
+    { value: "Masculino", label: "Masculino" },
     { value: "Não binário", label: "Não binário" },
     { value: "Outro", label: "Outro" },
     { value: "Prefiro não dizer", label: "Prefiro não dizer" },

@@ -112,7 +112,15 @@ function AuthProvider({ children }) {
       storageUser(userData);
       router.push("/");
 
-      toast.success("Login realizado com sucesso!");
+      toast.success("Login realizado com sucesso!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark", // Mude para "dark" se quiser o fundo escuro
+      });
     } catch (error) {
       console.error("Erro ao tentar fazer login:", error);
 

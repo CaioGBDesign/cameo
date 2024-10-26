@@ -1,14 +1,14 @@
 import styles from "./index.module.scss";
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { AuthContext } from "@/contexts/auth";
-import FotoPrincipal from "@/components/perfil/fotoPrincipal";
-import NomeUsuario from "@/components/perfil/nomeUsuario";
-import Handle from "@/components/perfil/handle";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/services/firebaseConection";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth"; // Importação necessária
-import Private from "@/components/Private";
 import { toast } from "react-toastify";
+import FotoPrincipal from "@/components/perfil/fotoPrincipal";
+import NomeUsuario from "@/components/perfil/nomeUsuario";
+import Handle from "@/components/perfil/handle";
+import Private from "@/components/Private";
 
 const DadosPessoaisModalDesktop = ({ closeModal, isClosing }) => {
   const { user, storageUser, setUser, logout } = useContext(AuthContext);
@@ -18,6 +18,7 @@ const DadosPessoaisModalDesktop = ({ closeModal, isClosing }) => {
   const [genero, setGenero] = useState(user ? user.genero : "");
   const [estilo, setEstilo] = useState(user ? user.estilo : "");
   const [alteracoesPendentes, setAlteracoesPendentes] = useState(false);
+  const modalRef = useRef(null); // Cria uma referência para o modal
 
   const selectGenero = [
     { value: "Feminino", label: "Feminino" },
@@ -89,9 +90,33 @@ const DadosPessoaisModalDesktop = ({ closeModal, isClosing }) => {
     }
   }, [nome, genero, estilo, user]);
 
+  // Função para fechar o modal se o clique for fora dele
+  const handleClickOutside = (event) => {
+    if (modalRef.current && !modalRef.current.contains(event.target)) {
+      closeModal();
+    }
+  };
+
+  // Adiciona o listener de evento ao montar e remove ao desmontar
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Recarrega a página
+  const handleLogout = () => {
+    logout();
+    window.location.reload();
+  };
+
   return (
     <Private>
-      <div className={`${styles.modal} ${isClosing ? styles.close : ""}`}>
+      <div
+        className={`${styles.modal} ${isClosing ? styles.close : ""}`}
+        ref={modalRef}
+      >
         <div className={styles.fecharDesktop}>
           <button onClick={closeModal}>
             <img src="/icones/fechar-filtros.svg" />
@@ -142,7 +167,7 @@ const DadosPessoaisModalDesktop = ({ closeModal, isClosing }) => {
                   </select>
 
                   <div className={styles.sair}>
-                    <button type="button" onClick={logout}>
+                    <button type="button" onClick={handleLogout}>
                       Sair
                       <img src="/icones/sair.svg" />
                     </button>

@@ -1,0 +1,157 @@
+.modalLC {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  animation: OpenUp 0.3s ease-out;
+  animation-fill-mode: forwards;
+
+  @keyframes OpenUp {
+    from {
+      transform: translate(-50%, 100%);
+    }
+    to {
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .contModalLC {
+    background: #1f0928;
+    border-radius: 30px;
+    border: solid #ffffff50 1px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 500px;
+
+    .LoginCadastroModal {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+
+      padding: 50px 0px;
+
+      width: 100%;
+
+      position: relative;
+
+      .fecharDesktop {
+        position: fixed;
+        top: 30px;
+        right: 30px;
+        z-index: 1;
+
+        animation: fecharDesk 1.5s ease-in;
+
+        @keyframes fecharDesk {
+          0% {
+            opacity: 0;
+          }
+
+          100% {
+            opacity: 1;
+          }
+        }
+
+        button {
+          background: none;
+          border: none;
+
+          cursor: pointer;
+        }
+      }
+
+      .slideModalLC {
+        position: relative;
+
+        width: 500px;
+        height: 340px;
+
+        .contLoginCadastroM {
+          position: absolute;
+          top: 0;
+
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+
+          // width: 1000px;
+          // height: 340px;
+
+          .loginDesktopM {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+
+            width: 490px;
+
+            .slideLoginCadastro {
+              display: flex;
+              justify-content: center;
+
+              width: 100%;
+
+              p {
+                font-size: 16px;
+                font-weight: 100;
+
+                color: white;
+
+                span {
+                  color: #f314fb;
+
+                  text-decoration: none;
+
+                  font-weight: 500;
+                }
+              }
+            }
+          }
+
+          .cadastroDesktopM {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+
+            width: 490px;
+
+            .slideLoginCadastro {
+              display: flex;
+              justify-content: center;
+
+              width: 100%;
+
+              p {
+                font-size: 16px;
+                font-weight: 100;
+
+                color: white;
+
+                span {
+                  color: #f314fb;
+
+                  text-decoration: none;
+
+                  font-weight: 500;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

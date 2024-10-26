@@ -1,9 +1,10 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import { useAuth } from "@/contexts/auth";
 import { useRouter } from "next/router";
+import { Inter } from "next/font/google";
+import { useIsMobile } from "@/components/DeviceProvider";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
-import { Inter } from "next/font/google";
 import styles from "@/styles/index.module.scss";
 import TitulosFilmes from "@/components/titulosfilmes";
 import NotasFilmes from "@/components/botoes/notas";
@@ -24,7 +25,7 @@ import Classificacao from "@/components/detalhesfilmes/classificacao";
 import FundoTitulosDesktop from "@/components/fundotitulos-desktop";
 import Loading from "@/components/loading";
 import Image from "next/image";
-import { useIsMobile } from "@/components/DeviceProvider";
+import Recomendacoes from "@/components/detalhesfilmes/recomendacoes";
 
 const inter = Inter({ subsets: ["latin"] });
 const FundoTitulos = lazy(() => import("@/components/fundotitulos"));
@@ -472,41 +473,10 @@ const Home = () => {
                 </div>
               ) : null}
 
-              {recomendacoes.length > 0 && (
-                <div className={styles.recomendacoes}>
-                  <h3>Recomendações</h3>
-                  <div className={styles.contRecomendacoes}>
-                    <div className={styles.scrollRecomendacoes}>
-                      {recomendacoes.map((recomendacao) => (
-                        <div
-                          className={styles.listaRecomendacoes}
-                          key={recomendacao.id}
-                          onClick={
-                            () =>
-                              selecionarFilmeRecomendado(
-                                String(recomendacao.id)
-                              ) // Converter ID para string
-                          }
-                        >
-                          <Suspense fallback={<Loading />}>
-                            <div className={styles.fotoRecomendacoes}>
-                              <Image
-                                src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${recomendacao.poster_path}`}
-                                alt={recomendacao.title}
-                                fill
-                                quality={50} // Ajuste a qualidade se necessário
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                className={styles.objectFit}
-                              />
-                            </div>
-                          </Suspense>
-                          <span>{recomendacao.title}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
+              <Recomendacoes
+                recomendacoes={recomendacoes}
+                selecionarFilmeRecomendado={selecionarFilmeRecomendado}
+              />
             </div>
           </div>
         </div>

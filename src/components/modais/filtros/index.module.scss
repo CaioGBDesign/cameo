@@ -154,6 +154,7 @@
 
         .opcao {
           display: flex;
+
           label {
             position: relative;
 
@@ -210,6 +211,15 @@
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
+
+        .opcaoTodos {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          height: 35px;
+          flex-grow: 1;
+        }
 
         label {
           position: relative;

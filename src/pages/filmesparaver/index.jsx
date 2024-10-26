@@ -161,28 +161,17 @@ const FilmesParaVer = () => {
                     handleRemoverClick={handleRemoverClick}
                   />
                   <div className={styles.listaFilmes}>
-                    {assistirFilme && (
-                      <>
-                        {loading ? (
-                          <p>Carregando...</p>
-                        ) : (
-                          assistirFilme.map((filme) => (
-                            <Suspense fallback={<Loading />}>
-                              {assistirFilme.map((filme) => (
-                                <Miniaturafilmes
-                                  key={filme.id}
-                                  capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
-                                  titulofilme={filme.title}
-                                  mostrarBotaoFechar={mostrarBotaoFechar}
-                                  mostrarEstrelas={false}
-                                  onClick={() => openModal(filme)}
-                                />
-                              ))}
-                            </Suspense>
-                          ))
-                        )}
-                      </>
-                    )}
+                    {assistirFilme.map((filme) => (
+                      <Suspense key={filme.id} fallback={<Loading />}>
+                        <Miniaturafilmes
+                          capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
+                          titulofilme={filme.title}
+                          mostrarBotaoFechar={mostrarBotaoFechar}
+                          mostrarEstrelas={false}
+                          onClick={() => openModal(filme)}
+                        />
+                      </Suspense>
+                    ))}
                   </div>
                 </div>
               </div>

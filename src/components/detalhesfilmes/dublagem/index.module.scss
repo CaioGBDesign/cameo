@@ -19,15 +19,52 @@
       opacity: 0.3;
     }
 
+    .headerDublagem {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      width: 950px;
+
+      .botoes {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+
+        button {
+          background: #ffffff10;
+          border: none;
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          width: 50px;
+          height: 50px;
+
+          padding: 5px;
+
+          border-radius: 50px;
+
+          cursor: pointer;
+        }
+      }
+    }
+
     .dublagem {
       display: flex;
       align-items: start;
       gap: 20px;
 
-      width: 100%;
+      width: 950px;
       height: 150px;
 
       overflow-x: scroll;
+
+      @media only screen and (max-width: 600px) {
+        width: 100%;
+      }
 
       /* width */
       &::-webkit-scrollbar {

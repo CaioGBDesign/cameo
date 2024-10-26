@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
 import styles from "./index.module.scss";
 import Dubladores from "@/components/detalhesfilmes/dubladores";
 import Link from "next/link";
+import { useIsMobile } from "@/components/DeviceProvider";
+
 const simulacaoBack = [
   {
     id: "D-AEB",
@@ -66,22 +68,72 @@ const simulacaoBack = [
 ];
 
 const Dublagem = () => {
+  const isMobile = useIsMobile();
+  const dublagemRef = useRef(null); // Referência à div da dublagem
+
+  const scrollToNext = () => {
+    if (dublagemRef.current) {
+      const { scrollLeft, clientWidth } = dublagemRef.current;
+      const nextScrollLeft = scrollLeft + clientWidth;
+      if (nextScrollLeft < dublagemRef.current.scrollWidth) {
+        dublagemRef.current.scrollTo({
+          left: nextScrollLeft,
+          behavior: "smooth",
+        });
+      } else {
+        dublagemRef.current.scrollTo({ left: 0, behavior: "smooth" }); // Volta ao início
+      }
+    }
+  };
+
+  const scrollToPrevious = () => {
+    if (dublagemRef.current) {
+      const { scrollLeft, clientWidth } = dublagemRef.current;
+      const previousScrollLeft = scrollLeft - clientWidth;
+      if (previousScrollLeft >= 0) {
+        dublagemRef.current.scrollTo({
+          left: previousScrollLeft,
+          behavior: "smooth",
+        });
+      } else {
+        dublagemRef.current.scrollTo({
+          left: dublagemRef.current.scrollWidth,
+          behavior: "smooth",
+        }); // Vai para o final
+      }
+    }
+  };
+
   return (
     <div className={styles.dublagemCameo}>
       <div className={styles.contDublagem}>
-        <h3>Dublagem</h3>
+        {isMobile ? (
+          <h3>Dublagem</h3>
+        ) : (
+          <div className={styles.headerDublagem}>
+            <h3>Dublagem</h3>
+            <div className={styles.botoes}>
+              <button onClick={scrollToPrevious}>
+                <img src="/icones/anterior.svg" />
+              </button>
+              <button onClick={scrollToNext}>
+                <img src="/icones/proximo.svg" />
+              </button>
+            </div>
+          </div>
+        )}
 
-        <div className={styles.dublagem}>
-          {simulacaoBack.map((dobladores, index) => (
+        <div className={styles.dublagem} ref={dublagemRef}>
+          {simulacaoBack.map((dublador, index) => (
             <Link
               key={index}
-              href={`/dublador/${encodeURIComponent(dobladores.nome)}`}
+              href={`/dublador/${encodeURIComponent(dublador.nome)}`}
             >
               <div className={styles.dubladorLink}>
                 <Dubladores
-                  fotoDublador={dobladores.url}
-                  NomeDublador={dobladores.nome}
-                  Personagem={dobladores.personagem}
+                  fotoDublador={dublador.url}
+                  NomeDublador={dublador.nome}
+                  Personagem={dublador.personagem}
                 />
               </div>
             </Link>

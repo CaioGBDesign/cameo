@@ -1,0 +1,122 @@
+.background {
+  width: 100%;
+
+  .cadastro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+
+    .formulario {
+      width: 85%;
+
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+
+        width: 100%;
+
+        .inputCameo {
+          .imgHandle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 10px 0px 10px 10px;
+          }
+
+          display: flex;
+          align-items: center;
+
+          width: 100%;
+          border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+
+          input[type="email"],
+          input[type="handle"],
+          input[type="password"],
+          input[type="text"],
+          input[type="name"],
+          select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            background: none;
+            font-size: 16px;
+            outline: none;
+
+            color: white;
+          }
+
+          input[type="name"]::placeholder,
+          input[type="handle"]::placeholder,
+          input[type="email"]::placeholder,
+          input[type="password"]::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 16px;
+          }
+
+          .contSenha {
+            display: flex;
+            justify-content: center;
+
+            width: 50%;
+
+            font-size: 14px;
+            color: #f314fb;
+            font-weight: bolder;
+          }
+
+          select {
+            option {
+              color: black;
+            }
+          }
+        }
+
+        .error {
+          width: 100%;
+          margin-top: -20px;
+          p {
+            font-size: 12px;
+            font-weight: 200;
+            color: #ff0000;
+
+            width: 100%;
+          }
+        }
+
+        .errorDesconhecido {
+          width: 100%;
+
+          p {
+            font-size: 12px;
+            font-weight: 200;
+            color: #ff0000;
+            text-align: center;
+
+            width: 100%;
+          }
+        }
+
+        .loginButtons {
+          display: flex;
+          justify-content: space-around;
+
+          width: 80%;
+
+          button {
+            background: none;
+            border: none;
+
+            width: auto;
+            height: auto;
+          }
+        }
+      }
+    }
+  }
+}

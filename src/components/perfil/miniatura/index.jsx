@@ -5,6 +5,7 @@ import { AuthContext } from "@/contexts/auth";
 import { useIsMobile } from "@/components/DeviceProvider";
 import Image from "next/image";
 import DadosPessoaisModalDesktop from "@/components/dadospessoais-desktop";
+import ModalLoginCadastro from "@/components/modais/ModalLoginCadastro";
 
 const FotoPerfil = ({ href = "/perfil", children }) => {
   const { user } = useContext(AuthContext);
@@ -15,16 +16,24 @@ const FotoPerfil = ({ href = "/perfil", children }) => {
 
   const [isModalOpen, setModalOpen] = useState(false); // Estado para controlar o modal
   const [isClosing, setIsClosing] = useState(false);
+  const [isLoginModal, setIsLoginModal] = useState(false); // Estado para controle do modal de login
 
   const openModal = () => {
-    setModalOpen(true); // Abre o modal
+    if (user) {
+      setIsLoginModal(false); // Se o usuário está logado, não precisamos do modal de login
+      setModalOpen(true); // Abre o modal de dados pessoais
+    } else {
+      setIsLoginModal(true); // Se o usuário não está logado, abre o modal de login
+      setModalOpen(true);
+    }
   };
 
   const closeModal = () => {
     setIsClosing(true);
     setTimeout(() => {
       setModalOpen(false); // Fecha após a animação
-    }, 300); // Duração da animação
+      setIsLoginModal(false); // Reseta o estado do modal de login
+    }, 300);
   };
 
   return (
@@ -57,11 +66,14 @@ const FotoPerfil = ({ href = "/perfil", children }) => {
         </div>
       )}
 
-      {isModalOpen && (
+      {isModalOpen && !isLoginModal && (
         <DadosPessoaisModalDesktop
           closeModal={closeModal}
           isClosing={isClosing}
         />
+      )}
+      {isModalOpen && isLoginModal && (
+        <ModalLoginCadastro closeModal={closeModal} isClosing={isClosing} />
       )}
     </>
   );

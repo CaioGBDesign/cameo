@@ -40,8 +40,8 @@ const TitulosFilmes = ({
             </div>
           )}
       <div className={styles.informacoes}>
-        <h1>
-          {titulofilme}
+        <div className={styles.titulofilme}>
+          <h1>{titulofilme}</h1>
           {isBrasileiro && (
             <img
               src="/icones/flag-brasil.png"
@@ -49,7 +49,7 @@ const TitulosFilmes = ({
               className={styles.bandeiraBrasil}
             />
           )}
-        </h1>
+        </div>
         <div className={styles.generoDuracao}>
           {isMobile
             ? null

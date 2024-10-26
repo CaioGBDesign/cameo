@@ -323,6 +323,8 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
 
   // Função para aplicar filtros
   const aplicarFiltro = async () => {
+    const { visto, assistir } = user;
+    const filters = [];
     const url = buildUrl();
     console.log("URL da requisição:", url);
 
@@ -356,7 +358,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
         const randomIndex = Math.floor(Math.random() * vistosIds.length);
         const randomMovieId = vistosIds[randomIndex];
         console.log("Filme aleatório a ser assistido:", randomMovieId);
-        onSelectMovie(String(randomMovie.id));
+        onSelectMovie(String(randomMovieId));
         return;
       } else {
         console.log("Nenhum filme visto disponível.");
@@ -371,7 +373,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
       const randomIndex = Math.floor(Math.random() * assistirIds.length);
       const randomMovieId = assistirIds[randomIndex];
       console.log("Filme aleatório a assistir:", randomMovieId);
-      onSelectMovie(String(randomMovie.id));
+      onSelectMovie(String(randomMovieId));
       return;
     } else if (selectedStatus === "favoritos" && user.favoritos) {
       const favoritosIds = user.favoritos;
@@ -379,7 +381,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
         const randomIndex = Math.floor(Math.random() * favoritosIds.length);
         const randomMovieId = favoritosIds[randomIndex];
         console.log("Filme aleatório favorito:", randomMovieId);
-        onSelectMovie(String(randomMovie.id));
+        onSelectMovie(String(randomMovieId));
         return;
       } else {
         console.log("Nenhum filme favorito disponível.");
@@ -389,7 +391,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
       const randomIndex = Math.floor(Math.random() * nowPlayingMovies.length);
       const randomMovieId = nowPlayingMovies[randomIndex].id;
       console.log("Filme aleatório em cartaz:", randomMovieId);
-      onSelectMovie(String(randomMovie.id));
+      onSelectMovie(String(randomMovieId));
       return;
     }
 
@@ -490,6 +492,22 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
             <div className={styles.separador}>
               <h3>Streaming</h3>
               <div className={styles.streaming}>
+                {/* Botão "Todos" */}
+                <div className={styles.opcao}>
+                  <input
+                    type="radio"
+                    id="stodos"
+                    name="servicos"
+                    value=""
+                    checked={providerId === null} // Verifica se nenhum provedor está selecionado
+                    onChange={() => setProviderId(null)} // Define providerId como null
+                  />
+                  <label htmlFor="stodos" className={styles.opcaoTodos}>
+                    Todos
+                  </label>
+                </div>
+
+                {/* Outros serviços de streaming */}
                 {streamingServices.map((service) => (
                   <div className={styles.opcao} key={service.provider_id}>
                     <input
@@ -497,9 +515,9 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                       id={service.provider_name}
                       name="servicos"
                       value={service.provider_id}
+                      checked={providerId === service.provider_id} // Verifica se o serviço está selecionado
                       onChange={() => setProviderId(service.provider_id)}
                     />
-
                     <label htmlFor={service.provider_name}>
                       <img
                         src={service.logo_path}
@@ -515,6 +533,20 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
               <h3>Gênero</h3>
 
               <div className={styles.seletor}>
+                {/* Botão "Todos" */}
+                <div className={styles.opcao}>
+                  <input
+                    type="radio"
+                    id="todos-generos"
+                    name="genero"
+                    value=""
+                    checked={selectedGenre === null} // Verifica se nenhum gênero está selecionado
+                    onChange={() => setSelectedGenre(null)} // Define selectedGenre como null
+                  />
+                  <label htmlFor="todos-generos">Todos</label>
+                </div>
+
+                {/* Outros gêneros */}
                 {genres.map((genre) => (
                   <div className={styles.opcao} key={genre.id}>
                     <input
@@ -522,6 +554,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                       id={`genre-${genre.id}`}
                       name="genero"
                       value={genre.id}
+                      checked={selectedGenre === genre.id} // Verifica se o gênero está selecionado
                       onChange={() => setSelectedGenre(genre.id)}
                     />
                     <label htmlFor={`genre-${genre.id}`}>{genre.name}</label>

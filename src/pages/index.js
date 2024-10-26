@@ -24,7 +24,6 @@ import ModalAvaliar from "@/components/modais/avaliar-filmes";
 import Classificacao from "@/components/detalhesfilmes/classificacao";
 import FundoTitulosDesktop from "@/components/fundotitulos-desktop";
 import Loading from "@/components/loading";
-import Image from "next/image";
 import Recomendacoes from "@/components/detalhesfilmes/recomendacoes";
 
 const inter = Inter({ subsets: ["latin"] });

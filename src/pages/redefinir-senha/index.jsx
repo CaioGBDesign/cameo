@@ -5,8 +5,11 @@ import {
   confirmPasswordReset,
 } from "firebase/auth";
 import { useRouter } from "next/router"; // Importar o useRouter
+import { useIsMobile } from "@/components/DeviceProvider";
 import styles from "./index.module.scss";
+import Head from "next/head";
 import Header from "@/components/Header";
+import HeaderDesktop from "@/components/HeaderDesktop";
 
 const RedefinirSenha = () => {
   const [novaSenha, setNovaSenha] = useState("");
@@ -15,6 +18,7 @@ const RedefinirSenha = () => {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter(); // Inicializar o useRouter
   const { oobCode } = router.query; // Extrair o oobCode da URL
+  const isMobile = useIsMobile();
 
   const handleRedefinicao = async () => {
     if (!novaSenha || !senhaConfirmacao) {
@@ -46,7 +50,18 @@ const RedefinirSenha = () => {
 
   return (
     <main className={styles.background}>
-      <Header showMiniatura={true} showFotoPerfil={false} />
+      <Head>
+        <title>Cameo - home</title>
+        <meta
+          name="description"
+          content="Descubra filmes incríveis com Cameo! Obtenha sugestões de filmes aleatórios ou personalize sua busca com filtros por gênero, plataforma de streaming e muito mais. Crie listas de filmes e avalie suas escolhas. Entre no universo do cinema e nunca fique sem o que assistir!"
+        />
+      </Head>
+      {isMobile ? (
+        <Header showMiniatura={true} showFotoPerfil={false} />
+      ) : (
+        <HeaderDesktop />
+      )}
       <div className={styles.RedefinirSenha}>
         <div className={styles.formulario}>
           <div className={styles.inputsSenha}>

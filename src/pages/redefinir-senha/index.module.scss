@@ -1,11 +1,15 @@
 .background {
-  background-image: url("/background/background-cameo-login.png");
+  background-image: url("/background/background-cameo-login-desktop.jpg");
   background-color: #250d2f;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 
   width: 100%;
+
+  @media only screen and (max-width: 600px) {
+    background-image: url("/background/background-cameo-login.png");
+  }
 
   .RedefinirSenha {
     display: flex;

@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
 import { useRouter } from "next/router";
+import { AuthContext } from "@/contexts/auth";
+import Head from "next/head";
 import Link from "next/link";
 import styles from "./index.module.scss";
 import EntrarCadastrar from "@/components/botoes/acesso";
 import Header from "@/components/Header";
-import { AuthContext } from "@/contexts/auth";
 
 const Cadastro = () => {
   const [handle, setHandle] = useState("");
@@ -53,6 +54,13 @@ const Cadastro = () => {
 
   return (
     <main className={styles["background"]}>
+      <Head>
+        <title>Cameo - Cadastro</title>
+        <meta
+          name="description"
+          content="Crie sua conta no Cameo e comece a explorar um mundo de filmes! Junte-se à nossa comunidade, receba sugestões personalizadas e gerencie suas listas de filmes."
+        />
+      </Head>
       <Header showMiniatura={true} showFotoPerfil={false} />
 
       <div className={styles.cadastro}>

@@ -2,6 +2,7 @@ import styles from "./index.module.scss";
 import { useIsMobile } from "@/components/DeviceProvider";
 import { useEffect, useState, lazy, Suspense } from "react";
 import { useAuth } from "@/contexts/auth";
+import Head from "next/head";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import NotasFilmes from "@/components/botoes/notas";
@@ -104,6 +105,13 @@ const Favoritos = () => {
 
   return (
     <Private>
+      <Head>
+        <title>Cameo - Meus favoritos</title>
+        <meta
+          name="description"
+          content="Gerencie suas listas de filmes com Cameo! Marque filmes como assistidos, favoritos ou na sua lista de 'para assistir'. Mantenha seu controle de cinema em dia e descubra novos títulos."
+        />
+      </Head>
       <div className={styles.filmesAssisti}>
         {loading ? (
           <p>Carregando...</p>

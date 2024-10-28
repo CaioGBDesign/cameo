@@ -1,12 +1,13 @@
 import React, { useState, useContext } from "react";
 import { useRouter } from "next/router";
+import { AuthContext } from "@/contexts/auth";
+import { auth } from "@/services/firebaseConection";
+import { sendPasswordResetEmail } from "firebase/auth";
+import Head from "next/head";
 import Link from "next/link";
 import Logo from "@/components/logo";
 import EntrarCadastrar from "@/components/botoes/acesso";
 import styles from "./index.module.scss";
-import { AuthContext } from "@/contexts/auth";
-import { auth } from "@/services/firebaseConection";
-import { sendPasswordResetEmail } from "firebase/auth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -69,6 +70,13 @@ const Login = () => {
 
   return (
     <main className={styles["background"]}>
+      <Head>
+        <title>Cameo - Login</title>
+        <meta
+          name="description"
+          content="Acesse sua conta Cameo para gerenciar suas listas de filmes, receber recomendações e muito mais. Entre agora e descubra o que assistir!"
+        />
+      </Head>
       <div className={styles.login}>
         <Logo />
         <div className={styles.formulario}>

@@ -3,6 +3,7 @@ import { useAuth } from "@/contexts/auth";
 import { useRouter } from "next/router";
 import { Inter } from "next/font/google";
 import { useIsMobile } from "@/components/DeviceProvider";
+import Head from "next/head";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import styles from "@/styles/index.module.scss";
@@ -218,6 +219,13 @@ const Home = () => {
 
   return (
     <>
+      <Head>
+        <title>Cameo - home</title>
+        <meta
+          name="description"
+          content="Descubra filmes incríveis com Cameo! Obtenha sugestões de filmes aleatórios ou personalize sua busca com filtros por gênero, plataforma de streaming e muito mais. Crie listas de filmes e avalie suas escolhas. Entre no universo do cinema e nunca fique sem o que assistir!"
+        />
+      </Head>
       {isMobile ? <Header /> : <HeaderDesktop />}
       <main className={`${styles.main} ${inter.className}`}>
         <div className={styles.detalhesFilmes}>

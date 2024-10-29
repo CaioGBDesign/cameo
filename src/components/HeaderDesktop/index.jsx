@@ -9,6 +9,7 @@ const Header = ({
   showBuscar = true,
   showMiniatura = true,
   showFotoPerfil = true,
+  showMenu = true,
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -47,7 +48,7 @@ const Header = ({
     <header className={`${styles.header} ${isScrolled ? styles.scrolled : ""}`}>
       <div className={styles.headerContent}>
         <div>{showMiniatura && <Miniatura className={styles.miniatura} />}</div>
-        <MenuDesktop />
+        {showMenu && <MenuDesktop />}
         <div className={styles.buscadorEperfil}>
           {showBuscar && <BotaoBuscarDesktop className={styles.botaoBuscar} />}
           {showFotoPerfil && <FotoPerfil className={styles.fotoPerfil} />}

@@ -57,64 +57,88 @@ const RedefinirSenha = () => {
           content="Descubra filmes incríveis com Cameo! Obtenha sugestões de filmes aleatórios ou personalize sua busca com filtros por gênero, plataforma de streaming e muito mais. Crie listas de filmes e avalie suas escolhas. Entre no universo do cinema e nunca fique sem o que assistir!"
         />
       </Head>
-      {isMobile ? (
-        <Header showMiniatura={true} showFotoPerfil={false} />
-      ) : (
-        <HeaderDesktop />
-      )}
-      <div className={styles.RedefinirSenha}>
-        <div className={styles.formulario}>
-          <div className={styles.inputsSenha}>
-            <div className={styles.inputCameo}>
-              <input
-                type={showPassword ? "text" : "password"}
-                value={novaSenha}
-                onChange={(e) => setNovaSenha(e.target.value)}
-                placeholder="Nova Senha"
-              />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className={styles.passwordToggle}
-              >
-                <img
-                  src={
-                    showPassword
-                      ? "/icones/ver-senha.svg"
-                      : "/icones/esconder-senha.svg"
-                  }
-                  alt="Toggle Password"
-                />
-              </button>
-            </div>
-            <div className={styles.inputCameo}>
-              <input
-                type={showPassword ? "text" : "password"}
-                value={senhaConfirmacao}
-                onChange={(e) => setSenhaConfirmacao(e.target.value)} // Atualizar o estado da senha de confirmação
-                placeholder="Confirme a senha"
-              />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className={styles.passwordToggle}
-              >
-                <img
-                  src={
-                    showPassword
-                      ? "/icones/ver-senha.svg"
-                      : "/icones/esconder-senha.svg"
-                  }
-                  alt="Toggle Password"
-                />
-              </button>
-            </div>
-          </div>
 
-          <button onClick={handleRedefinicao}>Redefinir Senha</button>
-        </div>
-        <div className={styles.erroDefinicao}>
-          {erro && <p className={styles.error}>{erro}</p>}
+      {isMobile ? (
+        <Header showBuscar={false} showFotoPerfil={false} />
+      ) : (
+        <HeaderDesktop
+          showBuscar={false}
+          showMenu={false}
+          showFotoPerfil={false}
+        />
+      )}
+
+      <div className={styles.RedefinirSenha}>
+        {isMobile ? null : (
+          <div className={styles.fundoFilmes}>
+            <img
+              src="/background/background-cameo-login-desktop.jpg"
+              alt="background cameo"
+            />
+          </div>
+        )}
+
+        <div className={styles.contFormulario}>
+          <div className={styles.formulario}>
+            {isMobile ? null : (
+              <div className={styles.tituloSenha}>
+                <h2>Redefinir senha!</h2>
+                <p>Escolha uma senha com o mínimo de 8 caracteres.</p>
+              </div>
+            )}
+
+            <div className={styles.inputsSenha}>
+              <div className={styles.inputCameo}>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={novaSenha}
+                  onChange={(e) => setNovaSenha(e.target.value)}
+                  placeholder="Nova Senha"
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className={styles.passwordToggle}
+                >
+                  <img
+                    src={
+                      showPassword
+                        ? "/icones/ver-senha.svg"
+                        : "/icones/esconder-senha.svg"
+                    }
+                    alt="Toggle Password"
+                  />
+                </button>
+              </div>
+              <div className={styles.inputCameo}>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={senhaConfirmacao}
+                  onChange={(e) => setSenhaConfirmacao(e.target.value)} // Atualizar o estado da senha de confirmação
+                  placeholder="Confirme a senha"
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className={styles.passwordToggle}
+                >
+                  <img
+                    src={
+                      showPassword
+                        ? "/icones/ver-senha.svg"
+                        : "/icones/esconder-senha.svg"
+                    }
+                    alt="Toggle Password"
+                  />
+                </button>
+              </div>
+            </div>
+
+            <button onClick={handleRedefinicao}>Redefinir Senha</button>
+          </div>
+          <div className={styles.erroDefinicao}>
+            {erro && <p className={styles.error}>{erro}</p>}
+          </div>
         </div>
       </div>
     </main>

@@ -1,98 +1,161 @@
 .background {
-  background-image: url("/background/background-cameo-login-desktop.jpg");
-  background-color: #250d2f;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-
   width: 100%;
 
   @media only screen and (max-width: 600px) {
     background-image: url("/background/background-cameo-login.png");
+    background-color: #250d2f;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
   .RedefinirSenha {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    gap: 40px;
+    align-items: center;
 
     width: 100%;
-    height: 100vh;
 
-    .formulario {
+    @media only screen and (max-width: 600px) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+
+      width: 100%;
+      height: 100vh;
+    }
+
+    .fundoFilmes {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 50%;
+
+      overflow: hidden;
+    }
+
+    .contFormulario {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 60px;
 
-      background: #ffffff10;
+      width: 50%;
 
-      border: solid #fff 1px;
-      border-radius: 16px;
+      overflow: hidden;
 
-      padding: 20px;
-
-      width: 75%;
-
-      .inputsSenha {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-
+      @media only screen and (max-width: 600px) {
         width: 100%;
-
-        .inputCameo {
-          display: flex;
-          align-items: center;
-
-          width: 100%;
-          border-bottom: 2px solid rgba(255, 255, 255, 0.4);
-
-          input[type="text"],
-          input[type="password"],
-          select {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: none;
-            background: none;
-            font-size: 16px;
-            outline: none;
-
-            color: white;
-          }
-
-          input[type="text"]::placeholder,
-          input[type="password"]::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 16px;
-          }
-
-          button {
-            background: none;
-
-            width: auto;
-          }
-        }
       }
 
-      button {
-        width: 100%;
-        height: 60px;
+      .formulario {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: start;
+        gap: 60px;
 
-        background: linear-gradient(90deg, #f314fb 0%, #fdf57c 100%);
+        padding: 20px;
 
-        color: white;
+        width: 75%;
 
-        border: none;
-        border-radius: 50px;
+        @media only screen and (max-width: 600px) {
+          align-items: center;
 
-        font-size: 24px;
-        text-align: center;
-        font-weight: bold;
+          background: #ffffff10;
+
+          border: solid #fff 1px;
+          border-radius: 16px;
+        }
+
+        .tituloSenha {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: start;
+          gap: 15px;
+
+          h2 {
+            font-size: 36px;
+            font-weight: bold;
+
+            color: #fff;
+          }
+
+          p {
+            font-size: 16px;
+            font-weight: 100;
+
+            color: #ffffff;
+
+            opacity: 0.8;
+          }
+        }
+
+        .inputsSenha {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+
+          width: 100%;
+
+          .inputCameo {
+            display: flex;
+            align-items: center;
+
+            width: 100%;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+
+            input[type="text"],
+            input[type="password"],
+            select {
+              width: 100%;
+              padding: 10px;
+              margin: 10px 0;
+              border: none;
+              background: none;
+              font-size: 16px;
+              outline: none;
+
+              color: white;
+            }
+
+            input[type="text"]::placeholder,
+            input[type="password"]::placeholder {
+              color: rgba(255, 255, 255, 0.4);
+              font-size: 16px;
+            }
+
+            button {
+              background: none;
+
+              width: auto;
+            }
+          }
+        }
+
+        button {
+          width: 50%;
+          height: 60px;
+
+          background: linear-gradient(90deg, #f314fb 0%, #fdf57c 100%);
+
+          color: white;
+
+          border: none;
+          border-radius: 50px;
+
+          font-size: 24px;
+          text-align: center;
+          font-weight: bold;
+
+          @media only screen and (max-width: 600px) {
+            width: 100%;
+          }
+        }
       }
     }
 

@@ -85,10 +85,26 @@ function AuthProvider({ children }) {
   async function signIn(email, senha) {
     setLoadingAuth(true);
     try {
+      // Tenta fazer login
       const value = await signInWithEmailAndPassword(auth, email, senha);
+
+      // Atualiza o objeto do usuário
+      await value.user.reload();
 
       // Verifica se o e-mail está verificado
       if (!value.user.emailVerified) {
+        await signOut(auth); // Deslogar o usuário
+
+        toast.warn("Verifique seu e-mail antes de fazer login.", {
+          position: "top-right",
+          autoClose: 5000, // Duração do toast
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "dark",
+        });
+
         throw new Error(
           "Por favor, verifique seu e-mail antes de fazer login."
         );
@@ -119,20 +135,19 @@ function AuthProvider({ children }) {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        theme: "dark", // Mude para "dark" se quiser o fundo escuro
+        theme: "dark",
       });
     } catch (error) {
       console.error("Erro ao tentar fazer login:", error);
 
-      // Forçar deslogar o usuário
-      await signOut(auth);
+      // Limpar o estado do usuário e do localStorage em caso de erro
       setUser(null);
       localStorage.removeItem("@ticketsPro");
 
-      // Opcional: exibir uma mensagem de erro ao usuário
-      setErrorMessage("Falha ao fazer login. Por favor, tente novamente."); // Você pode usar um estado para exibir essa mensagem em algum lugar da UI
-
-      throw error; // Lança o erro para ser capturado no componente de login
+      // Exibir mensagem de erro ao usuário
+      setErrorMessage(
+        error.message || "Falha ao fazer login. Por favor, tente novamente."
+      );
     } finally {
       setLoadingAuth(false);
     }

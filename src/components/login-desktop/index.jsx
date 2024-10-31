@@ -40,31 +40,28 @@ const LoginDesktop = ({ closeModal }) => {
   async function handleSignIn(e) {
     e.preventDefault();
 
-    if (email !== "" && senha !== "") {
-      try {
-        await signIn(email, senha);
-        closeModal(); // Fecha o modal após o login bem-sucedido
-      } catch (error) {
-        console.error("Erro capturado no componente de login:", error);
-        if (error.code === "auth/user-not-found") {
-          setErro("E-mail não encontrado. Faça o cadastro ou tente novamente.");
-        } else if (error.code === "auth/wrong-password") {
-          setErro("Senha incorreta. Verifique e tente novamente.");
-        } else if (error.code === "auth/invalid-credential") {
-          setErro(
-            "Usuário não encontrado. Verifique seu e-mail ou faça seu registro."
-          );
-        } else {
-          setErro(
-            error.message || "Erro ao tentar fazer login. Tente novamente."
-          );
-        }
+    if (email === "" && senha === "")
+      return setErro("Por favor, preencha todos os campos.");
+
+    try {
+      await signIn(email, senha);
+    } catch (error) {
+      console.error("Erro capturado no componente de login:", error);
+      if (error.code === "auth/user-not-found") {
+        setErro("E-mail não encontrado. Faça o cadastro ou tente novamente.");
+      } else if (error.code === "auth/wrong-password") {
+        setErro("Senha incorreta. Verifique e tente novamente.");
+      } else if (error.code === "auth/invalid-credential") {
+        setErro(
+          "Usuário não encontrado. Verifique seu e-mail ou faça seu registro."
+        );
+      } else {
+        setErro(
+          error.message || "Erro ao tentar fazer login. Tente novamente."
+        );
       }
-    } else {
-      setErro("Por favor, preencha todos os campos.");
     }
   }
-
   return (
     <main className={styles["background"]}>
       <div className={styles.login}>

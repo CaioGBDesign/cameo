@@ -2,7 +2,6 @@ import styles from "./index.module.scss";
 import { useEffect, useState, lazy, Suspense } from "react";
 import { useIsMobile } from "@/components/DeviceProvider";
 import { useRouter } from "next/router";
-import Head from "next/head";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import NotasFilmes from "@/components/botoes/notas";
@@ -104,13 +103,6 @@ const FilmesParaVer = () => {
 
   return (
     <Private>
-      <Head>
-        <title>Cameo - Filmes que quero ver</title>
-        <meta
-          name="description"
-          content="Gerencie suas listas de filmes com Cameo! Marque filmes como assistidos, favoritos ou na sua lista de 'para assistir'. Mantenha seu controle de cinema em dia e descubra novos títulos."
-        />
-      </Head>
       <div className={styles.filmesAssisti}>
         {loading ? (
           <p>Carregando...</p>

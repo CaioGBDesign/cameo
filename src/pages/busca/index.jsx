@@ -1,7 +1,6 @@
 import { useEffect, useState, lazy, Suspense } from "react";
 import { useIsMobile } from "@/components/DeviceProvider";
-import { useRouter } from "next/router";
-import Head from "next/head";
+import { useRouter } from "next/router"; // Importação necessária
 import styles from "./index.module.scss";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
@@ -49,14 +48,6 @@ const Busca = () => {
 
   return (
     <main className={styles.mainSearch}>
-      {" "}
-      <Head>
-        <title>Cameo - Cadastro</title>
-        <meta
-          name="description"
-          content="Busque por seus filmes favoritos no Cameo! Use nossa barra de busca para encontrar títulos específicos e descubra novos filmes que você pode gostar."
-        />
-      </Head>
       {isMobile ? <Header showBuscar={false} /> : <HeaderDesktop />}
       <div className={styles.searchPage}>
         <div className={styles.conteudo}>

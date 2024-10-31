@@ -136,14 +136,11 @@
         .estrelas {
           display: flex;
           justify-content: center;
-
-          @media only screen and (min-width: 600px) {
-            gap: 50px;
-          }
+          gap: 50px;
 
           @media only screen and (max-width: 600px) {
             justify-content: space-between;
-            gap: initial;
+            gap: none;
           }
 
           .estrela {

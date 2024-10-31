@@ -1,4 +1,3 @@
-// components/botoes/play/index.jsx
 import React from "react";
 import { useRouter } from "next/router";
 import styles from "./index.module.scss";

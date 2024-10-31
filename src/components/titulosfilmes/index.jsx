@@ -12,7 +12,6 @@ const TitulosFilmes = ({
   releaseDates,
   trailerLink,
   backdropUrl,
-  exibirPlay = true,
 }) => {
   const generos = generofilme ? generofilme.split(", ") : [];
   const isBrasileiro = paisOrigem && paisOrigem.includes("BR");
@@ -28,11 +27,9 @@ const TitulosFilmes = ({
         : releaseDates && (
             <div className={styles.backdrop}>
               <div className={styles.basePlay}>
-                {exibirPlay && trailerLink && (
-                  <div className={styles.play}>
-                    <BotaoPlay linkTrailer={trailerLink}></BotaoPlay>
-                  </div>
-                )}
+                <div className={styles.play}>
+                  <BotaoPlay linkTrailer={trailerLink}></BotaoPlay>
+                </div>
               </div>
               <div className={styles.imagemFundo}>
                 <img

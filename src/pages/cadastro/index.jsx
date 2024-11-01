@@ -1,10 +1,13 @@
 import React, { useContext, useState } from "react";
 import { useRouter } from "next/router";
+import { AuthContext } from "@/contexts/auth";
+import { useIsMobile } from "@/components/DeviceProvider";
 import Link from "next/link";
 import styles from "./index.module.scss";
 import EntrarCadastrar from "@/components/botoes/acesso";
+import Head from "next/head";
 import Header from "@/components/Header";
-import { AuthContext } from "@/contexts/auth";
+import HeaderDesktop from "@/components/HeaderDesktop";
 
 const Cadastro = () => {
   const [handle, setHandle] = useState("");
@@ -15,6 +18,8 @@ const Cadastro = () => {
   const [handleError, setHandleError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const isMobile = useIsMobile();
 
   const router = useRouter();
   const { signUp, loadingAuth } = useContext(AuthContext);
@@ -51,94 +56,145 @@ const Cadastro = () => {
     }
   }
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <main className={styles["background"]}>
-      <Header showMiniatura={true} showFotoPerfil={false} />
+      <Head>
+        <title>Cameo - Login</title>
+        <meta
+          name="description"
+          content="Acesse sua conta Cameo para gerenciar suas listas de filmes, receber recomendações e muito mais. Entre agora e descubra o que assistir!"
+        />
+      </Head>
+      {isMobile ? (
+        <Header showBuscar={false} showFotoPerfil={false} />
+      ) : (
+        <HeaderDesktop
+          showBuscar={false}
+          showMenu={false}
+          showFotoPerfil={false}
+        />
+      )}
 
       <div className={styles.cadastro}>
-        <div className={styles.formulario}>
-          <form onSubmit={handleSubmit}>
-            <div className={styles.inputCameo}>
-              <div className={styles.imgHandle}>
-                <img src="/icones/handle-cadastro.svg" alt="@" />
-              </div>
-              <input
-                type="handle" // Corrigido para "text"
-                placeholder="usuário"
-                value={handle}
-                onChange={(e) => {
-                  const lowerCaseHandle = e.target.value.toLowerCase();
-                  setHandle(lowerCaseHandle);
-                  setHandleError(""); // Limpa o erro ao começar a digitar
-                }}
-                required
-              />
-            </div>
-            {handleError && (
-              <div className={styles.error}>
-                <p>{handleError}</p>
+        {isMobile ? null : (
+          <div className={styles.fundoFilmes}>
+            <img
+              src="/background/background-cameo-desktop.jpg"
+              alt="background cameo"
+            />
+          </div>
+        )}
+
+        <div className={styles.contFormulario}>
+          <div className={styles.formulario}>
+            {isMobile ? null : (
+              <div className={styles.tituloSenha}>
+                <h2>Cadastro!</h2>
+                <p>Escolha uma senha com o mínimo de 8 caracteres.</p>
               </div>
             )}
 
-            <div className={styles.inputCameo}>
-              <input
-                type="name" // Corrigido para "text"
-                placeholder="Digite seu nome"
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className={styles.inputCameo}>
-              <input
-                type="email"
-                placeholder="E-mail"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  setEmailError(""); // Limpa o erro ao começar a digitar
-                }}
-                required
-              />
-            </div>
-            {emailError && (
-              <div className={styles.error}>
-                <p>{emailError}</p>
+            <form onSubmit={handleSubmit}>
+              <div className={styles.inputCameo}>
+                <div className={styles.imgHandle}>
+                  <img src="/icones/handle-cadastro.svg" alt="@" />
+                </div>
+                <input
+                  type="handle" // Corrigido para "text"
+                  placeholder="usuário"
+                  value={handle}
+                  onChange={(e) => {
+                    const lowerCaseHandle = e.target.value.toLowerCase();
+                    setHandle(lowerCaseHandle);
+                    setHandleError(""); // Limpa o erro ao começar a digitar
+                  }}
+                  required
+                />
               </div>
-            )}
+              {handleError && (
+                <div className={styles.error}>
+                  <p>{handleError}</p>
+                </div>
+              )}
 
-            <div className={styles.inputCameo}>
-              <input
-                type="password"
-                placeholder="Senha"
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
-                required
-              />
-            </div>
-            {errorPassword && (
-              <div className={styles.error}>
-                <p>{errorPassword}</p>
+              <div className={styles.inputCameo}>
+                <input
+                  type="name" // Corrigido para "text"
+                  placeholder="Digite seu nome"
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                  required
+                />
               </div>
-            )}
 
-            <EntrarCadastrar onClick={handleSubmit}>
-              {loadingAuth ? "Carregando..." : "Cadastrar"}
-            </EntrarCadastrar>
-
-            <div className={styles.loginCadastro}>
-              <span>
-                Já tenho cadastro. <Link href="/login">Entrar.</Link>
-              </span>
-            </div>
-
-            {error && (
-              <div className={styles.errorDesconhecido}>
-                <p>{error}</p>
+              <div className={styles.inputCameo}>
+                <input
+                  type="email"
+                  placeholder="E-mail"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setEmailError(""); // Limpa o erro ao começar a digitar
+                  }}
+                  required
+                />
               </div>
-            )}
-          </form>
+              {emailError && (
+                <div className={styles.error}>
+                  <p>{emailError}</p>
+                </div>
+              )}
+
+              <div className={styles.inputCameo}>
+                <input
+                  type="password"
+                  placeholder="Senha"
+                  value={senha}
+                  onChange={(e) => setSenha(e.target.value)}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className={styles.passwordToggle}
+                >
+                  <img
+                    src={
+                      showPassword
+                        ? "/icones/ver-senha.svg"
+                        : "/icones/esconder-senha.svg"
+                    }
+                    alt="Toggle Password"
+                  />
+                </button>
+              </div>
+              {errorPassword && (
+                <div className={styles.error}>
+                  <p>{errorPassword}</p>
+                </div>
+              )}
+
+              <EntrarCadastrar onClick={handleSubmit}>
+                {loadingAuth ? "Carregando..." : "Cadastrar"}
+              </EntrarCadastrar>
+
+              <div className={styles.loginCadastro}>
+                <span>
+                  Já tenho cadastro. <Link href="/login">Entrar.</Link>
+                </span>
+              </div>
+
+              {error && (
+                <div className={styles.errorDesconhecido}>
+                  <p>{error}</p>
+                </div>
+              )}
+            </form>
+          </div>
         </div>
       </div>
     </main>

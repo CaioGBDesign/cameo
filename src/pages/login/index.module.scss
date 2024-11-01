@@ -1,82 +1,144 @@
 .background {
-  background-image: url("/background/background-cameo-login.png");
-  background-color: #250d2f;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-
   width: 100%;
+
+  @media only screen and (max-width: 600px) {
+    background-image: url("/background/background-cameo-login.png");
+    background-color: #250d2f;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
 
   .login {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    gap: 60px;
+    align-items: center;
 
     width: 100%;
-    height: 100vh;
 
-    .formulario {
-      width: 85%;
+    @media only screen and (max-width: 600px) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
 
-      form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 60px;
+      width: 100%;
+      height: 100vh;
+    }
 
-        .inputCont {
+    .fundoFilmes {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 50%;
+
+      overflow: hidden;
+    }
+
+    .contFormulario {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      width: 50%;
+
+      overflow: hidden;
+
+      @media only screen and (max-width: 600px) {
+        width: 100%;
+      }
+
+      .formulario {
+        @media only screen and (min-width: 600px) {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: start;
+          gap: 60px;
+
+          width: 75%;
+        }
+
+        @media only screen and (max-width: 600px) {
+          width: 85%;
+        }
+
+        form {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 30px;
+          gap: 60px;
 
-          width: 100%;
-
-          p {
-            font-size: 12px;
-            font-weight: 200;
-            color: #ff0000;
-
+          @media only screen and (min-width: 600px) {
             width: 100%;
-            margin-top: -20px;
           }
 
-          .inputCameo {
+          .inputCont {
             display: flex;
+            flex-direction: column;
             align-items: center;
+            gap: 30px;
 
             width: 100%;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.4);
 
-            input[type="email"],
-            input[type="password"] {
+            p {
+              font-size: 12px;
+              font-weight: 200;
+              color: #ff0000;
+
               width: 100%;
-              padding: 10px;
-              margin: 10px 0;
-              border: none;
-              background: none;
-              color: white;
-              font-size: 16px;
-              outline: none;
+              margin-top: -20px;
             }
 
-            input[type="password"] {
-              width: 50%;
+            .inputCameo {
+              display: flex;
+              align-items: center;
+
+              width: 100%;
+              border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+
+              input[type="email"],
+              input[type="text"],
+              input[type="password"] {
+                width: 100%;
+                padding: 10px;
+                margin: 10px 0;
+                border: none;
+                background: none;
+                color: white;
+                font-size: 16px;
+                outline: none;
+              }
+
+              input[type="email"]::placeholder,
+              input[type="password"]::placeholder {
+                color: rgba(255, 255, 255, 0.4);
+                font-size: 16px;
+              }
+
+              button {
+                background: none;
+                border: none;
+
+                width: auto;
+              }
             }
 
-            input[type="email"]::placeholder,
-            input[type="password"]::placeholder {
-              color: rgba(255, 255, 255, 0.4);
-              font-size: 16px;
+            .error {
+              width: 100%;
+
+              font-weight: 200;
+              color: #ff0000;
             }
 
             .contSenha {
               display: flex;
-              justify-content: center;
+              justify-content: end;
 
-              width: 50%;
+              width: 100%;
 
               button {
                 background: none;
@@ -88,54 +150,71 @@
             }
           }
 
-          .error {
+          .loginCadastro {
+            display: flex;
+            justify-content: center;
+
             width: 100%;
 
-            font-weight: 200;
-            color: #ff0000;
+            span {
+              font-size: 16px;
+              font-weight: 100;
+
+              color: white;
+
+              a {
+                color: #f314fb;
+
+                text-decoration: none;
+
+                font-weight: 500;
+              }
+            }
           }
-        }
-
-        .loginCadastro {
-          display: flex;
-          justify-content: center;
-
-          width: 100%;
 
           span {
-            font-size: 16px;
-            font-weight: 100;
-
             color: white;
 
-            a {
-              color: #f314fb;
+            font-size: 24px;
+          }
 
-              text-decoration: none;
+          .loginButtons {
+            display: flex;
+            justify-content: space-around;
 
-              font-weight: 500;
+            width: 80%;
+
+            button {
+              background: none;
+              border: none;
+
+              width: auto;
+              height: auto;
             }
           }
         }
 
-        span {
-          color: white;
-
-          font-size: 24px;
-        }
-
-        .loginButtons {
+        .tituloSenha {
           display: flex;
-          justify-content: space-around;
+          flex-direction: column;
+          justify-content: center;
+          align-items: start;
+          gap: 15px;
 
-          width: 80%;
+          h2 {
+            font-size: 36px;
+            font-weight: bold;
 
-          button {
-            background: none;
-            border: none;
+            color: #fff;
+          }
 
-            width: auto;
-            height: auto;
+          p {
+            font-size: 16px;
+            font-weight: 100;
+
+            color: #ffffff;
+
+            opacity: 0.8;
           }
         }
       }

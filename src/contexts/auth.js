@@ -199,6 +199,10 @@ function AuthProvider({ children }) {
       await sendEmailVerification(value.user, actionCodeSettings);
       console.log("E-mail de verificação enviado com sucesso.");
 
+      // Recarga do usuário e desconexão
+      await value.user.reload(); // Opcional, mas pode ajudar a garantir que o estado está atualizado
+      await signOut(auth); // Desconectar o usuário
+
       setModalMessage(
         "Cadastro realizado! Verifique seu e-mail para ativar sua conta."
       );
@@ -213,7 +217,10 @@ function AuthProvider({ children }) {
 
   const handleModalClose = () => {
     setModalVisible(false);
-    router.push("/login"); // Redireciona após a confirmação
+    signOut(auth).then(() => {
+      localStorage.clear(); // Limpa o localStorage
+      router.push("/login"); // Redireciona após a confirmação
+    });
   };
 
   function storageUser(data) {

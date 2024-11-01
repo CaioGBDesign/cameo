@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/services/firebaseConection";
 import styles from "./index.module.scss";
 import BotaoBuscarDesktop from "@/components/botoes/buscar-desktop";
 import Miniatura from "@/components/miniatura";
@@ -11,6 +13,7 @@ const Header = ({
   showFotoPerfil = true,
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     // Função para verificar se o usuário já está rolando para baixo no carregamento da página
@@ -43,11 +46,24 @@ const Header = ({
     };
   }, []); // [] vazio assegura que o useEffect só será executado uma vez
 
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        setIsLoggedIn(!!user); // Atualiza o estado com base na presença do usuário
+      });
+
+      // Retorna a função de unsubscribe para limpar o listener quando o componente for desmontado
+      return () => unsubscribe();
+    };
+
+    checkLoginStatus();
+  }, []);
+
   return (
     <header className={`${styles.header} ${isScrolled ? styles.scrolled : ""}`}>
       <div className={styles.headerContent}>
         <div>{showMiniatura && <Miniatura className={styles.miniatura} />}</div>
-        <MenuDesktop />
+        {isLoggedIn && <MenuDesktop />}
         <div className={styles.buscadorEperfil}>
           {showBuscar && <BotaoBuscarDesktop className={styles.botaoBuscar} />}
           {showFotoPerfil && <FotoPerfil className={styles.fotoPerfil} />}

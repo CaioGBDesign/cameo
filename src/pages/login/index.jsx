@@ -1,12 +1,15 @@
 import React, { useState, useContext } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
-import Logo from "@/components/logo";
-import EntrarCadastrar from "@/components/botoes/acesso";
-import styles from "./index.module.scss";
 import { AuthContext } from "@/contexts/auth";
 import { auth } from "@/services/firebaseConection";
 import { sendPasswordResetEmail } from "firebase/auth";
+import { useIsMobile } from "@/components/DeviceProvider";
+import Head from "next/head";
+import Header from "@/components/Header";
+import HeaderDesktop from "@/components/HeaderDesktop";
+import Link from "next/link";
+import EntrarCadastrar from "@/components/botoes/acesso";
+import styles from "./index.module.scss";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -15,6 +18,8 @@ const Login = () => {
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const isMobile = useIsMobile();
 
   const { signIn, loadingAuth } = useContext(AuthContext);
 
@@ -67,68 +72,104 @@ const Login = () => {
     }
   }
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <main className={styles["background"]}>
+      <Head>
+        <title>Cameo - Login</title>
+        <meta
+          name="description"
+          content="Acesse sua conta Cameo para gerenciar suas listas de filmes, receber recomendações e muito mais. Entre agora e descubra o que assistir!"
+        />
+      </Head>
+      {isMobile ? (
+        <Header showBuscar={false} showFotoPerfil={false} />
+      ) : (
+        <HeaderDesktop
+          showBuscar={false}
+          showMenu={false}
+          showFotoPerfil={false}
+        />
+      )}
       <div className={styles.login}>
-        <Logo />
-        <div className={styles.formulario}>
-          <form onSubmit={handleSignIn}>
-            <div className={styles.inputCont}>
-              <div className={styles.inputCameo}>
-                <input
-                  type="email"
-                  placeholder="E-mail"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
+        {isMobile ? null : (
+          <div className={styles.fundoFilmes}>
+            <img
+              src="/background/background-cameo-desktop.jpg"
+              alt="background cameo"
+            />
+          </div>
+        )}
+        <div className={styles.contFormulario}>
+          <div className={styles.formulario}>
+            {isMobile ? null : (
+              <div className={styles.tituloSenha}>
+                <h2>Login!</h2>
               </div>
-              {errorMessage && !email && (
-                <p style={{ color: "red" }}>{errorMessage}</p>
-              )}
-              {erro && <p>{erro}</p>}
-              <div className={styles.inputCameo}>
-                <input
-                  type="password"
-                  placeholder="Senha"
-                  value={senha}
-                  onChange={(e) => setSenha(e.target.value)}
-                  required
-                />
+            )}
+            <form onSubmit={handleSignIn}>
+              <div className={styles.inputCont}>
+                <div className={styles.inputCameo}>
+                  <input
+                    type="email"
+                    placeholder="E-mail"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                {errorMessage && !email && (
+                  <p style={{ color: "red" }}>{errorMessage}</p>
+                )}
+                {erro && <p>{erro}</p>}
+                <div className={styles.inputCameo}>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Senha"
+                    value={senha}
+                    onChange={(e) => setSenha(e.target.value)}
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className={styles.passwordToggle}
+                  >
+                    <img
+                      src={
+                        showPassword
+                          ? "/icones/ver-senha.svg"
+                          : "/icones/esconder-senha.svg"
+                      }
+                      alt="Toggle Password"
+                    />
+                  </button>
+                </div>
                 <div className={styles.contSenha}>
                   <button type="button" onClick={handleResetPassword}>
                     Esqueci minha senha
                   </button>
                 </div>
               </div>
-            </div>
 
-            <EntrarCadastrar onClick={handleSignIn}>
-              {loadingAuth ? "Carregando..." : "Acessar"}
-            </EntrarCadastrar>
+              <EntrarCadastrar onClick={handleSignIn}>
+                {loadingAuth ? "Carregando..." : "Acessar"}
+              </EntrarCadastrar>
 
-            <div className={styles.loginCadastro}>
-              <span>
-                Ainda não tem cadastro?{" "}
-                <Link href="/cadastro">Crie imediatamente.</Link>
-              </span>
-            </div>
-
-            <span>Ou</span>
-
-            <div className={styles.loginButtons}>
-              <button type="button">
-                <img src="/social/google.png" alt="Login Google" />
-              </button>
-              <button type="button">
-                <img src="/social/facebook.png" alt="Login Facebook" />
-              </button>
-              <button type="button">
-                <img src="/social/apple.png" alt="Login Apple" />
-              </button>
-            </div>
-          </form>
-          {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
+              <div className={styles.loginCadastro}>
+                <span>
+                  Ainda não tem cadastro?{" "}
+                  <Link href="/cadastro">Crie imediatamente.</Link>
+                </span>
+              </div>
+            </form>
+            {successMessage && (
+              <p style={{ color: "green" }}>{successMessage}</p>
+            )}
+          </div>
         </div>
       </div>
     </main>

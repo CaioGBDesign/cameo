@@ -110,14 +110,22 @@ const Favoritos = () => {
         ) : filmesFavoritos.length === 0 ? (
           <div className={styles.blankSlate}>
             {isMobile ? <Header /> : <HeaderDesktop />}
-
             <div className={styles.banner}>
-              <img
-                src="background/banner-blank-slate.png"
-                alt="Filmes para ver"
-              />
+              {isMobile ? (
+                <img
+                  src="background/banner-blank-slate-cameo.png"
+                  alt="Filmes já vistos"
+                />
+              ) : (
+                <img
+                  src="background/banner-blank-slate-desktop-cameo.png"
+                  alt="Filmes já vistos"
+                />
+              )}
             </div>
-            <span>Você ainda não tem filmes marcados para ver.</span>
+            <div className={styles.alertaBlankSlate}>
+              <span>Você ainda não tem filmes adicionados a favoritos.</span>
+            </div>
             <div className={styles.botaoHome}>
               <Link href={"/"}>
                 <p>Adicionar filmes</p>

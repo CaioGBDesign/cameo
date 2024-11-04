@@ -51,10 +51,10 @@ const RedefinirSenha = () => {
   return (
     <main className={styles.background}>
       <Head>
-        <title>Cameo - home</title>
+        <title>Cameo - redefinir senha</title>
         <meta
           name="description"
-          content="Descubra filmes incríveis com Cameo! Obtenha sugestões de filmes aleatórios ou personalize sua busca com filtros por gênero, plataforma de streaming e muito mais. Crie listas de filmes e avalie suas escolhas. Entre no universo do cinema e nunca fique sem o que assistir!"
+          content="Recupere o acesso à sua conta com facilidade. Insira seu e-mail e siga as instruções para redefinir sua senha e voltar a explorar o universo cinematográfico do Cameo!"
         />
       </Head>
 

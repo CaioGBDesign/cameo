@@ -2,10 +2,11 @@ import styles from "./index.module.scss";
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { AuthContext } from "@/contexts/auth";
 import { doc, updateDoc } from "firebase/firestore";
-import { db } from "@/services/firebaseConection";
-import { getAuth, sendPasswordResetEmail } from "firebase/auth"; // Importação necessária
+import { db, storage } from "@/services/firebaseConection";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { toast } from "react-toastify";
-import FotoPrincipal from "@/components/perfil/fotoPrincipal";
+import FotoPrincipalDesktop from "@/components/perfil/fotoPrincipal";
 import NomeUsuario from "@/components/perfil/nomeUsuario";
 import Handle from "@/components/perfil/handle";
 import Private from "@/components/Private";
@@ -17,8 +18,10 @@ const DadosPessoaisModalDesktop = ({ closeModal, isClosing }) => {
   const [handle, setHandle] = useState(user ? user.handle : "");
   const [genero, setGenero] = useState(user ? user.genero : "");
   const [estilo, setEstilo] = useState(user ? user.estilo : "");
+  const [avatarUrl, setAvatarUrl] = useState(user ? user.avatarUrl : ""); // URL da foto
+  const [imageAvatar, setImageAvatar] = useState(null); // Estado para o arquivo da imagem
   const [alteracoesPendentes, setAlteracoesPendentes] = useState(false);
-  const modalRef = useRef(null); // Cria uma referência para o modal
+  const modalRef = useRef(null);
 
   const selectGenero = [
     { value: "Feminino", label: "Feminino" },
@@ -28,46 +31,73 @@ const DadosPessoaisModalDesktop = ({ closeModal, isClosing }) => {
     { value: "Prefiro não dizer", label: "Prefiro não dizer" },
   ];
 
-  const estiloCinefilo = [
-    { value: "PotterHead", label: "PotterHead" },
-    { value: "MeioSangue", label: "Meio Sangue" },
-    // Adicione outros estilos aqui
-  ];
+  const handleFile = (e) => {
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+      if (image.type === "image/jpeg" || image.type === "image/png") {
+        setImageAvatar(image);
+        setAvatarUrl(URL.createObjectURL(image));
+      } else {
+        setImageAvatar(null);
+      }
+    }
+  };
 
   const handleRedefinirSenha = async () => {
     const auth = getAuth();
     const actionCodeSettings = {
-      url: "https://www.cameo.fun/redefinir-senha", // Substitua pela URL da sua página de redefinição de senha
-      handleCodeInApp: true, // Isso é importante para garantir que o link seja tratado pela sua aplicação
+      url: "https://www.cameo.fun/redefinir-senha",
+      handleCodeInApp: true,
     };
 
     try {
       await sendPasswordResetEmail(auth, email, actionCodeSettings);
       toast.success("E-mail de redefinição de senha enviado!");
-      setModalSentVisible(true);
     } catch (error) {
       console.error("Erro ao enviar e-mail de redefinição:", error);
     }
   };
 
+  const handleUpload = async () => {
+    if (imageAvatar) {
+      const currentUid = user.uid;
+      const uploadRef = ref(
+        storage,
+        `images/${currentUid}/${imageAvatar.name}`
+      );
+
+      try {
+        const snapshot = await uploadBytes(uploadRef, imageAvatar);
+        const downLoadURL = await getDownloadURL(snapshot.ref);
+        return downLoadURL;
+      } catch (error) {
+        console.error("Erro ao enviar imagem para o Firebase:", error);
+        throw error;
+      }
+    }
+  };
+
   async function handleSubmit(e) {
     e.preventDefault();
-
-    console.log("Tentando atualizar:", { nome, genero, estilo });
-
     const updatedData = {};
+
     if (nome !== user.nome) updatedData.nome = nome;
     if (genero !== user.genero) updatedData.genero = genero;
     if (estilo !== user.estilo) updatedData.estilo = estilo;
 
-    if (Object.keys(updatedData).length > 0) {
+    if (Object.keys(updatedData).length > 0 || imageAvatar) {
       const docRef = doc(db, "users", user.uid);
       try {
-        await updateDoc(docRef, updatedData);
+        if (imageAvatar) {
+          const downLoadURL = await handleUpload();
+          updatedData.avatarUrl = downLoadURL;
+        }
 
-        let updatedUser = {
+        await updateDoc(docRef, updatedData);
+        const updatedUser = {
           ...user,
           ...updatedData,
+          avatarUrl: updatedData.avatarUrl || user.avatarUrl,
         };
 
         setUser(updatedUser);
@@ -83,21 +113,20 @@ const DadosPessoaisModalDesktop = ({ closeModal, isClosing }) => {
   }
 
   useEffect(() => {
-    if (user) {
-      setAlteracoesPendentes(
-        nome !== user.nome || genero !== user.genero || estilo !== user.estilo
-      );
-    }
-  }, [nome, genero, estilo, user]);
+    setAlteracoesPendentes(
+      nome !== user.nome ||
+        genero !== user.genero ||
+        estilo !== user.estilo ||
+        avatarUrl !== user.avatarUrl
+    );
+  }, [nome, genero, estilo, avatarUrl, user]);
 
-  // Função para fechar o modal se o clique for fora dele
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
       closeModal();
     }
   };
 
-  // Adiciona o listener de evento ao montar e remove ao desmontar
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -105,7 +134,6 @@ const DadosPessoaisModalDesktop = ({ closeModal, isClosing }) => {
     };
   }, []);
 
-  // Recarrega a página
   const handleLogout = () => {
     logout();
     window.location.reload();
@@ -119,7 +147,7 @@ const DadosPessoaisModalDesktop = ({ closeModal, isClosing }) => {
       >
         <div className={styles.fecharDesktop}>
           <button onClick={closeModal}>
-            <img src="/icones/fechar-filtros.svg" />
+            <img src="/icones/fechar-filtros.svg" alt="Fechar" />
           </button>
         </div>
         <div className={styles.contModal}>
@@ -128,10 +156,21 @@ const DadosPessoaisModalDesktop = ({ closeModal, isClosing }) => {
           </div>
 
           <div className={styles.FotoNomeHandle}>
-            <FotoPrincipal></FotoPrincipal>
+            <FotoPrincipalDesktop
+              foto={avatarUrl}
+              onClick={() => document.getElementById("fileInput").click()}
+            />
+
+            <input
+              type="file"
+              id="fileInput"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleFile}
+            />
             <div className={styles.NomeHandle}>
-              <NomeUsuario></NomeUsuario>
-              <Handle></Handle>
+              <NomeUsuario />
+              <Handle />
             </div>
           </div>
 
@@ -169,14 +208,14 @@ const DadosPessoaisModalDesktop = ({ closeModal, isClosing }) => {
                   <div className={styles.sair}>
                     <button type="button" onClick={handleLogout}>
                       Sair
-                      <img src="/icones/sair.svg" />
+                      <img src="/icones/sair.svg" alt="Sair" />
                     </button>
                   </div>
 
                   <div className={styles.redefinirSenha}>
                     <button
-                      type={"button"}
-                      id={"redefinirSenha"}
+                      type="button"
+                      id="redefinirSenha"
                       onClick={handleRedefinirSenha}
                     >
                       Redefinir senha

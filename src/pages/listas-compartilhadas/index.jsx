@@ -3,10 +3,18 @@ import Header from "@/components/Header";
 import ListaCriada from "@/components/listas/lista-criada";
 import BotaoSecundario from "@/components/botoes/secundarios";
 import Private from "@/components/Private";
+import Head from "next/head";
 
 const ListasCompartilhadas = () => {
   return (
     <Private>
+      <Head>
+        <title>Cameo - Listas compartilhadas</title>
+        <meta
+          name="description"
+          content="Crie e compartilhe listas de filmes com amigos! Organize suas sugestões, favoritas ou 'para assistir' e troque ideias sobre os filmes que você ama."
+        />
+      </Head>
       <div className={styles.contListas}>
         <Header />
 

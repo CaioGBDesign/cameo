@@ -2,6 +2,7 @@ import styles from "./index.module.scss";
 import { useIsMobile } from "@/components/DeviceProvider";
 import { useEffect, useState, lazy, Suspense } from "react";
 import { useAuth } from "@/contexts/auth";
+import Head from "next/head";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import NotasFilmes from "@/components/botoes/notas";
@@ -14,7 +15,7 @@ import Loading from "@/components/loading";
 import Link from "next/link";
 import ServicosMiniatura from "@/components/detalhesfilmes/servicos-miniatura";
 import FilmesCarousel from "@/components/modais/filmes-carousel";
-import FundoTitulosDesktop from "@/components/fundotitulos-desktop";
+import FundoTitulosDesktop from "@/components/fotoPrincipalDesktop";
 import PosterInfoDesktop from "@/components/PosterInfoDesktop";
 
 const Miniaturafilmes = lazy(() => import("@/components/miniaturafilmes"));
@@ -104,6 +105,13 @@ const Favoritos = () => {
 
   return (
     <Private>
+      <Head>
+        <title>Cameo - favoritos</title>
+        <meta
+          name="description"
+          content="Encontre seus filmes favoritos em um só lugar! Salve os títulos que você mais ama e tenha sempre à mão suas melhores recomendações."
+        />
+      </Head>
       <div className={styles.filmesAssisti}>
         {loading ? (
           <p>Carregando...</p>

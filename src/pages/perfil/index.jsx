@@ -1,6 +1,7 @@
 import styles from "./index.module.scss";
 import React, { useState, useEffect } from "react";
 import { useIsMobile } from "@/components/DeviceProvider";
+import Head from "next/head";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import FotoPrincipal from "@/components/perfil/fotoPrincipal";
@@ -39,6 +40,13 @@ const PerfilUsuario = () => {
 
   return (
     <Private>
+      <Head>
+        <title>Cameo - Perfil</title>
+        <meta
+          name="description"
+          content="Gerencie suas informações pessoais e preferências de filmes no seu perfil. Atualize seus dados, ajuste configurações de conta e descubra recomendações personalizadas para você."
+        />
+      </Head>
       <div className={styles.perfilUsuario}>
         {/* Header */}
         {isMobile ? <Header /> : <HeaderDesktop />}

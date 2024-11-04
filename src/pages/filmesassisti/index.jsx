@@ -3,6 +3,7 @@ import { useEffect, useState, lazy, Suspense } from "react";
 import { useIsMobile } from "@/components/DeviceProvider";
 import { useAuth } from "@/contexts/auth";
 import { useRouter } from "next/router";
+import Head from "next/head";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import Titulolistagem from "@/components/titulolistagem";
@@ -13,7 +14,7 @@ import Link from "next/link";
 import FilmesCarousel from "@/components/modais/filmes-carousel";
 import Loading from "@/components/loading";
 import PosterInfoDesktop from "@/components/PosterInfoDesktop";
-import FundoTitulosDesktop from "@/components/fundotitulos-desktop";
+import FundoTitulosDesktop from "@/components/fotoPrincipalDesktop";
 
 const FundoTitulos = lazy(() => import("@/components/fundotitulos"));
 const Miniaturafilmes = lazy(() => import("@/components/miniaturafilmes"));
@@ -140,6 +141,13 @@ const FilmesAssisti = () => {
 
   return (
     <Private>
+      <Head>
+        <title>Cameo - Filmes que já assisti</title>
+        <meta
+          name="description"
+          content="Reviva suas experiências cinematográficas! Veja todos os filmes que você já assistiu, avalie suas escolhas e compartilhe suas opiniões com a comunidade."
+        />
+      </Head>
       <div className={styles.filmesAssisti}>
         {filmesVistos.length > 0 ? (
           <>

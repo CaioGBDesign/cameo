@@ -63,10 +63,10 @@ const Cadastro = () => {
   return (
     <main className={styles["background"]}>
       <Head>
-        <title>Cameo - Login</title>
+        <title>Cameo - Cadastro</title>
         <meta
           name="description"
-          content="Acesse sua conta Cameo para gerenciar suas listas de filmes, receber recomendações e muito mais. Entre agora e descubra o que assistir!"
+          content="Junte-se à comunidade Cameo! Crie sua conta para receber sugestões personalizadas de filmes, gerenciar suas listas e compartilhar suas avaliações. É rápido e fácil—comece sua jornada cinematográfica hoje!"
         />
       </Head>
       {isMobile ? (

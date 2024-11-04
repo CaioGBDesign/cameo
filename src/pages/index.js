@@ -3,6 +3,7 @@ import { useAuth } from "@/contexts/auth";
 import { useRouter } from "next/router";
 import { Inter } from "next/font/google";
 import { useIsMobile } from "@/components/DeviceProvider";
+import Head from "next/head";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import styles from "@/styles/index.module.scss";
@@ -22,7 +23,7 @@ import Listafilmes from "@/components/listafilmes/listafilmes.json";
 import ModalFiltros from "@/components/modais/filtros";
 import ModalAvaliar from "@/components/modais/avaliar-filmes";
 import Classificacao from "@/components/detalhesfilmes/classificacao";
-import FundoTitulosDesktop from "@/components/fundotitulos-desktop";
+import FundoTitulosDesktop from "@/components/fotoPrincipalDesktop";
 import Loading from "@/components/loading";
 import Recomendacoes from "@/components/detalhesfilmes/recomendacoes";
 
@@ -262,6 +263,13 @@ const Home = () => {
   return (
     <>
       {isMobile ? <Header /> : <HeaderDesktop />}
+      <Head>
+        <title>Cameo - Home</title>
+        <meta
+          name="description"
+          content="Descubra o filme perfeito com o Cameo! Oferecemos sugestões aleatórias e personalizadas, filtradas por gênero, classificação indicativa, serviços de streaming e muito mais. Crie listas de filmes, avalie suas escolhas e compartilhe com amigos. Mergulhe no mundo do cinema e nunca fique sem o que assistir. Cadastre-se agora e transforme sua experiência cinematográfica!"
+        />
+      </Head>
       <main className={`${styles.main} ${inter.className}`}>
         <div className={styles.detalhesFilmes}>
           <div className={styles.informacoes}>
@@ -329,8 +337,6 @@ const Home = () => {
                 <Sinopse sinopse={filme.overview} />
               )}
 
-              <NotasCameo />
-              <Avaliacao avaliador={"Caio Goulart"} />
               {servicosStreaming.length > 0 && (
                 <Servicos servicos={servicosStreaming} />
               )}

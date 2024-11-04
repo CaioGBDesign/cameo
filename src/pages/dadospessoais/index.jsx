@@ -1,11 +1,12 @@
 import styles from "./index.module.scss";
 import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "@/contexts/auth";
-import Header from "@/components/Header";
-import BotaoSecundario from "@/components/botoes/secundarios";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/services/firebaseConection";
-import { getAuth, sendPasswordResetEmail } from "firebase/auth"; // Importação necessária
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import Header from "@/components/Header";
+import BotaoSecundario from "@/components/botoes/secundarios";
+import Head from "next/head";
 import Private from "@/components/Private";
 import ModalRedefinirSenha from "@/components/modais/redefinir-senha";
 
@@ -91,6 +92,13 @@ const DadosPessoais = () => {
 
   return (
     <Private>
+      <Head>
+        <title>Cameo - Dados pessoais</title>
+        <meta
+          name="description"
+          content="Mantenha suas informações atualizadas! Confira e edite seus dados pessoais para garantir que você receba as melhores sugestões e comunicações do Cameo."
+        />
+      </Head>
       <div className={styles.dadosPessoais}>
         <Header />
         <form onSubmit={handleSubmit}>

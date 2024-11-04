@@ -2,6 +2,8 @@ import styles from "./index.module.scss";
 import { useEffect, useState, lazy, Suspense } from "react";
 import { useIsMobile } from "@/components/DeviceProvider";
 import { useRouter } from "next/router";
+import { useAuth } from "@/contexts/auth";
+import Head from "next/head";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import NotasFilmes from "@/components/botoes/notas";
@@ -9,12 +11,11 @@ import TitulosFilmes from "@/components/titulosfilmes";
 import FundoTitulos from "@/components/fundotitulos";
 import Titulolistagem from "@/components/titulolistagem";
 import Trailer from "@/components/botoes/trailer";
-import { useAuth } from "@/contexts/auth";
 import Private from "@/components/Private";
 import Link from "next/link";
 import ServicosMiniatura from "@/components/detalhesfilmes/servicos-miniatura";
 import FilmesCarousel from "@/components/modais/filmes-carousel";
-import FundoTitulosDesktop from "@/components/fundotitulos-desktop";
+import FundoTitulosDesktop from "@/components/fotoPrincipalDesktop";
 import PosterInfoDesktop from "@/components/PosterInfoDesktop";
 import Loading from "@/components/loading";
 
@@ -103,6 +104,13 @@ const FilmesParaVer = () => {
 
   return (
     <Private>
+      <Head>
+        <title>Cameo - Filmes para ver</title>
+        <meta
+          name="description"
+          content="Explore a sua lista de filmes para assistir. Descubra novas opções, adicione títulos que você deseja ver e organize sua próxima maratona de cinema!"
+        />
+      </Head>
       <div className={styles.filmesAssisti}>
         {loading ? (
           <p>Carregando...</p>

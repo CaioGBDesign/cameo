@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/auth";
+import Loading from "@/components/loading";
 
 const Private = ({ children }) => {
   const { user, loadingAuth } = useAuth();
@@ -23,7 +24,7 @@ const Private = ({ children }) => {
 
   // Se estiver carregando, exibe uma mensagem de carregamento
   if (loadingAuth) {
-    return <div>Carregando...</div>;
+    return <Loading />;
   }
 
   // Se não estiver autenticado e a rota for pública, renderiza o conteúdo

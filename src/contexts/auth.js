@@ -24,6 +24,7 @@ import { useRouter } from "next/router";
 import ModalConfirmacaoCadastro from "@/components/modais/confirmacao-cadastro";
 import { deleteField } from "firebase/firestore";
 import { toast } from "react-toastify";
+import Loading from "@/components/loading";
 
 export const AuthContext = createContext({});
 export const useAuth = () => useContext(AuthContext);
@@ -565,7 +566,7 @@ function AuthProvider({ children }) {
   }
 
   if (loading) {
-    return <div>Carregando...</div>;
+    return <Loading />;
   }
 
   return (

@@ -151,7 +151,7 @@ const Cadastro = () => {
 
               <div className={styles.inputCameo}>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder="Senha"
                   value={senha}
                   onChange={(e) => setSenha(e.target.value)}

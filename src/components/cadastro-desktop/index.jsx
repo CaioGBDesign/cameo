@@ -13,6 +13,7 @@ const CadastroDesktop = ({ closeModal }) => {
   const [handleError, setHandleError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const router = useRouter();
   const { signUp, loadingAuth } = useContext(AuthContext);
@@ -49,6 +50,10 @@ const CadastroDesktop = ({ closeModal }) => {
       setError("Todos os campos são obrigatórios.");
     }
   }
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <main className={styles["background"]}>
@@ -107,12 +112,26 @@ const CadastroDesktop = ({ closeModal }) => {
 
             <div className={styles.inputCameo}>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Senha"
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
                 required
               />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className={styles.passwordToggle}
+              >
+                <img
+                  src={
+                    showPassword
+                      ? "/icones/ver-senha.svg"
+                      : "/icones/esconder-senha.svg"
+                  }
+                  alt="Toggle Password"
+                />
+              </button>
             </div>
             {errorPassword && (
               <div className={styles.error}>

@@ -12,6 +12,7 @@ const LoginDesktop = ({ closeModal }) => {
   const [erro, setErro] = useState("");
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const { signIn, loadingAuth } = useContext(AuthContext);
 
@@ -65,6 +66,10 @@ const LoginDesktop = ({ closeModal }) => {
     }
   }
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <main className={styles["background"]}>
       <div className={styles.login}>
@@ -86,17 +91,31 @@ const LoginDesktop = ({ closeModal }) => {
               {erro && <p>{erro}</p>}
               <div className={styles.inputCameo}>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder="Senha"
                   value={senha}
                   onChange={(e) => setSenha(e.target.value)}
                   required
                 />
-                <div className={styles.contSenha}>
-                  <button type="button" onClick={handleResetPassword}>
-                    Esqueci minha senha
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className={styles.passwordToggle}
+                >
+                  <img
+                    src={
+                      showPassword
+                        ? "/icones/ver-senha.svg"
+                        : "/icones/esconder-senha.svg"
+                    }
+                    alt="Toggle Password"
+                  />
+                </button>
+              </div>
+              <div className={styles.contSenha}>
+                <button type="button" onClick={handleResetPassword}>
+                  Esqueci minha senha
+                </button>
               </div>
             </div>
 

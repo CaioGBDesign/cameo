@@ -55,20 +55,31 @@
       }
     }
 
+    @media only screen and (min-width: 600px) {
+      @keyframes OpenUp {
+        from {
+          transform: scale(1.1);
+        }
+        to {
+          transform: scale(1);
+        }
+      }
+    }
+
     @media only screen and (max-width: 600px) {
+      @keyframes OpenUp {
+        from {
+          transform: translateY(100%);
+        }
+        to {
+          transform: translateY(0);
+        }
+      }
+
       width: 100%;
 
       border-radius: 15px 15px 0px 0px;
       border-top: solid #f314fb;
-    }
-
-    @keyframes OpenUp {
-      from {
-        transform: translateY(100%);
-      }
-      to {
-        transform: translateY(0);
-      }
     }
 
     &.close {

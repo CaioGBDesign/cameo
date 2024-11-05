@@ -98,12 +98,25 @@
       width: 100%;
     }
 
-    @keyframes OpenUp {
-      from {
-        transform: translateY(100%);
+    @media only screen and (min-width: 600px) {
+      @keyframes OpenUp {
+        from {
+          transform: scale(1.1);
+        }
+        to {
+          transform: scale(1);
+        }
       }
-      to {
-        transform: translateY(0);
+    }
+
+    @media only screen and (max-width: 600px) {
+      @keyframes OpenUp {
+        from {
+          transform: translateY(100%);
+        }
+        to {
+          transform: translateY(0);
+        }
       }
     }
 

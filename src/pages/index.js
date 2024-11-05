@@ -101,6 +101,13 @@ const Home = () => {
     }
   }, [filmeId, queryFilmeId]);
 
+  // Função de formatação da duração
+  const formatDuration = (minutes) => {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
+  };
+
   useEffect(() => {
     if (!filmeId) return;
 
@@ -240,7 +247,11 @@ const Home = () => {
                       ? filme.genres.map((g) => g.name).join(", ")
                       : "Gênero não disponível"
                   }
-                  duracaofilme={`${filme ? filme.runtime : 0} min`} // Verifique se filme não é nulo
+                  duracaofilme={
+                    filme && filme.runtime
+                      ? formatDuration(filme.runtime)
+                      : null
+                  }
                   paisOrigem={
                     filme && filme.production_countries
                       ? filme.production_countries.map((pc) => pc.iso_3166_1)

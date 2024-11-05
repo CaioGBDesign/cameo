@@ -11,15 +11,27 @@
   animation: OpenUp 0.3s ease-out;
   animation-fill-mode: forwards;
 
-  @keyframes OpenUp {
-    from {
-      transform: translate(-50%, 100%);
-    }
-    to {
-      transform: translate(-50%, -50%);
+  @media only screen and (min-width: 600px) {
+    @keyframes OpenUp {
+      from {
+        transform: translate(-50%, -50%) scale(1.1);
+      }
+      to {
+        transform: translate(-50%, -50%) scale(1);
+      }
     }
   }
 
+  @media only screen and (max-width: 600px) {
+    @keyframes OpenUp {
+      from {
+        transform: translate(-50%, 100%);
+      }
+      to {
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
   .contModalLC {
     background: #1f0928;
     border-radius: 30px;

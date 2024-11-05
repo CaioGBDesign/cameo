@@ -36,9 +36,19 @@ const RedefinirSenha = () => {
       await verifyPasswordResetCode(getAuth(), oobCode);
       // Confirme a redefinição
       await confirmPasswordReset(getAuth(), oobCode, novaSenha);
-      alert("Senha redefinida com sucesso!");
+
+      toast.success("Senha redefinida com sucesso!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark", // Mude para "dark" se quiser o fundo escuro
+      });
+
       // Redirecionar após a redefinição de senha
-      router.push("/login"); // Ajuste conforme necessário
+      router.push("/"); // Ajuste conforme necessário
     } catch (error) {
       setErro("Erro ao redefinir a senha:");
     }

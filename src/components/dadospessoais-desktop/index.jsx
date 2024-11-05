@@ -52,7 +52,15 @@ const DadosPessoaisModalDesktop = ({ closeModal, isClosing }) => {
 
     try {
       await sendPasswordResetEmail(auth, email, actionCodeSettings);
-      toast.success("E-mail de redefinição de senha enviado!");
+      toast.success("E-mail de redefinição de senha enviado!", {
+        position: "top-right",
+        autoClose: 5000, // Duração do toast
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      });
     } catch (error) {
       console.error("Erro ao enviar e-mail de redefinição:", error);
     }

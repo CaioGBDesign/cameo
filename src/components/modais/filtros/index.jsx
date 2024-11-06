@@ -72,7 +72,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
       const discoverEndpoint = "https://api.themoviedb.org/3/discover/movie";
 
       const response = await fetch(
-        `${discoverEndpoint}?api_key=${apiKey}&certification=${certification}&certification_country=BR&language=pt-BR&page=1`
+        `${discoverEndpoint}?api_key=${apiKey}&certification=${certification}&certification_country=BR&language=pt-BR&page=${randomPage}`
       );
 
       if (!response.ok) {
@@ -205,7 +205,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
     try {
       const apiKey = "c95de8d6070dbf1b821185d759532f05";
       const response = await fetch(
-        `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=pt-BR&sort_by=primary_release_date.desc&page=1&with_watch_providers=${providerId}&watch_region=BR`
+        `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=pt-BR&sort_by=primary_release_date.desc&page=${randomPage}&with_watch_providers=${providerId}&watch_region=BR`
       );
       const data = await response.json();
 
@@ -232,7 +232,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
       const releaseDateLimit = "2024-12-31";
 
       // Gerando a URL com o filtro de data
-      const url = `${discoverEndpoint}?api_key=${apiKey}&language=pt-BR&sort_by=primary_release_date.desc&page=1&with_watch_genre=${genreId}&primary_release_date.lte=${releaseDateLimit}`;
+      const url = `${discoverEndpoint}?api_key=${apiKey}&language=pt-BR&sort_by=primary_release_date.desc&page=${randomPage}&with_watch_genre=${genreId}&primary_release_date.lte=${releaseDateLimit}`;
 
       // Log da URL gerada
       console.log("URL da requisição:", url);
@@ -306,6 +306,10 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
       language: "pt-BR",
       watch_region: "BR",
     });
+
+    // Gerar um número aleatório entre 1 e 50 para a página
+    const randomPage = Math.floor(Math.random() * 50) + 1;
+    params.append("page", randomPage);
 
     if (providerId) {
       params.append("with_watch_providers", providerId);

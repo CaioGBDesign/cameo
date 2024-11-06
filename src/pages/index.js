@@ -283,14 +283,12 @@ const Home = () => {
                     onClickModal={() => abrirModalAvaliar(filmeId)} // aqui você deve garantir que a nota está sendo passada corretamente
                   />
 
-                  {user?.assistir && !user.assistir[filmeId] && (
-                    <AssistirFilme
-                      filmeId={filmeId}
-                      assistirFilme={assistirFilme}
-                      removerAssistir={removerAssistir}
-                      usuarioParaVer={user.assistir || []}
-                    />
-                  )}
+                  <AssistirFilme
+                    filmeId={filmeId}
+                    assistirFilme={assistirFilme}
+                    removerAssistir={removerAssistir}
+                    usuarioParaVer={user?.assistir || []}
+                  />
                   <FavoritarFilme
                     filmeId={filmeId}
                     salvarFilme={salvarFilme}

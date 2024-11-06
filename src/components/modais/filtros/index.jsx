@@ -558,7 +558,6 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                 </div>
 
                 {certificacoes.map((certificacao) => {
-                  const certClass = `cert-${certificacao.certification}`;
                   return (
                     <div
                       key={certificacao.certification}
@@ -569,15 +568,11 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                         id={certificacao.certification}
                         name="classificacao"
                         value={certificacao.certification}
-                        className={styles[certClass]} // Classe gerada
                         onChange={() =>
                           setSelectedCertification(certificacao.certification)
                         } // Adicione esta linha
                       />
-                      <label
-                        htmlFor={certificacao.certification}
-                        className={styles[certClass]} // Classe gerada
-                      >
+                      <label htmlFor={certificacao.certification}>
                         {certificacao.certification}
                       </label>
                     </div>

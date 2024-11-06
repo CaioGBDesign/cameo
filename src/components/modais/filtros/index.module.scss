@@ -101,9 +101,11 @@
     @media only screen and (min-width: 600px) {
       @keyframes OpenUp {
         from {
+          opacity: 0;
           transform: scale(1.1);
         }
         to {
+          opacity: 1;
           transform: scale(1);
         }
       }
@@ -118,19 +120,19 @@
           transform: translateY(0);
         }
       }
-    }
 
-    &.close {
-      animation: CloseDown 0.3s ease-out;
-      animation-fill-mode: forwards;
-    }
-
-    @keyframes CloseDown {
-      from {
-        transform: translateY(0);
+      &.close {
+        animation: CloseDown 0.3s ease-out;
+        animation-fill-mode: forwards;
       }
-      to {
-        transform: translateY(100%);
+
+      @keyframes CloseDown {
+        from {
+          transform: translateY(0);
+        }
+        to {
+          transform: translateY(100%);
+        }
       }
     }
 
@@ -192,30 +194,6 @@
             &:checked + label {
               border: solid #2ba8e280 1px;
             }
-          }
-
-          .cert-L {
-            background: #24ff0030;
-          }
-
-          .cert-10 {
-            background: #00c0ff50;
-          }
-
-          .cert-12 {
-            background: #ffcb0150;
-          }
-
-          .cert-14 {
-            background: #ff5f0150;
-          }
-
-          .cert-16 {
-            background: #ff010350;
-          }
-
-          .cert-18 {
-            background: #00000050;
           }
         }
       }
@@ -489,22 +467,6 @@
         height: 50px;
 
         background: white;
-
-        @media only screen and (min-width: 600px) {
-          animation: botoesDesk 0.5s ease-in forwards;
-
-          @keyframes botoesDesk {
-            0% {
-              opacity: 0;
-              height: 0px;
-            }
-
-            100% {
-              opacity: 1;
-              height: 50px;
-            }
-          }
-        }
 
         @media only screen and (max-width: 600px) {
           width: 80%;

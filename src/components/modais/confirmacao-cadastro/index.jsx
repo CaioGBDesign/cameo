@@ -11,7 +11,7 @@ const Modal = ({ message, onClose }) => {
             <p>Verifique seu e-mail antes de fazer login.</p>
           </div>
 
-          <button onClick={onClose}>Ok</button>
+          <button onClick={onClose}>Ir para login</button>
         </div>
       </div>
     </div>

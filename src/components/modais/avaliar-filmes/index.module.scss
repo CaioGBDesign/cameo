@@ -58,9 +58,11 @@
     @media only screen and (min-width: 600px) {
       @keyframes OpenUp {
         from {
+          opacity: 0;
           transform: scale(1.1);
         }
         to {
+          opacity: 1;
           transform: scale(1);
         }
       }

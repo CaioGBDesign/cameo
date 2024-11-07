@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useIsMobile } from "@/components/DeviceProvider";
 import styles from "./index.module.scss";
 import streamingServices from "@/components/listas/streamings/streaming.json"; // Importe a lista de serviços
-import { useIsMobile } from "@/components/DeviceProvider";
 
 // Lista estática de países
 const countriesList = [
@@ -15,7 +15,7 @@ const countriesList = [
   // Adicione mais países conforme necessário
 ];
 
-const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
+const ModalFiltrosDesktop = ({ onClose, user, onSelectMovie }) => {
   const modalRef = useRef(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [closing, setClosing] = useState(false);
@@ -72,7 +72,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
       const discoverEndpoint = "https://api.themoviedb.org/3/discover/movie";
 
       const response = await fetch(
-        `${discoverEndpoint}?api_key=${apiKey}&certification=${certification}&certification_country=BR&language=pt-BR&page=${randomPage}`
+        `${discoverEndpoint}?api_key=${apiKey}&certification=${certification}&certification_country=BR&language=pt-BR&page=1`
       );
 
       if (!response.ok) {
@@ -205,7 +205,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
     try {
       const apiKey = "c95de8d6070dbf1b821185d759532f05";
       const response = await fetch(
-        `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=pt-BR&sort_by=primary_release_date.desc&page=${randomPage}&with_watch_providers=${providerId}&watch_region=BR`
+        `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=pt-BR&sort_by=primary_release_date.desc&page=1&with_watch_providers=${providerId}&watch_region=BR`
       );
       const data = await response.json();
 
@@ -232,7 +232,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
       const releaseDateLimit = "2024-12-31";
 
       // Gerando a URL com o filtro de data
-      const url = `${discoverEndpoint}?api_key=${apiKey}&language=pt-BR&sort_by=primary_release_date.desc&page=${randomPage}&with_watch_genre=${genreId}&primary_release_date.lte=${releaseDateLimit}`;
+      const url = `${discoverEndpoint}?api_key=${apiKey}&language=pt-BR&sort_by=primary_release_date.desc&page=1&with_watch_genre=${genreId}&primary_release_date.lte=${releaseDateLimit}`;
 
       // Log da URL gerada
       console.log("URL da requisição:", url);
@@ -306,10 +306,6 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
       language: "pt-BR",
       watch_region: "BR",
     });
-
-    // Gerar um número aleatório entre 1 e 50 para a página
-    const randomPage = Math.floor(Math.random() * 20) + 1;
-    params.append("page", randomPage);
 
     if (providerId) {
       params.append("with_watch_providers", providerId);
@@ -432,11 +428,9 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
           >
             {isLoggedIn && (
               <>
-                {isMobile ? null : (
-                  <div className={styles.tituloFiltros}>
-                    <h2>Filtros</h2>
-                  </div>
-                )}
+                <div className={styles.tituloFiltros}>
+                  <h2>Filtros</h2>
+                </div>
                 <div className={styles.separador}>
                   <h3>Exibir filmes que</h3>
 
@@ -508,6 +502,22 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
             <div className={styles.separador}>
               <h3>Streaming</h3>
               <div className={styles.streaming}>
+                {/* Botão "Todos" */}
+                <div className={styles.opcao}>
+                  <input
+                    type="radio"
+                    id="stodos"
+                    name="servicos"
+                    value=""
+                    checked={providerId === null} // Verifica se nenhum provedor está selecionado
+                    onChange={() => setProviderId(null)} // Define providerId como null
+                  />
+                  <label htmlFor="stodos" className={styles.opcaoTodos}>
+                    Todos
+                  </label>
+                </div>
+
+                {/* Outros serviços de streaming */}
                 {streamingServices.map((service) => (
                   <div className={styles.opcao} key={service.provider_id}>
                     <input
@@ -515,9 +525,9 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                       id={service.provider_name}
                       name="servicos"
                       value={service.provider_id}
+                      checked={providerId === service.provider_id} // Verifica se o serviço está selecionado
                       onChange={() => setProviderId(service.provider_id)}
                     />
-
                     <label htmlFor={service.provider_name}>
                       <img
                         src={service.logo_path}
@@ -533,6 +543,20 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
               <h3>Gênero</h3>
 
               <div className={styles.seletor}>
+                {/* Botão "Todos" */}
+                <div className={styles.opcao}>
+                  <input
+                    type="radio"
+                    id="todos-generos"
+                    name="genero"
+                    value=""
+                    checked={selectedGenre === null} // Verifica se nenhum gênero está selecionado
+                    onChange={() => setSelectedGenre(null)} // Define selectedGenre como null
+                  />
+                  <label htmlFor="todos-generos">Todos</label>
+                </div>
+
+                {/* Outros gêneros */}
                 {genres.map((genre) => (
                   <div className={styles.opcao} key={genre.id}>
                     <input
@@ -540,6 +564,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                       id={`genre-${genre.id}`}
                       name="genero"
                       value={genre.id}
+                      checked={selectedGenre === genre.id} // Verifica se o gênero está selecionado
                       onChange={() => setSelectedGenre(genre.id)}
                     />
                     <label htmlFor={`genre-${genre.id}`}>{genre.name}</label>
@@ -562,6 +587,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                 </div>
 
                 {certificacoes.map((certificacao) => {
+                  const certClass = `cert-${certificacao.certification}`;
                   return (
                     <div
                       key={certificacao.certification}
@@ -572,11 +598,15 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                         id={certificacao.certification}
                         name="classificacao"
                         value={certificacao.certification}
+                        className={styles[certClass]} // Classe gerada
                         onChange={() =>
                           setSelectedCertification(certificacao.certification)
                         } // Adicione esta linha
                       />
-                      <label htmlFor={certificacao.certification}>
+                      <label
+                        htmlFor={certificacao.certification}
+                        className={styles[certClass]} // Classe gerada
+                      >
                         {certificacao.certification}
                       </label>
                     </div>
@@ -634,4 +664,4 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
   );
 };
 
-export default ModalFiltros;
+export default ModalFiltrosDesktop;

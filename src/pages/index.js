@@ -363,9 +363,6 @@ const Home = () => {
 
             <Suspense fallback={<Loading />}>
               <div className={styles.elencoGeral}>
-                <Dublagem />
-
-                {isMobile ? <hr /> : null}
                 <Elenco elenco={elenco} />
 
                 {isMobile ? <hr /> : null}

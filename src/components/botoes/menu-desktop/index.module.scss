@@ -1,42 +1,46 @@
 .menuBotoes {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 60px;
-
-  a {
+  ul {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
 
-    text-decoration: none;
+    li {
+      a {
+        display: flex;
 
-    span {
-      display: flex;
+        text-decoration: none;
 
-      width: auto;
+        span {
+          display: flex;
 
-      color: #fff;
+          width: auto;
 
-      font-size: 16px;
-      font-weight: 200;
+          color: #fff;
 
-      opacity: 0.5;
+          font-size: 16px;
+          font-weight: 200;
 
-      white-space: nowrap;
+          opacity: 0.5;
 
-      transition: 0.2s;
+          white-space: nowrap;
 
-      &.active {
-        color: #1af5eb;
-        font-weight: bold;
+          transition: 0.2s;
 
-        opacity: 1;
-      }
+          &.active {
+            color: #1af5eb;
+            font-weight: bold;
 
-      &:hover {
-        color: #1af5eb;
-        font-weight: bold;
+            opacity: 1;
+          }
 
-        opacity: 1;
+          &:hover {
+            color: #1af5eb;
+            font-weight: bold;
+
+            opacity: 1;
+          }
+        }
       }
     }
   }

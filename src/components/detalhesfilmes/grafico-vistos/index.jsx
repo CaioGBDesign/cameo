@@ -5,6 +5,36 @@ const GraficoVistos = ({ filmesVistos }) => {
   const [generoCounts, setGeneroCounts] = useState([]);
   const [heights, setHeights] = useState({});
   const [totalCounts, setTotalCounts] = useState(0);
+  const [colors, setColors] = useState({});
+
+  const colorPalette = [
+    "#7D7AFF",
+    "#70D7FF",
+    "#2BA8E2",
+    "#DA8FFF",
+    "#FAFAFA",
+    "#39C65D",
+    "#F2C71C",
+    "#FF6961",
+    "#9694FF",
+    "#8ADEFF",
+    "#5CAAFF",
+    "#E2A8FF",
+    "#EDEDED",
+    "#8B8B8E",
+    "#4DCB6D",
+    "#F4D03E",
+    "#FF817A",
+    "#AFADFF",
+    "#A3E5FF",
+    "#75B8FF",
+    "#EBC2FF",
+    "#E0E0E0",
+    "#98989A",
+    "#61D17D",
+    "#F7DC6E",
+    "#FF9994",
+  ];
 
   useEffect(() => {
     if (!filmesVistos.length) return;
@@ -32,12 +62,16 @@ const GraficoVistos = ({ filmesVistos }) => {
     setTotalCounts(total);
 
     const newHeights = {};
+    const newColors = {};
     let sumOfPercentages = 0;
 
-    generosOrdenados.forEach(([genero, quantidade]) => {
+    generosOrdenados.forEach(([genero, quantidade], index) => {
       const percentual = (quantidade / total) * 100;
       newHeights[genero] = `${percentual}%`;
       sumOfPercentages += percentual;
+
+      // Atribuindo a cor com base no índice
+      newColors[genero] = colorPalette[index % colorPalette.length]; // Garante que as cores se repetem, se necessário
 
       // Log para verificar os percentuais individuais
       console.log(
@@ -62,6 +96,7 @@ const GraficoVistos = ({ filmesVistos }) => {
     }
 
     setHeights(newHeights);
+    setColors(newColors);
 
     // Log para verificar a soma total após o ajuste
     const finalSum = Object.values(newHeights).reduce(
@@ -88,7 +123,10 @@ const GraficoVistos = ({ filmesVistos }) => {
               </div>
               <div
                 className={styles.BarraGenero}
-                style={{ height: heights[genero] || "0%" }}
+                style={{
+                  height: heights[genero] || "0%",
+                  backgroundColor: colors[genero] || "#FAFAFA", // Aplica a cor
+                }}
               >
                 <img src="/icones/estrado.svg" alt={`Ícone de ${genero}`} />
               </div>

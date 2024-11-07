@@ -16,7 +16,7 @@ export default function Document() {
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
 
-              gtag('config', 'G-ZH2ZPY8V8D'); // Seu ID de acompanhamento do GA
+              gtag('config', 'G-ZH2ZPY8V8D');
             `,
           }}
         />

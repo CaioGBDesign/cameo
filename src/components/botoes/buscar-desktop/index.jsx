@@ -6,7 +6,7 @@ const BotaoBuscarDesktop = ({ children }) => {
     <Link href="/busca" className={styles.miniatura}>
       <img src="/icones/search.svg" />
       {children}
-      <span>Buscar filmes</span>
+      <p>Buscar filmes</p>
     </Link>
   );
 };

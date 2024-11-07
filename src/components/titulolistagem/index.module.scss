@@ -47,7 +47,6 @@
     align-items: center;
     gap: 10px;
 
-    .remover,
     .filtros {
       @media only screen and (min-width: 600px) {
         display: flex;
@@ -58,6 +57,16 @@
         background: #ffffff20;
 
         border-radius: 50px;
+
+        transition: 0.2s;
+
+        cursor: pointer;
+
+        &:hover {
+          padding: 20px 22px;
+
+          background: #250d2f;
+        }
       }
 
       img {

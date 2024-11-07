@@ -4,6 +4,35 @@ import { useEffect, useState } from "react";
 const GraficoDatas = ({ filmesVistos }) => {
   const [dadosMensais, setDadosMensais] = useState([]);
 
+  const colorPalette = [
+    "#7D7AFF",
+    "#70D7FF",
+    "#2BA8E2",
+    "#DA8FFF",
+    "#FAFAFA",
+    "#39C65D",
+    "#F2C71C",
+    "#FF6961",
+    "#9694FF",
+    "#8ADEFF",
+    "#5CAAFF",
+    "#E2A8FF",
+    "#EDEDED",
+    "#8B8B8E",
+    "#4DCB6D",
+    "#F4D03E",
+    "#FF817A",
+    "#AFADFF",
+    "#A3E5FF",
+    "#75B8FF",
+    "#EBC2FF",
+    "#E0E0E0",
+    "#98989A",
+    "#61D17D",
+    "#F7DC6E",
+    "#FF9994",
+  ];
+
   useEffect(() => {
     const contarFilmesPorMes = () => {
       const meses = {};
@@ -61,16 +90,18 @@ const GraficoDatas = ({ filmesVistos }) => {
         }
       });
 
-      const dados = [...mesesUnicos].map((mes) => {
+      const dados = [...mesesUnicos].map((mes, index) => {
         const quantidade = meses[mes].quantidade || 0;
         const percentual = filmesVistos.length
           ? (quantidade / filmesVistos.length) * 100
           : 0;
         const mesIndex = mes.split("-")[1];
+
         return {
           mes: mesesNome[mesIndex],
           quantidade,
           percentual,
+          cor: colorPalette[index % colorPalette.length], // Atribui uma cor da paleta
         };
       });
 
@@ -85,6 +116,10 @@ const GraficoDatas = ({ filmesVistos }) => {
       <div className={styles.GraficosDatas}>
         <div className={styles.headerGrafico}>
           <h1>Quantidade de filmes vistos nos últimos meses!</h1>
+          <button>
+            <img src="icones/add.svg" alt="" />
+            <p>Adicionar meta</p>
+          </button>
         </div>
         <div className={styles.RelacaoMes}>
           {dadosMensais.map((dado, index) => (
@@ -95,8 +130,13 @@ const GraficoDatas = ({ filmesVistos }) => {
               <div className={styles.contPercentualGrafico}>
                 <div
                   className={styles.percentualGrafico}
-                  style={{ width: `${dado.percentual}%` }}
-                ></div>
+                  style={{
+                    width: `${dado.percentual}%`,
+                    backgroundColor: dado.cor, // Aplica a cor de fundo ao gráfico
+                  }}
+                >
+                  <img src="/icones/estrado.svg" />
+                </div>
               </div>
               <span>{dado.quantidade}</span>
             </div>

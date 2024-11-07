@@ -14,8 +14,7 @@
   border: solid #ffffff50 1px;
   border-radius: 20px;
 
-  width: 450px;
-  height: 175px;
+  width: 500px;
 
   .GraficosDatas {
     display: flex;
@@ -28,15 +27,62 @@
 
     .headerGrafico {
       display: flex;
+      justify-content: space-between;
       align-items: center;
 
-      height: 30px;
+      width: 100%;
+
       h1 {
         font-size: 14px;
 
         color: #ffffff;
 
         opacity: 0.5;
+      }
+
+      button {
+        background: #ffffff20;
+        border-radius: 50px;
+        border: none;
+
+        width: 150px;
+        height: 40px;
+        transition: 0.2s;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+
+        cursor: pointer;
+
+        @media only screen and (max-width: 600px) {
+          width: 85%;
+        }
+
+        &:hover {
+          background: #ffffff30;
+
+          width: 155px;
+
+          img {
+            opacity: 1;
+          }
+        }
+
+        img {
+          width: 15px;
+
+          opacity: 0.5;
+
+          transition: 0.2s;
+        }
+
+        p {
+          font-size: 14px;
+
+          color: #ffffff;
+        }
       }
     }
 
@@ -82,6 +128,18 @@
             background: #2ba8e2;
 
             border-radius: 30px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            overflow: hidden;
+
+            img {
+              transform: rotate(90deg);
+
+              width: 100px;
+            }
           }
         }
       }

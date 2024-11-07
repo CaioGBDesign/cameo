@@ -1,30 +1,20 @@
 import { useEffect, useState } from "react";
 import styles from "./index.module.scss";
-import { useRouter } from "next/router";
-import { useIsMobile } from "@/components/DeviceProvider"; // Importando o hook para verificar o dispositivo
+import { useAuth } from "@/contexts/auth";
+import { useIsMobile } from "@/components/DeviceProvider"; // Hook para verificar se é mobile
 import ModalLoginCadastro from "@/components/modais/ModalLoginCadastro";
 
 const AssistirFilme = ({
   filmeId,
   assistirFilme,
   removerAssistir,
-  usuarioLogado, // Agora estamos verificando se o usuário está logado
+  usuarioParaVer,
 }) => {
+  const { user } = useAuth();
   const [assistido, setAssistido] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false); // Estado para controlar a exibição do modal
-  const [isClosing, setIsClosing] = useState(false); // Estado para controlar a animação de fechamento do modal
-  const router = useRouter(); // Hook para acessar o roteador
-  const isMobile = useIsMobile(); // Verifica se o dispositivo é móvel
-
-  useEffect(() => {
-    // Verifica se usuarioParaVer é um array
-    const filmesParaVer = Array.isArray(usuarioLogado?.paraVer)
-      ? usuarioLogado.paraVer
-      : [];
-
-    // Verifica se o filme está na lista de filmes para ver do usuário
-    setAssistido(filmesParaVer.includes(filmeId));
-  }, [usuarioLogado, filmeId]);
+  const [isClosing, setIsClosing] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const isMobile = useIsMobile();
 
   const closeModal = () => {
     console.log("Fechando o modal...");
@@ -35,32 +25,39 @@ const AssistirFilme = ({
     }, 300);
   };
 
+  useEffect(() => {
+    // Verifica se usuarioParaVer é um array
+    const filmesParaVer = Array.isArray(usuarioParaVer) ? usuarioParaVer : [];
+
+    // Verifica se o filme está na lista de assistidos do usuário
+    setAssistido(filmesParaVer.includes(filmeId));
+  }, [usuarioParaVer, filmeId]);
+
   const handleClick = (event) => {
     event.preventDefault(); // Evita comportamento padrão
 
-    // Se o usuário não estiver autenticado
-    if (!usuarioLogado) {
+    // Verifica se o usuário está autenticado
+    if (!user) {
+      // Se for mobile, redireciona para a página de login
       if (isMobile) {
-        // Se for mobile, redireciona para /login
         console.log(
-          "Usuário não autenticado. Redirecionando para /login no mobile..."
+          "Usuário não autenticado em dispositivo móvel. Redirecionando para /login..."
         );
-        router.push("/login");
-      } else {
-        // Se for desktop, exibe o modal de login
-        console.log(
-          "Usuário não autenticado. Exibindo modal de login no desktop..."
-        );
-        setShowLoginModal(true); // Exibe o modal de login no desktop
+        window.location.href = "/login"; // Redireciona para a página de login
+        return;
       }
+
+      // Se não for mobile, exibe o modal de login
+      console.log("Usuário não autenticado. Abrindo modal de login...");
+      setShowLoginModal(true); // Exibe o modal de login
       return;
     }
 
-    // Se o filme já estiver assistido, remove da lista
+    // Se o filme já estiver em assistidos, remove da lista
     if (assistido) {
       removerAssistir(filmeId);
     } else {
-      assistirFilme(filmeId); // Caso contrário, adiciona aos filmes para assistir
+      assistirFilme(filmeId); // Caso contrário, adiciona aos assistidos
     }
   };
 
@@ -74,16 +71,12 @@ const AssistirFilme = ({
       <button onClick={handleClick}>
         <div className={styles.paraVer}>
           <span>Quero ver</span>
-          <img src="icones/para-ver-desabilitado.svg" alt="Assistir" />
+          <img src="icones/para-ver-desabilitado.svg" alt="Assistido" />
         </div>
       </button>
 
-      {/* Modal de login, que será exibido caso o usuário não esteja autenticado no desktop */}
       {showLoginModal && !isMobile && (
-        <ModalLoginCadastro
-          closeModal={closeModal} // Função para fechar o modal
-          isClosing={isClosing} // Controla o estado de animação de fechamento
-        />
+        <ModalLoginCadastro closeModal={closeModal} isClosing={isClosing} />
       )}
     </div>
   );

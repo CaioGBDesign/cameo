@@ -1,29 +1,31 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import styles from "./index.module.scss";
-import { useIsMobile } from "@/components/DeviceProvider"; // Importando o hook para verificar o dispositivo
-import ModalLoginCadastro from "@/components/modais/ModalLoginCadastro"; // Importando o componente de modal de login
+import { useAuth } from "@/contexts/auth";
+import { useIsMobile } from "@/components/DeviceProvider"; // Hook para verificar se é mobile
+import ModalLoginCadastro from "@/components/modais/ModalLoginCadastro";
 
 const FavoritarFilme = ({
   filmeId,
   salvarFilme,
   removerFilme,
-  usuarioLogado, // Agora estamos verificando se o usuário está logado
+  usuarioFavoritos,
 }) => {
+  const { user } = useAuth();
   const [favoritado, setFavoritado] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false); // Estado para controlar a exibição do modal
-  const [isClosing, setIsClosing] = useState(false); // Estado para controlar a animação de fechamento do modal
+  const [isClosing, setIsClosing] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter(); // Hook para acessar o roteador
-  const isMobile = useIsMobile(); // Verifica se o dispositivo é móvel
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     // Verifica se o filme está na lista de favoritos do usuário
-    if (usuarioLogado?.favoritos?.includes(filmeId)) {
+    if (usuarioFavoritos.includes(filmeId)) {
       setFavoritado(true);
     } else {
       setFavoritado(false);
     }
-  }, [usuarioLogado, filmeId]);
+  }, [usuarioFavoritos, filmeId]);
 
   const closeModal = () => {
     console.log("Fechando o modal...");
@@ -37,21 +39,20 @@ const FavoritarFilme = ({
   const handleClick = (event) => {
     event.preventDefault(); // Evita comportamento padrão
 
-    // Verifica se o usuário está logado
-    if (!usuarioLogado) {
+    // Verifica se o usuário está autenticado
+    if (!user) {
+      // Se for mobile, redireciona para a página de login
       if (isMobile) {
-        // Se for mobile, redireciona para /login
         console.log(
-          "Usuário não autenticado. Redirecionando para /login no mobile..."
+          "Usuário não autenticado em dispositivo móvel. Redirecionando para /login..."
         );
-        router.push("/login");
-      } else {
-        // Se for desktop, exibe o modal de login
-        console.log(
-          "Usuário não autenticado. Exibindo modal de login no desktop..."
-        );
-        setShowLoginModal(true); // Exibe o modal de login no desktop
+        window.location.href = "/login"; // Redireciona para a página de login
+        return;
       }
+
+      // Se não for mobile, exibe o modal de login
+      console.log("Usuário não autenticado. Abrindo modal de login...");
+      setShowLoginModal(true); // Exibe o modal de login
       return;
     }
 
@@ -73,12 +74,8 @@ const FavoritarFilme = ({
         )}
       </button>
 
-      {/* Modal de login, que será exibido caso o usuário não esteja autenticado no desktop */}
       {showLoginModal && !isMobile && (
-        <ModalLoginCadastro
-          closeModal={closeModal} // Função para fechar o modal
-          isClosing={isClosing} // Controla o estado de animação de fechamento
-        />
+        <ModalLoginCadastro closeModal={closeModal} isClosing={isClosing} />
       )}
     </div>
   );

@@ -326,6 +326,16 @@ function AuthProvider({ children }) {
       }));
 
       console.log("Filme removido com sucesso do Firebase");
+
+      toast.success("Filme removido de favoritos!", {
+        position: "top-right",
+        autoClose: 5000, // Duração do toast
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      });
     } catch (error) {
       console.error("Erro ao remover filme do Firebase:", error);
     }

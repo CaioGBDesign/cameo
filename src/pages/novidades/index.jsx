@@ -5,7 +5,6 @@ import { useIsMobile } from "@/components/DeviceProvider";
 import styles from "./index.module.scss";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
-import Loading from "@/components/Loading";
 import Sinopse from "@/components/detalhesfilmes/sinopse";
 
 const Miniaturafilmes = lazy(() => import("@/components/miniaturafilmes"));
@@ -99,7 +98,6 @@ const Novidades = () => {
     fetchNovidades();
   }, []);
 
-  if (loading) return <Loading />;
   if (error) return <p>{error}</p>;
 
   return (

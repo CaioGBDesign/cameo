@@ -596,6 +596,15 @@ function AuthProvider({ children }) {
       });
 
       console.log("Meta adicionada com sucesso no Firebase!");
+      toast.success("Meta criada com sucesso!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark", // Mude para "dark" se quiser o fundo escuro
+      });
     } catch (error) {
       console.error("Erro ao adicionar a meta no Firebase:", error);
     }

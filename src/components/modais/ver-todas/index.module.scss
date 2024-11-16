@@ -48,19 +48,22 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 40px;
+      gap: 20px;
 
       width: 100%;
 
       .RelacaoMes {
         width: 90%;
+        height: 350px;
+
+        overflow: scroll;
 
         ul {
           display: flex;
           flex-direction: column;
           justify-content: center;
           align-items: center;
-          gap: 40px;
+          gap: 10px;
 
           width: 100%;
 
@@ -70,7 +73,12 @@
             align-items: center;
             gap: 10px;
 
-            width: 100%;
+            width: 90%;
+
+            background: #ffffff05;
+            border-radius: 10px;
+
+            padding: 15px;
 
             .GraficoMetas {
               display: flex;

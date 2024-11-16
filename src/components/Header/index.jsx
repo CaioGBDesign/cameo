@@ -45,11 +45,13 @@ const Header = ({
   return (
     <header className={`${styles.header} ${isScrolled ? styles.scrolled : ""}`}>
       <div className={styles.headerContent}>
-        <div>
+        <div className={styles.botaoHeader}>
           {showBuscar && <BotaoBuscar className={styles.botaoBuscar} />}
         </div>
-        <div>{showMiniatura && <Miniatura className={styles.miniatura} />}</div>
-        <div>
+        <div className={styles.botaoHeader}>
+          {showMiniatura && <Miniatura className={styles.miniatura} />}
+        </div>
+        <div className={styles.botaoHeader}>
           {showFotoPerfil && <FotoPerfil className={styles.fotoPerfil} />}
         </div>
       </div>

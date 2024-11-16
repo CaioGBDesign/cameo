@@ -3,33 +3,78 @@
   justify-content: center;
   align-items: center;
 
-  width: 45px;
-  height: 45px;
-
-  border: solid white;
-  border-radius: 60px;
-  overflow: hidden;
-
-  @media only screen and (max-width: 600px) {
-    width: 30px;
-    height: 30px;
-
-    border-radius: 30px;
-  }
-
   .fotoPerfilMiniatura {
     position: relative;
 
-    width: 45px !important;
-    height: 45px;
-
+    border: solid white;
     border-radius: 100px;
 
     overflow: hidden;
 
+    @media only screen and (min-width: 600px) {
+      width: 45px;
+      height: 45px;
+    }
+
     @media only screen and (max-width: 600px) {
       width: 30px;
       height: 30px;
+    }
+  }
+
+  .entrar {
+    display: flex;
+    justify-content: center !important;
+    align-items: center;
+
+    width: 100px;
+    height: 40px;
+
+    background: #1f0928;
+    border: solid #ffffff 1px;
+    border-radius: 10px;
+
+    position: relative;
+
+    transition: 0.2s;
+
+    cursor: pointer;
+
+    img {
+      position: absolute;
+      left: 10px;
+
+      opacity: 0;
+
+      transition: 0.4s;
+    }
+
+    span {
+      color: #fff;
+
+      transition: 0.2s;
+    }
+
+    @media only screen and (min-width: 600px) {
+      &:hover {
+        width: 110px;
+
+        span {
+          margin-left: 30px;
+        }
+
+        img {
+          left: 20px;
+
+          opacity: 1;
+        }
+      }
+    }
+
+    @media only screen and (max-width: 600px) {
+      width: 80px;
+
+      border: none;
     }
   }
 }

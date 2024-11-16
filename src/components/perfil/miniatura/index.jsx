@@ -8,11 +8,11 @@ import DadosPessoaisModalDesktop from "@/components/dadospessoais-desktop";
 import ModalLoginCadastro from "@/components/modais/ModalLoginCadastro";
 
 const FotoPerfil = ({ href = "/perfil", children }) => {
-  const { user } = useContext(AuthContext);
-  const avatarUrl = user && user.avatarUrl;
-  const nomeUsuario = user && user.nome ? user.nome : "Nome de Usuário";
+  const { user } = useContext(AuthContext); // Pega as informações do usuário
+  const avatarUrl = user && user.avatarUrl; // URL da imagem de avatar
+  const nomeUsuario = user && user.nome ? user.nome : "Nome de Usuário"; // Nome do usuário (se houver)
 
-  const isMobile = useIsMobile();
+  const isMobile = useIsMobile(); // Verifica se o dispositivo é mobile
 
   const [isModalOpen, setModalOpen] = useState(false); // Estado para controlar o modal
   const [isClosing, setIsClosing] = useState(false);
@@ -20,8 +20,8 @@ const FotoPerfil = ({ href = "/perfil", children }) => {
 
   const openModal = () => {
     if (user) {
-      setIsLoginModal(false); // Se o usuário está logado, não precisamos do modal de login
-      setModalOpen(true); // Abre o modal de dados pessoais
+      setIsLoginModal(false); // Se o usuário está logado, abre o modal de dados pessoais
+      setModalOpen(true);
     } else {
       setIsLoginModal(true); // Se o usuário não está logado, abre o modal de login
       setModalOpen(true);
@@ -31,7 +31,7 @@ const FotoPerfil = ({ href = "/perfil", children }) => {
   const closeModal = () => {
     setIsClosing(true);
     setTimeout(() => {
-      setModalOpen(false); // Fecha após a animação
+      setModalOpen(false); // Fecha o modal após a animação
       setIsLoginModal(false); // Reseta o estado do modal de login
     }, 300);
   };
@@ -39,29 +39,47 @@ const FotoPerfil = ({ href = "/perfil", children }) => {
   return (
     <>
       {isMobile ? (
+        // Para dispositivos móveis, sempre renderiza o link com foto de perfil
         <Link href={href} className={styles["foto-perfil"]}>
-          <div className={styles.fotoPerfilMiniatura}>
-            <Image
-              src={avatarUrl || "/usuario/usuario.jpg"}
-              alt={nomeUsuario}
-              layout="fill"
-              objectFit="cover"
-              quality={50}
-            />
-          </div>
+          {user ? (
+            <div className={styles.fotoPerfilMiniatura}>
+              <Image
+                src={avatarUrl}
+                alt={nomeUsuario}
+                layout="fill"
+                objectFit="cover"
+                quality={50}
+              />
+            </div>
+          ) : (
+            // Se o usuário não estiver logado, renderiza o texto "Login"
+            <div className={styles.entrar}>
+              <img src="/icones/seta-direita.svg" />
+              <span>Entrar</span>
+            </div>
+          )}
           {children}
         </Link>
       ) : (
+        // Para dispositivos desktop, ao clicar na foto de perfil ou no botão "Login"
         <div onClick={openModal} className={styles["foto-perfil"]}>
-          <div className={styles.fotoPerfilMiniatura}>
-            <Image
-              src={avatarUrl || "/usuario/usuario.jpg"}
-              alt={nomeUsuario}
-              layout="fill"
-              objectFit="cover"
-              quality={50}
-            />
-          </div>
+          {user ? (
+            <div className={styles.fotoPerfilMiniatura}>
+              <Image
+                src={avatarUrl}
+                alt={nomeUsuario}
+                layout="fill"
+                objectFit="cover"
+                quality={50}
+              />
+            </div>
+          ) : (
+            // Se o usuário não estiver logado, renderiza o texto "Login"
+            <div className={styles.entrar}>
+              <img src="/icones/seta-direita.svg" />
+              <span>Entrar</span>
+            </div>
+          )}
           {children}
         </div>
       )}

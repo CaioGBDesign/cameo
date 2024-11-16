@@ -25,6 +25,7 @@ import ModalConfirmacaoCadastro from "@/components/modais/confirmacao-cadastro";
 import { deleteField } from "firebase/firestore";
 import { toast } from "react-toastify";
 import Loading from "@/components/loading";
+import { v4 as uuidv4 } from "uuid";
 
 export const AuthContext = createContext({});
 export const useAuth = () => useContext(AuthContext);
@@ -61,6 +62,12 @@ function AuthProvider({ children }) {
             favoritos: docSnap.data().favoritos || [],
             assistir: docSnap.data().assistir || [],
             visto: docSnap.data().visto || {},
+            metas: docSnap.data().metas || {
+              ano: [],
+              mes: [],
+              semana: [],
+              dia: [],
+            },
           };
 
           setUser(userData);
@@ -575,6 +582,72 @@ function AuthProvider({ children }) {
     }
   }
 
+  // Dentro da função que adiciona a meta
+  async function adicionarMeta(meta) {
+    const userRef = doc(db, "users", user.uid);
+
+    try {
+      // Adiciona um ID único à meta
+      const metaComId = { ...meta, id: uuidv4() }; // Cria um ID único para a meta
+
+      // Atualiza ou cria a meta no Firestore, agora apenas adicionando a meta com ID ao array
+      await updateDoc(userRef, {
+        metas: arrayUnion(metaComId), // Adiciona a meta com ID diretamente ao array
+      });
+
+      console.log("Meta adicionada com sucesso no Firebase!");
+    } catch (error) {
+      console.error("Erro ao adicionar a meta no Firebase:", error);
+    }
+  }
+
+  const removerMeta = async (metaId) => {
+    if (!user) {
+      console.error("Usuário não autenticado");
+      return;
+    }
+
+    const userRef = doc(db, "users", user.uid);
+
+    try {
+      // Recupera as metas atuais do Firestore
+      const userSnapshot = await getDoc(userRef);
+      if (!userSnapshot.exists()) {
+        console.error("Usuário não encontrado");
+        return;
+      }
+
+      const userData = userSnapshot.data();
+      const metasAtuais = userData.metas || [];
+
+      // Remove a meta com base no ID único
+      const novasMetas = metasAtuais.filter((meta) => meta.id !== metaId);
+
+      // Atualiza o Firestore com a nova lista de metas
+      await updateDoc(userRef, { metas: novasMetas });
+
+      console.log(`Meta com ID ${metaId} removida com sucesso!`);
+
+      // Atualiza o estado local
+      setUserData((prevData) => ({
+        ...prevData,
+        metas: novasMetas,
+      }));
+
+      toast.success(`Meta removida com sucesso!`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      });
+    } catch (error) {
+      console.error("Erro ao remover meta do Firebase:", error);
+    }
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -596,6 +669,8 @@ function AuthProvider({ children }) {
         darNota,
         removerNota,
         setUser,
+        adicionarMeta,
+        removerMeta,
       }}
     >
       {children}

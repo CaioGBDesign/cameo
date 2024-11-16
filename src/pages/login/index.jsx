@@ -121,9 +121,7 @@ const Login = () => {
                     required
                   />
                 </div>
-                {errorMessage && !email && (
-                  <p style={{ color: "red" }}>{errorMessage}</p>
-                )}
+                {errorMessage && !email && <p>{errorMessage}</p>}
                 {erro && <p>{erro}</p>}
                 <div className={styles.inputCameo}>
                   <input

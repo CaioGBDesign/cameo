@@ -4,6 +4,11 @@
 
   width: 100%;
 
+  border: solid #ffffff50 1px;
+  border-radius: 20px;
+
+  overflow: hidden;
+
   @media only screen and (min-width: 600px) {
     background: linear-gradient(
         0deg,
@@ -12,39 +17,63 @@
       ),
       rgba(255, 255, 255, 0.1);
 
-    padding: 10px;
-
-    border: solid #ffffff50 1px;
-    border-radius: 20px;
-
-    width: 340px;
-    height: -webkit-fill-available;
+    padding-bottom: 10px;
   }
 
   @media only screen and (max-width: 600px) {
-    width: 100%;
+    width: 90%;
+
+    border: none;
   }
 
   .GraficosGeneros {
     position: relative;
 
     display: flex;
+    flex-direction: column;
     justify-content: start;
-
-    width: 85%;
+    align-items: center;
 
     z-index: 1;
 
-    overflow-x: scroll;
+    .headerGrafico {
+      width: 450px;
+      height: 95px;
+
+      background-image: url("/background/BG-metas.jpg");
+      background-color: #250d2f;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      h1 {
+        font-size: 18px;
+        font-weight: bold;
+
+        color: #ffffff;
+
+        width: 90%;
+      }
+    }
 
     .ContGraficos {
       display: flex;
       align-items: center;
       gap: 10px;
 
-      width: 100%;
+      width: 400px;
 
       z-index: 1;
+
+      overflow-x: scroll;
+
+      @media only screen and (max-width: 600px) {
+        width: 340px;
+      }
 
       .BoxtGraficos {
         display: flex;
@@ -87,6 +116,10 @@
             0% {
               height: 0;
             }
+          }
+
+          img {
+            width: 100%;
           }
         }
 

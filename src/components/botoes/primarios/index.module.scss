@@ -7,7 +7,7 @@
   color: white;
 
   border: none;
-  border-radius: 50px;
+  border-radius: 10px;
 
   font-size: 25px;
   text-align: center;
@@ -17,6 +17,10 @@
   align-items: center;
 
   transition: 0.2s;
+
+  position: relative;
+
+  overflow: hidden;
 
   @media only screen and (min-width: 600px) {
     box-shadow: 0px 0px 20px 0px rgba(27, 244, 235, 0.2);
@@ -41,5 +45,36 @@
 
   &:active {
     transform: translateY(5px);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 5;
+
+    width: 80px;
+    height: 75px;
+
+    background: linear-gradient(270deg, #fff 0%, rgba(255, 255, 255, 0) 100%);
+
+    transform: rotate(10deg);
+
+    opacity: 0.2;
+
+    animation: flash 3s ease-in-out infinite;
+
+    @keyframes flash {
+      0% {
+        left: 0px;
+      }
+
+      20% {
+        left: 300px;
+      }
+
+      100% {
+        left: 300px;
+      }
+    }
   }
 }

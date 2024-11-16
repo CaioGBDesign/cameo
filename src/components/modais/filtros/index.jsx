@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
 import styles from "./index.module.scss";
-import streamingServices from "@/components/listas/streamings/streaming.json"; // Importe a lista de serviços
+import React, { useEffect, useRef, useState } from "react";
 import { useIsMobile } from "@/components/DeviceProvider";
+import streamingServices from "@/components/listas/streamings/streaming.json"; // Importe a lista de serviços
 
 // Lista estática de países
 const countriesList = [

@@ -5,6 +5,8 @@
 
   width: 100%;
 
+  z-index: 1;
+
   .quantidade {
     display: flex;
     align-items: center;
@@ -22,12 +24,14 @@
       padding: 15px 20px;
 
       background: #ffffff20;
-      border-radius: 6px;
+      border-radius: 10px;
 
       @media only screen and (max-width: 600px) {
         font-size: 14px;
 
         padding: 5px 8px;
+
+        border-radius: 6px;
       }
     }
 
@@ -56,7 +60,7 @@
         padding: 20px;
         background: #ffffff20;
 
-        border-radius: 50px;
+        border-radius: 10px;
 
         transition: 0.2s;
 
@@ -65,7 +69,7 @@
         &:hover {
           padding: 20px 22px;
 
-          background: #250d2f;
+          border-radius: 0px;
         }
       }
 

@@ -5,8 +5,9 @@ import { updateDoc, arrayRemove } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import AdicionarMeta from "@/components/modais/adicionar-metas";
 import DeletarMetas from "@/components/modais/deletar-metas";
+import VerTodas from "@/components/modais/ver-todas";
 
-const GraficoMetas = () => {
+const GraficoMetasMobile = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [modalAberto, setModalAberto] = useState("");
@@ -222,6 +223,28 @@ const GraficoMetas = () => {
     ? ordenaMetasPorPeriodo(userData.metas)
     : [];
 
+  // Função para calcular a porcentagem de cada meta
+  const metasComPorcentagem = metasOrdenadas.map((meta) => {
+    const filmesVistosCount =
+      meta.periodo === "mes"
+        ? filmesVistosCountMes
+        : meta.periodo === "ano"
+        ? filmesVistosCountAno
+        : meta.periodo === "semana"
+        ? filmesVistosCountSemana
+        : meta.periodo === "dia"
+        ? filmesVistosCountDia
+        : 0;
+
+    const porcentagem = calcularPorcentagem(meta.quantidade, filmesVistosCount);
+    return { ...meta, porcentagem };
+  });
+
+  // Ordena as metas por porcentagem (maior para menor)
+  const metasMaisProximas = metasComPorcentagem
+    .sort((a, b) => b.porcentagem - a.porcentagem)
+    .slice(0, 3);
+
   if (loading || !userData) return <div>Carregando...</div>;
 
   return (
@@ -239,21 +262,20 @@ const GraficoMetas = () => {
             </div>
 
             <div className={styles.headerGrafico}>
-              <div className={styles.metasControle}>
-                {userData && userData.metas && userData.metas.length > 0 && (
-                  <button onClick={() => setModalAberto("adicionar-metas")}>
-                    <img src="icones/add.svg" alt="Adicionar" />
-                    <p>Adicionar meta</p>
+              {userData && userData.metas && userData.metas.length > 0 && (
+                <div className={styles.verTodas}>
+                  <button onClick={() => setModalAberto("ver-todas")}>
+                    <p>Ver todas</p>
                   </button>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
-        {userData && userData.metas && userData.metas.length > 0 ? (
+        {metasMaisProximas.length > 0 ? (
           <div className={styles.RelacaoMes}>
             <ul>
-              {metasOrdenadas.map((meta, index) => {
+              {metasMaisProximas.map((meta, index) => {
                 const filmesVistosCount =
                   meta.periodo === "mes"
                     ? filmesVistosCountMes
@@ -265,10 +287,7 @@ const GraficoMetas = () => {
                     ? filmesVistosCountDia
                     : 0;
 
-                const porcentagem = calcularPorcentagem(
-                  meta.quantidade,
-                  filmesVistosCount
-                );
+                const porcentagem = meta.porcentagem;
 
                 // Verifica se a meta foi concluída
                 const backgroundColor =
@@ -297,7 +316,7 @@ const GraficoMetas = () => {
                       <div
                         className={styles.graficoVertical}
                         style={{
-                          backgroundColor: `${backgroundColor}50`, // "80" é a opacidade em hexadecimal (meio transparente)
+                          backgroundColor: `${backgroundColor}50`, // "50" é a opacidade em hexadecimal (meio transparente)
                         }}
                       >
                         <div
@@ -323,12 +342,19 @@ const GraficoMetas = () => {
                 );
               })}
             </ul>
+
+            <div className={styles.metasControle}>
+              <button onClick={() => setModalAberto("adicionar-metas")}>
+                <img src="icones/add-mobile.svg" alt="Adicionar" />
+                <p>Adicionar meta</p>
+              </button>
+            </div>
           </div>
         ) : (
           <div className={styles.blankMetas}>
             <p>Bora adicionar algumas metas?</p>
             <button onClick={() => setModalAberto("adicionar-metas")}>
-              <img src="icones/add.svg" alt="Adicionar" />
+              <img src="icones/add-mobile.svg" alt="Adicionar" />
               <p>Adicionar meta</p>
             </button>
           </div>
@@ -349,8 +375,20 @@ const GraficoMetas = () => {
           onConfirmar={() => removerMeta(metaParaDeletar)}
         />
       )}
+
+      {modalAberto === "ver-todas" && (
+        <VerTodas
+          metas={metasOrdenadas}
+          filmesVistosCountDia={filmesVistosCountDia}
+          filmesVistosCountSemana={filmesVistosCountSemana}
+          filmesVistosCountMes={filmesVistosCountMes}
+          filmesVistosCountAno={filmesVistosCountAno}
+          colorPalette={colorPalette} // Passando a colorPalette como prop
+          onClose={() => setModalAberto(null)}
+        />
+      )}
     </div>
   );
 };
 
-export default GraficoMetas;
+export default GraficoMetasMobile;

@@ -9,6 +9,7 @@ import HeaderDesktop from "@/components/HeaderDesktop";
 import Titulolistagem from "@/components/titulolistagem";
 import GraficoVistos from "@/components/detalhesfilmes/grafico-vistos";
 import GraficoDatas from "@/components/detalhesfilmes/grafico-datas";
+import GraficoDatasMobile from "@/components/detalhesfilmes/grafico-datas-mobile";
 import Private from "@/components/Private";
 import Link from "next/link";
 import FilmesCarousel from "@/components/modais/filmes-carousel";
@@ -31,6 +32,7 @@ const FilmesAssisti = () => {
   const [selectedFilm, setSelectedFilm] = useState(null);
   const [trailerLink, setTrailerLink] = useState(null); // Estado para link do trailer
   const [filme, setFilme] = useState(null); // Estado para armazenar os dados do filme
+  const [modalAberto, setModalAberto] = useState(null);
 
   // define se desktop ou mobile
   const isMobile = useIsMobile();
@@ -91,8 +93,6 @@ const FilmesAssisti = () => {
           })
           .filter(Boolean); // Remove filmes inválidos
 
-        console.log("Filmes com avaliações:", filmesComAvaliacoes);
-
         setFilmesVistos(filmesComAvaliacoes);
 
         if (filmesComAvaliacoes.length > 0) {
@@ -137,6 +137,10 @@ const FilmesAssisti = () => {
     setModalOpen(true);
   };
 
+  useEffect(() => {
+    document.body.style.overflow = modalAberto ? "hidden" : "auto";
+  }, [modalAberto]);
+
   if (!filmesVistos.length && loading) return <Loading />;
 
   return (
@@ -153,8 +157,8 @@ const FilmesAssisti = () => {
           <>
             {isMobile ? <Header /> : <HeaderDesktop />}
             <div className={styles.contFilmes}>
-              <div className={styles.topoInfos}>
-                {isMobile ? null : (
+              {isMobile ? null : (
+                <div className={styles.topoInfos}>
                   <PosterInfoDesktop
                     exibirPlay={false}
                     capaAssistidos={`https://image.tmdb.org/t/p/original/${filmeAleatorio.poster_path}`}
@@ -164,55 +168,63 @@ const FilmesAssisti = () => {
                       .join(", ")}
                     duracao={convertDuracao(filmeAleatorio.duracao)}
                   />
-                )}
+                </div>
+              )}
 
+              <div className={styles.contAssisti}>
+                <div className={styles.todosOsTitulos}>
+                  <div className={styles.contlista}>
+                    <Titulolistagem
+                      quantidadeFilmes={filmesVistos.length}
+                      titulolistagem={"Filmes que já assisti"}
+                      configuracoes={true}
+                      handleRemoverClick={handleRemoverClick}
+                    />
+                    <div className={styles.listaFilmes}>
+                      {filmesVistos && (
+                        <>
+                          {loading ? (
+                            <p>Carregando...</p>
+                          ) : (
+                            filmesVistos.map((filme) => (
+                              <Suspense key={filme.id} fallback={<Loading />}>
+                                <Miniaturafilmes
+                                  capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
+                                  titulofilme={filme.title}
+                                  mostrarEstrelas={true}
+                                  mostrarBotaoFechar={mostrarBotaoFechar}
+                                  excluirFilme={() =>
+                                    handleExcluirFilme(String(filme.id))
+                                  }
+                                  avaliacao={filme.avaliacao.nota}
+                                  onClick={() => openModal(filme)}
+                                />
+                              </Suspense>
+                            ))
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
                 <div className={styles.graficosGeneroMes}>
                   <GraficoVistos
                     filmesVistos={filmesVistos}
                     totalFilmesVistos={totalFilmesVistos} // Passando totalFilmesVistos como prop
                   />
-                  {isMobile ? null : (
+                  {isMobile ? (
+                    <GraficoDatasMobile
+                      filmesVistos={filmesVistos}
+                      totalFilmesVistos={totalFilmesVistos}
+                      user={user}
+                    />
+                  ) : (
                     <GraficoDatas
                       filmesVistos={filmesVistos}
                       totalFilmesVistos={totalFilmesVistos}
+                      user={user}
                     />
                   )}
-                </div>
-              </div>
-
-              <div className={styles.todosOsTitulos}>
-                <div className={styles.contlista}>
-                  <Titulolistagem
-                    quantidadeFilmes={filmesVistos.length}
-                    titulolistagem={"Filmes que já assisti"}
-                    configuracoes={true}
-                    handleRemoverClick={handleRemoverClick}
-                  />
-                  <div className={styles.listaFilmes}>
-                    {filmesVistos && (
-                      <>
-                        {loading ? (
-                          <p>Carregando...</p>
-                        ) : (
-                          filmesVistos.map((filme) => (
-                            <Suspense key={filme.id} fallback={<Loading />}>
-                              <Miniaturafilmes
-                                capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
-                                titulofilme={filme.title}
-                                mostrarEstrelas={true}
-                                mostrarBotaoFechar={mostrarBotaoFechar}
-                                excluirFilme={() =>
-                                  handleExcluirFilme(String(filme.id))
-                                }
-                                avaliacao={filme.avaliacao.nota}
-                                onClick={() => openModal(filme)}
-                              />
-                            </Suspense>
-                          ))
-                        )}
-                      </>
-                    )}
-                  </div>
                 </div>
               </div>
             </div>

@@ -1,13 +1,13 @@
 .botao-secundario {
-  width: 64px;
-  height: 64px;
+  width: 70px;
+  height: 70px;
 
   background: #3b2544;
 
   color: white;
 
   border: none;
-  border-radius: 50px;
+  border-radius: 10px;
 
   font-size: 20px;
   text-align: center;
@@ -17,6 +17,8 @@
   align-items: center;
 
   transition: 0.2s;
+
+  cursor: pointer;
 
   @media only screen and (max-width: 600px) {
     width: 100%;

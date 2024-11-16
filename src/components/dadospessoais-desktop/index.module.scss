@@ -276,7 +276,7 @@
             z-index: 1;
 
             button[type="submit"] {
-              width: 85%;
+              width: 35%;
               height: 50px;
 
               background: linear-gradient(90deg, #1af5eb 0%, #2ba8e2 100%);
@@ -296,6 +296,12 @@
               transition: 0.2s;
 
               cursor: pointer;
+
+              transition: 0.2s;
+
+              &:hover {
+                width: 37%;
+              }
 
               &:active {
                 transform: translateY(5px);

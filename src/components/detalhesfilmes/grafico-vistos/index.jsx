@@ -1,11 +1,15 @@
 import styles from "./index.module.scss";
 import { useEffect, useState } from "react";
+import { useIsMobile } from "@/components/DeviceProvider";
 
 const GraficoVistos = ({ filmesVistos }) => {
   const [generoCounts, setGeneroCounts] = useState([]);
   const [heights, setHeights] = useState({});
   const [totalCounts, setTotalCounts] = useState(0);
   const [colors, setColors] = useState({});
+
+  // define se desktop ou mobile
+  const isMobile = useIsMobile();
 
   const colorPalette = [
     "#7D7AFF",
@@ -63,52 +67,39 @@ const GraficoVistos = ({ filmesVistos }) => {
 
     const newHeights = {};
     const newColors = {};
-    let sumOfPercentages = 0;
 
-    generosOrdenados.forEach(([genero, quantidade], index) => {
-      const percentual = (quantidade / total) * 100;
-      newHeights[genero] = `${percentual}%`;
-      sumOfPercentages += percentual;
+    // Definir o primeiro gênero com 94px de altura (100%)
+    const firstGenero = generosOrdenados[0][0];
+    const firstGeneroCount = generosOrdenados[0][1];
+    const maxHeight = 94; // altura máxima em pixels
+    newHeights[firstGenero] = `${maxHeight}px`;
+    newColors[firstGenero] = colorPalette[0]; // Cor do primeiro gênero
 
-      // Atribuindo a cor com base no índice
-      newColors[genero] = colorPalette[index % colorPalette.length]; // Garante que as cores se repetem, se necessário
+    // Para os outros gêneros, calculamos a altura proporcional em pixels
+    generosOrdenados.slice(1).forEach(([genero, quantidade], index) => {
+      // Calcular o percentual em relação ao primeiro gênero
+      const percentualEmRelacaoAoPrimeiro =
+        (quantidade / firstGeneroCount) * 100;
 
-      // Log para verificar os percentuais individuais
-      console.log(
-        `Gênero: ${genero}, Quantidade: ${quantidade}, Percentual: ${percentual.toFixed(
-          2
-        )}%`
-      );
+      // Converter o percentual para pixels
+      const heightInPixels = (percentualEmRelacaoAoPrimeiro / 100) * maxHeight;
+      newHeights[genero] = `${heightInPixels.toFixed(2)}px`; // Arredondando a altura para 2 casas decimais
+      newColors[genero] = colorPalette[(index + 1) % colorPalette.length]; // Atribui cor sequencialmente
     });
-
-    // Log para verificar a soma total dos percentuais
-    console.log(
-      `Soma dos percentuais antes do ajuste: ${sumOfPercentages.toFixed(2)}%`
-    );
-
-    // Ajuste final para garantir que a soma seja 100%
-    const adjustment = 100 - sumOfPercentages;
-    if (adjustment !== 0) {
-      const firstGenero = generosOrdenados[0][0]; // Ajuste o primeiro gênero
-      newHeights[firstGenero] = `${
-        parseFloat(newHeights[firstGenero]) + adjustment
-      }%`;
-    }
 
     setHeights(newHeights);
     setColors(newColors);
-
-    // Log para verificar a soma total após o ajuste
-    const finalSum = Object.values(newHeights).reduce(
-      (sum, height) => sum + parseFloat(height),
-      0
-    );
-    console.log(`Soma dos percentuais após o ajuste: ${finalSum.toFixed(2)}%`);
   }, [filmesVistos]);
 
   return (
     <div className={styles.ContGraficosGeneros}>
       <div className={styles.GraficosGeneros}>
+        {isMobile ? null : (
+          <div className={styles.headerGrafico}>
+            <h1>Gêneros mais assistidos</h1>
+          </div>
+        )}
+
         <div className={styles.ContGraficos}>
           {generoCounts.map(([genero, quantidade]) => (
             <div key={genero} className={styles.BoxtGraficos}>
@@ -124,8 +115,8 @@ const GraficoVistos = ({ filmesVistos }) => {
               <div
                 className={styles.BarraGenero}
                 style={{
-                  height: heights[genero] || "0%",
-                  backgroundColor: colors[genero] || "#FAFAFA", // Aplica a cor
+                  height: heights[genero] || "0%", // Definindo a altura convertida para pixels
+                  backgroundColor: colors[genero] || "#FAFAFA", // Aplica a cor para o gênero
                 }}
               >
                 <img src="/icones/estrado.svg" alt={`Ícone de ${genero}`} />

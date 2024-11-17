@@ -90,16 +90,12 @@
               display: flex;
               justify-content: center;
               align-items: center;
-              gap: 10px;
+              gap: 15px;
 
               padding: 0px 15px;
 
               img {
-                width: 15px;
-
-                opacity: 0.5;
-
-                transition: 0.2s;
+                width: 5px;
               }
 
               p {
@@ -108,6 +104,16 @@
                 color: #ffffff;
 
                 white-space: nowrap;
+              }
+
+              .seta {
+                transition: transform 0.3s ease;
+                transform: rotate(-90deg);
+              }
+
+              .setaRotacionada {
+                transition: transform 0.3s ease;
+                transform: rotate(90deg);
               }
             }
           }

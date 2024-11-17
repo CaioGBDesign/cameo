@@ -4,6 +4,7 @@ import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { updateDoc, arrayRemove } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import AdicionarMeta from "@/components/modais/adicionar-metas";
+import AlterarMeta from "@/components/modais/alterar-metas";
 import DeletarMetas from "@/components/modais/deletar-metas";
 
 const GraficoMetasMobile = () => {
@@ -11,6 +12,7 @@ const GraficoMetasMobile = () => {
   const [loading, setLoading] = useState(true);
   const [modalAberto, setModalAberto] = useState("");
   const [metaParaDeletar, setMetaParaDeletar] = useState(null);
+  const [metaSelecionada, setMetaSelecionada] = useState(null);
   const [mostrarTodas, setMostrarTodas] = useState(false);
   const db = getFirestore();
   const auth = getAuth();
@@ -248,6 +250,15 @@ const GraficoMetasMobile = () => {
     .sort((a, b) => b.porcentagem - a.porcentagem)
     .slice(0, 3);
 
+  const atualizarMetaLocal = (metaAtualizada) => {
+    setUserData((prevData) => {
+      const metasAtualizadas = prevData.metas.map((meta) =>
+        meta.id === metaAtualizada.id ? metaAtualizada : meta
+      );
+      return { ...prevData, metas: metasAtualizadas };
+    });
+  };
+
   if (loading || !userData) return <div>Carregando...</div>;
 
   return (
@@ -269,6 +280,13 @@ const GraficoMetasMobile = () => {
                 {userData && userData.metas && userData.metas.length >= 4 && (
                   <button onClick={() => setMostrarTodas(!mostrarTodas)}>
                     <p>{mostrarTodas ? "Ver menos" : "Ver todas"}</p>
+                    <img
+                      src="/icones/anterior.svg"
+                      alt="Seta"
+                      className={
+                        mostrarTodas ? styles.setaRotacionada : styles.seta
+                      }
+                    />
                   </button>
                 )}
               </div>
@@ -300,7 +318,13 @@ const GraficoMetasMobile = () => {
 
                 return (
                   <li key={index}>
-                    <div className={styles.GraficoMetas}>
+                    <div
+                      className={styles.GraficoMetas}
+                      onClick={() => {
+                        setMetaSelecionada(meta); // Define a meta atual no estado
+                        setModalAberto("alterar-metas"); // Abre o modal
+                      }}
+                    >
                       <div className={styles.periodoHeader}>
                         <div className={styles.iconeDescricao}>
                           <div className={styles.descricaoMeta}>
@@ -369,7 +393,13 @@ const GraficoMetasMobile = () => {
                     <li key={meta.id}>
                       {" "}
                       {/* Usando 'meta.id' para garantir a unicidade da chave */}
-                      <div className={styles.GraficoMetas}>
+                      <div
+                        className={styles.GraficoMetas}
+                        onClick={() => {
+                          setMetaSelecionada(meta); // Define a meta atual no estado
+                          setModalAberto("alterar-metas"); // Abre o modal
+                        }}
+                      >
                         <div className={styles.periodoHeader}>
                           <div className={styles.iconeDescricao}>
                             <div className={styles.descricaoMeta}>
@@ -446,6 +476,14 @@ const GraficoMetasMobile = () => {
           meta={userData.metas.find((meta) => meta.id === metaParaDeletar)}
           onClose={() => setModalAberto(null)}
           onConfirmar={() => removerMeta(metaParaDeletar)}
+        />
+      )}
+
+      {modalAberto === "alterar-metas" && (
+        <AlterarMeta
+          onClose={() => setModalAberto(null)}
+          meta={metaSelecionada}
+          onAlterarMeta={atualizarMetaLocal} // Passa a função corretamente
         />
       )}
     </div>

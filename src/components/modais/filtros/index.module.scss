@@ -488,13 +488,22 @@
 
         background: none;
         border: none;
-        border-radius: 30px;
+
+        border-radius: 10px;
 
         font-size: 20px;
         font-weight: bold;
         color: #1a1c22;
 
-        cursor: pointer;
+        @media only screen and (min-width: 600px) {
+          cursor: pointer;
+
+          transition: 0.2s;
+
+          &:hover {
+            border-radius: 0px;
+          }
+        }
 
         @media only screen and (max-width: 600px) {
           transition: 0.2s;

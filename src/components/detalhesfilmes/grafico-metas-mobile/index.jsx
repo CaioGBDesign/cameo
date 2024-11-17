@@ -6,11 +6,12 @@ import { getAuth } from "firebase/auth";
 import AdicionarMeta from "@/components/modais/adicionar-metas";
 import DeletarMetas from "@/components/modais/deletar-metas";
 
-const GraficoMetas = () => {
+const GraficoMetasMobile = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [modalAberto, setModalAberto] = useState("");
-  const [metaParaDeletar, setMetaParaDeletar] = useState(null); // Novo estado para armazenar a meta a ser deletada
+  const [metaParaDeletar, setMetaParaDeletar] = useState(null);
+  const [mostrarTodas, setMostrarTodas] = useState(false);
   const db = getFirestore();
   const auth = getAuth();
   const user = auth.currentUser;
@@ -219,8 +220,33 @@ const GraficoMetas = () => {
 
   // Dentro da renderização, antes de mapear as metas:
   const metasOrdenadas = userData?.metas
-    ? ordenaMetasPorPeriodo(userData.metas)
+    ? userData.metas.sort((a, b) => {
+        const ordem = ["ano", "mes", "semana", "dia"];
+        return ordem.indexOf(a.periodo) - ordem.indexOf(b.periodo);
+      })
     : [];
+
+  // Função para calcular a porcentagem de cada meta
+  const metasComPorcentagem = metasOrdenadas.map((meta) => {
+    const filmesVistosCount =
+      meta.periodo === "mes"
+        ? filmesVistosCountMes
+        : meta.periodo === "ano"
+        ? filmesVistosCountAno
+        : meta.periodo === "semana"
+        ? filmesVistosCountSemana
+        : meta.periodo === "dia"
+        ? filmesVistosCountDia
+        : 0;
+
+    const porcentagem = calcularPorcentagem(meta.quantidade, filmesVistosCount);
+    return { ...meta, porcentagem };
+  });
+
+  // Ordena as metas por porcentagem (maior para menor)
+  const metasMaisProximas = metasComPorcentagem
+    .sort((a, b) => b.porcentagem - a.porcentagem)
+    .slice(0, 3);
 
   if (loading || !userData) return <div>Carregando...</div>;
 
@@ -239,21 +265,20 @@ const GraficoMetas = () => {
             </div>
 
             <div className={styles.headerGrafico}>
-              <div className={styles.metasControle}>
-                {userData && userData.metas && userData.metas.length > 0 && (
-                  <button onClick={() => setModalAberto("adicionar-metas")}>
-                    <img src="icones/add.svg" alt="Adicionar" />
-                    <p>Adicionar meta</p>
+              <div className={styles.verTodas}>
+                {userData && userData.metas && userData.metas.length >= 4 && (
+                  <button onClick={() => setMostrarTodas(!mostrarTodas)}>
+                    <p>{mostrarTodas ? "Ver menos" : "Ver todas"}</p>
                   </button>
                 )}
               </div>
             </div>
           </div>
         </div>
-        {userData && userData.metas && userData.metas.length > 0 ? (
+        {metasMaisProximas.length > 0 ? (
           <div className={styles.RelacaoMes}>
             <ul>
-              {metasOrdenadas.map((meta, index) => {
+              {metasMaisProximas.map((meta, index) => {
                 const filmesVistosCount =
                   meta.periodo === "mes"
                     ? filmesVistosCountMes
@@ -265,10 +290,7 @@ const GraficoMetas = () => {
                     ? filmesVistosCountDia
                     : 0;
 
-                const porcentagem = calcularPorcentagem(
-                  meta.quantidade,
-                  filmesVistosCount
-                );
+                const porcentagem = meta.porcentagem;
 
                 // Verifica se a meta foi concluída
                 const backgroundColor =
@@ -297,7 +319,7 @@ const GraficoMetas = () => {
                       <div
                         className={styles.graficoVertical}
                         style={{
-                          backgroundColor: `${backgroundColor}50`, // "80" é a opacidade em hexadecimal (meio transparente)
+                          backgroundColor: `${backgroundColor}50`, // "50" é a opacidade em hexadecimal (meio transparente)
                         }}
                       >
                         <div
@@ -322,13 +344,90 @@ const GraficoMetas = () => {
                   </li>
                 );
               })}
+
+              {mostrarTodas &&
+                metasComPorcentagem.slice(3).map((meta, index) => {
+                  // A lógica para calcular 'filmesVistosCount' e 'porcentagem' é a mesma para as metas extras
+                  const filmesVistosCount =
+                    meta.periodo === "mes"
+                      ? filmesVistosCountMes
+                      : meta.periodo === "ano"
+                      ? filmesVistosCountAno
+                      : meta.periodo === "semana"
+                      ? filmesVistosCountSemana
+                      : meta.periodo === "dia"
+                      ? filmesVistosCountDia
+                      : 0;
+
+                  const porcentagem = meta.porcentagem;
+                  const backgroundColor =
+                    filmesVistosCount >= meta.quantidade
+                      ? "#33FF88" // Cor para metas concluídas
+                      : colorPalette[(index + 3) % colorPalette.length]; // Cor das metas não concluídas
+
+                  return (
+                    <li key={meta.id}>
+                      {" "}
+                      {/* Usando 'meta.id' para garantir a unicidade da chave */}
+                      <div className={styles.GraficoMetas}>
+                        <div className={styles.periodoHeader}>
+                          <div className={styles.iconeDescricao}>
+                            <div className={styles.descricaoMeta}>
+                              <span>{meta.periodo}</span>
+                            </div>
+                          </div>
+                          <div className={styles.contQuantidade}>
+                            <div className={styles.quantidadeComparador}>
+                              {meta.quantidade && (
+                                <span>{meta.quantidade}</span>
+                              )}
+                              <span>de</span>
+                              <span>{filmesVistosCount}</span>
+                              <span>vistos</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className={styles.graficoVertical}
+                          style={{
+                            backgroundColor: `${backgroundColor}50`, // "50" para opacidade
+                          }}
+                        >
+                          <div
+                            className={styles.graficoPreenchido}
+                            style={{
+                              width: `${porcentagem}%`,
+                              backgroundColor: backgroundColor,
+                            }}
+                          >
+                            <div className={styles.estrado}>
+                              <img src="/icones/estrado-vertical.svg" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className={styles.botaoDeletar}>
+                        <button onClick={() => abrirModalDeletar(meta.id)}>
+                          <img src="icones/deletar.svg" alt="Deletar" />
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })}
             </ul>
+
+            <div className={styles.metasControle}>
+              <button onClick={() => setModalAberto("adicionar-metas")}>
+                <img src="icones/add-mobile.svg" alt="Adicionar" />
+                <p>Adicionar meta</p>
+              </button>
+            </div>
           </div>
         ) : (
           <div className={styles.blankMetas}>
             <p>Bora adicionar algumas metas?</p>
             <button onClick={() => setModalAberto("adicionar-metas")}>
-              <img src="icones/add.svg" alt="Adicionar" />
+              <img src="icones/add-mobile.svg" alt="Adicionar" />
               <p>Adicionar meta</p>
             </button>
           </div>
@@ -353,4 +452,4 @@ const GraficoMetas = () => {
   );
 };
 
-export default GraficoMetas;
+export default GraficoMetasMobile;

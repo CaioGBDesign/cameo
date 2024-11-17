@@ -8,8 +8,8 @@ import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import Titulolistagem from "@/components/titulolistagem";
 import GraficoVistos from "@/components/detalhesfilmes/grafico-vistos";
-import GraficoDatas from "@/components/detalhesfilmes/grafico-datas";
-import GraficoDatasMobile from "@/components/detalhesfilmes/grafico-datas-mobile";
+import GraficoMetas from "@/components/detalhesfilmes/grafico-metas";
+import GraficoMetasMobile from "@/components/detalhesfilmes/grafico-metas-mobile";
 import Private from "@/components/Private";
 import Link from "next/link";
 import FilmesCarousel from "@/components/modais/filmes-carousel";
@@ -213,13 +213,13 @@ const FilmesAssisti = () => {
                     totalFilmesVistos={totalFilmesVistos} // Passando totalFilmesVistos como prop
                   />
                   {isMobile ? (
-                    <GraficoDatasMobile
+                    <GraficoMetasMobile
                       filmesVistos={filmesVistos}
                       totalFilmesVistos={totalFilmesVistos}
                       user={user}
                     />
                   ) : (
-                    <GraficoDatas
+                    <GraficoMetas
                       filmesVistos={filmesVistos}
                       totalFilmesVistos={totalFilmesVistos}
                       user={user}

@@ -11,7 +11,6 @@ import TitulosFilmes from "@/components/titulosfilmes";
 import NotasFilmes from "@/components/botoes/notas";
 import Sinopse from "@/components/detalhesfilmes/sinopse";
 import Servicos from "@/components/detalhesfilmes/servicos";
-import Dublagem from "@/components/detalhesfilmes/dublagem";
 import Elenco from "@/components/detalhesfilmes/elenco";
 import Direcao from "@/components/detalhesfilmes/direcao";
 import BaseBotoes from "@/components/botoes/base";

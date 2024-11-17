@@ -1,17 +1,24 @@
 .favoritarFilme {
-  background: rgba(255, 255, 255, 0.062745098);
-  border-radius: 5px;
-
-  padding: 11px 5px;
-
   button {
     display: flex;
     justify-content: center;
     align-items: center;
 
-    background: none;
+    background: rgba(255, 255, 255, 0.062745098);
     border: none;
+    border-radius: 10px;
 
-    cursor: pointer;
+    width: 47px;
+    height: 47px;
+
+    @media only screen and (min-width: 600px) {
+      cursor: pointer;
+
+      transition: 0.2s;
+
+      &:hover {
+        border-radius: 0px;
+      }
+    }
   }
 }

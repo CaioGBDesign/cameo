@@ -7,6 +7,9 @@
     background: none;
     border: none;
 
+    margin: 0;
+    padding: 0;
+
     cursor: pointer;
 
     .paraVer {
@@ -16,13 +19,22 @@
       gap: 10px;
 
       background: rgba(255, 255, 255, 0.062745098);
-      border-radius: 5px;
+      border-radius: 10px;
 
-      padding: 13px 10px;
+      width: 130px;
+      height: 47px;
 
       span {
         font-size: 14px;
         color: white;
+      }
+
+      @media only screen and (min-width: 600px) {
+        transition: 0.2s;
+
+        &:hover {
+          border-radius: 0px;
+        }
       }
     }
   }

@@ -28,4 +28,10 @@
   &:active {
     transform: translateY(5px);
   }
+
+  &:hover {
+    width: 80px;
+
+    border-radius: 0px;
+  }
 }

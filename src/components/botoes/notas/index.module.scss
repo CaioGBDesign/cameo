@@ -3,8 +3,6 @@
   justify-content: center;
   align-items: center;
 
-  margin: 0 -5px;
-
   button {
     display: flex;
     justify-content: center;
@@ -13,13 +11,29 @@
     background: none;
     border: none;
 
+    margin: 0;
+    padding: 0;
+
     cursor: pointer;
 
     .estrelas {
-      border: solid #ffffff30 1px;
-      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-      padding: 14px 20px;
+      border: solid #ffffff30 1px;
+      border-radius: 10px;
+
+      width: 130px;
+      height: 45px;
+
+      @media only screen and (min-width: 600px) {
+        transition: 0.2s;
+
+        &:hover {
+          border-radius: 0px;
+        }
+      }
     }
   }
 }

@@ -596,15 +596,6 @@ function AuthProvider({ children }) {
       });
 
       console.log("Meta adicionada com sucesso no Firebase!");
-      toast.success("Meta criada com sucesso!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "dark", // Mude para "dark" se quiser o fundo escuro
-      });
     } catch (error) {
       console.error("Erro ao adicionar a meta no Firebase:", error);
     }
@@ -657,6 +648,38 @@ function AuthProvider({ children }) {
     }
   };
 
+  const atualizarMeta = async (metaAtualizada) => {
+    const user = auth.currentUser;
+    if (!user) throw new Error("Usuário não autenticado");
+
+    const userRef = doc(db, "users", user.uid);
+
+    try {
+      const userSnapshot = await getDoc(userRef);
+      if (userSnapshot.exists()) {
+        const metas = userSnapshot.data().metas || [];
+
+        // Filtrar a meta original a ser atualizada
+        const novasMetas = metas.map((meta) =>
+          meta.id === metaAtualizada.id
+            ? {
+                id: meta.id, // Preserva o ID
+                periodo: metaAtualizada.periodo,
+                quantidade: metaAtualizada.quantidade,
+              }
+            : meta
+        );
+
+        // Atualiza o documento no Firestore
+        await updateDoc(userRef, { metas: novasMetas });
+        console.log("Meta atualizada com sucesso!");
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar meta no Firebase:", error);
+      throw error;
+    }
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -680,6 +703,7 @@ function AuthProvider({ children }) {
         setUser,
         adicionarMeta,
         removerMeta,
+        atualizarMeta,
       }}
     >
       {children}

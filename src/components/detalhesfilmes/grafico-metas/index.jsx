@@ -4,14 +4,16 @@ import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { updateDoc, arrayRemove } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import AdicionarMeta from "@/components/modais/adicionar-metas";
+import AlterarMeta from "@/components/modais/alterar-metas";
 import DeletarMetas from "@/components/modais/deletar-metas";
-import VerTodas from "@/components/modais/ver-todas";
 
-const GraficoMetasMobile = () => {
+const GraficoMetas = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [modalAberto, setModalAberto] = useState("");
-  const [metaParaDeletar, setMetaParaDeletar] = useState(null); // Novo estado para armazenar a meta a ser deletada
+  const [metaParaDeletar, setMetaParaDeletar] = useState(null);
+  const [metaSelecionada, setMetaSelecionada] = useState(null);
+
   const db = getFirestore();
   const auth = getAuth();
   const user = auth.currentUser;
@@ -223,27 +225,14 @@ const GraficoMetasMobile = () => {
     ? ordenaMetasPorPeriodo(userData.metas)
     : [];
 
-  // Função para calcular a porcentagem de cada meta
-  const metasComPorcentagem = metasOrdenadas.map((meta) => {
-    const filmesVistosCount =
-      meta.periodo === "mes"
-        ? filmesVistosCountMes
-        : meta.periodo === "ano"
-        ? filmesVistosCountAno
-        : meta.periodo === "semana"
-        ? filmesVistosCountSemana
-        : meta.periodo === "dia"
-        ? filmesVistosCountDia
-        : 0;
-
-    const porcentagem = calcularPorcentagem(meta.quantidade, filmesVistosCount);
-    return { ...meta, porcentagem };
-  });
-
-  // Ordena as metas por porcentagem (maior para menor)
-  const metasMaisProximas = metasComPorcentagem
-    .sort((a, b) => b.porcentagem - a.porcentagem)
-    .slice(0, 3);
+  const atualizarMetaLocal = (metaAtualizada) => {
+    setUserData((prevData) => {
+      const metasAtualizadas = prevData.metas.map((meta) =>
+        meta.id === metaAtualizada.id ? metaAtualizada : meta
+      );
+      return { ...prevData, metas: metasAtualizadas };
+    });
+  };
 
   if (loading || !userData) return <div>Carregando...</div>;
 
@@ -262,20 +251,21 @@ const GraficoMetasMobile = () => {
             </div>
 
             <div className={styles.headerGrafico}>
-              {userData && userData.metas && userData.metas.length > 0 && (
-                <div className={styles.verTodas}>
-                  <button onClick={() => setModalAberto("ver-todas")}>
-                    <p>Ver todas</p>
+              <div className={styles.metasControle}>
+                {userData && userData.metas && userData.metas.length > 0 && (
+                  <button onClick={() => setModalAberto("adicionar-metas")}>
+                    <img src="icones/add.svg" alt="Adicionar" />
+                    <p>Adicionar meta</p>
                   </button>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>
-        {metasMaisProximas.length > 0 ? (
+        {userData && userData.metas && userData.metas.length > 0 ? (
           <div className={styles.RelacaoMes}>
             <ul>
-              {metasMaisProximas.map((meta, index) => {
+              {metasOrdenadas.map((meta, index) => {
                 const filmesVistosCount =
                   meta.periodo === "mes"
                     ? filmesVistosCountMes
@@ -287,7 +277,10 @@ const GraficoMetasMobile = () => {
                     ? filmesVistosCountDia
                     : 0;
 
-                const porcentagem = meta.porcentagem;
+                const porcentagem = calcularPorcentagem(
+                  meta.quantidade,
+                  filmesVistosCount
+                );
 
                 // Verifica se a meta foi concluída
                 const backgroundColor =
@@ -297,7 +290,13 @@ const GraficoMetasMobile = () => {
 
                 return (
                   <li key={index}>
-                    <div className={styles.GraficoMetas}>
+                    <div
+                      className={styles.GraficoMetas}
+                      onClick={() => {
+                        setMetaSelecionada(meta); // Define a meta atual no estado
+                        setModalAberto("alterar-metas"); // Abre o modal
+                      }}
+                    >
                       <div className={styles.periodoHeader}>
                         <div className={styles.iconeDescricao}>
                           <div className={styles.descricaoMeta}>
@@ -316,7 +315,7 @@ const GraficoMetasMobile = () => {
                       <div
                         className={styles.graficoVertical}
                         style={{
-                          backgroundColor: `${backgroundColor}50`, // "50" é a opacidade em hexadecimal (meio transparente)
+                          backgroundColor: `${backgroundColor}50`, // "80" é a opacidade em hexadecimal (meio transparente)
                         }}
                       >
                         <div
@@ -342,19 +341,12 @@ const GraficoMetasMobile = () => {
                 );
               })}
             </ul>
-
-            <div className={styles.metasControle}>
-              <button onClick={() => setModalAberto("adicionar-metas")}>
-                <img src="icones/add-mobile.svg" alt="Adicionar" />
-                <p>Adicionar meta</p>
-              </button>
-            </div>
           </div>
         ) : (
           <div className={styles.blankMetas}>
             <p>Bora adicionar algumas metas?</p>
             <button onClick={() => setModalAberto("adicionar-metas")}>
-              <img src="icones/add-mobile.svg" alt="Adicionar" />
+              <img src="icones/add.svg" alt="Adicionar" />
               <p>Adicionar meta</p>
             </button>
           </div>
@@ -368,6 +360,14 @@ const GraficoMetasMobile = () => {
         />
       )}
 
+      {modalAberto === "alterar-metas" && (
+        <AlterarMeta
+          onClose={() => setModalAberto(null)}
+          meta={metaSelecionada}
+          onAlterarMeta={atualizarMetaLocal} // Passa a função corretamente
+        />
+      )}
+
       {modalAberto === "deletar-metas" && (
         <DeletarMetas
           meta={userData.metas.find((meta) => meta.id === metaParaDeletar)}
@@ -375,20 +375,8 @@ const GraficoMetasMobile = () => {
           onConfirmar={() => removerMeta(metaParaDeletar)}
         />
       )}
-
-      {modalAberto === "ver-todas" && (
-        <VerTodas
-          metas={metasOrdenadas}
-          filmesVistosCountDia={filmesVistosCountDia}
-          filmesVistosCountSemana={filmesVistosCountSemana}
-          filmesVistosCountMes={filmesVistosCountMes}
-          filmesVistosCountAno={filmesVistosCountAno}
-          colorPalette={colorPalette} // Passando a colorPalette como prop
-          onClose={() => setModalAberto(null)}
-        />
-      )}
     </div>
   );
 };
 
-export default GraficoMetasMobile;
+export default GraficoMetas;

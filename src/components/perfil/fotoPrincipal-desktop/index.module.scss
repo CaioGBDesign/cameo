@@ -48,6 +48,8 @@
       justify-content: center;
       align-items: center;
 
+      cursor: pointer;
+
       z-index: 1;
 
       img {
@@ -63,6 +65,8 @@
 
       width: 75px;
       height: 75px;
+
+      cursor: pointer;
 
       @media only screen and (max-width: 600px) {
         width: 100px;

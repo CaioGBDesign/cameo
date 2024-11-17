@@ -6,7 +6,7 @@ import { db, storage } from "@/services/firebaseConection";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { toast } from "react-toastify";
-import FotoPrincipalDesktop from "@/components/perfil/fotoPrincipal";
+import FotoPrincipalDesktop from "@/components/perfil/fotoPrincipal-desktop";
 import NomeUsuario from "@/components/perfil/nomeUsuario";
 import Handle from "@/components/perfil/handle";
 import Private from "@/components/Private";
@@ -18,7 +18,8 @@ const DadosPessoaisModalDesktop = ({ closeModal, isClosing }) => {
   const [handle, setHandle] = useState(user ? user.handle : "");
   const [genero, setGenero] = useState(user ? user.genero : "");
   const [estilo, setEstilo] = useState(user ? user.estilo : "");
-  const [avatarUrl, setAvatarUrl] = useState(user ? user.avatarUrl : ""); // URL da foto
+  const [avatarUrl, setAvatarUrl] = useState(user && user.avatarUrl);
+  const nomeUsuario = user && user.nome ? user.nome : "Nome de Usuário";
   const [imageAvatar, setImageAvatar] = useState(null); // Estado para o arquivo da imagem
   const [alteracoesPendentes, setAlteracoesPendentes] = useState(false);
   const modalRef = useRef(null);
@@ -165,17 +166,11 @@ const DadosPessoaisModalDesktop = ({ closeModal, isClosing }) => {
 
           <div className={styles.FotoNomeHandle}>
             <FotoPrincipalDesktop
-              foto={avatarUrl}
-              onClick={() => document.getElementById("fileInput").click()}
+              avatarUrl={avatarUrl}
+              nomeUsuario={nomeUsuario}
+              handleFile={handleFile}
             />
 
-            <input
-              type="file"
-              id="fileInput"
-              accept="image/*"
-              style={{ display: "none" }}
-              onChange={handleFile}
-            />
             <div className={styles.NomeHandle}>
               <NomeUsuario />
               <Handle />

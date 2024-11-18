@@ -29,9 +29,11 @@
     transform: translateY(5px);
   }
 
-  &:hover {
-    width: 80px;
+  @media only screen and (min-width: 600px) {
+    &:hover {
+      width: 80px;
 
-    border-radius: 0px;
+      border-radius: 0px;
+    }
   }
 }

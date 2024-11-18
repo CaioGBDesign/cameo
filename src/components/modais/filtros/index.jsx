@@ -420,27 +420,16 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
     <>
       {modalVisible && (
         <div className={styles.modal}>
-          {isMobile ? null : (
-            <HeaderModal
-              onClick={onClose}
-              titulo="Filtros"
-              icone={"/icones/filtros-cameo-02.png"}
-              altIcone={"Filtros Cameo"}
-            />
-          )}
+          <HeaderModal
+            onClick={onClose}
+            titulo="Filtros"
+            icone={"/icones/filtros-cameo-02.png"}
+            altIcone={"Filtros Cameo"}
+          />
           <div
             ref={modalRef}
             className={`${styles.contModal} ${closing && styles.close}`}
           >
-            {isMobile ? (
-              <HeaderModal
-                onClick={onClose}
-                titulo="Filtros"
-                icone={"/icones/filtros-cameo-02.png"}
-                altIcone={"Filtros Cameo"}
-                showBotaoFechar={false}
-              />
-            ) : null}
             {isLoggedIn && (
               <>
                 <div className={styles.separador}>

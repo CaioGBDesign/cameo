@@ -231,19 +231,23 @@
             }
 
             .redefinirSenha {
-              width: 45%;
+              width: 48%;
               height: 50px;
 
               background: #3b2544;
 
               border: none;
-              border-radius: 50px;
+              border-radius: 10px;
 
               display: flex;
               justify-content: center;
               align-items: center;
 
               transition: 0.2s;
+
+              &:hover {
+                border-radius: 0px;
+              }
 
               button {
                 color: white;
@@ -284,7 +288,7 @@
               color: white;
 
               border: none;
-              border-radius: 50px;
+              border-radius: 10px;
 
               font-size: 20px;
               text-align: center;
@@ -301,6 +305,8 @@
 
               &:hover {
                 width: 37%;
+
+                border-radius: 0px;
               }
 
               &:active {

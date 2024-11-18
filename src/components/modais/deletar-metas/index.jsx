@@ -30,9 +30,9 @@ const DeletarMetas = ({ meta, onClose, onConfirmar }) => {
   }, [onClose]);
 
   return (
-    <div className={styles.modal}>
+    <div className={styles.modal} ref={modalRef}>
       <HeaderModal onClose={onClose} />
-      <div className={styles.modalContainer} ref={modalRef}>
+      <div className={styles.modalContainer}>
         <div className={styles.botoesModal}>
           <div className={styles.tituloModal}>
             <div className={styles.tituloFilme}>

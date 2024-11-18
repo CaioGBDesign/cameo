@@ -334,7 +334,7 @@ const GraficoMetas = () => {
 
                     <div className={styles.botaoDeletar}>
                       <button onClick={() => abrirModalDeletar(meta.id)}>
-                        <img src="icones/deletar.svg" alt="Deletar" />
+                        <img src="/icones/deletar.svg" alt="Deletar" />
                       </button>
                     </div>
                   </li>

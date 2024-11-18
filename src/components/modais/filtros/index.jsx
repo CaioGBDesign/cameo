@@ -1,7 +1,8 @@
 import styles from "./index.module.scss";
 import React, { useEffect, useRef, useState } from "react";
 import { useIsMobile } from "@/components/DeviceProvider";
-import streamingServices from "@/components/listas/streamings/streaming.json"; // Importe a lista de serviços
+import streamingServices from "@/components/listas/streamings/streaming.json";
+import HeaderModal from "@/components/modais/header-modais";
 
 // Lista estática de países
 const countriesList = [
@@ -420,23 +421,28 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
       {modalVisible && (
         <div className={styles.modal}>
           {isMobile ? null : (
-            <div className={styles.fecharDesktop}>
-              <button onClick={closeModal}>
-                <img src="/icones/fechar-filtros.svg" />
-              </button>
-            </div>
+            <HeaderModal
+              onClick={onClose}
+              titulo="Filtros"
+              icone={"/icones/filtros-cameo-02.png"}
+              altIcone={"Filtros Cameo"}
+            />
           )}
           <div
             ref={modalRef}
             className={`${styles.contModal} ${closing && styles.close}`}
           >
+            {isMobile ? (
+              <HeaderModal
+                onClick={onClose}
+                titulo="Filtros"
+                icone={"/icones/filtros-cameo-02.png"}
+                altIcone={"Filtros Cameo"}
+                showBotaoFechar={false}
+              />
+            ) : null}
             {isLoggedIn && (
               <>
-                {isMobile ? null : (
-                  <div className={styles.tituloFiltros}>
-                    <h2>Filtros</h2>
-                  </div>
-                )}
                 <div className={styles.separador}>
                   <h3>Exibir filmes que</h3>
 

@@ -66,23 +66,26 @@
 
     .imagemCapa {
       @media only screen and (min-width: 600px) {
-        width: 500px;
+        width: 100%;
+        height: 150px;
+        display: flex;
+        justify-content: end;
       }
 
       @media only screen and (max-width: 600px) {
         width: 40%;
-
         display: flex;
         justify-content: end;
       }
 
       img {
         @media only screen and (min-width: 600px) {
-          width: 100%;
+          width: auto;
         }
 
         @media only screen and (max-width: 600px) {
-          width: 300px;
+          width: 460%;
+          margin-right: -50px;
         }
       }
     }

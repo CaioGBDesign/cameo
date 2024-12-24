@@ -424,7 +424,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
           className={`${styles.modal} ${closing && styles.close}`}
         >
           <HeaderModal
-            closeHandler={closeModal}
+            onClose={closeModal}
             titulo="Filtros"
             icone={"/icones/filtros-cameo-02.png"}
             altIcone={"Filtros Cameo"}

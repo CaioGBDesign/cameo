@@ -75,21 +75,12 @@ const AdicionarMeta = ({ onClose, nomeBotao }) => {
         className={styles.modalContent}
         ref={modalRef} // Atribui a referência ao modal
       >
-        {isMobile ? (
-          <HeaderModal onClose={onClose} titulo={"Adicionar meta"} />
-        ) : (
-          <div className={styles.fecharDesktop}>
-            <button className={styles.closeButton} onClick={onClose}>
-              <img src="/icones/fechar-filtros.svg" />
-            </button>
-          </div>
-        )}
-
-        {isMobile ? null : (
-          <div className={styles.tituloMetas}>
-            <h2>Adicionar Meta</h2>
-          </div>
-        )}
+        <HeaderModal
+          onClose={onClose}
+          titulo="Adicionar Meta"
+          icone={"/icones/metas-cameo-02.png"}
+          altIcone={"Metas Cameo"}
+        />
 
         <form onSubmit={handleSubmit}>
           <div className={styles.criacaoMeta}>

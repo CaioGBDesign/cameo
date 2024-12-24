@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/contexts/auth";
 import styles from "./index.module.scss";
 import { useIsMobile } from "@/components/DeviceProvider";
+import HeaderModal from "@/components/modais/header-modais";
 
 const ModalAvaliar = ({ filmeId, nota, onClose }) => {
   // define se desktop ou mobile
@@ -43,23 +44,13 @@ const ModalAvaliar = ({ filmeId, nota, onClose }) => {
   return (
     <div className={styles.modal}>
       <div className={styles.modalContainer} ref={modalRef}>
-        {isMobile ? null : (
-          <div className={styles.fecharDesktop}>
-            <button onClick={onClose}>
-              <img src="/icones/fechar-filtros.svg" />
-            </button>
-          </div>
-        )}
+        <HeaderModal
+          onClose={onClose}
+          titulo="Avaliar filme"
+          icone={"/icones/filtros-cameo-02.png"}
+          altIcone={"Filtros Cameo"}
+        />
         <div className={styles.contModal}>
-          <div className={styles.tituloModal}>
-            <h2>Avaliar Filme</h2>
-            {isMobile ? (
-              <button onClick={onClose}>
-                <img src="/icones/close.svg" alt="" />
-              </button>
-            ) : null}
-          </div>
-
           <div className={styles.contEstrelas}>
             <div className={styles.notaEscala}>
               <span>Não gostei</span>

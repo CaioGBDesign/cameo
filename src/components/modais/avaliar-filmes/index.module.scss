@@ -151,6 +151,11 @@
           justify-content: center;
           gap: 50px;
 
+          @media only screen and (min-width: 600px) {
+            align-items: end;
+            height: 50px;
+          }
+
           @media only screen and (max-width: 600px) {
             justify-content: space-between;
             gap: initial;
@@ -160,6 +165,13 @@
             width: 40px;
             height: 40px;
             cursor: pointer;
+
+            transition: 0.2s;
+
+            &:hover {
+              width: 45px;
+              height: 45px;
+            }
           }
         }
       }

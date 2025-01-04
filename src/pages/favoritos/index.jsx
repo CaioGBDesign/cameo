@@ -177,7 +177,7 @@ const Favoritos = () => {
                   <Titulolistagem
                     quantidadeFilmes={filmesFavoritos.length}
                     titulolistagem={"Meus favoritos"}
-                    configuracoes={true}
+                    configuracoes={false}
                     handleRemoverClick={handleRemoverClick}
                   ></Titulolistagem>
                   <div className={styles.listaFilmes}>

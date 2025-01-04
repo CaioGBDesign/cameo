@@ -427,8 +427,10 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
             onClose={closeModal}
             titulo="Filtros"
             icone={"/icones/filtros-cameo-02.png"}
+            iconeMobile={"/icones/filtros-cameo-mobile-01.png"}
             altIcone={"Filtros Cameo"}
           />
+
           <div className={styles.contModal}>
             {isLoggedIn && (
               <>

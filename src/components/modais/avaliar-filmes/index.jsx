@@ -47,7 +47,8 @@ const ModalAvaliar = ({ filmeId, nota, onClose }) => {
         <HeaderModal
           onClose={onClose}
           titulo="Avaliar filme"
-          icone={"/icones/filtros-cameo-02.png"}
+          icone={"/icones/avaliacao-cameo-desktop-01.png"}
+          iconeMobile={"/icones/avaliacao-cameo-mobile-01.png"}
           altIcone={"Filtros Cameo"}
         />
         <div className={styles.contModal}>
@@ -71,7 +72,7 @@ const ModalAvaliar = ({ filmeId, nota, onClose }) => {
             </div>
           </div>
 
-          <button onClick={handleSubmit}>Enviar Avaliação</button>
+          <button onClick={handleSubmit}>Confirmar avaliação</button>
         </div>
       </div>
     </div>

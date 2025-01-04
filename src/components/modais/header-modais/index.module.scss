@@ -53,40 +53,43 @@
     justify-content: space-between;
     align-items: center;
 
-    width: 85%;
+    width: 100%;
     height: 150px;
 
     overflow: hidden;
 
     z-index: 1;
 
+    @media only screen and (min-width: 600px) {
+      min-width: 560px;
+    }
+
     @media only screen and (max-width: 600px) {
       height: 100px;
+
+      position: relative;
     }
 
     .imagemCapa {
       @media only screen and (min-width: 600px) {
-        width: 80%;
+        width: 100%;
         height: 150px;
         display: flex;
+        position: absolute;
         justify-content: end;
       }
 
       @media only screen and (max-width: 600px) {
-        width: 40%;
+        width: 100%;
+        height: 100px;
         display: flex;
         justify-content: end;
+
+        position: absolute;
       }
 
       img {
-        @media only screen and (min-width: 600px) {
-          width: auto;
-        }
-
-        @media only screen and (max-width: 600px) {
-          width: 460%;
-          margin-right: -50px;
-        }
+        width: auto;
       }
     }
 
@@ -95,6 +98,10 @@
       font-weight: bold;
 
       color: #fff;
+
+      margin-left: 7%;
+
+      z-index: 1;
     }
   }
 }

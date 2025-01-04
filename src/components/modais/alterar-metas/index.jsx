@@ -58,21 +58,12 @@ const AlterarMeta = ({ onClose, meta = {}, onAlterarMeta }) => {
   return (
     <div className={styles.contMetas}>
       <div className={styles.modalContent} ref={modalRef}>
-        {isMobile ? (
-          <HeaderModal onClose={onClose} titulo="Alterar Meta" />
-        ) : (
-          <div className={styles.fecharDesktop}>
-            <button className={styles.closeButton} onClick={onClose}>
-              <img src="/icones/fechar-filtros.svg" alt="Fechar" />
-            </button>
-          </div>
-        )}
-
-        {!isMobile && (
-          <div className={styles.tituloMetas}>
-            <h2>Alterar Meta</h2>
-          </div>
-        )}
+        <HeaderModal
+          onClose={onClose}
+          titulo="Alterar Meta"
+          icone={"/icones/alterar-metas-cameo-02.png"}
+          altIcone={"Metas Cameo"}
+        />
 
         <form onSubmit={handleSubmit}>
           <div className={styles.criacaoMeta}>

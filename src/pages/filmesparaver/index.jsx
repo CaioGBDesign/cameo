@@ -175,6 +175,7 @@ const FilmesParaVer = () => {
                   <Titulolistagem
                     quantidadeFilmes={assistirFilme.length}
                     titulolistagem={"Filmes para assistir"}
+                    configuracoes={false}
                     handleRemoverClick={handleRemoverClick}
                   />
                   <div className={styles.listaFilmes}>

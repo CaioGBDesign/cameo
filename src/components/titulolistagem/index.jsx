@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import styles from "./index.module.scss";
 
-const Titulolistagem = ({ quantidadeFilmes, titulolistagem }) => {
+const Titulolistagem = ({
+  quantidadeFilmes,
+  titulolistagem,
+  configuracoes = true,
+}) => {
   return (
     <div className={styles.titulolistagem}>
       <div className={styles.quantidade}>
@@ -9,11 +13,13 @@ const Titulolistagem = ({ quantidadeFilmes, titulolistagem }) => {
         <span className={styles.tituloPagina}>{titulolistagem}</span>
       </div>
 
-      <div className={styles.botoes}>
-        <div className={styles.filtros}>
-          <img src="icones/filtros.svg" alt="" />
+      {configuracoes && (
+        <div className={styles.botoes}>
+          <div className={styles.filtros}>
+            <img src="icones/filtros.svg" alt="" />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

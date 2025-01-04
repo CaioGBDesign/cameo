@@ -177,7 +177,7 @@ const FilmesAssisti = () => {
                     <Titulolistagem
                       quantidadeFilmes={filmesVistos.length}
                       titulolistagem={"Filmes que já assisti"}
-                      configuracoes={true}
+                      configuracoes={false}
                       handleRemoverClick={handleRemoverClick}
                     />
                     <div className={styles.listaFilmes}>

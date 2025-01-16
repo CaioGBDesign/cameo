@@ -3,12 +3,11 @@ import React, { useState, useEffect } from "react";
 import { useIsMobile } from "@/components/DeviceProvider";
 import Head from "next/head";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import FotoPrincipal from "@/components/perfil/fotoPrincipal";
 import NomeUsuario from "@/components/perfil/nomeUsuario";
 import Handle from "@/components/perfil/handle";
-import Compartilhar from "@/components/botoes/compartilhar";
-import Rede from "@/components/perfil/rede";
 import CardsPerfil from "@/components/perfil/cards";
 import FundoTitulos from "@/components/fundotitulos";
 import SalvarFoto from "@/components/modais/salvarfoto";
@@ -126,6 +125,10 @@ const PerfilUsuario = () => {
                 </div>
               </div>
             </div>
+
+            <Footer
+              style={{ backgroundColor: "#210C2A", paddingBottom: "50px" }}
+            />
           </div>
         </div>
 
@@ -133,6 +136,9 @@ const PerfilUsuario = () => {
           exibirPlay={false}
           capaAssistidos={"/background/background-cameo-perfil.png"}
           tituloAssistidos={"background"}
+          style={{
+            height: "600px",
+          }}
         ></FundoTitulos>
 
         {modalAberto && <SalvarFoto onClose={() => setModalAberto(false)} />}

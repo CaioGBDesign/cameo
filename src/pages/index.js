@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import { useIsMobile } from "@/components/DeviceProvider";
 import Head from "next/head";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import styles from "@/styles/index.module.scss";
 import TitulosFilmes from "@/components/titulosfilmes";
@@ -247,7 +248,9 @@ const Home = () => {
                       : "Gênero não disponível"
                   }
                   duracaofilme={
-                    filme && filme.runtime
+                    isMobile
+                      ? null
+                      : filme && filme.runtime
                       ? formatDuration(filme.runtime)
                       : null
                   }
@@ -268,6 +271,22 @@ const Home = () => {
                   }`}
                   trailerLink={trailerLink || "#"}
                 />
+
+                {isMobile ? (
+                  <div className={styles.DuracaoLancamentoMobile}>
+                    <p>
+                      {filme && filme.runtime
+                        ? formatDuration(filme.runtime)
+                        : null}
+                    </p>
+                    <p>•</p>
+                    <p>
+                      {filme && filme.release_date
+                        ? new Date(filme.release_date).getFullYear()
+                        : "Data de lançamento não disponível"}
+                    </p>
+                  </div>
+                ) : null}
 
                 {!isMobile && filme && filme.overview ? (
                   <Sinopse sinopse={filme.overview} />
@@ -447,6 +466,16 @@ const Home = () => {
               />
             </div>
           </div>
+
+          {isMobile ? (
+            <Footer
+              style={{ backgroundColor: "#210C2A", paddingBottom: "160px" }}
+            />
+          ) : (
+            <Footer
+              style={{ backgroundColor: "transparent", paddingBottom: "0px" }}
+            />
+          )}
         </div>
         <BaseBotoes
           TextoBotao={"Filme aleatório"}
@@ -464,6 +493,9 @@ const Home = () => {
               }`}
               tituloAssistidos={filme ? filme.title : "Título não disponível"}
               trailerLink={trailerLink || "#"}
+              style={{
+                height: "600px",
+              }}
             />
           </Suspense>
         ) : (

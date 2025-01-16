@@ -31,11 +31,11 @@
 
     padding: 40px 0px;
 
-    margin-bottom: 120px;
-
     position: relative;
 
     @media only screen and (max-width: 600px) {
+      margin-bottom: 0px;
+
       background: #250d2f;
 
       &::after {
@@ -70,6 +70,19 @@
 
         @media only screen and (max-width: 600px) {
           align-items: center;
+        }
+
+        .DuracaoLancamentoMobile {
+          display: flex;
+          justify-content: center;
+          gap: 10px;
+
+          p {
+            font-size: 14px;
+            font-weight: 200;
+            color: white;
+            text-align: center;
+          }
         }
 
         .NotasFavoritos {

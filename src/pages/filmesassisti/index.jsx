@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/auth";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import Titulolistagem from "@/components/titulolistagem";
 import GraficoVistos from "@/components/detalhesfilmes/grafico-vistos";
@@ -227,6 +228,19 @@ const FilmesAssisti = () => {
                   )}
                 </div>
               </div>
+
+              {isMobile ? (
+                <Footer
+                  style={{ backgroundColor: "#210C2A", paddingBottom: "50px" }}
+                />
+              ) : (
+                <Footer
+                  style={{
+                    backgroundColor: "transparent",
+                    paddingBottom: "0px",
+                  }}
+                />
+              )}
             </div>
             {isMobile ? (
               filmeAleatorio ? (
@@ -236,6 +250,9 @@ const FilmesAssisti = () => {
                     capaAssistidos={`https://image.tmdb.org/t/p/original/${filmeAleatorio.poster_path}`}
                     tituloAssistidos={filmeAleatorio.title}
                     opacidade={0.2}
+                    style={{
+                      height: "440px",
+                    }}
                   />
                 </Suspense>
               ) : null

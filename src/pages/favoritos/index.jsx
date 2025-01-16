@@ -4,6 +4,7 @@ import { useEffect, useState, lazy, Suspense } from "react";
 import { useAuth } from "@/contexts/auth";
 import Head from "next/head";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import NotasFilmes from "@/components/botoes/notas";
 import TitulosFilmes from "@/components/titulosfilmes";
@@ -203,6 +204,19 @@ const Favoritos = () => {
                   </div>
                 </div>
               </div>
+
+              {isMobile ? (
+                <Footer
+                  style={{ backgroundColor: "#210C2A", paddingBottom: "50px" }}
+                />
+              ) : (
+                <Footer
+                  style={{
+                    backgroundColor: "transparent",
+                    paddingBottom: "0px",
+                  }}
+                />
+              )}
             </div>
             {isMobile ? (
               filmeAleatorio ? (
@@ -212,6 +226,9 @@ const Favoritos = () => {
                     capaAssistidos={`https://image.tmdb.org/t/p/original/${filmeAleatorio.poster_path}`}
                     tituloAssistidos={filmeAleatorio.title}
                     opacidade={0.2}
+                    style={{
+                      height: "440px",
+                    }}
                   />
                 </Suspense>
               ) : null

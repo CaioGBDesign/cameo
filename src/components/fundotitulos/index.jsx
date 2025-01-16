@@ -10,9 +10,10 @@ const FundoTitulos = ({
   tituloAssistidos,
   trailerLink,
   opacidade = 1,
+  style = {},
 }) => {
   return (
-    <div className={styles.contCapa}>
+    <div className={styles.contCapa} style={style}>
       {exibirPlay && trailerLink && (
         <div className={styles.play}>
           <BotaoPlay linkTrailer={trailerLink}></BotaoPlay>

@@ -114,8 +114,7 @@ const Home = () => {
 
     const fetchData = async () => {
       try {
-        const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
-        const filmeUrl = `https://api.themoviedb.org/3/movie/${filmeId}?api_key=${apiKey}&language=pt-BR&append_to_response=videos,release_dates`;
+        const filmeUrl = `https://api.themoviedb.org/3/movie/${filmeId}?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR&append_to_response=videos,release_dates`;
         const filmeData = await fetch(filmeUrl).then((response) =>
           response.json()
         );

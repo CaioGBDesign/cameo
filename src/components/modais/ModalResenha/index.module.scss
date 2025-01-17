@@ -1,0 +1,134 @@
+.modal {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 999;
+
+  width: 100%;
+  height: 100vh;
+
+  animation: BG 0.3s ease-out;
+
+  /* width */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media only screen and (max-width: 600px) {
+    justify-content: end;
+  }
+
+  .ModalResenha {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background: #1f0928;
+    border-radius: 30px;
+    border: solid #ffffff50 1px;
+
+    width: 912px;
+
+    overflow: scroll;
+    animation: OpenUp 0.3s ease-out;
+    animation-fill-mode: forwards;
+
+    position: relative;
+
+    @media only screen and (min-width: 600px) {
+      @keyframes OpenUp {
+        from {
+          opacity: 0;
+          transform: scale(1.1);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+    }
+
+    @media only screen and (max-width: 600px) {
+      @keyframes OpenUp {
+        from {
+          transform: translateY(100%);
+        }
+        to {
+          transform: translateY(0);
+        }
+      }
+
+      width: 100%;
+
+      border-radius: 15px 15px 0px 0px;
+
+      .contModal {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 30px;
+
+        width: 80%;
+
+        padding: 40px;
+
+        @media only screen and (min-width: 600px) {
+          align-items: center;
+        }
+
+        .tituloResenha {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+
+          color: #fff;
+          font-size: 16px;
+          font-weight: 300;
+
+          p {
+            font-weight: bold;
+          }
+        }
+
+        textarea {
+          width: 100%;
+          height: 150px;
+          background: none;
+          border: none;
+
+          color: #ffffff;
+          opacity: 0.5;
+
+          &::placeholder {
+            color: #fff;
+          }
+        }
+
+        button {
+          width: 100%;
+          height: 50px;
+
+          background: #3b2544;
+          color: white;
+          border: none;
+          border-radius: 10px;
+
+          font-size: 20px;
+          text-align: center;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          transition: 0.2s;
+
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

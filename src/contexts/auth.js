@@ -488,13 +488,17 @@ function AuthProvider({ children }) {
     }
   }
 
-  async function darNota(filmeId, nota) {
+  async function darNota(filmeId, nota, comentario) {
     if (!user) {
       console.error("Usuário não autenticado");
       return;
     }
 
-    if (typeof filmeId !== "string" || typeof nota !== "number") {
+    if (
+      typeof filmeId !== "string" ||
+      typeof nota !== "number" ||
+      typeof comentario !== "string"
+    ) {
       console.error(
         "O ID do filme deve ser uma string e a nota deve ser um número."
       );
@@ -502,6 +506,7 @@ function AuthProvider({ children }) {
     }
 
     const userRef = doc(db, "users", user.uid);
+    const filmeRef = doc(db, "filmes", filmeId);
 
     try {
       const docSnap = await getDoc(userRef);
@@ -519,7 +524,17 @@ function AuthProvider({ children }) {
       await updateDoc(userRef, {
         [`visto.${filmeId}`]: {
           ...filmeExistente,
-          nota: nota, // Atualiza apenas a nota
+          nota: nota,
+          comentario: comentario,
+        },
+      });
+
+      // Atualiza a avaliação no documento do filme (opcional)
+      await updateDoc(filmeRef, {
+        [`avaliacoes.${user.uid}`]: {
+          nota: nota,
+          comentario: comentario,
+          data: new Date().toISOString(), // Adiciona a data da avaliação
         },
       });
 
@@ -529,7 +544,8 @@ function AuthProvider({ children }) {
           ...prevUser.visto,
           [filmeId]: {
             ...prevUser.visto[filmeId],
-            nota: nota, // Atualiza a nota no estado local
+            nota: nota,
+            comentario: comentario,
           },
         },
       }));

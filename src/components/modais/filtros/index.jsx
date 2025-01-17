@@ -340,6 +340,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
     const filters = [];
     const url = buildUrl();
     console.log("URL da requisição:", url);
+    localStorage.setItem("movieSearchUrl", url);
 
     try {
       const response = await fetch(url);

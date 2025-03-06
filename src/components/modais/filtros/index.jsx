@@ -33,9 +33,59 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
   const [assistir, setAssistir] = useState({});
   const [visto, setVisto] = useState({}); // Exemplo de definição
   const isLoggedIn = Boolean(user);
+  const [showClearButton, setShowClearButton] = useState(false);
 
   // define se desktop ou mobile
   const isMobile = useIsMobile();
+
+  // Ao montar o componente, verificamos se existe um valor salvo no localStorage
+  useEffect(() => {
+    const storedProviderId = localStorage.getItem("providerId");
+
+    if (storedProviderId) {
+      setProviderId(Number(storedProviderId)); // Atualiza providerId a partir do localStorage
+    }
+  }, []);
+
+  // Verifica se existe gênero no local storage
+  useEffect(() => {
+    const storedGenre = localStorage.getItem("selectedGenre");
+    if (storedGenre) {
+      setSelectedGenre(Number(storedGenre)); // Converte para número e atualiza o estado
+    }
+  }, []);
+
+  // Verifica se existe filtro de perfil
+  useEffect(() => {
+    const storedStatus = localStorage.getItem("selectedStatus");
+    if (storedStatus) {
+      setSelectedStatus(storedStatus); // Atualiza o estado com o status recuperado
+    }
+  }, []);
+
+  // Verifica se existe filtro de classificação indicativa
+  useEffect(() => {
+    const storedCertification = localStorage.getItem("selectedCertification");
+    if (storedCertification) {
+      setSelectedCertification(storedCertification); // Atualiza o estado com a certificação recuperada
+    }
+  }, []);
+
+  // Verifica se existe filtro de país de origem
+  useEffect(() => {
+    const storedCountry = localStorage.getItem("selectedCountry");
+    if (storedCountry) {
+      setSelectedCountry(storedCountry); // Atualiza o estado com o país recuperado
+    }
+  }, []);
+
+  // Verifica se existe filtro de ano de lançamento
+  useEffect(() => {
+    const storedYear = localStorage.getItem("anoLancamento");
+    if (storedYear) {
+      setAnoLancamento(storedYear); // Atualiza o estado com o ano recuperado
+    }
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController(); // Criar o controlador
@@ -73,8 +123,8 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
       const discoverEndpoint = "https://api.themoviedb.org/3/discover/movie";
 
       const response = await fetch(
-        `${discoverEndpoint}?api_key=${apiKey}&certification=${certification}&certification_country=BR&language=pt-BR&page=${randomPage}`
-      );
+        `${discoverEndpoint}?api_key=${apiKey}&certification=${certification}&language=pt-BR&page=${randomPage}`
+      ); // &certification_country=BR
 
       if (!response.ok) {
         console.error("Erro na requisição:", response.statusText);
@@ -320,7 +370,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
     }
     if (selectedCertification) {
       params.append("certification", selectedCertification);
-      params.append("certification_country", "BR"); // Adicionando o país fixo aqui
+      // params.append("certification_country", "BR"); Adicionando o país fixo aqui
     }
 
     if (selectedCountry) {
@@ -339,6 +389,12 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
     const { visto, assistir } = user || {};
     const filters = [];
     const url = buildUrl();
+
+    // Adiciona o streaming selecionado ao localStorage
+    if (providerId) {
+      localStorage.setItem("providerId", providerId); // Registra o providerId selecionado
+    }
+
     console.log("URL da requisição:", url);
     localStorage.setItem("movieSearchUrl", url);
 
@@ -414,7 +470,45 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
       return;
     }
 
-    console.log("Nenhum filme disponível para a seleção.");
+    // Fecha o modal após aplicar o filtro
+    closeModal();
+  };
+
+  // Função que verifica se a chave "movieSearchUrl" existe no localStorage
+  const checkLocalStorage = () => {
+    const movieSearchUrl = localStorage.getItem("movieSearchUrl");
+    setShowClearButton(!!movieSearchUrl); // Se existir, mostrar o botão
+  };
+
+  useEffect(() => {
+    // Verifica o localStorage quando o componente é montado
+    checkLocalStorage();
+
+    // Adiciona um ouvinte para mudanças no localStorage
+    window.addEventListener("storage", checkLocalStorage);
+
+    // Limpeza do ouvinte quando o componente for desmontado
+    return () => {
+      window.removeEventListener("storage", checkLocalStorage);
+    };
+  }, []); // Só executa na montagem do componente
+
+  // Função que limpa os filtros
+  const clearFilters = () => {
+    localStorage.removeItem("movieSearchUrl"); // Remove a URL dos filtros
+    localStorage.removeItem("providerId"); // Remove o serviço de streaming selecionado
+    localStorage.removeItem("selectedGenre"); // Remove o gênero selecionado do localStorage
+    localStorage.removeItem("selectedStatus"); // Remove o status selecionado do localStorage
+    localStorage.removeItem("selectedCertification"); // Remove a classificação do localStorage
+    localStorage.removeItem("selectedCountry"); // Remove o país do localStorage
+    localStorage.removeItem("anoLancamento"); // Remove o ano de lançamento do localStorage
+    setProviderId(null); // Desmarca o streaming selecionado ao limpar os filtros
+    setSelectedGenre(null); // Desmarca o gênero selecionado ao limpar os filtros
+    setSelectedStatus(null); // Desmarca o status selecionado ao limpar os filtros
+    setSelectedCertification(null); // Desmarca a classificação indicativa selecionado ao limpar os filtros
+    setSelectedCountry(null); // Desmarca o país de origem selecionado ao limpar os filtros
+    setAnoLancamento(null); // Desmarca o ano de lançamento selecionado ao limpar os filtros
+    setShowClearButton(false); // Oculta o botão após limpar os filtros
   };
 
   return (
@@ -440,7 +534,17 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
 
                   <div className={styles.seletor}>
                     <div className={styles.opcao}>
-                      <input type="radio" id="todos" name="status" />
+                      <input
+                        type="radio"
+                        id="todos"
+                        name="status"
+                        value="todos"
+                        checked={selectedStatus === "todos"} // Verifica se o status é "todos"
+                        onChange={() => {
+                          setSelectedStatus("todos"); // Atualiza o estado para "todos"
+                          localStorage.setItem("selectedStatus", "todos"); // Armazena no localStorage
+                        }}
+                      />
                       <label htmlFor="todos">Todos</label>
                     </div>
                     <div className={styles.opcao}>
@@ -449,8 +553,11 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                         id="NaoAssisti"
                         name="status"
                         value="NaoAssisti"
-                        onChange={() => setSelectedStatus("NaoAssisti")}
-                        checked={selectedStatus === "NaoAssisti"}
+                        checked={selectedStatus === "NaoAssisti"} // Verifica se o status é "NaoAssisti"
+                        onChange={() => {
+                          setSelectedStatus("NaoAssisti"); // Atualiza o estado para "NaoAssisti"
+                          localStorage.setItem("selectedStatus", "NaoAssisti"); // Armazena no localStorage
+                        }}
                       />
                       <label htmlFor="NaoAssisti">Quero assistir</label>
                     </div>
@@ -460,8 +567,11 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                         id="JaAssisti"
                         name="status"
                         value="JaAssisti"
-                        onChange={() => setSelectedStatus("JaAssisti")}
-                        checked={selectedStatus === "JaAssisti"}
+                        checked={selectedStatus === "JaAssisti"} // Verifica se o status é "JaAssisti"
+                        onChange={() => {
+                          setSelectedStatus("JaAssisti"); // Atualiza o estado para "JaAssisti"
+                          localStorage.setItem("selectedStatus", "JaAssisti"); // Armazena no localStorage
+                        }}
                       />
                       <label htmlFor="JaAssisti">Já assisti</label>
                     </div>
@@ -471,8 +581,11 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                         id="favoritos"
                         name="status"
                         value="favoritos"
-                        onChange={() => setSelectedStatus("favoritos")}
-                        checked={selectedStatus === "favoritos"}
+                        checked={selectedStatus === "favoritos"} // Verifica se o status é "favoritos"
+                        onChange={() => {
+                          setSelectedStatus("favoritos"); // Atualiza o estado para "favoritos"
+                          localStorage.setItem("selectedStatus", "favoritos"); // Armazena no localStorage
+                        }}
                       />
                       <label htmlFor="favoritos">Meus favoritos</label>
                     </div>
@@ -513,9 +626,12 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                       id={service.provider_name}
                       name="servicos"
                       value={service.provider_id}
-                      onChange={() => setProviderId(service.provider_id)}
+                      checked={providerId === service.provider_id} // Verifica se o providerId é o selecionado
+                      onChange={() => {
+                        setProviderId(service.provider_id); // Atualiza o providerId
+                        localStorage.setItem("providerId", service.provider_id); // Atualiza o localStorage
+                      }}
                     />
-
                     <label htmlFor={service.provider_name}>
                       <img
                         src={service.logo_path}
@@ -538,7 +654,11 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                       id={`genre-${genre.id}`}
                       name="genero"
                       value={genre.id}
-                      onChange={() => setSelectedGenre(genre.id)}
+                      checked={selectedGenre === genre.id} // Verifica se o gênero é o selecionado
+                      onChange={() => {
+                        setSelectedGenre(genre.id); // Atualiza o estado com o gênero selecionado
+                        localStorage.setItem("selectedGenre", genre.id); // Armazena o gênero no localStorage
+                      }}
                     />
                     <label htmlFor={`genre-${genre.id}`}>{genre.name}</label>
                   </div>
@@ -555,37 +675,57 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
                     type="radio"
                     id="todosClassificacao"
                     name="classificacao"
+                    value="todosClassificacao"
+                    checked={selectedCertification === "todosClassificacao"} // Verifica se a opção "Todos" é selecionada
+                    onChange={() => {
+                      setSelectedCertification("todosClassificacao"); // Atualiza o estado para "Todos"
+                      localStorage.setItem(
+                        "selectedCertification",
+                        "todosClassificacao"
+                      ); // Armazena no localStorage
+                    }}
                   />
                   <label htmlFor="todosClassificacao">Todos</label>
                 </div>
 
-                {certificacoes.map((certificacao) => {
-                  return (
-                    <div
-                      key={certificacao.certification}
-                      className={styles.opcao}
-                    >
-                      <input
-                        type="radio"
-                        id={certificacao.certification}
-                        name="classificacao"
-                        value={certificacao.certification}
-                        onChange={() =>
-                          setSelectedCertification(certificacao.certification)
-                        } // Adicione esta linha
-                      />
-                      <label htmlFor={certificacao.certification}>
-                        {certificacao.certification}
-                      </label>
-                    </div>
-                  );
-                })}
+                {certificacoes.map((certificacao) => (
+                  <div
+                    key={certificacao.certification}
+                    className={styles.opcao}
+                  >
+                    <input
+                      type="radio"
+                      id={certificacao.certification}
+                      name="classificacao"
+                      value={certificacao.certification}
+                      checked={
+                        selectedCertification === certificacao.certification
+                      } // Verifica se a certificação é a selecionada
+                      onChange={() => {
+                        setSelectedCertification(certificacao.certification); // Atualiza o estado com a certificação selecionada
+                        localStorage.setItem(
+                          "selectedCertification",
+                          certificacao.certification
+                        ); // Armazena no localStorage
+                      }}
+                    />
+                    <label htmlFor={certificacao.certification}>
+                      {certificacao.certification}
+                    </label>
+                  </div>
+                ))}
               </div>
             </div>
 
             <div className={styles.separador}>
               <h3>País de origem</h3>
-              <select onChange={(e) => setSelectedCountry(e.target.value)}>
+              <select
+                onChange={(e) => {
+                  setSelectedCountry(e.target.value); // Atualiza o estado com o valor selecionado
+                  localStorage.setItem("selectedCountry", e.target.value); // Armazena o valor no localStorage
+                }}
+                value={selectedCountry || ""} // Define o valor selecionado
+              >
                 <option value="">Selecione o país</option>
                 {countriesList.map((country) => (
                   <option key={country.iso_3166_1} value={country.iso_3166_1}>
@@ -598,8 +738,11 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
             <div className={styles.separador}>
               <h3>Ano de lançamento</h3>
               <select
-                value={anoLancamento}
-                onChange={(e) => setAnoLancamento(e.target.value)}
+                value={anoLancamento || ""} // Define o valor selecionado
+                onChange={(e) => {
+                  setAnoLancamento(e.target.value); // Atualiza o estado com o ano selecionado
+                  localStorage.setItem("anoLancamento", e.target.value); // Armazena o valor no localStorage
+                }}
               >
                 <option value="">Selecione o ano</option>
                 {Array.from(
@@ -616,14 +759,20 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
 
           <div className={styles.botoesFiltro}>
             <div className={styles.baseBotoes}>
+              <button
+                className={styles.limparFiltros}
+                onClick={clearFilters}
+                style={{
+                  backgroundColor: showClearButton ? "#3b2544" : "#2C1435", // Cor de fundo normal ou cor desabilitada
+                  color: showClearButton ? "#FFFFFF" : "#66556D",
+                  pointerEvents: showClearButton ? "auto" : "none", // Desabilita o clique quando a cor de fundo for desabilitada
+                }}
+              >
+                Limpar filtros
+              </button>
               <button className={styles.aplicar} onClick={aplicarFiltro}>
                 Aplicar filtros
               </button>
-              {isMobile ? (
-                <button className={styles.fechar} onClick={closeModal}>
-                  <img src="/icones/fechar-filtros.svg" />
-                </button>
-              ) : null}
             </div>
           </div>
         </div>

@@ -4,7 +4,7 @@ const AvaliarFilme = () => {
   return (
     <div className={styles.avaliarFilme}>
       <div className={styles.avaliar}>
-        Avaliar filme
+        Já assisti
         <img src="/icones/estrela-stroke.svg" />
       </div>
     </div>

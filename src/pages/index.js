@@ -44,6 +44,7 @@ const Home = () => {
   const [modalAberto, setModalAberto] = useState(null);
   const [countryNames, setCountryNames] = useState({});
   const [filmeIdParaResenha, setFilmeIdParaResenha] = useState(null);
+  const [filtrosCount, setFiltrosCount] = useState(0);
   const isMobile = useIsMobile();
 
   const {
@@ -222,6 +223,32 @@ const Home = () => {
 
   useEffect(() => {
     fetchCountryNames();
+  }, []);
+
+  useEffect(() => {
+    // Itens a serem verificados no localStorage
+    const keysToCheck = [
+      "providerId",
+      "selectedGenre",
+      "selectedStatus",
+      "selectedCertification",
+      "selectedCountry",
+      "anoLancamento",
+    ];
+
+    // Contador para os itens encontrados no localStorage
+    let count = 0;
+
+    // Verifica se cada chave existe no localStorage e incrementa o contador
+    keysToCheck.forEach((key) => {
+      if (localStorage.getItem(key)) {
+        count++;
+      }
+    });
+
+    // Exibe a contagem dos itens encontrados
+    console.log("Quantidade de filtros no localStorage:", count);
+    setFiltrosCount(count); // Atualiza o estado com a quantidade de filtros
   }, []);
 
   if (!filme && filmeId) return <Loading />;
@@ -484,6 +511,7 @@ const Home = () => {
           botaoSecundario={true} // Habilita o botão secundário
           onClick={selecionarFilmeAleatorio} // Função para sugerir um filme
           onClickModal={() => abrirModal("filtros")} // Função para abrir o modal
+          filtrosCount={filtrosCount} // Passando a quantidade de filtros
         />
         {isMobile ? (
           <Suspense fallback={<Loading />}>

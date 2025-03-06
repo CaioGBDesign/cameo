@@ -43,11 +43,55 @@
       @media only screen and (max-width: 600px) {
         width: 100%;
       }
+
+      .resgateFiltro {
+        button {
+          width: 290px;
+          height: 70px;
+
+          background: #ffffff;
+
+          color: #250d2f;
+          border: none;
+          border-radius: 10px;
+          font-size: 25px;
+          text-align: center;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          transition: 0.2s;
+          position: relative;
+          overflow: hidden;
+
+          cursor: pointer;
+        }
+      }
     }
 
     .botaoSecundario {
+      position: relative;
       @media only screen and (max-width: 600px) {
         width: 35%;
+      }
+
+      .notificacaoFiltros {
+        position: absolute;
+        top: -5px;
+        left: -5px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        background: #fedc33;
+        border-radius: 20px;
+
+        width: 20px;
+        height: 20px;
+
+        z-index: 999;
+
+        color: #250d2f;
       }
     }
   }

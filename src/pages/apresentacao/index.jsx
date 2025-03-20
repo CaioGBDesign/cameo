@@ -91,7 +91,7 @@ const Apresentacao = () => {
           <title>Cameo - Apresentação</title>
           <meta
             name="description"
-            content="Descubra o filme perfeito com o Cameo! Oferecemos sugestões aleatórias e personalizadas, filtradas por gênero, classificação indicativa, serviços de streaming e muito mais. Crie listas de filmes, avalie suas escolhas e compartilhe com amigos. Mergulhe no mundo do cinema e nunca fique sem o que assistir. Cadastre-se agora e transforme sua experiência cinematográfica!"
+            content="Descubra o filme perfeito com a Cameo! Oferecemos sugestões aleatórias e personalizadas, filtradas por gênero, classificação indicativa, serviços de streaming e muito mais. Crie listas de filmes, avalie suas escolhas e compartilhe com amigos. Mergulhe no mundo do cinema e nunca fique sem o que assistir. Cadastre-se agora e transforme sua experiência cinematográfica!"
           />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -127,7 +127,7 @@ const Apresentacao = () => {
 
         <section className={styles.ApresentacaoOqueRola}>
           <div className={styles.Headline}>
-            <h1>O que rola no Cameo.fun?</h1>
+            <h1>O que rola na Cameo.fun?</h1>
             <p>
               O Cameo.fun é o seu parceiro para descobrir filmes, organizar suas
               maratonas e virar o crítico mais sagaz da galera. Aqui, a gente
@@ -684,10 +684,12 @@ const Apresentacao = () => {
                   <div className={styles.BotaoSobre}>
                     <h3>Quem somos</h3>
 
-                    <div className={styles.BotaoSobreBox}>
-                      <span>Sobre o Cameo</span>
-                      <img src="/icones/arrow.svg" />
-                    </div>
+                    <Link href="/sobre">
+                      <div className={styles.BotaoSobreBox}>
+                        <span>Sobre a Cameo</span>
+                        <img src="/icones/arrow.svg" />
+                      </div>
+                    </Link>
                   </div>
                 </div>
                 <div className={styles.socialMedia}>
@@ -721,10 +723,12 @@ const Apresentacao = () => {
                     <h3>Contato</h3>
 
                     <div className={styles.Cta}>
-                      <div className={styles.BotaoSobreBox}>
-                        <span>Entrar em contato</span>
-                        <img src="/icones/arrow.svg" />
-                      </div>
+                      <Link href="mailto:contato@cameo.fun">
+                        <div className={styles.BotaoSobreBox}>
+                          <span>Entrar em contato</span>
+                          <img src="/icones/arrow.svg" />
+                        </div>
+                      </Link>
 
                       <Link href="/">
                         <button>Começar</button>

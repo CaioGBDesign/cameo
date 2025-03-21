@@ -24,52 +24,60 @@ const Apresentacao = () => {
 
   const comentarios = [
     {
-      usuario: "Caio Goulart",
+      usuario: "Igor Oliveira",
       comentario:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "A Cameo veio para facilitar nossa vida na hora de escolher os filmes. Adoro assistir filmes sugeridos, e pela Cameo vai ser ainda melhor!! 🤩",
       estrelas: 5,
+      imagem: "/usuario/igor.png",
     },
     {
       usuario: "Pedro Oliveira",
       comentario:
         "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
       estrelas: 3,
+      imagem: "/usuario/usuario.png",
     },
     {
       usuario: "Pedro Oliveira",
       comentario:
         "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
       estrelas: 3,
+      imagem: "/usuario/igor.png",
     },
     {
       usuario: "Pedro Oliveira",
       comentario:
         "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
       estrelas: 3,
+      imagem: "/usuario/igor.png",
     },
     {
       usuario: "Pedro Oliveira",
       comentario:
         "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
       estrelas: 3,
+      imagem: "/usuario/igor.png",
     },
     {
       usuario: "Pedro Oliveira",
       comentario:
         "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
       estrelas: 3,
+      imagem: "/usuario/igor.png",
     },
     {
       usuario: "Pedro Oliveira",
       comentario:
         "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
       estrelas: 3,
+      imagem: "/usuario/igor.png",
     },
     {
       usuario: "Pedro Oliveira",
       comentario:
         "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
       estrelas: 3,
+      imagem: "/usuario/igor.png",
     },
   ];
 
@@ -568,7 +576,7 @@ const Apresentacao = () => {
 
                       <div className={styles.Usuario}>
                         <div className={styles.ImagemUsuario}>
-                          <img src="/usuario/usuario.png" alt="usuario" />
+                          <img src={comentario.imagem} alt="usuario" />
                         </div>
                         <span>{comentario.usuario}</span>
                       </div>

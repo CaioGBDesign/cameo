@@ -1,1140 +1,695 @@
-.ContApresentacao {
-  background: #161216;
+.ContSobre {
+  .SobreHero {
+    margin-top: 130px;
 
-  .ApresentacaoHeader {
-    width: 100%;
-    height: 100px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    position: fixed;
-    top: 0;
-    left: 0;
-
-    z-index: 999;
-
-    background: linear-gradient(180deg, #161216 0%, rgba(22, 18, 22, 0) 100%);
-  }
-
-  button {
-    color: #fff;
-    font-size: 24px;
-
-    display: inline-flex;
-    height: 60px;
-    padding: 22px 64px;
-    justify-content: center;
-    align-items: center;
-
-    border: none;
-    border-radius: 10px;
-    background: linear-gradient(270deg, #2ba8e2 0%, #1af5eb 100%);
-    box-shadow: 0px 0px 20px 0px rgba(27, 244, 235, 0.2);
-
-    transition: 0.2s;
-
-    cursor: pointer;
+    padding: 100px;
 
     @media only screen and (max-width: 600px) {
-      font-size: 18px;
-
-      padding: 20px 40px;
+      padding: 40px 0px;
     }
 
-    &:hover {
-      border-radius: 0px;
-    }
-  }
-
-  .ApresentacaoMergulho {
-    width: 100%;
-    height: 100vh;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-
-    overflow: hidden;
-
-    position: relative;
-
-    z-index: 9;
-
-    .Headline {
+    .SobreHeroBox {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 30px;
-
-      margin-top: 40px;
-
-      h1 {
-        width: 700px;
-
-        text-align: center;
-        leading-trim: both;
-        text-edge: cap;
-        font-family: Poppins;
-        font-size: 50px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 90.791%; /* 66.354px */
-
-        background: radial-gradient(
-          52.39% 371.74% at 50% 7.39%,
-          #fff 0%,
-          #999 100%
-        );
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-
-        z-index: 1;
-
-        @media only screen and (max-width: 600px) {
-          width: 90%;
-
-          margin-top: 90px;
-
-          font-size: 30px;
-        }
-      }
-
-      p {
-        text-align: center;
-        leading-trim: both;
-        text-edge: cap;
-        font-family: Poppins;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 119.791%; /* 18.958px */
-
-        background: radial-gradient(
-          52.39% 371.74% at 50% 7.39%,
-          #fff 0%,
-          #999 100%
-        );
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-
-        z-index: 1;
-
-        @media only screen and (max-width: 600px) {
-          width: 70%;
-        }
-      }
-    }
-
-    .HeroMascote {
-      width: 30%;
-      height: 400px;
-
-      display: flex;
-      justify-content: center;
-      align-items: start;
-
-      z-index: -1;
+      gap: 50px;
 
       @media only screen and (max-width: 600px) {
-        width: 70%;
+        align-items: start;
+
+        gap: 30px;
       }
 
-      img {
-        width: 150%;
-
-        position: relative;
-        bottom: 160px;
-
-        @media only screen and (max-width: 600px) {
-          bottom: initial;
-        }
-      }
-    }
-  }
-
-  .ApresentacaoOqueRola {
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-    align-items: center;
-    gap: 100px;
-
-    padding: 150px 0px 0px 0px;
-
-    height: 100vh;
-
-    position: relative;
-
-    overflow: hidden;
-
-    .Headline {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 40px;
-
-      h1 {
-        text-align: center;
-        leading-trim: both;
-        text-edge: cap;
-        font-family: Poppins;
-        font-size: 70px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 90.791%; /* 66.354px */
-
-        background: radial-gradient(
-          52.39% 371.74% at 50% 7.39%,
-          #fff 0%,
-          #999 100%
-        );
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-
-        z-index: 1;
-
-        @media only screen and (max-width: 600px) {
-          width: 90%;
-
-          font-size: 30px;
-        }
-      }
-
-      p {
-        width: 860px;
-
-        text-align: center;
-        leading-trim: both;
-        text-edge: cap;
-        font-family: Poppins;
-        font-size: 20px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 119.791%; /* 18.958px */
-
-        background: radial-gradient(
-          52.39% 371.74% at 50% 7.39%,
-          #fff 0%,
-          #999 100%
-        );
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-
-        z-index: 1;
-
-        @media only screen and (max-width: 600px) {
-          width: 80%;
-          font-size: 14px;
-        }
-      }
-    }
-
-    .BotoesCont {
-      position: relative;
-
-      &::before {
-        position: absolute;
-        content: "";
-        left: 5%;
-        width: 90%;
-        height: 310px;
-        padding: 30% 0;
-        transform: translate(0, -70%) rotate(-45deg);
-        background: radial-gradient(
-          circle at left bottom,
-          #f314fb 00%,
-          #161216 50%
-        );
-        filter: blur(40px);
-
-        @media only screen and (max-width: 600px) {
-          width: 60%;
-          height: 250px;
-
-          left: 0;
-        }
-      }
-
-      .BotoesBox {
+      .Headline {
         display: flex;
-        padding: 30px 30px 0px 30px;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-
-        border-top: 1px solid #f314fb;
-        border-left: 1px solid #f314fb;
-        border-right: 1px solid #f314fb;
-
-        border-radius: 30px 30px 0px 0px;
-
-        background: rgba(255, 255, 255, 0.02);
-        box-shadow: 0px 0px 100px 0px rgba(243, 20, 251, 0.1);
-
-        position: relative;
-
-        z-index: 1;
+        gap: 50px;
 
         @media only screen and (max-width: 600px) {
-          padding: 10px 10px 0px 10px;
+          align-items: start;
+          gap: 30px;
+
+          padding: 0px 40px;
         }
-
-        .BotoesRotate {
-          display: flex;
-          padding: 40px 40px 50px 40px;
-          align-items: center;
-          gap: 221px;
-
-          border-radius: 20px 20px 0px 0px;
-          background: #161216;
+        h1 {
+          color: #fff;
+          text-align: center;
+          leading-trim: both;
+          text-edge: cap;
+          font-family: Poppins;
+          font-size: 100px;
+          font-style: normal;
+          font-weight: 900;
+          line-height: normal;
 
           @media only screen and (max-width: 600px) {
-            width: 340px;
-
-            padding: 20px 0px;
-
-            flex-direction: column;
-
-            gap: 50px;
-          }
-
-          ul {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: start;
-            gap: 30px;
-
-            @media only screen and (max-width: 600px) {
-              flex-direction: row;
-              gap: 20px;
-            }
-
-            li {
-              @media only screen and (max-width: 600px) {
-                display: flex;
-                justify-content: center;
-                align-content: center;
-              }
-
-              label {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 20px;
-
-                position: relative;
-
-                @media only screen and (max-width: 600px) {
-                  flex-direction: column;
-
-                  width: 60px;
-                }
-
-                cursor: pointer;
-
-                h3 {
-                  color: #fff;
-                  leading-trim: both;
-                  text-edge: cap;
-                  font-family: Poppins;
-                  font-size: 20px;
-                  font-style: normal;
-                  font-weight: 400;
-                  line-height: 94.791%;
-
-                  @media only screen and (max-width: 600px) {
-                    font-size: 14px;
-
-                    text-align: center;
-
-                    width: 110%;
-                  }
-                }
-
-                input {
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-
-                  opacity: 0;
-                }
-
-                .BotaoIcone {
-                  width: 80px;
-                  height: 60px;
-
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-
-                  border: solid #3b2544 1px;
-                  border-radius: 10px;
-
-                  @media only screen and (max-width: 600px) {
-                    width: 60px;
-                    height: 45px;
-                  }
-                }
-              }
-
-              .selecionado {
-                .BotaoIcone {
-                  background: #6a0dad;
-                }
-
-                font-weight: bold;
-              }
-            }
-          }
-
-          .FilmeAleatorio,
-          .Filtros,
-          .AvalieDoSeuJeito,
-          .SeusDados {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 70px;
-
-            @media only screen and (max-width: 600px) {
-              width: 80%;
-            }
-
-            h2 {
-              width: 475px;
-
-              color: #fff;
-              text-align: center;
-              leading-trim: both;
-              text-edge: cap;
-              font-family: Poppins;
-              font-size: 16px;
-              font-style: normal;
-              font-weight: 400;
-              line-height: 94.791%; /* 15.167px */
-
-              span {
-                font-weight: bold;
-                color: #1af5eb;
-              }
-
-              @media only screen and (max-width: 600px) {
-                width: 80%;
-
-                font-size: 14px;
-              }
-            }
-
-            .BoxMascote {
-              width: 280px;
-
-              img {
-                width: 100%;
-              }
-
-              @media only screen and (max-width: 600px) {
-                width: 200px;
-              }
-            }
-
-            .BotaoApresentacao {
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-              gap: 20px;
-
-              p {
-                font-size: 16px;
-                color: #ffffff;
-
-                @media only screen and (max-width: 600px) {
-                  font-size: 14px;
-                  text-align: center;
-
-                  width: 190px;
-                }
-              }
-            }
+            font-size: 30px;
           }
         }
+
+        .Separador {
+          width: 220px;
+          height: 4px;
+
+          background: linear-gradient(90deg, #f314fb 0%, #fdf57c 100%);
+
+          border: none;
+        }
       }
-    }
 
-    .Particulas {
-      position: absolute;
-      top: 0;
-
-      width: 100%;
-
-      display: flex;
-      justify-content: center;
-
-      img {
-        width: 890px;
-        height: 1085px;
+      .SobreVaral {
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         @media only screen and (max-width: 600px) {
           width: 100%;
+
+          overflow: hidden;
+        }
+
+        img {
+          width: 100%;
+
+          @media only screen and (max-width: 600px) {
+            width: 800px;
+          }
         }
       }
     }
   }
 
-  .ApresentacaoPorQueCameo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .Historia {
+    padding: 100px;
 
-    width: 100%;
+    @media only screen and (max-width: 600px) {
+      padding: 40px;
+    }
 
-    position: relative;
-
-    overflow: hidden;
-
-    border-top: solid 1px #1af5eb;
-    background: radial-gradient(
-      50% 50% at 50% 50%,
-      rgba(243, 20, 251, 0.1) 0%,
-      rgba(243, 20, 251, 0) 100%
-    );
-
-    padding: 100px 0px;
-
-    .BotoesCont {
+    .HistoriaBox {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      gap: 100px;
-
-      position: relative;
-
-      width: 80%;
+      align-items: start;
 
       @media only screen and (max-width: 600px) {
         flex-direction: column;
 
-        width: 85%;
+        gap: 80px;
       }
 
-      .BoxInformacoes {
+      .Titulo {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: start;
         gap: 50px;
 
-        .Headline {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: start;
-          gap: 20px;
+        @media only screen and (max-width: 600px) {
+          gap: 30px;
+        }
 
-          h1 {
-            width: 655px;
+        h1 {
+          color: #fff;
+          text-align: left;
+          leading-trim: both;
+          text-edge: cap;
+          font-family: Poppins;
+          font-size: 100px;
+          font-style: normal;
+          font-weight: 900;
+          line-height: 70px;
 
-            text-align: left;
-            leading-trim: both;
-            text-edge: cap;
-            font-family: Poppins;
-            font-size: 50px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 90.791%; /* 66.354px */
+          @media only screen and (max-width: 600px) {
+            font-size: 30px;
 
-            background: radial-gradient(
-              52.39% 371.74% at 50% 7.39%,
-              #fff 0%,
-              #999 100%
-            );
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-
-            z-index: 1;
-
-            @media only screen and (max-width: 600px) {
-              width: 100%;
-              font-size: 28px;
-            }
-          }
-
-          p {
-            text-align: left;
-            leading-trim: both;
-            text-edge: cap;
-            font-family: Poppins;
-            font-size: 20px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 119.791%; /* 18.958px */
-
-            background: radial-gradient(
-              52.39% 371.74% at 50% 7.39%,
-              #fff 0%,
-              #999 100%
-            );
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-
-            z-index: 1;
-
-            @media only screen and (max-width: 600px) {
-              width: 80%;
-              font-size: 14px;
-            }
+            line-height: 100%;
           }
         }
 
-        ul {
+        .Separador {
+          width: 220px;
+          height: 4px;
+
+          background: linear-gradient(90deg, #f314fb 0%, #fdf57c 100%);
+
+          border: none;
+        }
+      }
+
+      .SobreParagrafo {
+        p {
+          width: 700px;
+          font-size: 30px;
+          opacity: 0.5;
+          color: #ffffff;
+
           @media only screen and (max-width: 600px) {
             width: 100%;
-          }
-          li {
-            @media only screen and (max-width: 600px) {
-              .Ilustracao {
-                display: flex;
-                justify-content: center;
-                align-items: center;
 
-                width: 100%;
-
-                .FilmeAleatorio {
-                  width: 80%;
-
-                  margin: 50px 0px;
-                }
-              }
-            }
-
-            label {
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: start;
-              gap: 10px;
-
-              padding: 20px 0px;
-
-              opacity: 0.5;
-
-              transition: 0.2s;
-
-              border-bottom: solid 1px #3b2544;
-
-              cursor: pointer;
-
-              position: relative;
-
-              &:hover {
-                opacity: 1;
-              }
-
-              &::after {
-                content: "";
-                position: absolute;
-                top: 50%;
-                right: -100px;
-                width: 16px;
-                height: 1px;
-
-                background: #1af5eb;
-
-                @media only screen and (max-width: 600px) {
-                  right: 0px;
-                }
-              }
-
-              input {
-                opacity: 0;
-
-                position: absolute;
-              }
-
-              .tituloBotao {
-                display: flex;
-                justify-content: start;
-                align-items: center;
-                gap: 20px;
-
-                h3 {
-                  color: #ffffff;
-                  font-weight: bold;
-                  font-size: 20px;
-
-                  @media only screen and (max-width: 600px) {
-                    font-size: 14px;
-                  }
-                }
-              }
-
-              .descricaoBotao {
-                p {
-                  color: #ffffff;
-                  font-weight: 200;
-                  font-size: 20px;
-
-                  width: 510px;
-
-                  opacity: 0.5;
-
-                  @media only screen and (max-width: 600px) {
-                    font-size: 14px;
-
-                    width: 250px;
-                  }
-                }
-              }
-            }
-
-            .selecionado {
-              opacity: 1;
-
-              &::before {
-                content: "";
-                position: absolute;
-                top: 50%;
-                right: -100px;
-                width: 16px;
-                height: 1px;
-
-                background: #1af5eb;
-
-                transform: rotate(180deg);
-
-                transition: 0.2s;
-
-                @media only screen and (max-width: 600px) {
-                  right: 0px;
-                }
-              }
-            }
-
-            .naoselecionado {
-              &::before {
-                content: "";
-                position: absolute;
-                top: 50%;
-                right: -100px;
-                width: 16px;
-                height: 1px;
-
-                background: #1af5eb;
-
-                transform: rotate(90deg);
-
-                transition: 0.2s;
-
-                @media only screen and (max-width: 600px) {
-                  right: 0px;
-                }
-              }
-            }
+            font-size: 24px;
           }
 
-          .botao {
-            margin-top: 30px;
+          span {
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
 
-            button {
-              @media only screen and (max-width: 600px) {
-                width: 100%;
+  .Fotos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-                padding: 5px 10px;
-              }
-            }
+    padding: 100px;
+
+    @media only screen and (max-width: 600px) {
+      padding: 40px;
+    }
+
+    .FotosBox {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+
+      img {
+        border-radius: 10px;
+
+        @media only screen and (max-width: 600px) {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .ComoComecou {
+    padding: 100px;
+
+    @media only screen and (max-width: 600px) {
+      padding: 40px;
+    }
+
+    .ComoComecouBox {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+
+      @media only screen and (max-width: 600px) {
+        flex-direction: column;
+
+        gap: 80px;
+      }
+
+      .Titulo {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: end;
+        gap: 50px;
+
+        @media only screen and (max-width: 600px) {
+          align-items: start;
+
+          order: 0;
+
+          gap: 30px;
+        }
+
+        h1 {
+          color: #fff;
+          text-align: right;
+          leading-trim: both;
+          text-edge: cap;
+          font-family: Poppins;
+          font-size: 100px;
+          font-style: normal;
+          font-weight: 900;
+          line-height: 70px;
+
+          @media only screen and (max-width: 600px) {
+            font-size: 30px;
+            text-align: left;
+
+            line-height: 100%;
+          }
+        }
+
+        .Separador {
+          width: 221px;
+          height: 4px;
+
+          background: linear-gradient(90deg, #f314fb 0%, #fdf57c 100%);
+
+          border: none;
+        }
+      }
+
+      .ComoComecouParagrafo {
+        @media only screen and (max-width: 600px) {
+          order: 1;
+        }
+
+        p {
+          width: 700px;
+          font-size: 30px;
+          opacity: 0.5;
+          color: #ffffff;
+
+          span {
+            font-weight: bold;
+          }
+
+          @media only screen and (max-width: 600px) {
+            width: 100%;
+
+            font-size: 24px;
           }
         }
       }
 
-      .Ilustracao {
+      .ImagemTime {
+        width: 100%;
+
+        order: 2;
+
+        img {
+          width: 100%;
+          border-radius: 10px;
+        }
+      }
+    }
+  }
+
+  .Evolucao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 100px;
+
+    @media only screen and (max-width: 600px) {
+      padding: 40px;
+    }
+
+    .EvolucaoBox {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 50px;
+
+      img {
+        width: 100%;
+      }
+
+      .EvolucaoParagrafo {
+        p {
+          font-size: 30px;
+          opacity: 0.5;
+          color: #ffffff;
+
+          @media only screen and (max-width: 600px) {
+            font-size: 24px;
+          }
+
+          span {
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+
+  .Missao {
+    padding: 100px;
+
+    position: relative;
+
+    @media only screen and (max-width: 600px) {
+      padding: 40px;
+    }
+
+    .MissaoBox {
+      display: flex;
+      justify-content: end;
+      align-items: center;
+
+      @media only screen and (max-width: 600px) {
+        flex-direction: column;
+      }
+
+      .MissaoImagem {
+        position: absolute;
+        top: 0;
+        left: 0px;
+
+        align-self: stretch;
+
         display: flex;
         justify-content: center;
         align-items: center;
 
-        width: 30%;
+        width: 550px;
+
+        @media only screen and (max-width: 600px) {
+          position: initial;
+
+          order: 1;
+
+          width: 100%;
+        }
 
         img {
           width: 100%;
         }
       }
-    }
-  }
 
-  .ApresentacaoComentarios {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    height: 100vh;
-
-    .ComentariosCont {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      width: 80%;
-
-      @media only screen and (max-width: 600px) {
-        width: 90%;
-      }
-
-      .MascoteTodoPoderoso {
-        @media only screen and (max-width: 600px) {
-          order: 1;
-          width: 100%;
-
-          img {
-            width: 100%;
-          }
-        }
-      }
-
-      @media only screen and (max-width: 600px) {
-        flex-direction: column;
-      }
-
-      .Comentarios {
+      .MissaoParagrafo {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
         align-items: end;
-        gap: 30px;
+        gap: 50px;
 
         @media only screen and (max-width: 600px) {
+          align-items: start;
+
           order: 0;
 
-          align-items: start;
+          gap: 80px;
         }
 
-        .Headline {
+        .Titulo {
           display: flex;
           flex-direction: column;
           justify-content: center;
           align-items: end;
-          gap: 30px;
+          gap: 50px;
 
           @media only screen and (max-width: 600px) {
             align-items: start;
+
             gap: 20px;
           }
 
           h1 {
-            width: 655px;
-
+            color: #fff;
             text-align: right;
             leading-trim: both;
             text-edge: cap;
             font-family: Poppins;
-            font-size: 50px;
+            font-size: 100px;
             font-style: normal;
-            font-weight: 400;
-            line-height: 90.791%; /* 66.354px */
-
-            background: radial-gradient(
-              52.39% 371.74% at 50% 7.39%,
-              #fff 0%,
-              #999 100%
-            );
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-
-            z-index: 1;
+            font-weight: 900;
+            line-height: 70px;
 
             @media only screen and (max-width: 600px) {
-              text-align: center;
-              font-size: 26px;
+              font-size: 30px;
 
-              width: 100%;
+              text-align: left;
             }
           }
 
-          p {
-            text-align: right;
-            leading-trim: both;
-            text-edge: cap;
-            font-family: Poppins;
-            font-size: 20px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 119.791%; /* 18.958px */
+          .Separador {
+            width: 221px;
+            height: 4px;
 
-            background: radial-gradient(
-              52.39% 371.74% at 50% 7.39%,
-              #fff 0%,
-              #999 100%
-            );
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            background: linear-gradient(90deg, #f314fb 0%, #fdf57c 100%);
 
-            z-index: 1;
-
-            @media only screen and (max-width: 600px) {
-              text-align: center;
-              font-size: 14px;
-
-              width: 100%;
-            }
+            border: none;
           }
         }
 
-        .ComentariosContainer {
+        .MissaoTexto {
           display: flex;
-          justify-content: start;
+          flex-direction: column;
+          justify-content: center;
+          align-items: end;
+          gap: 20px;
+        }
 
-          padding-bottom: 30px;
+        p {
+          width: 700px;
+          font-size: 30px;
+          opacity: 0.5;
+          color: #ffffff;
+          text-align: right;
 
-          position: relative;
-
-          .DotsContainer {
-            position: absolute;
-            bottom: -30px; /* Ajuste conforme necessário */
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
+          span {
+            font-weight: bold;
           }
 
-          .Dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: #3b254450;
-            cursor: pointer;
-            transition: background-color 0.3s;
-
-            &.active {
-              background-color: #3b2544; /* A cor do dot ativo */
-            }
-
-            &:hover {
-              background-color: #fff;
-            }
+          i {
+            font-style: italic;
           }
 
-          .ConjuntoComentarios {
-            display: flex;
-            justify-content: center;
-            align-items: start;
-            gap: 30px;
+          @media only screen and (max-width: 600px) {
+            font-size: 24px;
 
-            @media only screen and (max-width: 600px) {
-              gap: 10px;
-            }
+            width: 100%;
 
-            .BoxComentarios {
-              display: flex;
-              flex-direction: column;
-              justify-content: start;
-              align-items: start;
-              align-self: stretch;
-              gap: 20px;
-
-              border: solid 1px #3b2544;
-              border-radius: 10px;
-
-              padding: 30px;
-
-              @media only screen and (max-width: 600px) {
-                padding: 20px;
-              }
-
-              .Estrelas {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 5px;
-
-                img {
-                  width: 10px;
-                }
-              }
-
-              .Usuario {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 15px;
-
-                .ImagemUsuario {
-                  width: 30px;
-
-                  border: solid #ffffff 1px;
-                  border-radius: 30px;
-
-                  overflow: hidden;
-
-                  img {
-                    width: 100%;
-                  }
-                }
-
-                span {
-                  font-size: 20px;
-                  color: #ffffff;
-
-                  @media only screen and (max-width: 600px) {
-                    font-size: 14px;
-                  }
-                }
-              }
-
-              .UsuarioComentario {
-                width: 260px;
-
-                @media only screen and (max-width: 600px) {
-                  width: 100%;
-
-                  order: 0;
-
-                  align-items: start;
-                }
-
-                span {
-                  font-size: 14px;
-                  color: #ffffff;
-                }
-              }
-            }
+            text-align: left;
           }
+        }
+
+        hr {
+          width: 100%;
+          opacity: 0.3;
         }
       }
     }
   }
 
-  .ApresentacaoCameoLover {
+  .MissaoImagemMobile {
     width: 100%;
-    height: 100vh;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    img {
+      width: 100%;
+    }
+  }
 
-    .CameoLoverCont {
-      width: 80%;
+  .ParagrafoSobre {
+    padding: 100px;
 
+    @media only screen and (max-width: 600px) {
+      padding: 40px;
+    }
+
+    .ParagrafoSobreBox {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
 
+      p {
+        font-size: 30px;
+        opacity: 0.5;
+        color: #ffffff;
+        text-align: center;
+
+        @media only screen and (max-width: 600px) {
+          font-size: 24px;
+
+          text-align: left;
+        }
+
+        span {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .NossoTime {
+    padding: 100px;
+
+    @media only screen and (max-width: 600px) {
+      padding: 40px 40px 100px 40px;
+    }
+
+    .NossoTimeBox {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 50px;
+
       @media only screen and (max-width: 600px) {
-        flex-direction: column;
+        align-items: start;
       }
 
-      .CameoLoverInformacoes {
+      .NossoTimeTitulo {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: start;
-        gap: 30px;
+        align-items: center;
+        gap: 50px;
 
-        .Headline {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
+        @media only screen and (max-width: 600px) {
           align-items: start;
-          gap: 40px;
 
-          h1 {
-            text-align: left;
-            leading-trim: both;
-            text-edge: cap;
-            font-family: Poppins;
-            font-size: 50px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 90.791%; /* 66.354px */
+          gap: 20px;
+        }
 
-            background: radial-gradient(
-              52.39% 371.74% at 50% 7.39%,
-              #fff 0%,
-              #999 100%
-            );
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        h1 {
+          color: #fff;
+          text-align: center;
+          leading-trim: both;
+          text-edge: cap;
+          font-family: Poppins;
+          font-size: 100px;
+          font-style: normal;
+          font-weight: 900;
+          line-height: 70px;
 
-            z-index: 1;
-
-            span {
-              font-weight: bold;
-            }
-
-            @media only screen and (max-width: 600px) {
-              font-size: 30px;
-            }
-          }
-
-          p {
-            width: 735px;
+          @media only screen and (max-width: 600px) {
+            font-size: 30px;
 
             text-align: left;
-            font-family: Poppins;
-            font-size: 20px;
-            font-weight: 400;
-
-            color: #fff;
-
-            z-index: 1;
-
-            @media only screen and (max-width: 600px) {
-              font-size: 14px;
-
-              width: 100%;
-            }
-          }
-
-          .subline {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 5px;
-
-            p {
-              width: initial;
-
-              font-family: Poppins;
-              font-size: 16px;
-              font-style: italic;
-              font-weight: 200;
-              line-height: 94.791%;
-
-              color: #fff;
-
-              z-index: 1;
-            }
           }
         }
 
-        .Avaliacao {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 20px;
+        .Separador {
+          width: 221px;
+          height: 4px;
+
+          background: linear-gradient(90deg, #f314fb 0%, #fdf57c 100%);
+
+          border: none;
         }
       }
 
-      .MascoteLover {
-        @media only screen and (max-width: 600px) {
-          width: 100%;
+      .NossoTimeEquipe {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 200px;
 
-          img {
+        @media only screen and (max-width: 600px) {
+          flex-direction: column;
+
+          gap: 50px;
+        }
+
+        .NossoTimeEquipeBox {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          position: relative;
+
+          @media only screen and (max-width: 600px) {
             width: 100%;
+          }
+
+          .TentaculoA {
+            position: absolute;
+            top: 70px;
+            left: -85px;
+
+            @media only screen and (max-width: 600px) {
+              width: 77px;
+
+              top: 60px;
+              left: -5px;
+
+              img {
+                width: 100%;
+              }
+            }
+          }
+
+          .TentaculoB {
+            position: absolute;
+            top: 30px;
+            right: -90px;
+            width: 90px;
+
+            img {
+              width: 100%;
+            }
+
+            @media only screen and (max-width: 600px) {
+              width: 48px;
+              right: 0px;
+
+              img {
+                width: 100%;
+              }
+            }
+          }
+
+          .DetalhesEquipe {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+
+            width: 100%;
+
+            .FotoGradiente {
+              background: var(
+                --Gradiente---Boto-Primario,
+                linear-gradient(270deg, #2ba8e2 0%, #1af5eb 100%)
+              );
+
+              padding: 5px;
+
+              border-radius: 50px;
+
+              overflow: hidden;
+
+              .Foto {
+                width: 290px;
+                height: 290px;
+
+                border-radius: 45px;
+
+                overflow: hidden;
+
+                @media only screen and (max-width: 600px) {
+                  width: 190px;
+                  height: 190px;
+                }
+
+                img {
+                  width: 100%;
+                }
+              }
+            }
+
+            .Nome {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              gap: 20px;
+
+              width: 100%;
+
+              h3 {
+                font-size: 30px;
+                color: #ffffff;
+              }
+
+              span {
+                font-size: 26px;
+                color: #ffffff;
+
+                opacity: 0.5;
+
+                @media only screen and (max-width: 600px) {
+                  width: 100%;
+
+                  text-align: center;
+                }
+              }
+            }
           }
         }
       }
@@ -1153,6 +708,10 @@
     );
 
     position: relative;
+
+    a {
+      text-decoration: none;
+    }
 
     .FooterCont {
       display: flex;
@@ -1219,6 +778,8 @@
 
                 padding: 10px 15px;
 
+                transition: 0.2s;
+
                 span {
                   color: #ffffff;
                   font-size: 16px;
@@ -1226,6 +787,12 @@
 
                 img {
                   width: 7px;
+                }
+
+                &:hover {
+                  gap: 15px;
+
+                  border-radius: 0px;
                 }
               }
 
@@ -1244,7 +811,7 @@
                   color: #fff;
                   font-size: 18px;
 
-                  height: initial;
+                  height: 38px;
 
                   padding: 10px 20px;
                   justify-content: center;

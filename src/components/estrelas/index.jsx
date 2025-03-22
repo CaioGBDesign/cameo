@@ -14,6 +14,7 @@ const Estrelas = ({ estrelas, starWidth }) => {
           key={i}
           src="/icones/estrela-preenchida.svg"
           style={{ width: starWidth }}
+          alt="nota"
         />
       );
     }
@@ -29,6 +30,7 @@ const Estrelas = ({ estrelas, starWidth }) => {
           key={i}
           src="/icones/estrela-vazia.svg"
           style={{ width: starWidth }}
+          alt="nota"
         />
       );
     }

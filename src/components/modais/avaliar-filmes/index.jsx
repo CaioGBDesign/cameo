@@ -10,8 +10,18 @@ const ModalAvaliar = ({ filmeId, nota, onClose }) => {
   const isMobile = useIsMobile();
   const [avaliacao, setAvaliacao] = useState(nota);
   const [comentario, setComentario] = useState("");
+  const [descricaoNota, setDescricaoNota] = useState("");
   const { user, darNota } = useAuth();
   const modalRef = useRef(null);
+
+  // Mapeamento de estrelas para texto
+  const estrelasDescricao = {
+    1: "Zuado",
+    2: "Ok",
+    3: "Gostei",
+    4: "Sinistro",
+    5: "Cabuloso",
+  };
 
   useEffect(() => {
     if (user && filmeId) {
@@ -47,6 +57,11 @@ const ModalAvaliar = ({ filmeId, nota, onClose }) => {
   useEffect(() => {
     console.log("Valor de comentario:", comentario); // Verifique se o comentário está sendo atualizado
   }, [comentario]);
+
+  // Atualiza a descrição da nota conforme a avaliação
+  useEffect(() => {
+    setDescricaoNota(estrelasDescricao[avaliacao]);
+  }, [avaliacao]);
 
   const handleEstrelaClick = (value) => {
     setAvaliacao(value);
@@ -84,8 +99,7 @@ const ModalAvaliar = ({ filmeId, nota, onClose }) => {
         <div className={styles.contModal}>
           <div className={styles.contEstrelas}>
             <div className={styles.notaEscala}>
-              <span>Não gostei</span>
-              <span>Adorei</span>
+              <span>{descricaoNota}</span>
             </div>
             <div className={styles.estrelas}>
               {[1, 2, 3, 4, 5].map((value) => (

@@ -110,11 +110,11 @@
 
         .notaEscala {
           display: flex;
-          justify-content: space-between;
+          justify-content: center;
 
           span {
-            font-size: 14px;
-            font-weight: 200;
+            font-size: 20px;
+            font-weight: bold;
 
             color: white;
           }
@@ -147,6 +147,15 @@
               height: 45px;
             }
           }
+        }
+
+        .comentario {
+          padding: 20px;
+
+          background: #00000010;
+
+          border: solid #ffffff10;
+          border-radius: 10px;
         }
       }
 

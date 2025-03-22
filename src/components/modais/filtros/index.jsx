@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useIsMobile } from "@/components/DeviceProvider";
 import streamingServices from "@/components/listas/streamings/streaming.json";
 import HeaderModal from "@/components/modais/header-modais";
+import setCountFiltter from "@/stores/setCountFiltter";
 
 // Lista estática de países
 const countriesList = [
@@ -493,6 +494,8 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
     };
   }, []); // Só executa na montagem do componente
 
+  const { toggle } = setCountFiltter();
+
   // Função que limpa os filtros
   const clearFilters = () => {
     localStorage.removeItem("movieSearchUrl"); // Remove a URL dos filtros
@@ -509,6 +512,7 @@ const ModalFiltros = ({ onClose, user, onSelectMovie }) => {
     setSelectedCountry(null); // Desmarca o país de origem selecionado ao limpar os filtros
     setAnoLancamento(null); // Desmarca o ano de lançamento selecionado ao limpar os filtros
     setShowClearButton(false); // Oculta o botão após limpar os filtros
+    toggle();
   };
 
   return (

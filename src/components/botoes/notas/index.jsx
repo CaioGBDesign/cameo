@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./index.module.scss";
 import Estrelas from "@/components/estrelas";
 import AvaliarFilme from "@/components/detalhesfilmes/avaliar-filme";
@@ -14,7 +14,7 @@ const NotasFilmes = ({
 }) => {
   const { user } = useAuth(); // Verifica se o usuário está autenticado
   const [mensagem, setMensagem] = useState("");
-  const [nota, setNota] = useState(user?.visto[filmeId]?.nota || 0);
+  const [nota, setNota] = useState(null);
   const [isClosing, setIsClosing] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false); // Estado para controlar o modal de login
   const isMobile = useIsMobile(); // Verifica se é mobile
@@ -66,12 +66,18 @@ const NotasFilmes = ({
     onClickModal();
   };
 
+  useEffect(() => {
+    setNota(user?.visto[filmeId]?.nota);
+  }, [user]);
+
+  console.log(nota);
+
   return (
     <div className={styles.notasFilmes}>
       <button onClick={handleClick}>
         {filmeVisto ? (
           <div className={styles.estrelas}>
-            <Estrelas estrelas={user.visto[filmeId]?.nota} starWidth={"14px"} />
+            <Estrelas estrelas={nota} starWidth={"14px"} />
           </div>
         ) : (
           <AvaliarFilme />

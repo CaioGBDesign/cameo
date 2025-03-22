@@ -28,23 +28,11 @@ const BaseBotoes = ({
   return (
     <div className={styles.baseBotoes}>
       <div className={styles.contBotoes}>
-        {botaoPrimario && (
-          <div className={styles.botaoPrimario}>
-            {exibirBotaoPrimario && (
-              <BotaoPrimario
-                textoBotaoPrimario={TextoBotao}
-                idBprimario={"Salvar"}
-                onClick={onClick} // Ação para o botão primário
-              />
-            )}
-
-            {exibirResgateFiltro && (
-              <div className={styles.resgateFiltro}>
-                <button>Aplicar filtro</button>
-              </div>
-            )}
-          </div>
-        )}
+        <BotaoPrimario
+          textoBotaoPrimario={TextoBotao}
+          idBprimario={"Salvar"}
+          onClick={onClick} // Ação para o botão primário
+        />
 
         {botaoSecundario && (
           <div className={styles.botaoSecundario}>

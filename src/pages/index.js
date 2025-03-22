@@ -24,6 +24,7 @@ import Classificacao from "@/components/detalhesfilmes/classificacao";
 import FundoTitulosDesktop from "@/components/fotoPrincipalDesktop";
 import Loading from "@/components/loading";
 import Recomendacoes from "@/components/detalhesfilmes/recomendacoes";
+import setCountFiltter from "@/stores/setCountFiltter";
 
 const inter = Inter({ subsets: ["latin"] });
 const FundoTitulos = lazy(() => import("@/components/fundotitulos"));
@@ -58,7 +59,7 @@ const Home = () => {
   } = useAuth();
 
   const abrirModal = (modalTipo) => setModalAberto(modalTipo);
-  const fecharModal = () => setModalAberto(null);
+  const fecharModal = () => setModalAberto(false);
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   const handleSelectMovie = (movieId) => {
@@ -223,7 +224,10 @@ const Home = () => {
 
   useEffect(() => {
     fetchCountryNames();
+    localStorage.clear();
   }, []);
+
+  const { isTogled } = setCountFiltter();
 
   useEffect(() => {
     // Itens a serem verificados no localStorage
@@ -249,7 +253,7 @@ const Home = () => {
     // Exibe a contagem dos itens encontrados
     console.log("Quantidade de filtros no localStorage:", count);
     setFiltrosCount(count); // Atualiza o estado com a quantidade de filtros
-  }, []);
+  }, [filmeId, isTogled]);
 
   if (!filme && filmeId) return <Loading />;
 

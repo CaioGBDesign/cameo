@@ -6,6 +6,7 @@ import styles from "./index.module.scss";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import Sinopse from "@/components/detalhesfilmes/sinopse";
+import Loading from "@/components/loading";
 
 const Miniaturafilmes = lazy(() => import("@/components/miniaturafilmes"));
 

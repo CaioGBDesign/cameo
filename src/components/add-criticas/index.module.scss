@@ -1,0 +1,336 @@
+.ContCriticas {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100vh;
+
+  color: #fff;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  background: #00000050;
+
+  z-index: 999;
+
+  @media only screen and (max-width: 600px) {
+    justify-content: end;
+  }
+
+  .criticasForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+    gap: 50px;
+
+    background: #1f0928;
+    border-radius: 30px;
+    border: solid #ffffff50 1px;
+
+    overflow: hidden;
+
+    width: 900px;
+
+    padding-bottom: 30px;
+
+    @media only screen and (max-width: 600px) {
+      border-radius: 15px 15px 0 0;
+      border: none;
+
+      width: 100%;
+    }
+
+    .AddCriticas {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 90%;
+
+      .FormCriticas {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: end;
+        gap: 20px;
+
+        width: 100%;
+
+        .scrollCriticas {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: end;
+          gap: 20px;
+
+          width: 100%;
+          height: 400px;
+
+          overflow: scroll;
+
+          /* width */
+          &::-webkit-scrollbar {
+            display: none;
+          }
+
+          .conteudoCriticas {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+
+            width: 100%;
+
+            margin-top: 200px;
+
+            input {
+              width: 100%;
+              height: 60px;
+              background: none;
+              border: none;
+              border-bottom: 1px solid hsla(0, 0%, 100%, 0.251);
+              font-size: 16px;
+              color: #fff;
+            }
+
+            input[type="number"]::placeholder {
+              color: rgba(255, 255, 255, 0.4);
+              font-size: 16px;
+            }
+
+            input[type="number"]::-webkit-inner-spin-button {
+              opacity: 1;
+
+              background: none;
+            }
+
+            .FormGroup,
+            .FormGroup,
+            .BotoesAcao {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              gap: 20px;
+
+              width: 99%;
+
+              .paragrafoBox {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                width: 100%;
+                textarea {
+                  padding: 20px;
+                  background: rgba(0, 0, 0, 0.063);
+                  border: solid hsla(0, 0%, 100%, 0.063);
+                  border-radius: 10px;
+
+                  width: 100%;
+                  color: #fff;
+
+                  &::placeholder {
+                    color: rgba(255, 255, 255, 0.4);
+                    font-size: 16px;
+                  }
+                }
+              }
+
+              .uploadContainer {
+                width: 100%;
+
+                .customFileLabel {
+                  width: 100%;
+
+                  .labelContent {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 10px;
+
+                    .textos {
+                      display: flex;
+                      flex-direction: column;
+                      justify-content: center;
+                      align-items: center;
+                      gap: 10px;
+
+                      .textoLabel {
+                        font-weight: bold;
+                        font-size: 20px;
+                      }
+
+                      .subTextoLabel {
+                        font-size: 14px;
+                        font-weight: 200;
+                      }
+                    }
+                  }
+
+                  .previewContainer {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 20px;
+
+                    width: 100%;
+
+                    position: relative;
+
+                    .imagemPreview {
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+
+                      width: 100%;
+                      height: 270px;
+
+                      img {
+                        width: 100%;
+                      }
+                    }
+
+                    .actionsOverlay {
+                      position: absolute;
+                      bottom: 20px;
+                      left: 20px;
+
+                      z-index: 999;
+
+                      button {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 10px;
+
+                        background: #1af5eb;
+                        border: none;
+                        border-radius: 5px;
+
+                        padding: 10px;
+
+                        font-weight: bold;
+                      }
+                    }
+                  }
+                }
+
+                input[type="file"] {
+                  display: none;
+                }
+
+                label {
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+
+                  width: 90%;
+                  height: 270px;
+                  background: none;
+                  border: dashed #ffffff20 2px;
+                  border-radius: 10px;
+
+                  transition: 0.2s;
+
+                  font-size: 16px;
+                  color: #fff;
+
+                  overflow: hidden;
+
+                  cursor: pointer;
+
+                  &:hover {
+                    background: #ffffff10;
+                  }
+                }
+              }
+
+              input {
+                width: 100%;
+                height: 60px;
+                background: none;
+                border: none;
+                border-bottom: 1px solid hsla(0, 0%, 100%, 0.251);
+                font-size: 16px;
+                color: #fff;
+              }
+
+              input[type="text"]::placeholder {
+                color: rgba(255, 255, 255, 0.4);
+                font-size: 16px;
+              }
+
+              button {
+                background: none;
+                border: none;
+
+                cursor: pointer;
+              }
+
+              .BotaoAdicionar {
+                width: 100%;
+                height: 50px;
+
+                background: #ffffff10;
+                border-radius: 10px;
+
+                color: #ffffff50;
+
+                transition: 0.2s;
+
+                &:hover {
+                  background: #ffffff20;
+
+                  color: #ffffff90;
+                }
+              }
+            }
+
+            .FormFlex {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              gap: 20px;
+
+              width: 100%;
+
+              select {
+                width: 100%;
+                height: 60px;
+
+                background: none;
+                border: none;
+                border-bottom: solid 1px #ffffff40;
+
+                padding: 0px 10px;
+
+                font-size: 1rem;
+
+                color: white;
+
+                &:focus {
+                  border-color: transparent;
+                }
+
+                option {
+                  padding: 0.5rem;
+                  background-color: #fff;
+                  color: #333;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -5,7 +5,7 @@ import { Inter } from "next/font/google";
 import { useIsMobile } from "@/components/DeviceProvider";
 import Head from "next/head";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import FooterB from "@/components/FooterB";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import styles from "@/styles/index.module.scss";
 import TitulosFilmes from "@/components/titulosfilmes";
@@ -499,15 +499,7 @@ const Home = () => {
             </div>
           </div>
 
-          {isMobile ? (
-            <Footer
-              style={{ backgroundColor: "#210C2A", paddingBottom: "160px" }}
-            />
-          ) : (
-            <Footer
-              style={{ backgroundColor: "transparent", paddingBottom: "0px" }}
-            />
-          )}
+          <FooterB />
         </div>
         <BaseBotoes
           TextoBotao={"Filme aleatório"}

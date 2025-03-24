@@ -696,6 +696,30 @@ function AuthProvider({ children }) {
     }
   };
 
+  const verificarPermissoesNoticias = async () => {
+    if (!user) return false;
+
+    try {
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      return userDoc.data().isAdmin || userDoc.data().isEditor; // Adicione estas propriedades no seu usuário
+    } catch (error) {
+      console.error("Erro ao verificar permissões:", error);
+      return false;
+    }
+  };
+
+  const verificarPermissoesCriticas = async () => {
+    if (!user) return false;
+
+    try {
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      return userDoc.data().isAdmin || userDoc.data().isEditor; // Adicione estas propriedades no seu usuário
+    } catch (error) {
+      console.error("Erro ao verificar permissões:", error);
+      return false;
+    }
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -720,6 +744,8 @@ function AuthProvider({ children }) {
         adicionarMeta,
         removerMeta,
         atualizarMeta,
+        verificarPermissoesNoticias,
+        verificarPermissoesCriticas,
       }}
     >
       {children}

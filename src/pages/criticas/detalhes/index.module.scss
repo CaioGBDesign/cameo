@@ -1,0 +1,236 @@
+.container {
+  margin: 130px 0px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+
+  @media only screen and (max-width: 600px) {
+    margin: 100px 0px;
+  }
+
+  .criticaCompleta {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 50px;
+
+    width: 1440px;
+
+    @media only screen and (max-width: 600px) {
+      gap: 30px;
+
+      width: 90%;
+    }
+
+    .imagemCritica {
+      width: 1440px;
+      height: 480px;
+
+      border-radius: 10px;
+
+      overflow: hidden;
+
+      position: relative;
+
+      @media only screen and (max-width: 600px) {
+        width: 100%;
+        height: initial;
+
+        img {
+          width: 100%;
+        }
+      }
+
+      .tagCritica {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 15px 30px;
+
+        background: #2ba8e2;
+        border-radius: 0px 30px 0px 0px;
+
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+
+        @media only screen and (max-width: 600px) {
+          padding: 10px 15px;
+
+          border-radius: 0px 15px 0px 0px;
+        }
+
+        span {
+          color: #fff;
+          leading-trim: both;
+          text-edge: cap;
+          font-size: 20px;
+          font-style: normal;
+          font-weight: 800;
+          line-height: 90%; /* 18px */
+          text-transform: uppercase;
+
+          @media only screen and (max-width: 600px) {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+
+    h1 {
+      font-size: 60px;
+      font-weight: bold;
+      color: #ffffff;
+
+      @media only screen and (max-width: 600px) {
+        font-size: 34px;
+      }
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 400;
+      color: #ffffff;
+
+      opacity: 0.5;
+
+      @media only screen and (max-width: 600px) {
+        font-size: 18px;
+      }
+    }
+
+    .cabecalhoInfo {
+      display: flex;
+      justify-content: start;
+      align-items: end;
+      gap: 50px;
+
+      @media only screen and (max-width: 600px) {
+        flex-direction: column;
+        align-items: start;
+
+        gap: 30px;
+      }
+
+      .autorInfo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+
+        @media only screen and (max-width: 600px) {
+          order: 1;
+        }
+
+        .autorFoto {
+          width: 40px;
+          height: 40px;
+
+          border-radius: 50px;
+          border: solid 2px #ffffff;
+
+          overflow: hidden;
+
+          @media only screen and (max-width: 600px) {
+            width: 30px;
+            height: 30px;
+          }
+
+          img {
+            width: 40px;
+            height: 40px;
+
+            @media only screen and (max-width: 600px) {
+              width: 30px;
+              height: 30px;
+            }
+          }
+        }
+
+        .autorNomeData {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: start;
+          gap: 10px;
+
+          @media only screen and (max-width: 600px) {
+            gap: 5px;
+          }
+
+          .autorNome {
+            font-size: 18px;
+            font-weight: bold;
+            font-style: italic;
+
+            color: #ffffff;
+
+            @media only screen and (max-width: 600px) {
+              font-size: 14px;
+            }
+          }
+
+          .dataPublicacao {
+            font-size: 14px;
+            font-style: italic;
+
+            opacity: 0.5;
+
+            color: #ffffff;
+
+            @media only screen and (max-width: 600px) {
+              font-size: 12px;
+            }
+          }
+        }
+      }
+
+      .metaInfo {
+        @media only screen and (max-width: 600px) {
+          order: 0;
+        }
+
+        .tempoLeitura {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+
+          span {
+            font-size: 20px;
+            font-style: italic;
+            color: #9863ec;
+
+            @media only screen and (max-width: 600px) {
+              font-size: 16px;
+            }
+          }
+        }
+      }
+    }
+
+    .conteudoTexto {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: end;
+      gap: 15px;
+
+      p {
+        color: #ffffff;
+        font-size: 20px;
+
+        @media only screen and (max-width: 600px) {
+          line-height: 30px;
+          font-weight: 200;
+
+          opacity: 0.5;
+        }
+      }
+    }
+  }
+}

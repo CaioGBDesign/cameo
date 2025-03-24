@@ -39,6 +39,14 @@
       font-size: 20px;
       color: #ffffff;
 
+      transition: 0.2s;
+
+      cursor: pointer;
+
+      &:hover {
+        border-radius: 0px;
+      }
+
       @media only screen and (max-width: 600px) {
         font-size: 18px;
 

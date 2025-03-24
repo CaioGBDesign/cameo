@@ -134,7 +134,7 @@ const Noticias = ({}) => {
     <>
       {isMobile ? <Header /> : <HeaderDesktop />}
       <Head>
-        <title>Cameo - Home</title>
+        <title>Cameo - Notícias</title>
         <meta
           name="description"
           content="Notícias quentes do cinema, spoilers dos bastidores e lançamentos imperdíveis! Na Cameo.fun, você cria listas personalizadas, debate teorias e celebra filmes com a comunidade cinéfila mais animada."

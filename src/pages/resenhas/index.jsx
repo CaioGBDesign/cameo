@@ -122,7 +122,7 @@ const Criticas = ({}) => {
     <>
       {isMobile ? <Header /> : <HeaderDesktop />}
       <Head>
-        <title>Cameo - Home</title>
+        <title>Cameo - Resenhas</title>
         <meta
           name="description"
           content="Notícias quentes do cinema, spoilers dos bastidores e lançamentos imperdíveis! Na Cameo.fun, você cria listas personalizadas, debate teorias e celebra filmes com a comunidade cinéfila mais animada."
@@ -135,7 +135,7 @@ const Criticas = ({}) => {
             <div className={styles.adicionarCritica}>
               <button onClick={() => setShowAddCriticas(true)}>
                 <img src="icones/add.svg" alt="Adicionar crítica" />
-                Adicionar Crítica
+                Adicionar Resenha
               </button>
             </div>
           )
@@ -162,7 +162,7 @@ const Criticas = ({}) => {
         </section>
 
         <div className={styles.tituloPagina}>
-          <span>Todas as críticas</span>
+          <span>Todas as resenhas</span>
         </div>
 
         <div className={styles.AddCritica}>
@@ -170,7 +170,7 @@ const Criticas = ({}) => {
             <article
               key={critica.id}
               className={styles.critica}
-              onClick={() => router.push(`/criticas/detalhes/${critica.id}`)}
+              onClick={() => router.push(`/resenhas/detalhes/${critica.id}`)}
             >
               <div className={styles.cabecalho}>
                 {/* Título principal da crítica */}

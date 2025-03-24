@@ -49,10 +49,10 @@ const CarrosselCriticas = ({ criticas = [], tipo }) => {
               <div
                 key={critica.id}
                 className={styles.resumoCritica}
-                onClick={() => router.push(`/criticas/detalhes/${critica.id}`)}
+                onClick={() => router.push(`/resenhas/detalhes/${critica.id}`)}
               >
                 <div className={styles.tagCritica}>
-                  <span>{tipo === "criticas" ? "Crítica" : "Notícia"}</span>
+                  <span>{tipo === "criticas" ? "Resenha" : "Notícia"}</span>
                 </div>
 
                 <div className={styles.informacoesCritica}>

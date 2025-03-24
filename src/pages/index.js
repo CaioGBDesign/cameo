@@ -499,7 +499,9 @@ const Home = () => {
             </div>
           </div>
 
-          <FooterB />
+          <div className={styles.footerHome}>
+            <FooterB />
+          </div>
         </div>
         <BaseBotoes
           TextoBotao={"Filme aleatório"}

@@ -52,7 +52,7 @@ const CriticaDetalhe = () => {
     <>
       {isMobile ? <Header /> : <HeaderDesktop />}
       <Head>
-        <title>Cameo - Home</title>
+        <title>Cameo - Resenha</title>
         <meta
           name="description"
           content="Críticas quentes do cinema, spoilers dos bastidores e lançamentos imperdíveis! Na Cameo.fun, você cria listas personalizadas, debate teorias e celebra filmes com a comunidade cinéfila mais animada."
@@ -64,7 +64,7 @@ const CriticaDetalhe = () => {
           {critica.elementos?.find((el) => el.tipo === "imagem") && (
             <div className={styles.imagemCritica}>
               <div className={styles.tagCritica}>
-                <span>Crítica</span>
+                <span>Resenha</span>
               </div>
               <img
                 src={

@@ -5,11 +5,12 @@ import { db } from "@/services/firebaseConection";
 import { doc, getDoc } from "firebase/firestore";
 import Loading from "@/components/loading";
 import styles from "./index.module.scss";
-import Link from "next/link";
+import FooterB from "@/components/FooterB";
 import Head from "next/head";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import { useIsMobile } from "@/components/DeviceProvider";
+import DOMPurify from "isomorphic-dompurify";
 
 const CriticaDetalhe = () => {
   const router = useRouter();
@@ -45,6 +46,29 @@ const CriticaDetalhe = () => {
 
     if (id) fetchCritica();
   }, [id]);
+
+  // Adicione esta função de processamento antes do return
+  const processarConteudo = (html) => {
+    try {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, "text/html");
+
+      // Remove conversão redundante de strong/em para spans
+      // Mantém apenas as tags originais e adiciona classes
+      doc.querySelectorAll("strong").forEach((el) => {
+        el.classList.add("boldtext");
+      });
+
+      doc.querySelectorAll("em").forEach((el) => {
+        el.classList.add("italictext");
+      });
+
+      return doc.body.innerHTML;
+    } catch (error) {
+      console.error("Erro ao processar conteúdo:", error);
+      return html;
+    }
+  };
 
   if (loading) return <Loading />;
 
@@ -122,17 +146,28 @@ const CriticaDetalhe = () => {
             {critica.elementos?.map((elemento, index) => {
               if (elemento.tipo === "paragrafo") {
                 return (
-                  <p key={index} className={styles.paragrafo}>
-                    {elemento.conteudo}
-                  </p>
+                  <p
+                    key={index}
+                    className={styles.paragrafo}
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(
+                        processarConteudo(elemento.conteudo),
+                        {
+                          ALLOWED_TAGS: ["strong", "em", "p"],
+                          ALLOWED_ATTR: ["class"],
+                          ADD_ATTR: ["class"],
+                        }
+                      ),
+                    }}
+                  />
                 );
               }
-              // Não renderizamos imagens aqui pois já mostramos a primeira acima
               return null;
             })}
           </div>
         </article>
       </div>
+      <FooterB></FooterB>
     </>
   );
 };

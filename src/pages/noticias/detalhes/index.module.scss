@@ -227,8 +227,20 @@
         @media only screen and (max-width: 600px) {
           line-height: 30px;
           font-weight: 200;
-
           opacity: 0.5;
+        }
+      }
+
+      /* Estilos globais para as classes de formatação */
+      :global {
+        .boldtext {
+          font-weight: bold !important;
+          color: inherit;
+        }
+
+        .italictext {
+          font-style: italic !important;
+          color: inherit;
         }
       }
     }

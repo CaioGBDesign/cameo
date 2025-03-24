@@ -64,8 +64,8 @@
         .scrollCriticas {
           display: flex;
           flex-direction: column;
-          justify-content: center;
-          align-items: end;
+          justify-content: start;
+          align-items: center;
           gap: 20px;
 
           width: 100%;
@@ -86,8 +86,6 @@
             gap: 20px;
 
             width: 100%;
-
-            margin-top: 200px;
 
             input {
               width: 100%;
@@ -127,6 +125,40 @@
                 align-items: center;
 
                 width: 100%;
+
+                position: relative;
+
+                .editorTools {
+                  margin-bottom: 8px;
+                  display: flex;
+                  gap: 4px;
+
+                  position: absolute;
+                  top: 10px;
+                  right: 10px;
+
+                  .botaoEstilo {
+                    width: 30px;
+                    height: 30px;
+
+                    background: #ffffff20;
+                    border: none;
+                    border-radius: 5px;
+
+                    cursor: pointer;
+
+                    color: #ffffff;
+
+                    &:hover {
+                      background: #e0e0e0;
+                    }
+
+                    &:last-child {
+                      font-style: italic;
+                    }
+                  }
+                }
+
                 textarea {
                   padding: 20px;
                   background: rgba(0, 0, 0, 0.063);

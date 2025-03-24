@@ -1,15 +1,20 @@
 import styles from "./index.module.scss";
 import { useState, useEffect, useRef } from "react";
 import { db, storage } from "@/services/firebaseConection";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  serverTimestamp,
+  doc,
+  setDoc,
+  getDoc,
+} from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useAuth } from "@/contexts/auth";
-import { doc, getDoc } from "firebase/firestore";
 import BotaoPrimario from "@/components/botoes/primarios";
 import Loading from "@/components/loading";
 import HeaderModal from "@/components/modais/header-modais";
 import { useRouter } from "next/router";
-import { reload } from "firebase/auth";
 
 const AddCriticas = ({ onClose }) => {
   const { user } = useAuth();
@@ -24,10 +29,23 @@ const AddCriticas = ({ onClose }) => {
   const [userData, setUserData] = useState(null);
   const [categoria, setCategoria] = useState("");
   const [classificacao, setClassificacao] = useState("");
+  const textareaRefs = useRef([]);
 
   const TIPO_ELEMENTO = {
     PARAGRAFO: "paragrafo",
     IMAGEM: "imagem",
+  };
+
+  const gerarSlug = (titulo) => {
+    return titulo
+      .toLowerCase()
+      .normalize("NFD") // Remove acentos
+      .replace(/[\u0300-\u036f]/g, "") // Remove diacríticos
+      .replace(/[^a-z0-9 ]/g, "") // Mantém apenas letras, números e espaços
+      .replace(/\s+/g, "-") // Substitui espaços por hifens
+      .replace(/-+/g, "-") // Remove hifens consecutivos
+      .trim() // Remove espaços extras no início e fim
+      .replace(/^-+|-+$/g, ""); // Remove hifens no início e fim
   };
 
   useEffect(() => {
@@ -130,6 +148,16 @@ const AddCriticas = ({ onClose }) => {
         throw new Error("Dados do usuário não disponíveis");
       }
 
+      const slug = gerarSlug(titulo);
+      if (!slug) throw new Error("Título inválido para gerar URL");
+
+      // Verifica se o documento já existe
+      const docRef = doc(db, "criticas", slug);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        throw new Error("Já existe uma resenha com este título");
+      }
+
       const elementosProcessados = await Promise.all(
         elementos.map(async (elemento) => {
           if (elemento.tipo === TIPO_ELEMENTO.IMAGEM && elemento.file) {
@@ -145,7 +173,8 @@ const AddCriticas = ({ onClose }) => {
         })
       );
 
-      await addDoc(collection(db, "criticas"), {
+      // Cria o documento com ID customizado
+      await setDoc(docRef, {
         titulo,
         subtitulo,
         numero: Number(numero),
@@ -158,6 +187,7 @@ const AddCriticas = ({ onClose }) => {
           avatarUrl: userData.avatarUrl,
         },
         dataPublicacao: serverTimestamp(),
+        slug,
       });
 
       limparFormulario();
@@ -168,6 +198,52 @@ const AddCriticas = ({ onClose }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const aplicarEstilo = (index, tipo) => {
+    const textarea = textareaRefs.current[index];
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+
+    if (start === end) return;
+
+    // Mapeamento corrigido
+    const tagMap = {
+      bold: {
+        abertura: '<strong class="boldtext">',
+        fechamento: "</strong>",
+      },
+      italic: {
+        abertura: '<em class="italictext">',
+        fechamento: "</em>",
+      },
+    };
+
+    const estilo = tagMap[tipo];
+    if (!estilo) {
+      console.error("Tipo de estilo não reconhecido:", tipo);
+      return;
+    }
+
+    const textoAtual = elementos[index].conteudo;
+    const selectedText = textoAtual.substring(start, end);
+
+    const novoTexto =
+      textoAtual.substring(0, start) +
+      `${estilo.abertura}${selectedText}${estilo.fechamento}` +
+      textoAtual.substring(end);
+
+    const novosElementos = [...elementos];
+    novosElementos[index].conteudo = novoTexto;
+    setElementos(novosElementos);
+
+    setTimeout(() => {
+      textarea.focus();
+      const offset = estilo.abertura.length + estilo.fechamento.length;
+      textarea.setSelectionRange(end + offset, end + offset);
+    }, 0);
   };
 
   if (loading) {
@@ -325,6 +401,22 @@ const AddCriticas = ({ onClose }) => {
                   elemento.tipo === TIPO_ELEMENTO.PARAGRAFO ? (
                     <div key={index} className={styles.FormGroup}>
                       <div className={styles.paragrafoBox}>
+                        <div className={styles.editorTools}>
+                          <button
+                            type="button"
+                            onClick={() => aplicarEstilo(index, "bold")} // Alterado de 'b' para 'bold'
+                            className={styles.botaoEstilo}
+                          >
+                            B
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => aplicarEstilo(index, "italic")} // Alterado de 'i' para 'italic'
+                            className={styles.botaoEstilo}
+                          >
+                            I
+                          </button>
+                        </div>
                         <textarea
                           value={elemento.conteudo}
                           onChange={(e) =>
@@ -333,6 +425,7 @@ const AddCriticas = ({ onClose }) => {
                           rows="4"
                           placeholder={`Parágrafo ${index + 1}`}
                           required
+                          ref={(el) => (textareaRefs.current[index] = el)}
                         />
                       </div>
                     </div>

@@ -165,6 +165,28 @@ const CriticaDetalhe = () => {
               return null;
             })}
           </div>
+
+          <div className={styles.avaliacaoCameo}>
+            <h3>Avaliação Cameo</h3>
+            {/* Classificação em estrelas */}
+            {critica.classificacao !== undefined && (
+              <div className={styles.classificacaoEstrelas}>
+                {Array.from({ length: 5 }, (_, index) => {
+                  const isFilled = index < critica.classificacao;
+                  return (
+                    <img
+                      key={index}
+                      src={`/icones/estrela-${
+                        isFilled ? "preenchida" : "vazia"
+                      }.svg`}
+                      alt={isFilled ? "Estrela preenchida" : "Estrela vazia"}
+                      className={styles.estrela}
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </article>
       </div>
       <FooterB></FooterB>

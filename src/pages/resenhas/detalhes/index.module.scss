@@ -244,5 +244,27 @@
         }
       }
     }
+
+    .avaliacaoCameo {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: start;
+      gap: 10px;
+
+      h3 {
+        font-size: 20px;
+        opacity: 0.5;
+
+        color: #fff;
+      }
+
+      .classificacaoEstrelas {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+      }
+    }
   }
 }

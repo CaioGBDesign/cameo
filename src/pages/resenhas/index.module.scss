@@ -132,20 +132,17 @@
     }
 
     @media only screen and (max-width: 900px) {
-      grid-template-columns: auto;
+      width: 80%;
     }
 
     @media only screen and (max-width: 600px) {
       grid-template-columns: auto;
-
-      width: 80%;
 
       margin-bottom: 90px;
     }
 
     .critica {
       display: inline-flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
 
@@ -154,16 +151,21 @@
 
       width: 100%;
 
+      @media only screen and (max-width: 900px) {
+        width: 100%;
+      }
+
       cursor: pointer;
 
       &:hover {
-        .conteudo {
-          .imagemContainer {
-            img {
-              width: 507px;
-              height: 170px;
+        .boxConteudo {
+          .conteudo {
+            .imagemContainer {
+              img {
+                width: 105%;
 
-              opacity: 0.7;
+                opacity: 0.7;
+              }
             }
           }
         }
@@ -178,7 +180,7 @@
 
         width: 95%;
 
-        padding: 10px 0px;
+        padding: 10px;
 
         @media only screen and (max-width: 900px) {
           width: 97%;
@@ -200,6 +202,10 @@
             color: #fff;
 
             width: 100%;
+
+            @media only screen and (max-width: 900px) {
+              font-size: 18px;
+            }
           }
 
           .data {

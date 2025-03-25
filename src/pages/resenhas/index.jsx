@@ -172,25 +172,26 @@ const Criticas = ({}) => {
               className={styles.critica}
               onClick={() => router.push(`/resenhas/detalhes/${critica.id}`)}
             >
-              <div className={styles.cabecalho}>
-                {/* Título principal da crítica */}
-                {critica.titulo && (
-                  <h1 className={styles.tituloPrincipal}>{critica.titulo}</h1>
-                )}
+              <div className={styles.boxConteudo}>
+                <div className={styles.conteudo}>
+                  {critica.elementos.map((elemento, index) =>
+                    renderElemento(elemento, index)
+                  )}
+                </div>
+                <div className={styles.cabecalho}>
+                  {/* Título principal da crítica */}
+                  {critica.titulo && (
+                    <h1 className={styles.tituloPrincipal}>{critica.titulo}</h1>
+                  )}
 
-                {/* Tempo de leitura */}
-                {critica.numero && (
-                  <div className={styles.numeroCritica}>
-                    <img src="icones/relogio.svg" alt="Tempo de leitura" />
-                    {critica.numero} min de leitura
-                  </div>
-                )}
-              </div>
-
-              <div className={styles.conteudo}>
-                {critica.elementos.map((elemento, index) =>
-                  renderElemento(elemento, index)
-                )}
+                  {/* Tempo de leitura */}
+                  {critica.numero && (
+                    <div className={styles.numeroCritica}>
+                      <img src="icones/relogio.svg" alt="Tempo de leitura" />
+                      {critica.numero} min de leitura
+                    </div>
+                  )}
+                </div>
               </div>
             </article>
           ))}

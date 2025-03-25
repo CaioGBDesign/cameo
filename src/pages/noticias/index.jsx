@@ -184,25 +184,26 @@ const Noticias = ({}) => {
               className={styles.noticia}
               onClick={() => router.push(`/noticias/detalhes/${noticia.id}`)}
             >
-              <div className={styles.cabecalho}>
-                {/* Título principal da notícia */}
-                {noticia.titulo && (
-                  <h1 className={styles.tituloPrincipal}>{noticia.titulo}</h1>
-                )}
+              <div className={styles.boxConteudo}>
+                <div className={styles.conteudo}>
+                  {noticia.elementos.map((elemento, index) =>
+                    renderElemento(elemento, index)
+                  )}
+                </div>
+                <div className={styles.cabecalho}>
+                  {/* Título principal da notícia */}
+                  {noticia.titulo && (
+                    <h1 className={styles.tituloPrincipal}>{noticia.titulo}</h1>
+                  )}
 
-                {/* Tempo de leitura */}
-                {noticia.numero && (
-                  <div className={styles.numeroNoticia}>
-                    <img src="icones/relogio.svg" alt="Tempo de leitura" />
-                    {noticia.numero} min de leitura
-                  </div>
-                )}
-              </div>
-
-              <div className={styles.conteudo}>
-                {noticia.elementos.map((elemento, index) =>
-                  renderElemento(elemento, index)
-                )}
+                  {/* Tempo de leitura */}
+                  {noticia.numero && (
+                    <div className={styles.numeroNoticia}>
+                      <img src="icones/relogio.svg" alt="Tempo de leitura" />
+                      {noticia.numero} min de leitura
+                    </div>
+                  )}
+                </div>
               </div>
             </article>
           ))}

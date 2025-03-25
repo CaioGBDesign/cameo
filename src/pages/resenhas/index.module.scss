@@ -59,10 +59,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 20px;
 
-    width: 1440px;
+    width: 80%;
 
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 1000px) {
       flex-direction: column;
       gap: 20px;
 
@@ -79,25 +80,23 @@
       width: 542px;
       overflow: hidden;
 
-      border-radius: 10px;
-
-      @media only screen and (max-width: 600px) {
+      @media only screen and (max-width: 1000px) {
         width: 100%;
       }
 
       .customWidth {
-        width: 100%;
+        width: 542px;
+
+        @media only screen and (max-width: 1000px) {
+          width: 100%;
+        }
       }
     }
 
     .ultimasCriticas {
       position: relative;
       overflow: hidden;
-      width: 877px;
-
-      @media only screen and (max-width: 600px) {
-        width: 100%;
-      }
+      width: 100%;
     }
   }
 
@@ -106,15 +105,7 @@
     justify-content: start;
     align-items: center;
 
-    width: 1440px;
-
-    @media only screen and (max-width: 600px) {
-      width: 80%;
-    }
-
-    @media only screen and (max-width: 1450px) {
-      width: 80%;
-    }
+    width: 80%;
 
     span {
       font-size: 30px;
@@ -129,44 +120,39 @@
   }
 
   .AddCritica {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto auto auto;
     justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 20px 0px;
+    gap: 20px;
 
-    width: 75%;
+    width: 80%;
+
+    @media only screen and (max-width: 1500px) {
+      grid-template-columns: auto auto;
+    }
+
+    @media only screen and (max-width: 900px) {
+      grid-template-columns: auto;
+    }
 
     @media only screen and (max-width: 600px) {
+      grid-template-columns: auto;
+
       width: 80%;
 
       margin-bottom: 90px;
     }
 
-    @media only screen and (max-width: 1450px) {
-      display: grid;
-      grid-template-columns: auto auto auto;
-
-      width: 80%;
-    }
-
-    @media only screen and (max-width: 1170px) {
-      display: grid;
-      grid-template-columns: auto auto;
-
-      width: 80%;
-    }
-
     .critica {
       display: inline-flex;
       flex-direction: column;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 20px;
+      justify-content: center;
+      align-items: center;
 
       border: solid 2px #3b2544;
       border-radius: 10px;
 
-      padding: 10px;
+      width: 100%;
 
       cursor: pointer;
 
@@ -183,121 +169,89 @@
         }
       }
 
-      .cabecalho {
+      .boxConteudo {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: start;
+        align-items: center;
         gap: 20px;
 
-        order: 1;
+        width: 95%;
 
-        width: 407px;
+        padding: 10px 0px;
 
-        @media only screen and (max-width: 600px) {
-          width: 100%;
+        @media only screen and (max-width: 900px) {
+          width: 97%;
         }
 
-        @media only screen and (max-width: 1450px) {
-          width: 285px;
-        }
-
-        @media only screen and (max-width: 1170px) {
-          width: 390px;
-        }
-
-        @media only screen and (max-width: 1000px) {
-          width: 365px;
-        }
-
-        @media only screen and (max-width: 990px) {
-          width: 350px;
-        }
-
-        h1 {
-          font-size: 24px;
-          font-weight: bold;
-
-          color: #fff;
+        .cabecalho {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: start;
+          gap: 20px;
 
           width: 100%;
 
-          padding: 0px 10px;
-        }
+          h1 {
+            font-size: 24px;
+            font-weight: bold;
 
-        .data {
-          display: flex;
-        }
+            color: #fff;
 
-        .numeroCritica {
-          display: flex;
-          justify-content: start;
-          align-items: center;
-          gap: 10px;
+            width: 100%;
+          }
 
-          font-style: italic;
-          font-weight: bold;
-          font-size: 16px;
-          color: #9863ec;
+          .data {
+            display: flex;
+          }
 
-          img {
-            width: 20px;
-            height: 20px;
+          .numeroCritica {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            gap: 10px;
+
+            font-style: italic;
+            font-weight: bold;
+            font-size: 16px;
+            color: #9863ec;
+
+            img {
+              width: 20px;
+              height: 20px;
+            }
           }
         }
-      }
 
-      .conteudo {
-        display: flex;
-        justify-content: center;
-        align-content: center;
-
-        width: 447px;
-        height: 150px;
-
-        order: 0;
-
-        @media only screen and (max-width: 600px) {
-          width: 100%;
-          height: initial;
-        }
-
-        @media only screen and (max-width: 1450px) {
-          width: 285px;
-        }
-
-        @media only screen and (max-width: 1170px) {
-          width: 390px;
-        }
-
-        @media only screen and (max-width: 1000px) {
-          width: 365px;
-        }
-
-        @media only screen and (max-width: 990px) {
-          width: 350px;
-        }
-
-        .imagemContainer {
+        .conteudo {
           display: flex;
           justify-content: center;
-          align-content: center;
+          align-items: center;
 
-          border-radius: 5px;
+          width: 100%;
 
-          overflow: hidden;
+          .imagemContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
 
-          img {
-            width: 447px;
-            height: 150px;
+            border-radius: 5px;
 
-            transition: 0.2s;
+            overflow: hidden;
+            max-height: 150px;
 
-            opacity: 1;
-
-            @media only screen and (max-width: 600px) {
+            img {
               width: 100%;
-              height: initial;
+
+              transition: 0.2s;
+
+              opacity: 1;
+
+              @media only screen and (max-width: 600px) {
+                width: 100%;
+                height: initial;
+              }
             }
           }
         }

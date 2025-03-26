@@ -223,11 +223,11 @@
       p {
         color: #ffffff;
         font-size: 20px;
+        font-weight: 100;
+        opacity: 0.5;
 
         @media only screen and (max-width: 600px) {
           line-height: 30px;
-          font-weight: 200;
-          opacity: 0.5;
         }
       }
 

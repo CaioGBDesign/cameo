@@ -19,136 +19,29 @@ const FilmesCarousel = ({
   showDeletar = true,
 }) => {
   const router = useRouter();
-  const [imagemFoco, setImagemFoco] = useState(0);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
-  const carouselRef = useRef(null);
   const { user, salvarFilme, removerFilme, avaliarFilme } = useAuth();
   const [modalAberto, setModalAberto] = useState(null);
   const [filmeIdParaAvaliar, setFilmeIdParaAvaliar] = useState(null);
   const [notaAtual, setNotaAtual] = useState(0);
-  const [autoScroll, setAutoScroll] = useState(true); // Estado para controle da rolagem automática
-  const [isPrevDisabled, setIsPrevDisabled] = useState(true);
-  const [isNextDisabled, setIsNextDisabled] = useState(false);
-
-  // define se desktop ou mobile
   const isMobile = useIsMobile();
 
   // Atualiza a nota ao abrir o modal
   const abrirModalAvaliar = (id) => {
-    const nota = user?.visto?.[id] || 0; // Obtém a nota do filme
+    const nota = user?.visto?.[id] || 0;
     setFilmeIdParaAvaliar(id);
-    setNotaAtual(nota); // Armazena a nota atual no estado
-    setModalAberto("avaliar-filme"); // Altera o estado do modal para aberto
-    setAutoScroll(false); // Desativa a rolagem automática ao abrir o modal
+    setNotaAtual(nota);
+    setModalAberto("avaliar-filme");
   };
 
-  // Função para avaliar filme
   const handleAvaliarFilme = (nota) => {
-    console.log("Avaliando filme:", filmeIdParaAvaliar, "com nota:", nota);
-    avaliarFilme(filmeIdParaAvaliar, nota); // Chama a função para avaliar o filme
-    setModalAberto(null); // Fecha o modal
+    avaliarFilme(filmeIdParaAvaliar, nota);
+    setModalAberto(null);
   };
 
   const handleSalvarFilme = (id) => {
-    if (typeof id === "string") {
-      console.log("Salvando filme:", id);
-      salvarFilme(id);
-    } else {
-      console.error("O ID do filme deve ser uma string. Recebido:", id);
-      salvarFilme(String(id)); // Converte o ID para string, se necessário
-    }
+    salvarFilme(String(id));
   };
-
-  // Monitora mudanças em imagemFoco e loga o filme correspondente
-  useEffect(() => {
-    if (filmes[imagemFoco]) {
-      console.log("Filme em foco mudou:", filmes[imagemFoco]);
-    }
-  }, [imagemFoco, filmes]);
-
-  // Atualiza imagemFoco com base no selectedFilm
-  useEffect(() => {
-    if (selectedFilm && filmes.length > 0) {
-      const selectedIndex = filmes.findIndex(
-        (filme) => filme.id === selectedFilm.id
-      );
-      if (selectedIndex !== -1) {
-        setImagemFoco(selectedIndex);
-      }
-    }
-  }, [selectedFilm, filmes]);
-
-  // Atualiza a posição de rolagem do carrossel para a imagem em foco
-  useEffect(() => {
-    if (carouselRef.current) {
-      const itemWidth = carouselRef.current.scrollWidth / filmes.length;
-      carouselRef.current.scrollLeft = imagemFoco * itemWidth; // Ajusta a rolagem para a imagem em foco
-    }
-    console.log("Filme em foco:", filmes[imagemFoco]?.title);
-  }, [imagemFoco, filmes]);
-
-  useEffect(() => {
-    const { filmeId } = router.query;
-    if (filmeId) {
-      const selectedIndex = filmes.findIndex((filme) => filme.id === filmeId);
-      if (selectedIndex !== -1) {
-        setImagemFoco(selectedIndex);
-      }
-    }
-  }, [router.query, filmes]);
-
-  // Função para redirecionar ao clicar em uma imagem
-  const handleImageClick = (index) => {
-    const selectedFilmeId = filmes[index].id; // Obtenha o ID do filme
-    router.push(`/?filmeId=${selectedFilmeId}`); // Redireciona para a home com o ID do filme
-  };
-
-  // Função para limitar a frequência com que a função de rolagem é chamada
-  const debounceScroll = (func, delay) => {
-    let timeout;
-    return function (...args) {
-      const context = this;
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(context, args), delay);
-    };
-  };
-
-  // Calcula o índice da imagem em foco com base na posição de rolagem
-  const handleScroll = () => {
-    if (carouselRef.current) {
-      const itemWidth = carouselRef.current.scrollWidth / filmes.length;
-      const scrollPosition = carouselRef.current.scrollLeft;
-      const newIndex = Math.round(scrollPosition / itemWidth);
-
-      console.log("Scroll Position:", scrollPosition);
-      console.log("Item Width:", itemWidth);
-      console.log("New Index:", newIndex);
-
-      // Atualiza imagemFoco se newIndex for diferente de 0
-      if (newIndex === 0 || newIndex !== imagemFoco) {
-        setImagemFoco(newIndex);
-        console.log("Imagem em foco atualizada para:", newIndex);
-      } else {
-        console.log("Retornando ao mesmo filme:", filmes[imagemFoco]);
-      }
-    }
-  };
-
-  // Configura o listener de rolagem e garante que seja removido quando o componente for desmontado
-  useEffect(() => {
-    const carouselElement = carouselRef.current;
-    if (carouselElement) {
-      const debouncedScroll = debounceScroll(handleScroll, 100); // 100ms de debounce
-      carouselElement.addEventListener("scroll", debouncedScroll);
-
-      return () => {
-        carouselElement.removeEventListener("scroll", debouncedScroll);
-      };
-    }
-  }, [filmes]);
-
-  // Verificações de renderização
-  console.log("Renderizando filme em foco:", filmes[imagemFoco]);
 
   // Função para abrir o modal de confirmação
   const handleOpenDeleteModal = () => {
@@ -158,86 +51,71 @@ const FilmesCarousel = ({
   // Função para confirmar a exclusão do filme
   const handleConfirmDelete = () => {
     if (selectedFilm) {
-      excluirFilme(selectedFilm.id); // Passando o ID do filme
+      excluirFilme(selectedFilm.id);
     }
     setShowConfirmDelete(false);
   };
 
   // Função para cancelar a exclusão
   const handleCancelDelete = () => {
-    setShowConfirmDelete(false); // Fecha o modal
+    setShowConfirmDelete(false);
   };
 
-  // Navegação
-  const handlePrevious = () => {
-    setImagemFoco((prev) => (prev > 0 ? prev - 1 : filmes.length - 1)); // Volta um filme ou vai para o último
-  };
+  useEffect(() => {
+    const { filmeId } = router.query;
+    // Garante que o filme selecionado está sempre sincronizado com a URL
+    if (filmeId && selectedFilm?.id !== filmeId) {
+      const filme = filmes.find((f) => f.id === filmeId);
+      if (filme) {
+        onClick(filme); // Assume que 'onClick' atualiza o filme selecionado
+      }
+    }
+  }, [router.query.filmeId, filmes]);
 
-  const handleNext = () => {
-    setImagemFoco((prev) => (prev < filmes.length - 1 ? prev + 1 : 0)); // Avança um filme ou volta para o primeiro
+  // Função para atualizar a URL ao clicar na imagem
+  const handleImageClick = () => {
+    if (selectedFilm) {
+      router.push(`/?filmeId=${selectedFilm.id}`, undefined, { shallow: true });
+    }
   };
 
   return (
     <div className={styles.modalListagem}>
-      {isMobile ? null : (
-        <div className={styles.navegacao}>
-          <button onClick={handlePrevious}>
-            <img src="/icones/anterior.svg" alt="Anterior" />
-          </button>
-          <button onClick={handleNext}>
-            <img src="/icones/proximo.svg" alt="Próximo" />
-          </button>
-        </div>
-      )}
-
       <div className={styles.fecharModalFilmes} onClick={onClose}>
         <img src="/icones/close.svg" alt="Fechar" />
       </div>
+
       <div className={styles.tituloGeneroDuracao}>
         <div className={styles.tituloFilme}>
-          <span>{filmes[imagemFoco]?.title || "Título não disponível"}</span>
+          <span>{selectedFilm?.title || "Título não disponível"}</span>
         </div>
         <div className={styles.filmeGeneros}>
-          {filmes[imagemFoco]?.genres?.map((item, index) => (
+          {selectedFilm?.genres?.map((item, index) => (
             <div className={styles.genero} key={index}>
               <span>{item.name}</span>
             </div>
           )) || <span>Gêneros não disponíveis</span>}
         </div>
       </div>
+
       <div className={styles.contCarousel}>
-        <div className={styles.carousel} ref={carouselRef}>
+        <div className={styles.carousel}>
           <div className={styles.slider}>
-            {filmes.map((filme, index) => (
-              <div
-                className={`${styles.imagens} ${
-                  imagemFoco === index ? styles.destaque : ""
-                }`}
-                key={index}
-                style={{ scrollSnapAlign: "center" }}
-                onClick={() => handleImageClick(index)}
-              >
-                <div className={styles.capaFilme}>
-                  {isMobile ? (
-                    <Image
-                      src={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
-                      alt={`Capa do filme ${filme.title}`}
-                      layout="fill"
-                      objectFit="cover"
-                      quality={50}
-                    />
-                  ) : (
-                    <Image
-                      src={`https://image.tmdb.org/t/p/original/${filme.backdrop_path}`}
-                      alt={`Capa do filme ${filme.title}`}
-                      layout="fill"
-                      objectFit="cover"
-                      quality={50}
-                    />
-                  )}
-                </div>
+            <div className={styles.imagens}>
+              <div className={styles.capaFilme} onClick={handleImageClick}>
+                <Image
+                  src={`https://image.tmdb.org/t/p/original/${
+                    isMobile
+                      ? selectedFilm?.poster_path
+                      : selectedFilm?.backdrop_path
+                  }`}
+                  alt={`Capa do filme ${selectedFilm?.title}`}
+                  layout="fill"
+                  objectFit="cover"
+                  quality={80}
+                />
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </div>
@@ -250,56 +128,52 @@ const FilmesCarousel = ({
         )}
 
         <NotasFilmes
-          filmeId={String(filmes[imagemFoco]?.id)}
+          filmeId={String(selectedFilm?.id)}
           avaliarFilme={avaliarFilme}
           usuarioFilmeVisto={user?.visto || []}
-          onClickModal={() => {
-            abrirModalAvaliar(filmes[imagemFoco]?.id);
-            setAutoScroll(false); // Desativa a rolagem automática ao abrir o modal
-          }}
+          onClickModal={() => abrirModalAvaliar(selectedFilm?.id)}
         />
         <FavoritarFilme
-          filmeId={String(filmes[imagemFoco]?.id)}
+          filmeId={String(selectedFilm?.id)}
           salvarFilme={salvarFilme}
           removerFilme={removerFilme}
           usuarioFavoritos={user?.favoritos || []}
-          onClick={() => setAutoScroll(false)}
         />
       </div>
 
-      {isMobile ? (
+      {isMobile && (
         <div className={styles.fundoFilmeFoco}>
-          {filmes[imagemFoco] && (
+          {selectedFilm && (
             <img
-              src={`https://image.tmdb.org/t/p/original/${filmes[imagemFoco]?.poster_path}`}
-              alt={`Fundo do filme ${filmes[imagemFoco]?.title}`}
+              src={`https://image.tmdb.org/t/p/original/${selectedFilm?.poster_path}`}
+              alt={`Fundo do filme ${selectedFilm?.title}`}
             />
           )}
         </div>
-      ) : null}
+      )}
 
       {showConfirmDelete && (
         <DeletarFilme
-          TituloFilme={filmes[imagemFoco]?.title} // Passe o título do filme
+          TituloFilme={selectedFilm?.title}
           onClose={handleCancelDelete}
           onConfirm={handleConfirmDelete}
         />
       )}
-      {isMobile
-        ? modalAberto === "avaliar-filme" && (
-            <ModalAvaliar
-              filmeId={filmeIdParaAvaliar}
-              nota={notaAtual}
-              onClose={() => setModalAberto(null)} // Fecha o modal
-            />
-          )
-        : modalAberto === "avaliar-filme" && (
-            <ModalAvaliarDesktop
-              filmeId={filmeIdParaAvaliar}
-              nota={notaAtual}
-              onClose={() => setModalAberto(null)} // Fecha o modal
-            />
-          )}
+
+      {modalAberto === "avaliar-filme" &&
+        (isMobile ? (
+          <ModalAvaliar
+            filmeId={filmeIdParaAvaliar}
+            nota={notaAtual}
+            onClose={() => setModalAberto(null)}
+          />
+        ) : (
+          <ModalAvaliarDesktop
+            filmeId={filmeIdParaAvaliar}
+            nota={notaAtual}
+            onClose={() => setModalAberto(null)}
+          />
+        ))}
     </div>
   );
 };

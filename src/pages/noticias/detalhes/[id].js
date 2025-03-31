@@ -47,6 +47,20 @@ const NoticiaDetalhe = () => {
     if (id) fetchNoticia();
   }, [id]);
 
+  useEffect(() => {
+    // Carregar script do Instagram quando houver embeds
+    if (noticia?.elementos?.some((el) => el.tipo === "instagram")) {
+      const script = document.createElement("script");
+      script.src = "//www.instagram.com/embed.js";
+      script.async = true;
+      document.body.appendChild(script);
+
+      return () => {
+        document.body.removeChild(script);
+      };
+    }
+  }, [noticia]);
+
   // Adicione esta função de processamento antes do return
   const processarConteudo = (html) => {
     try {
@@ -160,6 +174,23 @@ const NoticiaDetalhe = () => {
                       ),
                     }}
                   />
+                );
+              }
+
+              if (elemento.tipo === "instagram") {
+                return (
+                  <div key={index} className={styles.instagramEmbed}>
+                    <blockquote
+                      className="instagram-media"
+                      data-instgrm-captioned
+                      data-instgrm-permalink={elemento.conteudo}
+                      data-instgrm-version="14"
+                    >
+                      <a href={elemento.conteudo}>
+                        Ver publicação no Instagram
+                      </a>
+                    </blockquote>
+                  </div>
                 );
               }
               return null;

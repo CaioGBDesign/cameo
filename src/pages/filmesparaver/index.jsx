@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/auth";
 import Head from "next/head";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import FooterB from "@/components/FooterB";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import NotasFilmes from "@/components/botoes/notas";
 import TitulosFilmes from "@/components/titulosfilmes";
@@ -92,6 +92,12 @@ const FilmesParaVer = () => {
     fetchAssistidos();
   }, [user]);
 
+  const convertDuracao = (duracao) => {
+    const horas = Math.floor(duracao / 60);
+    const minutos = duracao % 60;
+    return `${horas}h ${minutos}min`;
+  };
+
   const handleRemoverClick = () => {
     setMostrarBotaoFechar(!mostrarBotaoFechar);
   };
@@ -167,7 +173,7 @@ const FilmesParaVer = () => {
                     generofilme={filmeAleatorio.genres
                       .map((genre) => genre.name)
                       .join(", ")} // Assumindo que você tenha uma propriedade genres
-                    duracao={filmeAleatorio.runtime} // Assumindo que você tenha uma propriedade runtime
+                    duracao={convertDuracao(filmeAleatorio.runtime)}
                   />
                 )}
               </div>
@@ -196,18 +202,10 @@ const FilmesParaVer = () => {
               </div>
             </div>
 
-            {isMobile ? (
-              <Footer
-                style={{ backgroundColor: "#210C2A", paddingBottom: "50px" }}
-              />
-            ) : (
-              <Footer
-                style={{
-                  backgroundColor: "transparent",
-                  paddingBottom: "0px",
-                }}
-              />
-            )}
+            <div className={styles.footerFilmes}>
+              <FooterB />
+            </div>
+
             {isMobile ? (
               filmeAleatorio ? (
                 <Suspense fallback={<Loading />}>

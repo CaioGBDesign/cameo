@@ -137,13 +137,14 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 20px;
 
     width: 100%;
     margin-top: 130px;
 
     @media only screen and (min-width: 600px) {
       align-items: center;
+
+      gap: 30px;
     }
 
     .tituloFilmes {
@@ -193,6 +194,8 @@
       @media only screen and (max-width: 600px) {
         background: #250d2f;
 
+        margin-top: 20px;
+
         &::after {
           content: "";
 
@@ -234,6 +237,14 @@
           }
         }
       }
+    }
+  }
+
+  .footerFilmes {
+    width: 100%;
+
+    @media only screen and (max-width: 600px) {
+      background: #250d2f;
     }
   }
 }

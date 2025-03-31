@@ -2,13 +2,11 @@ import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/auth";
 import styles from "./index.module.scss";
-import NotasFilmes from "@/components/botoes/notas";
 import Image from "next/image";
 import DeletarFilme from "@/components/modais/deletar-filmes";
 import FavoritarFilme from "@/components/detalhesfilmes/favoritarfilme";
-import ModalAvaliar from "@/components/modais/avaliar-filmes";
-import ModalAvaliarDesktop from "@/components/modais/avaliar-filmes-desktop";
 import { useIsMobile } from "@/components/DeviceProvider";
+import Estrelas from "@/components/estrelas";
 
 const FilmesCarousel = ({
   filmes,
@@ -20,24 +18,9 @@ const FilmesCarousel = ({
 }) => {
   const router = useRouter();
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
-  const { user, salvarFilme, removerFilme, avaliarFilme } = useAuth();
+  const { user, salvarFilme, removerFilme } = useAuth();
   const [modalAberto, setModalAberto] = useState(null);
-  const [filmeIdParaAvaliar, setFilmeIdParaAvaliar] = useState(null);
-  const [notaAtual, setNotaAtual] = useState(0);
   const isMobile = useIsMobile();
-
-  // Atualiza a nota ao abrir o modal
-  const abrirModalAvaliar = (id) => {
-    const nota = user?.visto?.[id] || 0;
-    setFilmeIdParaAvaliar(id);
-    setNotaAtual(nota);
-    setModalAberto("avaliar-filme");
-  };
-
-  const handleAvaliarFilme = (nota) => {
-    avaliarFilme(filmeIdParaAvaliar, nota);
-    setModalAberto(null);
-  };
 
   const handleSalvarFilme = (id) => {
     salvarFilme(String(id));
@@ -126,19 +109,21 @@ const FilmesCarousel = ({
             <img src="icones/deletar.svg" alt="" />
           </div>
         )}
-
-        <NotasFilmes
-          filmeId={String(selectedFilm?.id)}
-          avaliarFilme={avaliarFilme}
-          usuarioFilmeVisto={user?.visto || []}
-          onClickModal={() => abrirModalAvaliar(selectedFilm?.id)}
-        />
         <FavoritarFilme
           filmeId={String(selectedFilm?.id)}
           salvarFilme={salvarFilme}
           removerFilme={removerFilme}
           usuarioFavoritos={user?.favoritos || []}
         />
+
+        {user?.visto?.[String(selectedFilm?.id)]?.nota && (
+          <div className={styles.avaliacaoUsuario}>
+            <Estrelas
+              estrelas={user.visto[String(selectedFilm.id)].nota}
+              starWidth="16px" // Ajuste conforme necessário
+            />
+          </div>
+        )}
       </div>
 
       {isMobile && (
@@ -159,21 +144,6 @@ const FilmesCarousel = ({
           onConfirm={handleConfirmDelete}
         />
       )}
-
-      {modalAberto === "avaliar-filme" &&
-        (isMobile ? (
-          <ModalAvaliar
-            filmeId={filmeIdParaAvaliar}
-            nota={notaAtual}
-            onClose={() => setModalAberto(null)}
-          />
-        ) : (
-          <ModalAvaliarDesktop
-            filmeId={filmeIdParaAvaliar}
-            nota={notaAtual}
-            onClose={() => setModalAberto(null)}
-          />
-        ))}
     </div>
   );
 };

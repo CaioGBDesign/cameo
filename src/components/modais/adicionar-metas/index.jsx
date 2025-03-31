@@ -79,6 +79,7 @@ const AdicionarMeta = ({ onClose, nomeBotao }) => {
           onClose={onClose}
           titulo="Adicionar Meta"
           icone={"/icones/metas-cameo-02.png"}
+          iconeMobile={"/icones/metas-cameo-02.png"}
           altIcone={"Metas Cameo"}
         />
 

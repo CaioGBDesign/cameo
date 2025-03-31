@@ -28,6 +28,10 @@
     overflow: hidden;
   }
 
+  @media only screen and (max-width: 600px) {
+    gap: 30px;
+  }
+
   &::after {
     content: "";
     width: 100%;
@@ -216,7 +220,7 @@
           transition: transform 0.1s ease; // Adiciona transição suave
 
           @media only screen and (max-width: 600px) {
-            width: 280px;
+            width: 260px;
             scroll-snap-align: center;
             transition: transform 0.1s ease; // Adiciona transição suave
           }
@@ -253,7 +257,7 @@
             }
 
             @media only screen and (max-width: 600px) {
-              height: 425px;
+              height: 390px;
 
               border: solid 1px #ffffff50;
               border-radius: 10px;
@@ -278,11 +282,19 @@
       left: 30px;
     }
 
+    @media only screen and (max-width: 600px) {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px 10px;
+
+      width: 50%;
+    }
+
     .deletarFilme {
       background: rgba(255, 255, 255, 0.062745098);
-      border-radius: 5px;
+      border-radius: 10px;
 
-      padding: 7px 7px;
+      padding: 10px 10px;
     }
   }
 

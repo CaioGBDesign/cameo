@@ -100,7 +100,6 @@ const Home = () => {
   useEffect(() => {
     if (!filmeId && !queryFilmeId) {
       selecionarFilmeAleatorio();
-      router.push("/");
     }
   }, [filmeId, queryFilmeId]);
 

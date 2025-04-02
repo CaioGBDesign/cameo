@@ -51,7 +51,7 @@
         align-items: center;
         padding: 15px 30px;
 
-        background: #161216;
+        background: #f314fb;
         border-radius: 0px 30px 0px 0px;
 
         position: absolute;
@@ -250,20 +250,38 @@
       flex-direction: column;
       justify-content: center;
       align-items: start;
-      gap: 10px;
+      gap: 20px;
 
       h3 {
+        font-weight: 200;
         font-size: 20px;
         opacity: 0.5;
 
         color: #fff;
+
+        strong {
+          font-weight: bold;
+        }
       }
 
-      .classificacaoEstrelas {
+      .avaliacaoDoAutor {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 5px;
+        gap: 20px;
+
+        .classificacaoEstrelas {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 5px;
+        }
+
+        .textoAvaliacao {
+          font-size: 16px;
+          color: #fff;
+          opacity: 0.5;
+        }
       }
     }
   }

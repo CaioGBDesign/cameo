@@ -47,6 +47,29 @@ const MenuDesktop = () => {
             </span>
           </Link>
         </li>
+        <li>
+          <div className={styles.ponto}>
+            <span>•</span>
+          </div>
+        </li>
+        <li>
+          <Link href="/noticias" passHref>
+            <span
+              className={router.pathname === "/noticias" ? styles.active : ""}
+            >
+              Notícias
+            </span>
+          </Link>
+        </li>
+        <li>
+          <Link href="/resenhas" passHref>
+            <span
+              className={router.pathname === "/resenhas" ? styles.active : ""}
+            >
+              Resenhas
+            </span>
+          </Link>
+        </li>
       </ul>
     </nav>
   );

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useIsMobile } from "@/components/DeviceProvider";
 import Head from "next/head";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import FooterB from "@/components/FooterB";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import FotoPrincipal from "@/components/perfil/fotoPrincipal";
 import NomeUsuario from "@/components/perfil/nomeUsuario";
@@ -12,6 +12,7 @@ import CardsPerfil from "@/components/perfil/cards";
 import FundoTitulos from "@/components/fundotitulos";
 import SalvarFoto from "@/components/modais/salvarfoto";
 import Private from "@/components/Private";
+import NoticiasCard from "@/components/Noticias-Card";
 
 const PerfilUsuario = () => {
   // Estado para controlar se o modal está aberto ou fechado
@@ -58,36 +59,8 @@ const PerfilUsuario = () => {
 
             <div className={styles.compartilhar}>
               <Handle></Handle>
-              {/* <Compartilhar></Compartilhar> */}
             </div>
           </div>
-
-          {/* <div className={styles.rede}>
-            <Rede
-              iconePerfil={"/icones/seguidores.svg"}
-              linkRede={"/seguidores"}
-              titulo="Seguidores"
-              valor={200}
-            />
-            <Rede
-              iconePerfil={"/icones/seguindo.svg"}
-              linkRede={"/seguindo"}
-              titulo="Seguindo"
-              valor={200}
-            />
-            <Rede
-              iconePerfil={"/icones/avaliacoes.svg"}
-              linkRede={"/filmesassisti"}
-              titulo="Avaliações"
-              valor={30}
-            />
-           <Rede
-            iconePerfil={"/icones/potterHead.svg"}
-            linkRede={"/dadospessoais"}
-            titulo="Estilo"
-            valor={"PotterHead"}
-          />
-          </div> */}
 
           <div className={styles.contDados}>
             <div className={styles.botoesDados}>
@@ -111,24 +84,30 @@ const PerfilUsuario = () => {
                     imagemPerfil={"/icones/claquete-amarela.svg"}
                   />
 
-                  {/* <CardsPerfil
-                    linkDadosPerfil={"/listas-compartilhadas"}
-                    DadosdoPerfil={"Listas compartilhadas"}
-                    imagemPerfil={"/icones/claquete-roxa.svg"}
-                  /> */}
-
                   <CardsPerfil
                     linkDadosPerfil={"/favoritos"}
                     DadosdoPerfil={"Meus favoritos"}
                     imagemPerfil={"/icones/favoritos.svg"}
                   />
                 </div>
+
+                <div className={styles.cardsPerfil}>
+                  <NoticiasCard
+                    linkDadosPerfil={"/noticias"}
+                    DadosdoPerfil={"Notícias"}
+                    imagemPerfil={"/icones/cameo-noticias.svg"}
+                  />
+
+                  <NoticiasCard
+                    linkDadosPerfil={"/resenhas"}
+                    DadosdoPerfil={"Resenhas"}
+                    imagemPerfil={"/icones/cameo-resenhas.svg"}
+                  />
+                </div>
               </div>
             </div>
 
-            <Footer
-              style={{ backgroundColor: "#210C2A", paddingBottom: "50px" }}
-            />
+            <FooterB />
           </div>
         </div>
 

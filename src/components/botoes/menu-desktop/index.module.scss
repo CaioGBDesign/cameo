@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 60px;
+    gap: 40px;
 
     li {
       a {
@@ -41,6 +41,16 @@
             opacity: 1;
           }
         }
+      }
+
+      .ponto {
+        font-size: 10px;
+
+        color: #fff;
+
+        opacity: 0.5;
+
+        cursor: context-menu;
       }
     }
   }

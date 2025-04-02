@@ -19,6 +19,14 @@ const CriticaDetalhe = () => {
   const [loading, setLoading] = useState(true);
   const isMobile = useIsMobile();
 
+  const textoClassificacao = {
+    1: "Zuado",
+    2: "Ok",
+    3: "Gostei",
+    4: "Sinistro",
+    5: "Cabuloso",
+  };
+
   useEffect(() => {
     const fetchCritica = async () => {
       try {
@@ -167,23 +175,32 @@ const CriticaDetalhe = () => {
           </div>
 
           <div className={styles.avaliacaoCameo}>
-            <h3>Avaliação Cameo</h3>
-            {/* Classificação em estrelas */}
+            <h3>
+              Avaliação de <strong>{critica.autor.nome}</strong>
+            </h3>
+
             {critica.classificacao !== undefined && (
-              <div className={styles.classificacaoEstrelas}>
-                {Array.from({ length: 5 }, (_, index) => {
-                  const isFilled = index < critica.classificacao;
-                  return (
-                    <img
-                      key={index}
-                      src={`/icones/estrela-${
-                        isFilled ? "preenchida" : "vazia"
-                      }.svg`}
-                      alt={isFilled ? "Estrela preenchida" : "Estrela vazia"}
-                      className={styles.estrela}
-                    />
-                  );
-                })}
+              <div className={styles.avaliacaoDoAutor}>
+                <div className={styles.classificacaoEstrelas}>
+                  {Array.from({ length: 5 }, (_, index) => {
+                    const isFilled = index < critica.classificacao;
+                    return (
+                      <img
+                        key={index}
+                        src={`/icones/estrela-${
+                          isFilled ? "preenchida" : "vazia"
+                        }.svg`}
+                        alt={isFilled ? "Estrela preenchida" : "Estrela vazia"}
+                        className={styles.estrela}
+                      />
+                    );
+                  })}
+                </div>
+
+                <div className={styles.textoAvaliacao}>
+                  {textoClassificacao[critica.classificacao] ||
+                    "Avaliação indisponível"}
+                </div>
               </div>
             )}
           </div>

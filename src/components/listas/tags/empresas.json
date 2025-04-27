@@ -1,0 +1,77 @@
+[
+  {
+    "id": "empresa",
+    "name": "A24",
+    "Exibir": "Não"
+  },
+  {
+    "id": "empresa",
+    "name": "DC Comics",
+    "Exibir": "Não"
+  },
+  {
+    "id": "empresa",
+    "name": "Disney",
+    "Exibir": "Sim"
+  },
+  {
+    "id": "empresa",
+    "name": "DreamWorks",
+    "Exibir": "Sim"
+  },
+  {
+    "id": "empresa",
+    "name": "Illumination",
+    "Exibir": "Não"
+  },
+  {
+    "id": "empresa",
+    "name": "Lionsgate",
+    "Exibir": "Sim"
+  },
+  {
+    "id": "empresa",
+    "name": "Marvel",
+    "Exibir": "Sim"
+  },
+  {
+    "id": "empresa",
+    "name": "Max",
+    "Exibir": "Não"
+  },
+  {
+    "id": "empresa",
+    "name": "Netflix",
+    "Exibir": "Sim"
+  },
+  {
+    "id": "empresa",
+    "name": "Nintendo",
+    "Exibir": "Sim"
+  },
+  {
+    "id": "empresa",
+    "name": "Paramount",
+    "Exibir": "Não"
+  },
+  {
+    "id": "empresa",
+    "name": "Prime Vídeo",
+    "Exibir": "Não"
+  },
+  {
+    "id": "empresa",
+    "name": "Sky Studios",
+    "Exibir": "Não"
+  },
+  {
+    "id": "empresa",
+    "name": "Sony Pictures",
+    "Exibir": "Sim"
+  },
+  {
+    "id": "empresa",
+    "name": "Universal",
+    "Exibir": "Sim"
+  }
+]

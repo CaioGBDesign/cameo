@@ -1,0 +1,62 @@
+[
+  {
+    "id": "genero",
+    "name": "Ação",
+    "Exibir": "Sim"
+  },
+  {
+    "id": "genero",
+    "name": "Animação",
+    "Exibir": "Não"
+  },
+  {
+    "id": "genero",
+    "name": "Aventura",
+    "Exibir": "Sim"
+  },
+  {
+    "id": "genero",
+    "name": "Comédia",
+    "Exibir": "Não"
+  },
+  {
+    "id": "genero",
+    "name": "Crime",
+    "Exibir": "Não"
+  },
+  {
+    "id": "genero",
+    "name": "Documentário",
+    "Exibir": "Não"
+  },
+  {
+    "id": "genero",
+    "name": "Drama",
+    "Exibir": "Sim"
+  },
+  {
+    "id": "genero",
+    "name": "Família",
+    "Exibir": "Sim"
+  },
+  {
+    "id": "genero",
+    "name": "Fantasia",
+    "Exibir": "Sim"
+  },
+  {
+    "id": "genero",
+    "name": "Ficção científica",
+    "Exibir": "Sim"
+  },
+  {
+    "id": "genero",
+    "name": "Mistério",
+    "Exibir": "Sim"
+  },
+  {
+    "id": "genero",
+    "name": "Thriller",
+    "Exibir": "Sim"
+  }
+]

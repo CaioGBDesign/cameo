@@ -1,4 +1,4 @@
-.ultimasNoticiasECriticas {
+.bannerNoticiasECriticas {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -18,7 +18,7 @@
     width: 100%;
   }
 
-  .ultimasCriticas {
+  .ultimasNoticias {
     position: relative;
     overflow: hidden;
     width: 100%;
@@ -29,13 +29,12 @@
       justify-content: center;
       position: absolute;
       bottom: 20px;
-      right: 20px;
-      transform: translateX(-50%);
+      right: 50%;
       z-index: 2;
 
       @media only screen and (max-width: 600px) {
-        bottom: 10px;
-        right: 0px;
+        bottom: 20px;
+        right: 20px;
       }
 
       .dots {
@@ -82,7 +81,7 @@
           width: 100%;
         }
 
-        .resumoCritica {
+        .resumoNoticia {
           flex-shrink: 0;
 
           width: 100%;
@@ -92,6 +91,10 @@
 
           border-radius: 10px;
           overflow: hidden;
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
 
           cursor: pointer;
 
@@ -105,10 +108,11 @@
             position: relative;
           }
 
-          .informacoesCritica {
+          .informacoesNoticia {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
+            bottom: 10%;
+            left: 10%;
+
             z-index: 2;
 
             display: flex;
@@ -120,7 +124,7 @@
             }
 
             h1 {
-              width: 350px;
+              width: 70%;
 
               font-size: 20px;
               font-weight: bold;
@@ -134,7 +138,7 @@
               }
             }
 
-            .numeroCritica {
+            .numeroNoticia {
               display: flex;
               justify-content: start;
               align-items: center;
@@ -152,15 +156,66 @@
             }
           }
 
-          .imagemCritica {
+          .imagemNoticia {
             position: relative;
 
-            width: 100%;
-            height: 292px;
+            width: 80%;
 
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: start;
+
+            .fundoA {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 30%;
+              height: 100%;
+              background: linear-gradient(
+                270deg,
+                rgba(22, 18, 22, 0) 0,
+                #161216
+              );
+              z-index: 1;
+            }
+
+            .fundoB {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 50%;
+              background: linear-gradient(0deg, rgba(22, 18, 22, 0) 0, #161216);
+              z-index: 1;
+            }
+
+            .fundoC {
+              position: absolute;
+              top: 0;
+              right: 0;
+              width: 30%;
+              height: 100%;
+              background: linear-gradient(
+                90deg,
+                rgba(22, 18, 22, 0) 0%,
+                #161216 100%
+              );
+              z-index: 1;
+            }
+
+            .fundoD {
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              width: 100%;
+              height: 50%;
+              background: linear-gradient(
+                180deg,
+                rgba(22, 18, 22, 0) 0,
+                #161216
+              );
+              z-index: 1;
+            }
 
             @media only screen and (max-width: 600px) {
               width: 100%;
@@ -175,48 +230,27 @@
                 height: 234px;
               }
             }
-
-            &::before {
-              content: "";
-              position: absolute;
-              top: 0px;
-              left: 0px;
-
-              background: linear-gradient(
-                180deg,
-                rgba(22, 18, 22, 0) 0%,
-                #161216 100%
-              );
-
-              width: 100%;
-              height: 292px;
-
-              @media only screen and (max-width: 600px) {
-                width: 100%;
-                height: 230px;
-              }
-            }
           }
 
-          .tagCritica {
+          .tagNoticia {
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 15px 30px;
 
-            background: #f314fb;
-            border-radius: 0px 0px 15px 0px;
+            background: #2ba8e2;
+            border-radius: 30px;
 
             position: absolute;
-            top: 0px;
-            left: 0px;
+            bottom: 30%;
+            left: 10%;
 
-            z-index: 1;
+            z-index: 2;
 
             @media only screen and (max-width: 600px) {
               padding: 10px 15px;
-
-              border-radius: 0px 0px 15px 0px;
+              top: 30%;
+              bottom: initial;
             }
 
             span {

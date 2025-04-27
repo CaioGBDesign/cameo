@@ -1,0 +1,162 @@
+.listaCriticas {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+
+  width: 100%;
+
+  padding-left: 60px;
+
+  @media only screen and (max-width: 1450px) {
+    padding: initial;
+  }
+
+  .icone {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 20px;
+
+    width: 100%;
+
+    h2 {
+      color: #fff;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 24px;
+    }
+
+    img {
+      filter: brightness(0) invert(1);
+
+      opacity: 0.6;
+    }
+  }
+
+  li {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    width: 100%;
+
+    a {
+      text-decoration: none;
+      width: 100%;
+
+      .critica {
+        width: 100%;
+
+        .boxConteudo {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 20px;
+
+          width: 100%;
+
+          @media only screen and (max-width: 1450px) {
+            gap: 40px;
+          }
+
+          @media only screen and (max-width: 1000px) {
+            flex-direction: column;
+          }
+
+          .conteudo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: 200px;
+            height: 120px;
+
+            @media only screen and (max-width: 1450px) {
+              width: 400px;
+              height: 200px;
+            }
+
+            @media only screen and (max-width: 1000px) {
+              width: 100%;
+              height: initial;
+            }
+
+            div {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              overflow: hidden;
+
+              border-radius: 10px;
+
+              width: 200px;
+              height: 120px;
+
+              @media only screen and (max-width: 1450px) {
+                width: 400px;
+                height: 200px;
+              }
+
+              @media only screen and (max-width: 1000px) {
+                width: 100%;
+                height: initial;
+              }
+
+              img {
+                width: 600px;
+
+                @media only screen and (max-width: 1000px) {
+                  width: 100%;
+                }
+              }
+            }
+          }
+
+          .informacoes {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: start;
+            gap: 15px;
+
+            width: 100%;
+
+            .tagResenha {
+              color: #f314fb;
+            }
+
+            .cabecalho {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: start;
+              gap: 15px;
+
+              width: 80%;
+
+              @media only screen and (max-width: 1450px) {
+                width: 100%;
+              }
+
+              h4 {
+                color: #ffffff;
+
+                font-size: 18px;
+                font-weight: bold;
+
+                @media only screen and (max-width: 1450px) {
+                  font-size: 22px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

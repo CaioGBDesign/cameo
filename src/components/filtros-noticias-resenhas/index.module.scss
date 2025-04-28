@@ -1,0 +1,104 @@
+.filtroContainer {
+  position: relative;
+
+  @media only screen and (max-width: 1000px) {
+    width: 100%;
+  }
+
+  button {
+    background: none;
+    border: solid #3b2544;
+    border-radius: 10px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 20px;
+    width: 260px;
+
+    @media only screen and (max-width: 1000px) {
+      width: 100%;
+    }
+
+    .tituloSelect {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+
+      span {
+        width: max-content;
+
+        color: #fff;
+        font-size: 18px;
+        font-weight: bold;
+      }
+    }
+
+    span {
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+
+  .dropdown {
+    position: absolute;
+    top: 70px;
+    left: 0px;
+
+    background: #250d2f;
+    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.3);
+
+    border-radius: 10px;
+
+    width: 100%;
+    height: 500px;
+
+    overflow-y: scroll;
+
+    animation: modal 0.2s ease-out alternate;
+
+    @keyframes modal {
+      0% {
+        opacity: 0;
+        top: 60px;
+      }
+
+      100% {
+        opacity: 1;
+        top: 70px;
+      }
+    }
+
+    .group {
+      .groupLabel {
+        display: flex;
+        align-items: center;
+
+        height: 50px;
+
+        color: #ffffff20;
+
+        padding: 0px 20px;
+
+        border-top: solid #3b2544 1px;
+      }
+
+      .option {
+        display: flex;
+        align-items: center;
+
+        height: 40px;
+        color: #fff;
+
+        padding: 0px 20px;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.1);
+        }
+      }
+    }
+  }
+}

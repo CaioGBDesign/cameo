@@ -19,26 +19,53 @@
     gap: 60px;
   }
 
-  .icone {
+  .tituloFiltros {
     display: flex;
-    flex-direction: row;
-    justify-content: start;
+    justify-content: space-between;
     align-items: center;
-    gap: 20px;
 
     width: 100%;
 
-    h2 {
-      color: #fff;
-      font-style: normal;
-      font-weight: 400;
-      font-size: 24px;
+    @media only screen and (max-width: 1000px) {
+      flex-direction: column;
+      gap: 40px;
     }
 
-    img {
-      filter: brightness(0) invert(1);
+    .filtroSelect {
+      width: initial;
 
-      opacity: 0.6;
+      @media only screen and (max-width: 1000px) {
+        order: 0;
+
+        width: 100%;
+      }
+    }
+
+    .icone {
+      display: flex;
+      flex-direction: row;
+      justify-content: start;
+      align-items: center;
+      gap: 20px;
+
+      width: 100%;
+
+      @media only screen and (max-width: 1000px) {
+        order: 1;
+      }
+
+      h2 {
+        color: #fff;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 24px;
+      }
+
+      img {
+        filter: brightness(0) invert(1);
+
+        opacity: 0.6;
+      }
     }
   }
 

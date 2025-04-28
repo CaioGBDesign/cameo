@@ -28,21 +28,10 @@ function GrupoBotoesFiltro({ opcoesBotoes, onFilterChange }) {
         isMobile ? styles.mobile : styles.desktop
       }`}
     >
-      {!isMobile && (
-        <div className={styles.navBotoes}>
-          <button onClick={() => handleScroll("next")}>
-            <img src="/icones/proximo.svg" alt="Próximo" />
-          </button>
-          <button onClick={() => handleScroll("prev")}>
-            <img src="/icones/anterior.svg" alt="Anterior" />
-          </button>
-        </div>
-      )}
-
       <div className={styles.botoes} ref={botoesRef}>
         {opcoesBotoes.map((grupo) => (
           <div key={grupo.label} className={styles.grupoFiltro}>
-            {/* <span className={styles.grupoLabel}>{grupo.label}:</span> */}
+            <span className={styles.grupoLabel}>{grupo.label}:</span>
             <div className={styles.grupoBotoes}>
               {grupo.options.map((opcao) => (
                 <button
@@ -62,6 +51,17 @@ function GrupoBotoesFiltro({ opcoesBotoes, onFilterChange }) {
           </div>
         ))}
       </div>
+
+      {!isMobile && (
+        <div className={styles.navBotoes}>
+          <button onClick={() => handleScroll("next")}>
+            <img src="/icones/proximo.svg" alt="Próximo" />
+          </button>
+          <button onClick={() => handleScroll("prev")}>
+            <img src="/icones/anterior.svg" alt="Anterior" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -7,7 +7,6 @@ import Loading from "@/components/loading";
 import { useRouter } from "next/router";
 import { useIsMobile } from "@/components/DeviceProvider";
 import { doc, getDoc } from "firebase/firestore";
-import Select from "react-select";
 import Head from "next/head";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
@@ -286,31 +285,16 @@ const Noticias = ({}) => {
           </div>
         </section>
 
-        <div className={styles.tituloPagina}>
-          <BotoesCarrossel
-            opcoesBotoes={opcoesBotoes}
-            onFilterChange={setFiltroSelecionado}
-          />
-
-          <div className={styles.filtrosNoticiasResenhas}>
-            <Select
-              value={filtroSelecionado}
-              onChange={setFiltroSelecionado}
-              options={opcoesSelect}
-              placeholder="Todas as empresas e gêneros"
-              isSearchable
-              isClearable
-              noOptionsMessage={() => "Nenhum resultado encontrado"}
-              className={styles.customSelect}
-              classNamePrefix="select"
-              components={{
-                IndicatorSeparator: () => null, // Remove o separador dos indicadores
-              }}
+        {isMobile ? null : (
+          <div className={styles.tituloPagina}>
+            <BotoesCarrossel
+              opcoesBotoes={opcoesBotoes}
+              onFilterChange={setFiltroSelecionado}
             />
           </div>
-        </div>
+        )}
 
-        <div className={styles.divisor}></div>
+        {isMobile ? null : <div className={styles.divisor}></div>}
 
         <div className={styles.criticasNoticias}>
           <div className={styles.colunaNoticias}>

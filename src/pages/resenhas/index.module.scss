@@ -1,6 +1,4 @@
 .ContCriticas {
-  margin-top: 130px;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -9,6 +7,92 @@
 
   @media only screen and (max-width: 600px) {
     gap: 30px;
+  }
+
+  .bannerResenhas {
+    background: #161216;
+
+    width: 100%;
+
+    padding-bottom: 30px;
+
+    position: relative;
+
+    &::after {
+      content: "";
+
+      width: 100%;
+      height: 30px;
+
+      position: absolute;
+      bottom: 0px;
+      left: 0px;
+
+      background: #250d2f;
+      border-radius: 30px 30px 0px 0px;
+    }
+  }
+
+  .divisor {
+    width: 80%;
+    height: 1px;
+
+    background: #3b2544;
+
+    opacity: 0.5;
+
+    @media only screen and (max-width: 1000px) {
+      width: 100%;
+    }
+  }
+
+  .criticasNoticias {
+    display: flex;
+    justify-content: center;
+
+    width: 80%;
+
+    @media only screen and (max-width: 1450px) {
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    @media only screen and (max-width: 600px) {
+      width: 80%;
+    }
+
+    .colunaCriticas {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      width: 65%;
+
+      border-right: solid 1px #3b2544;
+
+      @media only screen and (max-width: 1450px) {
+        width: 80%;
+
+        border: none;
+      }
+
+      @media only screen and (max-width: 600px) {
+        width: 100%;
+      }
+    }
+
+    .colunaNoticias {
+      width: 35%;
+
+      @media only screen and (max-width: 1450px) {
+        width: 80%;
+      }
+
+      @media only screen and (max-width: 1000px) {
+        width: 100%;
+      }
+    }
   }
 
   .adicionarCritica {
@@ -75,29 +159,14 @@
       gap: 20px;
 
       width: 80%;
+
+      margin-top: 100px;
     }
 
     @media only screen and (max-width: 1650px) {
       gap: 20px;
 
       width: 80%;
-    }
-
-    .ultimasNoticias {
-      width: 542px;
-      overflow: hidden;
-
-      @media only screen and (max-width: 1000px) {
-        width: 100%;
-      }
-
-      .customWidth {
-        width: 542px;
-
-        @media only screen and (max-width: 1000px) {
-          width: 100%;
-        }
-      }
     }
 
     .ultimasCriticas {
@@ -116,19 +185,20 @@
 
   .tituloPagina {
     display: flex;
-    justify-content: start;
-    align-items: center;
+    justify-content: space-between;
+    align-items: end;
 
     width: 80%;
 
-    span {
-      font-size: 30px;
-      font-weight: 400;
+    @media only screen and (max-width: 1000px) {
+      flex-direction: column;
 
-      color: #fff;
+      gap: 20px;
+    }
 
-      @media only screen and (max-width: 600px) {
-        font-size: 20px;
+    .filtrosNoticiasResenhas {
+      @media only screen and (max-width: 1000px) {
+        width: 100%;
       }
     }
   }

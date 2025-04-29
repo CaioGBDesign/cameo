@@ -11,15 +11,17 @@ function FiltroNoticias({ noticias, onFilter }) {
   const opcoesSelect = [
     {
       label: "Empresas",
-      options: empresas
-        .filter((e) => e.Exibir === "Sim")
-        .map((e) => ({ value: `empresa:${e.name}`, label: e.name })),
+      options: empresas.map((e) => ({
+        value: `empresa:${e.name}`,
+        label: e.name,
+      })),
     },
     {
       label: "Gêneros",
-      options: generos
-        .filter((g) => g.Exibir === "Sim")
-        .map((g) => ({ value: `genero:${g.name}`, label: g.name })),
+      options: generos.map((g) => ({
+        value: `genero:${g.name}`,
+        label: g.name,
+      })),
     },
   ];
 

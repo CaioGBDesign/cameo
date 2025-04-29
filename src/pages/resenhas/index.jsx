@@ -1,5 +1,5 @@
 import styles from "./index.module.scss";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { db } from "@/services/firebaseConection";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { useAuth } from "@/contexts/auth";
@@ -7,13 +7,18 @@ import Loading from "@/components/loading";
 import { useRouter } from "next/router";
 import { useIsMobile } from "@/components/DeviceProvider";
 import { doc, getDoc } from "firebase/firestore";
-import AddCriticas from "@/components/add-criticas";
 import Head from "next/head";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import FooterB from "@/components/FooterB";
 import CarrosselCriticas from "@/components/carrossel-criticas";
-import CarrosselNoticias from "@/components/carrossel-noticias";
+import BotoesCarrossel from "@/components/botoes-carrossel";
+import BannerResenhas from "@/components/banner-resenhas";
+import empresas from "@/components/listas/tags/empresas.json";
+import generos from "@/components/listas/tags/generos.json";
+import ListaNoticias from "@/components/ListaNoticias-resumo";
+import ListaResenhas from "@/components/ListaResenhas";
+import BannerInformacao from "@/components/banner-informacao";
 
 const Criticas = ({}) => {
   const [loading, setLoading] = useState(true);
@@ -26,6 +31,77 @@ const Criticas = ({}) => {
   const ultimasCriticas = criticas.slice(0, 4);
   const [noticias, setNoticias] = useState([]);
   const ultimasNoticias = noticias.slice(0, 4);
+  const [filtroSelecionado, setFiltroSelecionado] = useState(null);
+  const botoesRef = useRef(null);
+  const [filteredNoticias, setFilteredNoticias] = useState([]);
+  const [filteredCriticas, setFilteredCriticas] = useState([]);
+
+  const opcoesSelect = [
+    {
+      label: "Empresas",
+      options: empresas.map((empresa) => ({
+        value: `empresa:${empresa.name}`,
+        label: empresa.name,
+      })),
+    },
+    {
+      label: "Gêneros",
+      options: generos.map((genero) => ({
+        value: `genero:${genero.name}`,
+        label: genero.name,
+      })),
+    },
+  ];
+
+  // Opções filtradas para os botões
+  const opcoesBotoes = [
+    {
+      label: "Empresas",
+      options: empresas
+        .filter((empresa) => empresa.Exibir === "Sim")
+        .map((empresa) => ({
+          value: `empresa:${empresa.name}`,
+          label: empresa.name,
+        })),
+    },
+    {
+      label: "Gêneros",
+      options: generos
+        .filter((genero) => genero.Exibir === "Sim")
+        .map((genero) => ({
+          value: `genero:${genero.name}`,
+          label: genero.name,
+        })),
+    },
+  ];
+
+  const aplicarFiltro = (noticias, filtro) => {
+    console.log("Filtro selecionado:", filtro?.value);
+
+    if (!filtro) return noticias;
+
+    const [tipo, valor] = filtro.value.split(":");
+
+    const filtradas = noticias.filter((noticia) => {
+      if (tipo === "empresa") {
+        return noticia.empresas?.some(
+          (empresa) =>
+            empresa.trim().toLowerCase() === valor.trim().toLowerCase() // ✅ Correção aplicada
+        );
+      }
+
+      if (tipo === "genero") {
+        return noticia.generos?.some(
+          (genero) => genero.trim().toLowerCase() === valor.trim().toLowerCase() // ✅ Correção aplicada
+        );
+      }
+
+      return false;
+    });
+
+    console.log("Notícias filtradas:", filtradas);
+    return filtradas;
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -39,6 +115,10 @@ const Criticas = ({}) => {
 
     fetchUserData();
   }, [user]);
+
+  useEffect(() => {
+    setFilteredCriticas(aplicarFiltro(criticas, filtroSelecionado));
+  }, [filtroSelecionado, criticas]);
 
   useEffect(() => {
     const fetchCriticas = async () => {
@@ -133,8 +213,8 @@ const Criticas = ({}) => {
         {user && userData ? (
           userData.adm && (
             <div className={styles.adicionarCritica}>
-              <button onClick={() => setShowAddCriticas(true)}>
-                <img src="icones/add.svg" alt="Adicionar crítica" />
+              <button onClick={() => router.push("/add-resenha")}>
+                <img src="icones/add.svg" alt="Adicionar notícia" />
                 Adicionar Resenha
               </button>
             </div>
@@ -143,73 +223,56 @@ const Criticas = ({}) => {
           <Loading pequeno /> // Ou null se não quiser mostrar nada
         )}
 
-        <section className={styles.ultimasECriticasNoticias}>
-          <div className={styles.ultimasCriticas}>
-            <CarrosselCriticas
+        {isMobile ? null : (
+          <section className={styles.bannerResenhas}>
+            <BannerResenhas
               criticas={ultimasCriticas}
               tipo="criticas"
               className={styles.customWidth}
             />
-          </div>
+          </section>
+        )}
 
-          <div className={styles.ultimasNoticias}>
-            <CarrosselNoticias
-              noticias={ultimasNoticias}
-              tipo="noticias"
-              className={styles.customWidth} // Estilo adicional se necessário
+        {isMobile ? (
+          <section className={styles.ultimasECriticasNoticias}>
+            <div className={styles.ultimasCriticas}>
+              <CarrosselCriticas
+                criticas={ultimasCriticas}
+                tipo="criticas"
+                className={styles.customWidth}
+              />
+            </div>
+          </section>
+        ) : null}
+
+        {isMobile ? null : (
+          <div className={styles.tituloPagina}>
+            <BotoesCarrossel
+              opcoesBotoes={opcoesBotoes}
+              onFilterChange={setFiltroSelecionado}
             />
           </div>
-        </section>
+        )}
 
-        <div className={styles.tituloPagina}>
-          <span>Todas as resenhas</span>
-        </div>
+        <div className={styles.criticasNoticias}>
+          <div className={styles.colunaCriticas}>
+            <ListaResenhas
+              criticas={filteredCriticas}
+              renderElemento={renderElemento}
+              BannerComponent={BannerInformacao}
+            />
+          </div>
 
-        <div className={styles.AddCritica}>
-          {criticas.map((critica) => (
-            <article
-              key={critica.id}
-              className={styles.critica}
-              onClick={() => router.push(`/resenhas/detalhes/${critica.id}`)}
-            >
-              <div className={styles.boxConteudo}>
-                <div className={styles.conteudo}>
-                  {critica.elementos.map((elemento, index) =>
-                    renderElemento(elemento, index)
-                  )}
-                </div>
-                <div className={styles.cabecalho}>
-                  {/* Título principal da crítica */}
-                  {critica.titulo && (
-                    <h1 className={styles.tituloPrincipal}>{critica.titulo}</h1>
-                  )}
+          {isMobile ? <div className={styles.divisor}></div> : null}
 
-                  {/* Tempo de leitura */}
-                  {critica.numero && (
-                    <div className={styles.numeroCritica}>
-                      <img src="icones/relogio.svg" alt="Tempo de leitura" />
-                      {critica.numero} min de leitura
-                    </div>
-                  )}
-                </div>
-              </div>
-            </article>
-          ))}
+          <div className={styles.colunaNoticias}>
+            <ListaNoticias
+              noticias={ultimasNoticias}
+              renderElemento={renderElemento}
+            />
+          </div>
 
-          {/* Modal AddCriticas */}
-          {showAddCriticas && (
-            <div
-              className={styles.modalOverlay}
-              onClick={() => setShowAddCriticas(false)}
-            >
-              <div
-                className={styles.modalContent}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <AddCriticas onClose={() => setShowAddCriticas(false)} />
-              </div>
-            </div>
-          )}
+          <div className={styles.containerGoogle}></div>
         </div>
       </main>
 

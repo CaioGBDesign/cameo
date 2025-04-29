@@ -12,13 +12,13 @@ import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import FooterB from "@/components/FooterB";
 import BannerNoticias from "@/components/banner-noticias";
-import CarrosselCriticas from "@/components/carrossel-criticas";
+import CarrosselNticias from "@/components/carrossel-noticias";
 import empresas from "@/components/listas/tags/empresas.json";
 import generos from "@/components/listas/tags/generos.json";
 import BotoesCarrossel from "@/components/botoes-carrossel";
 import ListaNoticias from "@/components/ListaNoticias";
-import BannerInformacao from "@/components/banner-informacao";
 import ListaResenhas from "@/components/ListaResenhas-resumo";
+import BannerInformacao from "@/components/banner-informacao";
 
 const Noticias = ({}) => {
   const [noticias, setNoticias] = useState([]);
@@ -267,23 +267,27 @@ const Noticias = ({}) => {
           <Loading pequeno /> // Ou null se não quiser mostrar nada
         )}
 
-        <section className={styles.bannerNoticias}>
-          <BannerNoticias
-            noticias={ultimasNoticias}
-            tipo="noticias"
-            className={styles.customWidth} // Estilo adicional se necessário
-          />
-        </section>
-
-        <section className={styles.ultimasNoticiasECriticas}>
-          <div className={styles.ultimasCriticas}>
-            <CarrosselCriticas
-              criticas={ultimasCriticas}
-              tipo="criticas"
-              className={styles.customWidth}
+        {isMobile ? null : (
+          <section className={styles.bannerNoticias}>
+            <BannerNoticias
+              noticias={ultimasNoticias}
+              tipo="noticias"
+              className={styles.customWidth} // Estilo adicional se necessário
             />
-          </div>
-        </section>
+          </section>
+        )}
+
+        {isMobile ? (
+          <section className={styles.ultimasNoticiasECriticas}>
+            <div className={styles.ultimasNoticias}>
+              <CarrosselNticias
+                noticias={ultimasNoticias}
+                tipo="noticias"
+                className={styles.customWidth}
+              />
+            </div>
+          </section>
+        ) : null}
 
         {isMobile ? null : (
           <div className={styles.tituloPagina}>

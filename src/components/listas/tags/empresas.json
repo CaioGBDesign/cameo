@@ -73,5 +73,10 @@
     "id": "empresa",
     "name": "Universal",
     "Exibir": "Sim"
+  },
+  {
+    "id": "empresa",
+    "name": "Warner Bros. Pictures",
+    "Exibir": "Nâo"
   }
 ]

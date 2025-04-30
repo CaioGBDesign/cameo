@@ -24,7 +24,10 @@ const Miniatura = ({ children }) => {
   }, []);
 
   return (
-    <Link href="/" className={`${styles.miniatura} ${styles[logoSize]}`}>
+    <Link
+      href="/filme-aleatorio"
+      className={`${styles.miniatura} ${styles[logoSize]}`}
+    >
       <img src="/logo/cameo-logo-miniatura.svg" alt="Cameo logo" />
       {children}
     </Link>

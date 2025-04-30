@@ -10,7 +10,7 @@ const MenuDesktop = () => {
     <nav className={styles.menuBotoes}>
       <ul>
         <li>
-          <Link href="/" passHref>
+          <Link href="/filme-aleatorio" passHref>
             <span className={router.pathname === "/" ? styles.active : ""}>
               Home
             </span>

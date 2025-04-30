@@ -42,7 +42,7 @@ const Busca = () => {
   const handleFilmeClick = (filme) => {
     const { id, title } = filme;
     router.push({
-      pathname: "/",
+      pathname: "/filme-aleatorio",
       query: { filmeId: id },
     });
   };

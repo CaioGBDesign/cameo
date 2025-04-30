@@ -1,553 +1,713 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
-import { useAuth } from "@/contexts/auth";
-import { useRouter } from "next/router";
-import { Inter } from "next/font/google";
-import { useIsMobile } from "@/components/DeviceProvider";
-import Head from "next/head";
-import Header from "@/components/Header";
-import HeaderDesktop from "@/components/HeaderDesktop";
-import FooterB from "@/components/FooterB";
+import { useState } from "react"; // Importando useState
 import styles from "@/styles/index.module.scss";
-import TitulosFilmes from "@/components/titulosfilmes";
-import NotasFilmes from "@/components/botoes/notas";
-import Sinopse from "@/components/detalhesfilmes/sinopse";
-import Servicos from "@/components/detalhesfilmes/servicos";
-import Elenco from "@/components/detalhesfilmes/elenco";
-import Direcao from "@/components/detalhesfilmes/direcao";
-import BaseBotoes from "@/components/botoes/base";
-import FavoritarFilme from "@/components/detalhesfilmes/favoritarfilme";
-import AssistirFilme from "@/components/detalhesfilmes/paraver";
-import Listafilmes from "@/components/listafilmes/listafilmes.json";
-import ModalFiltros from "@/components/modais/filtros";
-import ModalAvaliar from "@/components/modais/avaliar-filmes";
-import Classificacao from "@/components/detalhesfilmes/classificacao";
-import FundoTitulosDesktop from "@/components/fotoPrincipalDesktop";
-import Loading from "@/components/loading";
-import Recomendacoes from "@/components/detalhesfilmes/recomendacoes";
-import setCountFiltter from "@/stores/setCountFiltter";
-
-const inter = Inter({ subsets: ["latin"] });
-const FundoTitulos = lazy(() => import("@/components/fundotitulos"));
+import Head from "next/head";
+import { useIsMobile } from "@/components/DeviceProvider";
+import Link from "next/link";
 
 const Home = () => {
-  const router = useRouter();
-  const { filmeId: queryFilmeId } = router.query;
-  const [filmeId, setFilmeId] = useState(null);
-  const [filme, setFilme] = useState(null);
-  const [elenco, setElenco] = useState([]);
-  const [diretores, setDiretores] = useState([]);
-  const [servicosStreaming, setServicosStreaming] = useState([]);
-  const [trailerLink, setTrailerLink] = useState(null);
-  const [recomendacoes, setRecomendacoes] = useState([]);
-  const [filmesExibidos, setFilmesExibidos] = useState(new Set());
-  const [filmeIdParaAvaliar, setFilmeIdParaAvaliar] = useState(null);
-  const [notaAtual, setNotaAtual] = useState(0);
-  const [modalAberto, setModalAberto] = useState(null);
-  const [countryNames, setCountryNames] = useState({});
-  const [filmeIdParaResenha, setFilmeIdParaResenha] = useState(null);
-  const [filtrosCount, setFiltrosCount] = useState(0);
+  const [activeTab, setActiveTab] = useState("filme");
+  const [activeTabB, setActiveTabB] = useState("personalidade"); // Estado para controlar a aba ativa
   const isMobile = useIsMobile();
 
-  const {
-    user,
-    salvarFilme,
-    avaliarFilme,
-    assistirFilme,
-    removerVisto,
-    removerAssistir,
-    removerFilme,
-  } = useAuth();
-
-  const abrirModal = (modalTipo) => setModalAberto(modalTipo);
-  const fecharModal = () => setModalAberto(false);
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
-
-  const handleSelectMovie = (movieId) => {
-    setFilmeId(movieId);
-    console.log("Filme selecionado:", movieId);
+  // Função para mudar a aba ativa
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
   };
 
-  const selecionarFilmeRecomendado = (id) => {
-    setFilmeId(String(id));
-    setFilme(null);
-    scrollToTop();
+  // Função para mudar a aba ativa
+  const handleTabChangeB = (tab) => {
+    setActiveTabB(tab);
   };
 
-  const selecionarFilmeAleatorio = () => {
-    if (filmesExibidos.size === Listafilmes.filmes.length) {
-      setFilmesExibidos(new Set());
-    }
-    let randomFilmeId;
-    do {
-      randomFilmeId =
-        Listafilmes.filmes[
-          Math.floor(Math.random() * Listafilmes.filmes.length)
-        ];
-    } while (filmesExibidos.has(randomFilmeId));
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [commentsPerPage, setCommentsPerPage] = useState(2); // Número de comentários por vez
 
-    setFilmeId(randomFilmeId);
-    setFilmesExibidos((prev) => new Set(prev).add(randomFilmeId));
-    scrollToTop();
+  const comentarios = [
+    {
+      usuario: "Igor Oliveira",
+      comentario:
+        "A Cameo veio para facilitar nossa vida na hora de escolher os filmes. Adoro assistir filmes sugeridos, e pela Cameo vai ser ainda melhor!! 🤩",
+      estrelas: 5,
+      imagem: "/usuario/igor.png",
+    },
+    {
+      usuario: "Pedro Oliveira",
+      comentario:
+        "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+      estrelas: 3,
+      imagem: "/usuario/usuario.png",
+    },
+    {
+      usuario: "Pedro Oliveira",
+      comentario:
+        "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+      estrelas: 3,
+      imagem: "/usuario/igor.png",
+    },
+    {
+      usuario: "Pedro Oliveira",
+      comentario:
+        "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+      estrelas: 3,
+      imagem: "/usuario/igor.png",
+    },
+    {
+      usuario: "Pedro Oliveira",
+      comentario:
+        "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+      estrelas: 3,
+      imagem: "/usuario/igor.png",
+    },
+    {
+      usuario: "Pedro Oliveira",
+      comentario:
+        "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+      estrelas: 3,
+      imagem: "/usuario/igor.png",
+    },
+    {
+      usuario: "Pedro Oliveira",
+      comentario:
+        "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+      estrelas: 3,
+      imagem: "/usuario/igor.png",
+    },
+    {
+      usuario: "Pedro Oliveira",
+      comentario:
+        "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+      estrelas: 3,
+      imagem: "/usuario/igor.png",
+    },
+  ];
+
+  const totalPages = Math.ceil(comentarios.length / commentsPerPage);
+  const currentPage = Math.floor(currentIndex / commentsPerPage);
+
+  const startIndex = currentPage * commentsPerPage;
+  const endIndex = startIndex + commentsPerPage;
+  const commentsToDisplay = comentarios.slice(startIndex, endIndex);
+
+  const handleDotClick = (index) => {
+    setCurrentIndex(index);
   };
-
-  useEffect(() => {
-    if (queryFilmeId && queryFilmeId !== filmeId) {
-      setFilmeId(queryFilmeId);
-      router.push(`/?filmeId=${queryFilmeId}`);
-    }
-  }, [queryFilmeId, filmeId, router]);
-
-  useEffect(() => {
-    if (!filmeId && !queryFilmeId) {
-      selecionarFilmeAleatorio();
-    }
-  }, [filmeId, queryFilmeId]);
-
-  // Função de formatação da duração
-  const formatDuration = (minutes) => {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
-  };
-
-  useEffect(() => {
-    if (!filmeId) return;
-
-    const fetchData = async () => {
-      try {
-        const filmeUrl = `https://api.themoviedb.org/3/movie/${filmeId}?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR&append_to_response=videos,release_dates`;
-        const filmeData = await fetch(filmeUrl).then((response) =>
-          response.json()
-        );
-
-        // Armazena os dados do filme para uso posterior
-        setFilme(filmeData);
-
-        // Tenta encontrar o trailer
-        const trailer = filmeData.videos.results.find(
-          (video) => video.type === "Trailer"
-        );
-        let videoLink;
-
-        if (trailer) {
-          videoLink = `https://www.youtube.com/watch?v=${trailer.key}`;
-        } else {
-          // Tenta encontrar um teaser
-          const teaser = filmeData.videos.results.find(
-            (video) => video.type === "Teaser"
-          );
-          if (teaser) {
-            videoLink = `https://www.youtube.com/watch?v=${teaser.key}`;
-          } else {
-            // Se não houver trailer nem teaser, pega o primeiro vídeo disponível
-            const primeiroVideo = filmeData.videos.results[0];
-            videoLink = primeiroVideo
-              ? `https://www.youtube.com/watch?v=${primeiroVideo.key}`
-              : null;
-          }
-        }
-
-        setTrailerLink(videoLink);
-
-        // Busca dados adicionais em segundo plano
-        const elencoUrl = `https://api.themoviedb.org/3/movie/${filmeId}/credits?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR`;
-        const providersUrl = `https://api.themoviedb.org/3/movie/${filmeId}/watch/providers?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR`;
-        const recomendacoesUrl = `https://api.themoviedb.org/3/movie/${filmeId}/recommendations?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR`;
-
-        const [elencoData, providersData, recomendacoesData] =
-          await Promise.all([
-            fetch(elencoUrl).then((response) => response.json()),
-            fetch(providersUrl).then((response) => response.json()),
-            fetch(recomendacoesUrl).then((response) => response.json()),
-          ]);
-
-        setElenco(elencoData.cast);
-        setServicosStreaming(providersData.results.BR?.flatrate || []);
-        setRecomendacoes(recomendacoesData.results);
-
-        const diretoresEncontrados = elencoData.crew
-          .filter((member) => member.job === "Director")
-          .map((diretor) => ({
-            nome: diretor.name,
-            imagemUrl: diretor.profile_path
-              ? `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${diretor.profile_path}`
-              : null,
-          }));
-
-        setDiretores(
-          diretoresEncontrados.length
-            ? diretoresEncontrados
-            : [{ nome: "Diretor não encontrado", imagemUrl: null }]
-        );
-      } catch (error) {
-        console.error("Erro ao buscar dados:", error);
-      }
-    };
-
-    fetchData();
-  }, [filmeId]);
-
-  useEffect(() => {
-    if (filmeIdParaAvaliar && user) {
-      setNotaAtual(user.visto[filmeIdParaAvaliar] || 0);
-    }
-  }, [filmeIdParaAvaliar, user]);
-
-  useEffect(() => {
-    document.body.style.overflow = modalAberto ? "hidden" : "auto";
-  }, [modalAberto]);
-
-  // Abre o modal de avaliação de filme
-  const abrirModalAvaliar = (id) => {
-    const nota = user?.visto?.[id] || 0; // Obtém a nota do filme, padrão 0 se não encontrado
-    setFilmeIdParaAvaliar(id); // Define o filmeId que será avaliado
-    setNotaAtual(nota); // Atualiza a nota atual no estado
-    abrirModal("avaliar-filme"); // Abre o modal de avaliação
-  };
-
-  const fetchCountryNames = async () => {
-    try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/watch/providers/regions?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR`
-      );
-      const data = await response.json();
-      const countries = {};
-      data.results.forEach((country) => {
-        countries[country.iso_3166_1] = country.native_name;
-      });
-      setCountryNames(countries);
-    } catch (error) {
-      console.error("Erro ao buscar nomes dos países:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchCountryNames();
-    localStorage.clear();
-  }, []);
-
-  const { isTogled } = setCountFiltter();
-
-  useEffect(() => {
-    // Itens a serem verificados no localStorage
-    const keysToCheck = [
-      "providerId",
-      "selectedGenre",
-      "selectedStatus",
-      "selectedCertification",
-      "selectedCountry",
-      "anoLancamento",
-    ];
-
-    // Contador para os itens encontrados no localStorage
-    let count = 0;
-
-    // Verifica se cada chave existe no localStorage e incrementa o contador
-    keysToCheck.forEach((key) => {
-      if (localStorage.getItem(key)) {
-        count++;
-      }
-    });
-
-    // Exibe a contagem dos itens encontrados
-    console.log("Quantidade de filtros no localStorage:", count);
-    setFiltrosCount(count); // Atualiza o estado com a quantidade de filtros
-  }, [filmeId, isTogled]);
-
-  if (!filme && filmeId) return <Loading />;
 
   return (
-    <>
-      {isMobile ? <Header /> : <HeaderDesktop />}
-      <Head>
-        <title>Cameo - Home</title>
-        <meta
-          name="description"
-          content="Descubra o filme perfeito com o Cameo! Oferecemos sugestões aleatórias e personalizadas, filtradas por gênero, classificação indicativa, serviços de streaming e muito mais. Crie listas de filmes, avalie suas escolhas e compartilhe com amigos. Mergulhe no mundo do cinema e nunca fique sem o que assistir. Cadastre-se agora e transforme sua experiência cinematográfica!"
-        />
-      </Head>
-      <main className={`${styles.main} ${inter.className}`}>
-        <div className={styles.detalhesFilmes}>
-          <div className={styles.informacoes}>
-            <div className={styles.tituloFilmes}>
-              <div className={styles.contTitulos}>
-                <TitulosFilmes
-                  titulofilme={filme ? filme.title : "Título não disponível"} // Adicione a verificação aqui
-                  generofilme={
-                    filme && filme.genres
-                      ? filme.genres.map((g) => g.name).join(", ")
-                      : "Gênero não disponível"
-                  }
-                  duracaofilme={
-                    isMobile
-                      ? null
-                      : filme && filme.runtime
-                      ? formatDuration(filme.runtime)
-                      : null
-                  }
-                  paisOrigem={
-                    filme && filme.production_countries
-                      ? filme.production_countries.map((pc) => pc.iso_3166_1)
-                      : []
-                  }
-                  releaseDates={
-                    filme &&
-                    filme.release_dates &&
-                    filme.release_dates.results.length > 0
-                      ? filme.release_dates.results
-                      : null
-                  }
-                  backdropUrl={`https://image.tmdb.org/t/p/original/${
-                    filme ? filme.backdrop_path : ""
-                  }`}
-                  trailerLink={trailerLink || "#"}
-                />
+    <main>
+      <div className={styles.ContApresentacao}>
+        <Head>
+          <title>Cameo – Apresentação</title>
+          <meta name="description" content="…" />
+          <link rel="canonical" href="https://cameo.fun/" />
+          {/* Open Graph */}
+          <meta property="og:title" content="Cameo – Apresentação" />
+          <meta property="og:description" content="…" />
+          <meta property="og:url" content="https://cameo.fun/" />
+          <meta property="og:image" content="https://cameo.fun/og-image.png" />
+          <meta name="twitter:card" content="summary_large_image" />
+          {/* viewport (ideal no _document.js) */}
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+        </Head>
 
-                {isMobile ? (
-                  <div className={styles.DuracaoLancamentoMobile}>
-                    <p>
-                      {filme && filme.runtime
-                        ? formatDuration(filme.runtime)
-                        : null}
-                    </p>
-                    <p>•</p>
-                    <p>
-                      {filme && filme.release_date
-                        ? new Date(filme.release_date).getFullYear()
-                        : "Data de lançamento não disponível"}
-                    </p>
+        <section className={styles.ApresentacaoHeader}>
+          <img src="/logo/cameo-logo-miniatura.svg" alt="Cameo logo" />
+        </section>
+
+        <section
+          aria-label="Apresentação da Cameo.fun"
+          className={styles.ApresentacaoMergulho}
+        >
+          <div className={styles.Headline}>
+            <h1>Hora de mergulhar no universo da cinefilia</h1>
+            <p>Descubra, organize e viva o cinema do seu jeito</p>
+            <Link href="/filme-aleatorio">
+              <button>Comece Agora </button>
+            </Link>
+
+            <p>
+              e Transforme Sua Paixão por Cinema em Uma Jornada Inesquecível!
+            </p>
+          </div>
+          <div className={styles.HeroMascote}>
+            <img
+              src="/mascote/cameo-astronauta-mergulho.png"
+              alt="Cameo Astronauta mergulhando"
+            />
+          </div>
+        </section>
+
+        <section
+          aria-label="O que fazer na Cameo.fun"
+          className={styles.ApresentacaoOqueRola}
+        >
+          <div className={styles.Headline}>
+            <h2>O que rola na Cameo.fun?</h2>
+            <h3>
+              O Cameo.fun é o seu parceiro para descobrir filmes, organizar suas
+              maratonas e virar o crítico mais sagaz da galera. Aqui, a gente
+              não te deixa na mão:
+            </h3>
+          </div>
+
+          <div className={styles.BotoesCont}>
+            <div className={styles.BotoesBox}>
+              <div className={styles.BotoesRotate}>
+                <ul>
+                  <li>
+                    <label
+                      className={
+                        activeTab === "filme" ? styles.selecionado : ""
+                      }
+                    >
+                      <input
+                        type="radio"
+                        name="filme"
+                        checked={activeTab === "filme"}
+                        onChange={() => handleTabChange("filme")}
+                        aria-checked={activeTab === "filme"}
+                      />
+                      <div className={styles.BotaoIcone}>
+                        <img
+                          src="/icones/lp-filme-aleatorio.svg"
+                          alt="filme aleatorio"
+                        />
+                      </div>
+                      <h3>Filme aleatório</h3>
+                    </label>
+                  </li>
+                  <li>
+                    <label
+                      className={
+                        activeTab === "filtros" ? styles.selecionado : ""
+                      }
+                    >
+                      <input
+                        type="radio"
+                        name="filtros"
+                        checked={activeTab === "filtros"}
+                        onChange={() => handleTabChange("filtros")}
+                        aria-checked={activeTab === "filtros"}
+                      />
+                      <div className={styles.BotaoIcone}>
+                        <img src="/icones/lp-filtros.svg" alt="filtros" />
+                      </div>
+                      <h3>Filtros</h3>
+                    </label>
+                  </li>
+                  <li>
+                    <label
+                      className={
+                        activeTab === "avaliacao" ? styles.selecionado : ""
+                      }
+                    >
+                      <input
+                        type="radio"
+                        name="avaliacao"
+                        checked={activeTab === "avaliacao"}
+                        onChange={() => handleTabChange("avaliacao")}
+                        aria-checked={activeTab === "avaliacao"}
+                      />
+                      <div className={styles.BotaoIcone}>
+                        <img src="/icones/lp-avaliacoes.svg" alt="avaliaçoes" />
+                      </div>
+                      <h3>Avalie do seu jeito</h3>
+                    </label>
+                  </li>
+                  <li>
+                    <label
+                      className={
+                        activeTab === "dados" ? styles.selecionado : ""
+                      }
+                    >
+                      <input
+                        type="radio"
+                        name="dados"
+                        checked={activeTab === "dados"}
+                        onChange={() => handleTabChange("dados")}
+                        aria-checked={activeTab === "dados"}
+                      />
+                      <div className={styles.BotaoIcone}>
+                        <img src="/icones/lp-dados.svg" alt="Seus Dados" />
+                      </div>
+                      <h3>Seus dados</h3>
+                    </label>
+                  </li>
+                </ul>
+
+                <div
+                  className={styles.FilmeAleatorio}
+                  style={{ display: activeTab === "filme" ? "flex" : "none" }}
+                >
+                  <h2>
+                    Um{" "}
+                    <span>
+                      <strong>filme aleatório</strong>
+                    </span>{" "}
+                    bombástico pra você. Não curtiu? Clica de novo até achar
+                    aquele que faz seu coração pipocar!
+                  </h2>
+
+                  <div className={styles.BoxMascote}>
+                    <img
+                      src="/mascote/cameo-thanos.png"
+                      alt="Cameo Astronauta Thanos"
+                    />
                   </div>
-                ) : null}
 
-                {!isMobile && filme && filme.overview ? (
-                  <Sinopse sinopse={filme.overview} />
-                ) : null}
+                  <div className={styles.BotaoApresentacao}>
+                    <Link href="/filme-aleatorio">
+                      <button>Bora explorar?</button>
+                    </Link>
+                    <p>É grátis e não precisa nem de pipoca! 🍿</p>
+                  </div>
+                </div>
 
-                <div className={styles.NotasFavoritos}>
-                  <NotasFilmes
-                    filmeId={filmeId}
-                    avaliarFilme={avaliarFilme}
-                    removerVisto={removerVisto}
-                    usuarioFilmeVisto={user?.visto || []}
-                    onClickModal={() => abrirModalAvaliar(filmeId)} // aqui você deve garantir que a nota está sendo passada corretamente
-                  />
+                <div
+                  className={styles.Filtros}
+                  style={{ display: activeTab === "filtros" ? "flex" : "none" }}
+                >
+                  <h2>
+                    Quer algo do cinema, da Netflix ou daquele streaming indie?
+                    Nós te damos a dica e ainda{" "}
+                    <span>
+                      <strong>falamos onde assistir.</strong>
+                    </span>
+                  </h2>
 
-                  <AssistirFilme
-                    filmeId={filmeId}
-                    assistirFilme={assistirFilme}
-                    removerAssistir={removerAssistir}
-                    usuarioParaVer={user?.assistir || []}
-                  />
-                  <FavoritarFilme
-                    filmeId={filmeId}
-                    salvarFilme={salvarFilme}
-                    removerFilme={removerFilme}
-                    usuarioFavoritos={user?.favoritos || []}
-                  />
+                  <div className={styles.BoxMascote}>
+                    <img
+                      src="/mascote/cameo-filtros.png"
+                      alt="Cameo Astronauta Thanos"
+                    />
+                  </div>
+
+                  <div className={styles.BotaoApresentacao}>
+                    <Link href="/filme-aleatorio">
+                      <button>Bora explorar?</button>
+                    </Link>
+                    <p>É grátis e não precisa nem de pipoca! 🍿</p>
+                  </div>
+                </div>
+
+                <div
+                  className={styles.AvalieDoSeuJeito}
+                  style={{
+                    display: activeTab === "avaliacao" ? "flex" : "none",
+                  }}
+                >
+                  <h2>
+                    <span>
+                      <strong>De 0 a 5 estrelas</strong>
+                    </span>{" "}
+                    + reviews sarcásticas (ou poéticas). Sua opinião vira
+                    história na sua galeria de filmes já vistos.
+                  </h2>
+
+                  <div className={styles.BoxMascote}>
+                    <img
+                      src="/mascote/cameo-avaliacoes.png"
+                      alt="Cameo Astronauta Thanos"
+                    />
+                  </div>
+
+                  <div className={styles.BotaoApresentacao}>
+                    <Link href="/filme-aleatorio">
+                      <button>Bora explorar?</button>
+                    </Link>
+                    <p>É grátis e não precisa nem de pipoca! 🍿</p>
+                  </div>
+                </div>
+
+                <div
+                  className={styles.SeusDados}
+                  style={{ display: activeTab === "dados" ? "flex" : "none" }}
+                >
+                  <h2>
+                    <span>
+                      <strong>Gráficos dos gêneros</strong>
+                    </span>
+                    que você mais devora e metas pra virar um machine de
+                    maratona (sim, dá pra competir consigo mesmo).
+                  </h2>
+
+                  <div className={styles.BoxMascote}>
+                    <img
+                      src="/mascote/cameo-dados.png"
+                      alt="Cameo Astronauta Thanos"
+                    />
+                  </div>
+
+                  <div className={styles.BotaoApresentacao}>
+                    <Link href="/filme-aleatorio">
+                      <button>Bora explorar?</button>
+                    </Link>
+                    <p>É grátis e não precisa nem de pipoca! 🍿</p>
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div className={styles.infoFilmes}>
-              {isMobile && filme && filme.overview && (
-                <Sinopse sinopse={filme.overview} />
-              )}
+          <div className={styles.Particulas}>
+            <img src="/background/particulas.png" alt="particulas" />
+          </div>
+        </section>
 
-              {servicosStreaming.length > 0 && (
-                <Servicos servicos={servicosStreaming} />
-              )}
+        <section
+          aria-label="Funcionalidades"
+          className={styles.ApresentacaoPorQueCameo}
+        >
+          <div className={styles.BotoesCont}>
+            <div className={styles.BoxInformacoes}>
+              <div className={styles.Headline}>
+                <h2>Por que o Cameo.fun é a sua nova obsessão?</h2>
+                <h3>Aqui, você é o diretor da sua própria sessão!</h3>
+              </div>
+              <ul>
+                <li>
+                  <label
+                    className={
+                      activeTabB === "personalidade"
+                        ? styles.selecionado
+                        : styles.naoselecionado
+                    }
+                  >
+                    <input
+                      type="radio"
+                      name="personalidade"
+                      checked={activeTabB === "personalidade"}
+                      onChange={() => handleTabChangeB("personalidade")}
+                      aria-checked={activeTabB === "personalidade"}
+                    />
+                    <div className={styles.tituloBotao}>
+                      <div className={styles.BotaoIcone}>
+                        <img
+                          src="/icones/personalidade-icone.svg"
+                          alt="personalidade"
+                        />
+                      </div>
+                      <h3>Personalidade:</h3>
+                    </div>
+                    <div className={styles.descricaoBotao}>
+                      <p>
+                        Suas listas, seus favoritos, suas metas - tudo no seu
+                        estilo.
+                      </p>
+                    </div>
+                  </label>
+
+                  {isMobile ? (
+                    <div className={styles.Ilustracao}>
+                      <div
+                        className={styles.FilmeAleatorio}
+                        style={{
+                          display:
+                            activeTabB === "personalidade" ? "flex" : "none",
+                        }}
+                      >
+                        <img
+                          src="/icones/lp-personalidade.png"
+                          alt="Suas listas, seus favoritos, suas metas - tudo no seu estilo."
+                        />
+                      </div>
+                    </div>
+                  ) : null}
+                </li>
+
+                <li>
+                  <label
+                    className={
+                      activeTabB === "credibilidade"
+                        ? styles.selecionado
+                        : styles.naoselecionado
+                    }
+                  >
+                    <input
+                      type="radio"
+                      name="credibilidade"
+                      checked={activeTabB === "credibilidade"}
+                      onChange={() => handleTabChangeB("credibilidade")}
+                      aria-checked={activeTabB === "credibilidade"}
+                    />
+                    <div className={styles.tituloBotao}>
+                      <div className={styles.BotaoIcone}>
+                        <img
+                          src="/icones/lp-filme-aleatorio.svg"
+                          alt="filme aleatorio"
+                        />
+                      </div>
+                      <h3>Credibilidade sem chatice::</h3>
+                    </div>
+                    <div className={styles.descricaoBotao}>
+                      <p>
+                        Sinopse, elenco, streaming... Tudo checado pra você não
+                        cair em furada.
+                      </p>
+                    </div>
+                  </label>
+                  {isMobile ? (
+                    <div className={styles.Ilustracao}>
+                      <div
+                        className={styles.FilmeAleatorio}
+                        style={{
+                          display:
+                            activeTabB === "credibilidade" ? "flex" : "none",
+                        }}
+                      >
+                        <img
+                          src="/icones/lp-esqueceram-de-mim.png"
+                          alt="Cameo Esqueceram de mim"
+                        />
+                      </div>
+                    </div>
+                  ) : null}
+                </li>
+
+                <li>
+                  <label
+                    className={
+                      activeTabB === "maratona"
+                        ? styles.selecionado
+                        : styles.naoselecionado
+                    }
+                  >
+                    <input
+                      type="radio"
+                      name="maratona"
+                      checked={activeTabB === "maratona"}
+                      onChange={() => handleTabChangeB("maratona")}
+                      aria-checked={activeTabB === "maratona"}
+                    />
+                    <div className={styles.tituloBotao}>
+                      <div className={styles.BotaoIcone}>
+                        <img
+                          src="/icones/lp-filme-aleatorio.svg"
+                          alt="filme aleatorio"
+                        />
+                      </div>
+                      <h3>Zero julgamento:</h3>
+                    </div>
+                    <div className={styles.descricaoBotao}>
+                      <p>
+                        Quer maratonar 50 filmes de terror em uma semana? Nós só
+                        damos os troféus (virtuais, mas estilosos).
+                      </p>
+                    </div>
+                  </label>
+                  {isMobile ? (
+                    <div className={styles.Ilustracao}>
+                      <div
+                        className={styles.FilmeAleatorio}
+                        style={{
+                          display: activeTabB === "maratona" ? "flex" : "none",
+                        }}
+                      >
+                        <img src="/icones/lp-samara.png" alt="Cameo Samara" />
+                      </div>
+                    </div>
+                  ) : null}
+                </li>
+
+                <li className={styles.botao}>
+                  <Link href="/filme-aleatorio">
+                    <button>Seja o(a) protagonista dessa história!</button>
+                  </Link>
+                </li>
+              </ul>
             </div>
 
             {isMobile ? null : (
-              <div className={styles.infoFilmes}>
-                <div className={styles.detalhesDispositivo}>
-                  <div className={styles.detalhes}>
-                    <h3>Lançamento</h3>
-                    <p>
-                      {filme && filme.release_date
-                        ? new Date(filme.release_date).toLocaleDateString()
-                        : "Data de lançamento não disponível"}
-                    </p>
-                  </div>
+              <div className={styles.Ilustracao}>
+                <div
+                  className={styles.FilmeAleatorio}
+                  style={{
+                    display: activeTabB === "personalidade" ? "flex" : "none",
+                  }}
+                >
+                  <img
+                    src="/icones/lp-personalidade.png"
+                    alt="Suas listas, seus favoritos, suas metas - tudo no seu estilo."
+                  />
+                </div>
 
-                  {filme && filme.budget > 0 && (
-                    <div className={styles.detalhes}>
-                      <h3>Orçamento</h3>
-                      <p>US$ {filme.budget.toLocaleString()}</p>
-                    </div>
-                  )}
+                <div
+                  className={styles.FilmeAleatorio}
+                  style={{
+                    display: activeTabB === "credibilidade" ? "flex" : "none",
+                  }}
+                >
+                  <img
+                    src="/icones/lp-esqueceram-de-mim.png"
+                    alt="Cameo Esqueceram de mim"
+                  />
+                </div>
 
-                  {filme && filme.revenue > 0 && (
-                    <div className={styles.detalhes}>
-                      <h3>Bilheteira</h3>
-                      <p>US$ {filme.revenue.toLocaleString()}</p>
-                    </div>
-                  )}
-
-                  <div className={styles.detalhes}>
-                    <h3>País de origem</h3>
-                    <div className={styles.origemDeskop}>
-                      {filme &&
-                      filme.production_countries &&
-                      filme.production_countries.length > 0 ? (
-                        filme.production_countries.map((country) => (
-                          <div
-                            className={styles.produtora}
-                            key={country.iso_3166_1}
-                          >
-                            <p>
-                              {countryNames[country.iso_3166_1] ||
-                                country.iso_3166_1}
-                            </p>
-                          </div>
-                        ))
-                      ) : (
-                        <p>País não disponível</p>
-                      )}
-                    </div>
-                  </div>
+                <div
+                  className={styles.FilmeAleatorio}
+                  style={{
+                    display: activeTabB === "maratona" ? "flex" : "none",
+                  }}
+                >
+                  <img src="/icones/lp-samara.png" alt="Cameo Samara" />
                 </div>
               </div>
             )}
+          </div>
+        </section>
 
-            <Suspense fallback={<Loading />}>
-              <div className={styles.elencoGeral}>
-                <Elenco elenco={elenco} />
-
-                {isMobile ? <hr /> : null}
-                <Direcao diretores={diretores} />
+        <section className={styles.ApresentacaoCameoLover}>
+          <div className={styles.CameoLoverCont}>
+            <div className={styles.CameoLoverInformacoes}>
+              <div className={styles.Headline}>
+                <h2>
+                  Pronto pra virar um{" "}
+                  <span>
+                    <strong>Cameo lover</strong>
+                  </span>
+                  ?
+                </h2>
               </div>
-            </Suspense>
 
-            <div className={styles.infoFilmes}>
-              <div className={styles.detalhesDispositivo}>
-                <div className={styles.detalhes}>
-                  <h3>Produção</h3>
-                  <div className={styles.producao}>
-                    {filme && filme.production_companies ? (
-                      filme.production_companies.map((pc) => (
-                        <div className={styles.produtora} key={pc.id}>
-                          <p>{pc.name}</p>
+              <div className={styles.Avaliacao}>
+                <img
+                  src="/icones/estrela-preenchida.svg"
+                  alt="estrela preenchida"
+                />
+                <img
+                  src="/icones/estrela-preenchida.svg"
+                  alt="estrela preenchida"
+                />
+                <img
+                  src="/icones/estrela-preenchida.svg"
+                  alt="estrela preenchida"
+                />
+                <img
+                  src="/icones/estrela-preenchida.svg"
+                  alt="estrela preenchida"
+                />
+                <img
+                  src="/icones/estrela-preenchida.svg"
+                  alt="estrela preenchida"
+                />
+              </div>
+
+              <div className={styles.Headline}>
+                <p>
+                  Sua{" "}
+                  <span>
+                    <strong>aventura cinematográfica</strong>
+                  </span>{" "}
+                  começa agora...
+                </p>
+
+                <p>
+                  Não importa se você é o nerd dos clássicos ou o viciado em
+                  blockbuster: no{" "}
+                  <span>
+                    <strong>Cameo.fun</strong>
+                  </span>
+                  , você descobre, organiza e celebra o cinema como um
+                  verdadeiro fã. E o melhor?{" "}
+                  <span>
+                    <strong>Sem precisar levantar do sofá</strong>
+                  </span>
+                  .
+                </p>
+
+                <Link href="/filme-aleatorio">
+                  <button>Aperta play na sua jornada</button>
+                </Link>
+
+                <div className={styles.subline}>
+                  <p>
+                    Ah, e não se preocupe: aqui ninguém vai dar spoiler do final
+                  </p>
+                  😉
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.MascoteLover}>
+              <img src="/icones/lp-cameo-lover.png" alt="Cameo lover" />
+            </div>
+          </div>
+        </section>
+
+        <footer className={styles.ApresentacaoFooter}>
+          <div className={styles.FooterCont}>
+            <div className={styles.FooterInformacoes}>
+              <div className={styles.TodosOsBotoes}>
+                <div className={styles.SobreSocial}>
+                  <div className={styles.BotaoSobre}>
+                    <h3>Quem somos</h3>
+
+                    <Link href="/sobre">
+                      <div className={styles.BotaoSobreBox}>
+                        <span>Sobre a Cameo</span>
+                        <img src="/icones/arrow.svg" />
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+                <div className={styles.socialMedia}>
+                  <a
+                    href="https://www.instagram.com/cameo.fun"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img src="/icones/instagram.svg" alt="Instagram" />
+                  </a>
+                  <a
+                    href="https://www.tiktok.com/@cameo.fun"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img src="/icones/tiktok.svg" alt="TikTok" />
+                  </a>
+                  <a
+                    href="https://www.youtube.com/@cameo_fun"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img src="/icones/youtube.svg" alt="YouTube" />
+                  </a>
+                </div>
+              </div>
+
+              <div className={styles.TodosOsBotoes}>
+                <div className={styles.SobreSocial}>
+                  <div className={styles.BotaoSobre}>
+                    <h3>Contato</h3>
+
+                    <div className={styles.Cta}>
+                      <Link href="mailto:contato@cameo.fun">
+                        <div className={styles.BotaoSobreBox}>
+                          <span>Entrar em contato</span>
+                          <img src="/icones/arrow.svg" />
                         </div>
-                      ))
-                    ) : (
-                      <p>Produção não disponível</p>
-                    )}
+                      </Link>
+
+                      <Link href="/filme-aleatorio">
+                        <button>Começar</button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              {isMobile ? (
-                <div className={styles.detalhesDispositivo}>
-                  <div className={styles.detalhes}>
-                    <h3>Lançamento</h3>
-                    <p>
-                      {filme && filme.release_date
-                        ? new Date(filme.release_date).toLocaleDateString()
-                        : "Data de lançamento não disponível"}
-                    </p>
-                  </div>
-
-                  {filme && filme.release_dates && (
-                    <Classificacao releaseDates={filme.release_dates.results} />
-                  )}
-
-                  {filme && filme.budget > 0 && (
-                    <div className={styles.detalhes}>
-                      <h3>Orçamento</h3>
-                      <p>US$ {filme.budget.toLocaleString()}</p>
-                    </div>
-                  )}
-
-                  {filme && filme.revenue > 0 && (
-                    <div className={styles.detalhes}>
-                      <h3>Bilheteira</h3>
-                      <p>US$ {filme.revenue.toLocaleString()}</p>
-                    </div>
-                  )}
-
-                  <div className={styles.detalhes}>
-                    <h3>País de origem</h3>
-                    <div className={styles.producao}>
-                      {filme &&
-                      filme.production_countries &&
-                      filme.production_countries.length > 0 ? (
-                        filme.production_countries.map((country) => (
-                          <div
-                            className={styles.produtora}
-                            key={country.iso_3166_1}
-                          >
-                            <p>
-                              {countryNames[country.iso_3166_1] ||
-                                country.iso_3166_1}
-                            </p>
-                          </div>
-                        ))
-                      ) : (
-                        <p>País não disponível</p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ) : null}
-
-              <Recomendacoes
-                recomendacoes={recomendacoes}
-                selecionarFilmeRecomendado={selecionarFilmeRecomendado}
-              />
+            <div className={styles.MascoteDeadpool}>
+              <span>Você ainda está aqui?... Já acabou!!!</span>
+              <img src="/icones/lp-deadpool.png" alt="Mascote Deadpool" />
             </div>
           </div>
 
-          <div className={styles.footerHome}>
-            <FooterB />
+          <div className={styles.FooterLogo}>
+            <img src="/logo/cameo-logo-miniatura.svg" alt="Cameo logo" />
           </div>
-        </div>
-        <BaseBotoes
-          TextoBotao={"Filme aleatório"}
-          botaoPrimario={true} // Habilita o botão primário
-          botaoSecundario={true} // Habilita o botão secundário
-          onClick={selecionarFilmeAleatorio} // Função para sugerir um filme
-          onClickModal={() => abrirModal("filtros")} // Função para abrir o modal
-          filtrosCount={filtrosCount} // Passando a quantidade de filtros
-        />
-        {isMobile ? (
-          <Suspense fallback={<Loading />}>
-            <FundoTitulos
-              exibirPlay={!!trailerLink}
-              capaAssistidos={`https://image.tmdb.org/t/p/original/${
-                filme ? filme.poster_path : ""
-              }`}
-              tituloAssistidos={filme ? filme.title : "Título não disponível"}
-              trailerLink={trailerLink || "#"}
-              style={{
-                height: "600px",
-              }}
-            />
-          </Suspense>
-        ) : (
-          <FundoTitulosDesktop
-            capaAssistidos={`https://image.tmdb.org/t/p/original/${
-              filme ? filme.backdrop_path : ""
-            }`}
-          />
-        )}
-
-        {modalAberto === "filtros" && (
-          <ModalFiltros
-            onClose={fecharModal}
-            user={user}
-            onSelectMovie={handleSelectMovie}
-          />
-        )}
-        {modalAberto === "avaliar-filme" && (
-          <ModalAvaliar
-            filmeId={filmeIdParaAvaliar} // Use filmeIdParaAvaliar no lugar de selectedFilmeId
-            nota={notaAtual} // Use notaAtual no lugar de currentNota
-            onClose={fecharModal}
-          />
-        )}
-      </main>
-    </>
+        </footer>
+      </div>
+    </main>
   );
 };
 

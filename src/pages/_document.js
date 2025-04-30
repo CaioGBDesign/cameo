@@ -20,6 +20,29 @@ export default function Document() {
             `,
           }}
         />
+
+        {/* JSON-LD de Site (Schema.org) */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              url: "https://cameo.fun/",
+              name: "Cameo",
+              description:
+                "Descubra o filme perfeito com a Cameo! Oferecemos sugestões aleatórias e personalizadas…",
+              publisher: {
+                "@type": "Organization",
+                name: "Cameo.fun",
+                logo: {
+                  "@type": "ImageObject",
+                  url: "https://cameo.fun/logo/cameo-logo-miniatura.svg",
+                },
+              },
+            }),
+          }}
+        />
       </Head>
       <body>
         <Main />

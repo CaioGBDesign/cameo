@@ -213,7 +213,7 @@ const Criticas = ({}) => {
         {user && userData ? (
           userData.adm && (
             <div className={styles.adicionarCritica}>
-              <button onClick={() => router.push("/add-resenha")}>
+              <button onClick={() => router.push("/add-critica")}>
                 <img src="icones/add.svg" alt="Adicionar notícia" />
                 Adicionar Resenha
               </button>

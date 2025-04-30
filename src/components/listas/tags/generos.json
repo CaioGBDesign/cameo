@@ -56,6 +56,11 @@
   },
   {
     "id": "genero",
+    "name": "Terror",
+    "Exibir": "Sim"
+  },
+  {
+    "id": "genero",
     "name": "Thriller",
     "Exibir": "Sim"
   }

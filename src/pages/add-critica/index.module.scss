@@ -1,0 +1,274 @@
+.ContCriticas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .criticasForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+    gap: 50px;
+
+    overflow: hidden;
+
+    width: 85%;
+
+    padding-bottom: 30px;
+
+    .AddCriticas {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 90%;
+
+      margin-top: 150px;
+
+      .FormCriticas {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: end;
+        gap: 20px;
+
+        width: 100%;
+
+        .scrollCriticas {
+          display: flex;
+          flex-direction: column;
+          justify-content: start;
+          align-items: center;
+          gap: 20px;
+
+          width: 100%;
+
+          .conteudoCriticas {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+
+            width: 100%;
+
+            .tituloNoticia {
+              width: 100%;
+
+              h1 {
+                color: #fff;
+                font-size: 30px;
+                font-weight: bold;
+              }
+            }
+
+            input {
+              width: 100%;
+              height: 60px;
+              background: none;
+              border: none;
+              border-bottom: 1px solid hsla(0, 0%, 100%, 0.251);
+              font-size: 16px;
+              color: #fff;
+            }
+
+            input[type="text"]::placeholder {
+              color: rgba(255, 255, 255, 0.4);
+              font-size: 16px;
+            }
+
+            input[type="text"]::-webkit-inner-spin-button {
+              opacity: 1;
+
+              background: none;
+            }
+
+            input[type="number"]::placeholder {
+              color: rgba(255, 255, 255, 0.4);
+              font-size: 16px;
+            }
+
+            input[type="number"]::-webkit-inner-spin-button {
+              opacity: 1;
+
+              background: none;
+            }
+
+            .FormGroup {
+              display: flex;
+              justify-content: space-between;
+              gap: 20px;
+
+              width: 100%;
+
+              @media only screen and (max-width: 600px) {
+                flex-direction: column;
+              }
+            }
+
+            .BotoesAcao {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              gap: 20px;
+
+              width: 100%;
+
+              .uploadContainer {
+                width: 100%;
+
+                .customFileLabel {
+                  width: 100%;
+
+                  .labelContent {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 10px;
+
+                    .textos {
+                      display: flex;
+                      flex-direction: column;
+                      justify-content: center;
+                      align-items: center;
+                      gap: 10px;
+
+                      .textoLabel {
+                        font-weight: bold;
+                        font-size: 20px;
+                      }
+
+                      .subTextoLabel {
+                        font-size: 14px;
+                        font-weight: 200;
+                      }
+                    }
+                  }
+
+                  .previewContainer {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 20px;
+
+                    width: 100%;
+
+                    position: relative;
+
+                    .imagemPreview {
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+
+                      width: 100%;
+                      height: 270px;
+
+                      img {
+                        width: 100%;
+                      }
+                    }
+
+                    .actionsOverlay {
+                      position: absolute;
+                      bottom: 20px;
+                      left: 20px;
+
+                      z-index: 999;
+
+                      button {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 10px;
+
+                        background: #1af5eb;
+                        border: none;
+                        border-radius: 5px;
+
+                        padding: 10px;
+
+                        font-weight: bold;
+                      }
+                    }
+                  }
+                }
+
+                input[type="file"] {
+                  display: none;
+                }
+
+                label {
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+
+                  width: 90%;
+                  height: 270px;
+                  background: none;
+                  border: dashed #ffffff20 2px;
+                  border-radius: 10px;
+
+                  transition: 0.2s;
+
+                  font-size: 16px;
+                  color: #fff;
+
+                  overflow: hidden;
+
+                  cursor: pointer;
+
+                  &:hover {
+                    background: #ffffff10;
+                  }
+                }
+              }
+
+              input {
+                width: 100% !important;
+                height: 60px !important;
+                background: none;
+                border: none;
+                border-bottom: 1px solid hsla(0, 0%, 100%, 0.251);
+                font-size: 16px;
+                color: #fff;
+              }
+
+              input[type="text"]::placeholder {
+                color: rgba(255, 255, 255, 0.4);
+                font-size: 16px;
+              }
+
+              button {
+                background: none;
+                border: none;
+
+                cursor: pointer;
+              }
+
+              .BotaoAdicionar {
+                width: 100%;
+                height: 50px;
+
+                background: #ffffff10;
+                border-radius: 10px;
+
+                color: #ffffff50;
+
+                transition: 0.2s;
+
+                &:hover {
+                  background: #ffffff20;
+
+                  color: #ffffff90;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

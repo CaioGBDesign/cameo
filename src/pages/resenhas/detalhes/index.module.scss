@@ -80,6 +80,10 @@
 
       position: relative;
 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
       @media only screen and (max-width: 600px) {
         width: 100%;
         height: initial;
@@ -156,7 +160,7 @@
           border: solid 1px #3b2544;
           border-radius: 10px;
 
-          padding: 5px;
+          padding: 5px 10px;
 
           text-decoration: none;
 

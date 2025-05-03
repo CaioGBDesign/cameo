@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useIsMobile } from "@/components/DeviceProvider";
 import Head from "next/head";
 import Header from "@/components/Header";
-import FooterB from "@/components/FooterB";
+import Footer from "@/components/Footer";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import FotoPrincipal from "@/components/perfil/fotoPrincipal";
 import NomeUsuario from "@/components/perfil/nomeUsuario";
@@ -107,7 +107,7 @@ const PerfilUsuario = () => {
               </div>
             </div>
 
-            <FooterB />
+            <Footer />
           </div>
         </div>
 

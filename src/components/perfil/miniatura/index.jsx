@@ -54,7 +54,10 @@ const FotoPerfil = ({ href = "/perfil", children }) => {
           ) : (
             // Se o usuário não estiver logado, renderiza o texto "Login"
             <div className={styles.entrar}>
-              <img src="/icones/seta-direita.svg" />
+              <img
+                src="/icones/seta-direita.svg"
+                alt="seta  usuário não logado"
+              />
               <span>Entrar</span>
             </div>
           )}
@@ -76,7 +79,10 @@ const FotoPerfil = ({ href = "/perfil", children }) => {
           ) : (
             // Se o usuário não estiver logado, renderiza o texto "Login"
             <div className={styles.entrar}>
-              <img src="/icones/seta-direita.svg" />
+              <img
+                src="/icones/seta-direita.svg"
+                alt="seta  usuário não logado"
+              />
               <span>Entrar</span>
             </div>
           )}

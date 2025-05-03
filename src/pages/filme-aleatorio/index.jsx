@@ -6,7 +6,7 @@ import { useIsMobile } from "@/components/DeviceProvider";
 import Head from "next/head";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
-import FooterB from "@/components/FooterB";
+import Footer from "@/components/Footer";
 import styles from "./index.module.scss";
 import TitulosFilmes from "@/components/titulosfilmes";
 import NotasFilmes from "@/components/botoes/notas";
@@ -499,7 +499,7 @@ const FilmeAleatorio = () => {
           </div>
 
           <div className={styles.footerHome}>
-            <FooterB />
+            <Footer />
           </div>
         </div>
         <BaseBotoes

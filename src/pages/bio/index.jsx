@@ -22,21 +22,35 @@ const Bio = () => {
         </div>
 
         <div className={styles.BioLista}>
-          <Link href="https://www.tiktok.com/@cameo.fun">
+          <Link href="https://www.cameo.fun/filme-aleatorio" target="blank">
+            <div className={styles.item}>Filme Aleatório</div>
+          </Link>
+
+          <Link href="https://www.cameo.fun/noticias" target="blank">
+            <div className={styles.item}>Notícias</div>
+          </Link>
+
+          <Link href="https://www.cameo.fun/resenhas" target="blank">
+            <div className={styles.item}>Resenhas</div>
+          </Link>
+
+          <div className={styles.separador}></div>
+
+          <Link href="https://www.tiktok.com/@cameo.fun" target="blank">
             <div className={styles.item}>
               <img src="/icones/tiktok.svg" alt="TikTok" />
               TikTok
             </div>
           </Link>
 
-          <Link href="https://www.instagram.com/cameo.fun/">
+          <Link href="https://www.instagram.com/cameo.fun/" target="blank">
             <div className={styles.item}>
               <img src="/icones/instagram.svg" alt="Instagram" />
               Instagram
             </div>
           </Link>
 
-          <Link href="https://www.youtube.com/@cameo_fun">
+          <Link href="https://www.youtube.com/@cameo_fun" target="blank">
             <div className={styles.item}>
               <img src="/icones/youtube.svg" alt="YouTube" />
               YouTube

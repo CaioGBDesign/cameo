@@ -5,7 +5,7 @@ import { db } from "@/services/firebaseConection";
 import { doc, getDoc } from "firebase/firestore";
 import Loading from "@/components/loading";
 import styles from "./index.module.scss";
-import FooterB from "@/components/FooterB";
+import Footer from "@/components/Footer";
 import Head from "next/head";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
@@ -346,7 +346,7 @@ const NoticiaDetalhe = () => {
           </div>
         </article>
       </div>
-      <FooterB></FooterB>
+      <Footer></Footer>
     </>
   );
 };

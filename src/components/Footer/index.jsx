@@ -3,7 +3,6 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useIsMobile } from "@/components/DeviceProvider";
 import { auth } from "@/services/firebaseConection";
 import styles from "./index.module.scss";
-import Miniatura from "@/components/miniatura";
 import Link from "next/link";
 
 const Footer = ({ style }) => {
@@ -24,77 +23,79 @@ const Footer = ({ style }) => {
   }, []);
 
   return (
-    <footer className={styles.footer} style={style}>
-      <div className={styles.container}>
-        <div className={styles.topoFooter}>
-          {isMobile ? (
-            <div className={styles.logoSection}>
-              <Miniatura className={styles.miniatura} />
-            </div>
-          ) : null}
+    <footer className={styles.ApresentacaoFooter}>
+      <div className={styles.FooterCont}>
+        <div className={styles.FooterInformacoes}>
+          <div className={styles.TodosOsBotoes}>
+            <div className={styles.SobreSocial}>
+              <div className={styles.BotaoSobre}>
+                <h3>Quem somos</h3>
 
-          <div className={styles.socialMedia}>
-            <a
-              href="https://www.instagram.com/cameo.fun"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src="/icones/instagram.svg" alt="Instagram" />
-            </a>
-            <a
-              href="https://www.tiktok.com/@cameo.fun"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src="/icones/tiktok.svg" alt="TikTok" />
-            </a>
-            <a
-              href="https://www.youtube.com/@cameo_fun"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src="/icones/youtube.svg" alt="YouTube" />
-            </a>
+                <Link href="/sobre">
+                  <div className={styles.BotaoSobreBox}>
+                    <span>Sobre a Cameo</span>
+                    <img src="/icones/arrow.svg" alt="seta" />
+                  </div>
+                </Link>
+              </div>
+            </div>
+            <div className={styles.socialMedia}>
+              <a
+                href="https://www.instagram.com/cameo.fun"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src="/icones/instagram.svg" alt="Instagram" />
+              </a>
+              <a
+                href="https://www.tiktok.com/@cameo.fun"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src="/icones/tiktok.svg" alt="TikTok" />
+              </a>
+              <a
+                href="https://www.youtube.com/@cameo_fun"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src="/icones/youtube.svg" alt="YouTube" />
+              </a>
+            </div>
+          </div>
+
+          <div className={styles.TodosOsBotoes}>
+            <div className={styles.SobreSocial}>
+              <div className={styles.BotaoSobre}>
+                <h3>Contato</h3>
+
+                <div className={styles.Cta}>
+                  <Link href="mailto:contato@cameo.fun">
+                    <div className={styles.BotaoSobreBox}>
+                      <span>Entrar em contato</span>
+                      <img src="/icones/arrow.svg" alt="seta" />
+                    </div>
+                  </Link>
+
+                  {!isLoggedIn && (
+                    <Link href="/">
+                      <button>Começar</button>
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <nav
-          aria-label="Links de navegação do rodapé"
-          className={styles.navLinks}
-        >
-          <div className={styles.quemSomos}>
-            {isMobile ? <h3>Quem somos</h3> : null}
+        <div className={styles.MascoteDeadpool}>
+          <span>Você ainda está aqui?... Já acabou!!!</span>
+          <img src="/icones/lp-deadpool.png" alt="Mascote Deadpool" />
+        </div>
+      </div>
 
-            <ul>
-              <li>
-                <Link href="/sobre">Sobre a Cameo</Link>
-              </li>
-              <li>
-                <Link href="mailto:contato@cameo.fun">Contato</Link>
-              </li>
-            </ul>
-          </div>
-
-          {isLoggedIn && !isMobile && <hr />}
-
-          {isLoggedIn && (
-            <div className={styles.encontre}>
-              {isMobile ? <h3>Encontre</h3> : null}
-
-              <ul>
-                <li>
-                  <Link href="/filmesassisti">Filmes que Assisti</Link>
-                </li>
-                <li>
-                  <Link href="/filmesparaver">Filmes para Ver</Link>
-                </li>
-                <li>
-                  <Link href="/favoritos">Meus Favoritos</Link>
-                </li>
-              </ul>
-            </div>
-          )}
-        </nav>
+      <div className={styles.FooterLogo}>
+        <img src="/logo/cameo-logo-miniatura.svg" alt="Cameo logo" />
       </div>
     </footer>
   );

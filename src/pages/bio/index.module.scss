@@ -11,6 +11,8 @@ main {
     .BioLista {
       display: flex;
       flex-direction: column;
+      justify-content: center;
+      align-items: center;
       gap: 20px;
 
       width: 30%;
@@ -65,6 +67,15 @@ main {
           }
         }
       }
+    }
+
+    .separador {
+      width: 50%;
+      height: 1px;
+
+      background: #fff;
+
+      opacity: 0.2;
     }
 
     .imgfundo {

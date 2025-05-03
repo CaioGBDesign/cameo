@@ -9,7 +9,7 @@ import { useIsMobile } from "@/components/DeviceProvider";
 import Head from "next/head";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
-import FooterB from "@/components/FooterB";
+import Footer from "@/components/Footer";
 import BannerResenhas from "@/components/banner-resenhas";
 import ListaNoticias from "@/components/ListaNoticias-resumo";
 import ListaResenhas from "@/components/ListaResenhas";
@@ -209,7 +209,7 @@ const Criticas = ({}) => {
           </div>
         </div>
       </main>
-      <FooterB />
+      <Footer />
     </>
   );
 };

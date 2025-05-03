@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/auth";
 import Head from "next/head";
 import Header from "@/components/Header";
-import FooterB from "@/components/FooterB";
+import Footer from "@/components/Footer";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import NotasFilmes from "@/components/botoes/notas";
 import TitulosFilmes from "@/components/titulosfilmes";
@@ -203,7 +203,7 @@ const FilmesParaVer = () => {
             </div>
 
             <div className={styles.footerFilmes}>
-              <FooterB />
+              <Footer />
             </div>
 
             {isMobile ? (

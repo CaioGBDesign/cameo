@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/auth";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Header from "@/components/Header";
-import FooterB from "@/components/FooterB";
+import Footer from "@/components/Footer";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import Titulolistagem from "@/components/titulolistagem";
 import GraficoVistos from "@/components/detalhesfilmes/grafico-vistos";
@@ -230,7 +230,7 @@ const FilmesAssisti = () => {
               </div>
 
               <div className={styles.footerFilmes}>
-                <FooterB />
+                <Footer />
               </div>
             </div>
             {isMobile ? (

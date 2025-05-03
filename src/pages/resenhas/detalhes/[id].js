@@ -4,13 +4,14 @@ import { db } from "@/services/firebaseConection";
 import { doc, getDoc } from "firebase/firestore";
 import Loading from "@/components/loading";
 import styles from "./index.module.scss";
-import FooterB from "@/components/FooterB";
+import Footer from "@/components/Footer";
 import Head from "next/head";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import { useIsMobile } from "@/components/DeviceProvider";
 import DOMPurify from "isomorphic-dompurify";
 import Link from "next/link";
+import Image from "next/image";
 
 const CriticaDetalhe = () => {
   const router = useRouter();
@@ -160,12 +161,15 @@ const CriticaDetalhe = () => {
               <div className={styles.tagCritica}>
                 <span>Resenha</span>
               </div>
-              <img
+              <Image
                 src={
                   critica.elementos.find((el) => el.tipo === "imagem").conteudo
                 }
-                alt="Imagem da notícia"
-                className={styles.imagemDestaque}
+                alt={critica.titulo}
+                width={1200}
+                height={628}
+                layout="responsive"
+                priority
               />
             </div>
           )}
@@ -286,7 +290,7 @@ const CriticaDetalhe = () => {
           </div>
         </article>
       </div>
-      <FooterB></FooterB>
+      <Footer></Footer>
     </>
   );
 };

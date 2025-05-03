@@ -107,7 +107,7 @@ const Home = () => {
     <main>
       <div className={styles.ContApresentacao}>
         <Head>
-          <title>Cameo – Apresentação</title>
+          <title>Cameo - Apresentação</title>
           <meta name="description" content="…" />
           <link rel="canonical" href="https://cameo.fun/" />
           {/* Open Graph */}

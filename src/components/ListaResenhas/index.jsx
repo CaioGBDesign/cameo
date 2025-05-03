@@ -5,6 +5,11 @@ import FiltroNoticias from "@/components/filtros-noticias-resenhas";
 import styles from "./index.module.scss";
 
 function ListaResenhas({ criticas, renderElemento, BannerComponent }) {
+  const router = useRouter();
+  const filtroInicial = Array.isArray(router.query.filtro)
+    ? router.query.filtro[0]
+    : router.query.filtro || "";
+
   const [resenhasFiltradas, setResenhasFiltradas] = useState(criticas || []);
 
   // sempre que a lista original mudar, reinicia o filtro
@@ -25,7 +30,11 @@ function ListaResenhas({ criticas, renderElemento, BannerComponent }) {
           <h2>Últimas resenhas</h2>
         </li>
         <li className={styles.filtroSelect}>
-          <FiltroNoticias noticias={criticas} onFilter={setResenhasFiltradas} />
+          <FiltroNoticias
+            noticias={criticas}
+            onFilter={setResenhasFiltradas}
+            filtroInicial={filtroInicial}
+          />
         </li>
       </div>
 
@@ -38,12 +47,14 @@ function ListaResenhas({ criticas, renderElemento, BannerComponent }) {
 
         return (
           <React.Fragment key={critica.id}>
-            <li className={styles.noticiaItem}>
+            <li className={styles.criticaItem}>
               <Link href={`/resenhas/detalhes/${critica.id}`} passHref>
-                <article className={styles.noticia} title={critica.titulo}>
+                <article className={styles.critica} title={critica.titulo}>
                   <div className={styles.boxConteudo}>
                     <div className={styles.conteudo}>
-                      {critica.elementos.map((el, i) => renderElemento(el, i))}
+                      {critica.elementos.map((el, i) =>
+                        renderElemento(el, i, critica)
+                      )}
                     </div>
 
                     <div className={styles.informacoes}>

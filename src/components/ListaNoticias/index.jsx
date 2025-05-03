@@ -6,6 +6,10 @@ import styles from "./index.module.scss";
 
 function ListaNoticias({ noticias, renderElemento, BannerComponent }) {
   const router = useRouter();
+  const filtroInicial = Array.isArray(router.query.filtro)
+    ? router.query.filtro[0]
+    : router.query.filtro || "";
+
   const [noticiasFiltradas, setNoticiasFiltradas] = useState(noticias || []);
 
   // sempre que a lista original mudar, reinicia o filtro
@@ -26,7 +30,11 @@ function ListaNoticias({ noticias, renderElemento, BannerComponent }) {
         </li>
 
         <li className={styles.filtroSelect}>
-          <FiltroNoticias noticias={noticias} onFilter={setNoticiasFiltradas} />
+          <FiltroNoticias
+            noticias={noticias}
+            onFilter={setNoticiasFiltradas}
+            filtroInicial={filtroInicial}
+          />
         </li>
       </div>
 
@@ -44,7 +52,9 @@ function ListaNoticias({ noticias, renderElemento, BannerComponent }) {
                 <article className={styles.noticia} title={noticia.titulo}>
                   <div className={styles.boxConteudo}>
                     <div className={styles.conteudo}>
-                      {noticia.elementos.map((el, i) => renderElemento(el, i))}
+                      {noticia.elementos.map((el, i) =>
+                        renderElemento(el, i, noticia)
+                      )}
                     </div>
 
                     <div className={styles.informacoes}>

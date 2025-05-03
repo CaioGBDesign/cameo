@@ -3,9 +3,9 @@ import styles from "./index.module.scss";
 import empresas from "@/components/listas/tags/empresas.json";
 import generos from "@/components/listas/tags/generos.json";
 
-function FiltroNoticias({ noticias, onFilter }) {
+function FiltroNoticias({ noticias, onFilter, filtroInicial = "" }) {
   const [open, setOpen] = useState(false);
-  const [filtroSelecionado, setFiltroSelecionado] = useState("");
+  const [filtroSelecionado, setFiltroSelecionado] = useState(filtroInicial);
   const containerRef = useRef(null);
 
   const opcoesSelect = [
@@ -47,13 +47,11 @@ function FiltroNoticias({ noticias, onFilter }) {
     }
     const [tipo, valor] = filtroSelecionado.split(":");
     const filtradas = noticias.filter((n) => {
-      if (tipo === "empresa") {
-        return n.empresas?.some((x) => x.toLowerCase() === valor.toLowerCase());
-      }
-      if (tipo === "genero") {
-        return n.generos?.some((x) => x.toLowerCase() === valor.toLowerCase());
-      }
-      return false;
+      const lista =
+        tipo === "empresa" ? n.empresas : tipo === "genero" ? n.generos : [];
+      return lista?.some(
+        (x) => x.trim().toLowerCase() === valor.trim().toLowerCase()
+      );
     });
     onFilter(filtradas);
   }, [filtroSelecionado, noticias, onFilter]);
@@ -69,7 +67,7 @@ function FiltroNoticias({ noticias, onFilter }) {
     ? opcoesSelect
         .flatMap((g) => g.options)
         .find((opt) => opt.value === filtroSelecionado)?.label
-    : "Todas os filtros";
+    : "Todos os filtros";
 
   return (
     <div className={styles.filtroContainer} ref={containerRef}>
@@ -82,12 +80,11 @@ function FiltroNoticias({ noticias, onFilter }) {
           <img src="/icones/filtros.svg" alt="Filtros" />
           <span>{label}</span>
         </div>
-        {/* Se há filtro selecionado, mostra 'x' para limpar, senão seta */}
-        {filtroSelecionado ? (
+        {filtroSelecionado && (
           <span className={styles.clear} onClick={clearFilter}>
             &times;
           </span>
-        ) : null}
+        )}
       </button>
 
       {open && (

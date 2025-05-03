@@ -11,6 +11,7 @@
   "dependencies": {
     "@firebasegen/default": "file:generated/javascript/default",
     "@fontsource/nunito-sans": "^5.0.13",
+    "@fontsource/poppins": "^5.2.5",
     "@mantine/carousel": "^7.13.2",
     "@mantine/core": "^7.13.2",
     "@mantine/hooks": "^7.13.2",

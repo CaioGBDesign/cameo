@@ -287,7 +287,7 @@ const FilmesAssisti = () => {
               <span>Você ainda não tem filmes avaliados.</span>
             </div>
             <div className={styles.botaoHome}>
-              <Link href={"/"}>
+              <Link href={"/filme-aleatorio"}>
                 <p>Adicionar filmes</p>
               </Link>
             </div>

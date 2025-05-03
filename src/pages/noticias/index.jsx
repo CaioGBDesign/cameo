@@ -19,6 +19,7 @@ import BotoesCarrossel from "@/components/botoes-carrossel";
 import ListaNoticias from "@/components/ListaNoticias";
 import ListaResenhas from "@/components/ListaResenhas-resumo";
 import BannerInformacao from "@/components/banner-informacao";
+import Image from "next/image";
 
 const Noticias = ({}) => {
   const [noticias, setNoticias] = useState([]);
@@ -34,6 +35,7 @@ const Noticias = ({}) => {
   const [filtroSelecionado, setFiltroSelecionado] = useState(null);
   const botoesRef = useRef(null);
   const [filteredNoticias, setFilteredNoticias] = useState([]);
+  const noticiaDestaque = ultimasNoticias[0];
 
   // Transformar os dados para o formato que o react-select precisa
   // Opções para o Select (mostra todas)
@@ -220,22 +222,20 @@ const Noticias = ({}) => {
     );
   };
 
-  const renderElemento = (elemento, index) => {
-    switch (elemento.tipo) {
-      case "imagem":
-        return (
-          <div key={index} className={styles.imagemContainer}>
-            <img
-              src={elemento.conteudo}
-              alt="Imagem da notícia"
-              className={styles.imagem}
-            />
-          </div>
-        );
-
-      default:
-        return null;
-    }
+  const renderElemento = (elemento, index, noticia = {}) => {
+    if (elemento.tipo !== "imagem") return null;
+    return (
+      <div key={index} className={styles.imagemContainer}>
+        <Image
+          src={elemento.conteudo}
+          alt={noticia.titulo || "Imagem da notícia"}
+          width={600}
+          height={200}
+          layout="responsive"
+          objectFit="cover"
+        />
+      </div>
+    );
   };
 
   if (loading) {
@@ -246,12 +246,45 @@ const Noticias = ({}) => {
     <>
       {isMobile ? <Header /> : <HeaderDesktop />}
       <Head>
-        <title>Cameo - Notícias</title>
+        <title>Cameo – Notícias</title>
         <meta
           name="description"
-          content="Notícias quentes do cinema, spoilers dos bastidores e lançamentos imperdíveis! Na Cameo.fun, você cria listas personalizadas, debate teorias e celebra filmes com a comunidade cinéfila mais animada."
+          content={
+            noticiaDestaque?.resumo ??
+            "Fique por dentro das últimas notícias de cinema."
+          }
+        />
+
+        {/* canonical local */}
+        <link rel="canonical" href="https://cameo.fun/noticias" />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://cameo.fun/noticias" />
+        <meta property="og:title" content="Cameo – Notícias de Cinema" />
+        <meta
+          property="og:description"
+          content="Fique por dentro das últimas notícias de filmes, estreias e bastidores. Descubra, discuta e compartilhe com outros cinéfilos!"
+        />
+        <meta
+          property="og:image"
+          content="https://cameo.fun/imagens/og-noticias.jpg"
+        />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://cameo.fun/noticias" />
+        <meta name="twitter:title" content="Cameo – Notícias de Cinema" />
+        <meta
+          name="twitter:description"
+          content="Notícias atualizadas sobre filmes, trailers, críticas e muito mais no Cameo.fun."
+        />
+        <meta
+          name="twitter:image"
+          content="https://cameo.fun/imagens/og-noticias.jpg"
         />
       </Head>
+
       <main className={styles.ContNoticias}>
         {/* Botão condicional para usuários logados */}
         {user && userData ? (

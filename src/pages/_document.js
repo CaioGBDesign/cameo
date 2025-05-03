@@ -1,8 +1,9 @@
+// pages/_document.js
 import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (
-    <Html lang="en">
+    <Html lang="pt-BR">
       <Head>
         {/* Google Analytics */}
         <script
@@ -12,16 +13,18 @@ export default function Document() {
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-
-              gtag('config', 'G-ZH2ZPY8V8D');
-            `,
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-ZH2ZPY8V8D');
+        `,
           }}
         />
 
-        {/* JSON-LD de Site (Schema.org) */}
+        {/* canonical */}
+        <link rel="canonical" href="https://cameo.fun/noticias" />
+
+        {/* JSON-LD: WebSite */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -43,12 +46,33 @@ export default function Document() {
             }),
           }}
         />
+
+        {/* JSON-LD: NewsMediaOrganization */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "NewsMediaOrganization",
+              name: "Cameo",
+              url: "https://cameo.fun",
+              logo: {
+                "@type": "ImageObject",
+                url: "https://cameo.fun/logo/cameo-logo-miniatura.svg",
+              },
+              sameAs: [
+                "https://www.instagram.com/seucameo",
+                "https://www.twitter.com/seucameo",
+              ],
+            }),
+          }}
+        />
       </Head>
       <body>
         <Main />
         <NextScript />
 
-        {/* Script do Microsoft Clarity */}
+        {/* Microsoft Clarity */}
         <script
           type="text/javascript"
           dangerouslySetInnerHTML={{

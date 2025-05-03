@@ -26,6 +26,50 @@
       width: 90%;
     }
 
+    .breadcrumbs {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+
+      color: #ffffff;
+
+      font-size: 12px;
+
+      opacity: 0.5;
+
+      a {
+        display: flex;
+
+        text-decoration: none;
+
+        color: #ffffff;
+
+        @media only screen and (min-width: 600px) {
+          &:hover {
+            color: #9863ec;
+          }
+        }
+      }
+
+      .setaSeparacao {
+        opacity: 0.3;
+      }
+
+      .tituloMateria {
+        font-weight: bold;
+
+        @media only screen and (max-width: 600px) {
+          font-weight: normal;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          word-wrap: break-word;
+          width: 170px;
+        }
+      }
+    }
+
     .imagemCritica {
       width: 1440px;
       height: 480px;
@@ -77,6 +121,48 @@
           @media only screen and (max-width: 600px) {
             font-size: 14px;
           }
+        }
+      }
+    }
+
+    .separador {
+      color: #fff;
+    }
+
+    .contTags {
+      @media only screen and (max-width: 600px) {
+        width: 350px;
+
+        overflow-y: scroll;
+
+        display: flex;
+        justify-content: start;
+        align-items: center;
+
+        /* width */
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+
+      .tags {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+
+        .tag {
+          background: #3b2544;
+          border: solid 1px #3b2544;
+          border-radius: 10px;
+
+          padding: 5px;
+
+          text-decoration: none;
+
+          color: #fff;
+
+          width: max-content;
         }
       }
     }

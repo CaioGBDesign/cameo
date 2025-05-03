@@ -11,6 +11,8 @@ import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import { useIsMobile } from "@/components/DeviceProvider";
 import DOMPurify from "isomorphic-dompurify";
+import Link from "next/link";
+import Image from "next/image";
 
 const NoticiaDetalhe = () => {
   const router = useRouter();
@@ -90,29 +92,175 @@ const NoticiaDetalhe = () => {
     <>
       {isMobile ? <Header /> : <HeaderDesktop />}
       <Head>
-        <title>Cameo - Notícia</title>
+        <title>{noticia.titulo} — Cameo</title>
         <meta
           name="description"
-          content="Notícias quentes do cinema, spoilers dos bastidores e lançamentos imperdíveis! Na Cameo.fun, você cria listas personalizadas, debate teorias e celebra filmes com a comunidade cinéfila mais animada."
+          content={noticia.subtitulo || noticia.titulo}
+        />
+
+        {/* canonical */}
+        <link rel="canonical" href={`https://cameo.fun/noticias/${id}`} />
+
+        {/* Open Graph para artigo */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://cameo.fun/noticias/${id}`} />
+        <meta property="og:title" content={noticia.titulo} />
+        <meta property="og:description" content={noticia.subtitulo || ""} />
+        <meta
+          property="og:image"
+          content={
+            noticia.elementos.find((el) => el.tipo === "imagem")?.conteudo
+          }
+        />
+        <meta
+          property="article:published_time"
+          content={noticia.dataPublicacao.toISOString()}
+        />
+        <meta property="article:author" content={noticia.autor.nome} />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={noticia.titulo} />
+        <meta name="twitter:description" content={noticia.subtitulo || ""} />
+        <meta
+          name="twitter:image"
+          content={
+            noticia.elementos.find((el) => el.tipo === "imagem")?.conteudo
+          }
+        />
+        <meta name="robots" content="index,follow" />
+
+        <link
+          rel="preload"
+          as="image"
+          href="https://cameo.fun/_next/image?url=…&w=1200&q=80"
+        />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          href="/feed.xml"
+          title="Cameo News Feed"
+        />
+        <link
+          rel="alternate"
+          href="https://cameo.fun/noticias/123"
+          hreflang="pt-BR"
+        />
+
+        {/* JSON‑LD: NewsArticle */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "NewsArticle",
+              mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": `https://cameo.fun/noticias/${id}`,
+              },
+              headline: noticia.titulo,
+              image: noticia.elementos
+                .filter((el) => el.tipo === "imagem")
+                .map((el) => el.conteudo),
+              datePublished: noticia.dataPublicacao.toISOString(),
+              dateModified: noticia.dataPublicacao.toISOString(),
+              author: {
+                "@type": "Person",
+                name: noticia.autor.nome,
+              },
+              publisher: {
+                "@type": "Organization",
+                name: "Cameo.fun",
+                logo: {
+                  "@type": "ImageObject",
+                  url: "https://cameo.fun/logo/cameo-logo-miniatura.svg",
+                },
+              },
+              description: noticia.subtitulo || noticia.titulo,
+            }),
+          }}
+        />
+
+        {/* JSON‑LD: BreadcrumbList */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Home",
+                  item: "https://cameo.fun/",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Notícias",
+                  item: "https://cameo.fun/noticias",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 3,
+                  name: noticia.titulo,
+                  item: `https://cameo.fun/noticias/${id}`,
+                },
+              ],
+            }),
+          }}
         />
       </Head>
+
       <div className={styles.container}>
         <article className={styles.noticiaCompleta}>
+          <nav aria-label="Breadcrumb" className={styles.breadcrumbs}>
+            <Link href="/">Home</Link>{" "}
+            <span className={styles.setaSeparacao}>•</span>{" "}
+            <Link href="/noticias">Notícias</Link>{" "}
+            <span className={styles.setaSeparacao}>•</span>{" "}
+            <span className={styles.tituloMateria}>{noticia.titulo}</span>
+          </nav>
+
           {/* Imagem principal */}
           {noticia.elementos?.find((el) => el.tipo === "imagem") && (
             <div className={styles.imagemNoticia}>
               <div className={styles.tagNoticia}>
                 <span>Notícia</span>
               </div>
-              <img
+
+              <Image
                 src={
                   noticia.elementos.find((el) => el.tipo === "imagem").conteudo
                 }
-                alt="Imagem da notícia"
-                className={styles.imagemDestaque}
+                alt={noticia.titulo}
+                width={1200}
+                height={628}
+                layout="responsive"
+                priority
               />
             </div>
           )}
+
+          <div className={styles.contTags}>
+            <div className={styles.tags}>
+              {noticia.generos.map((g) => (
+                <span
+                  key={g}
+                  className={styles.tag} // CSS aplicado direto no Link
+                >
+                  {g}
+                </span>
+              ))}
+
+              {noticia.empresas.map((e) => (
+                <span key={e} className={styles.tag}>
+                  {e}
+                </span>
+              ))}
+            </div>
+          </div>
 
           {/* Título e subtítulo */}
           <h1 className={styles.titulo}>{noticia.titulo}</h1>

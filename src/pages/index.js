@@ -1,10 +1,15 @@
-import { useState } from "react"; // Importando useState
+import { useState, useEffect } from "react"; // Importando useState
+import { useRouter } from "next/router";
+import { useAuth } from "@/contexts/auth";
+import { useIsMobile } from "@/components/DeviceProvider";
 import styles from "@/styles/index.module.scss";
 import Head from "next/head";
-import { useIsMobile } from "@/components/DeviceProvider";
 import Link from "next/link";
 
 const Home = () => {
+  const { user } = useAuth();
+  const router = useRouter();
+
   const [activeTab, setActiveTab] = useState("filme");
   const [activeTabB, setActiveTabB] = useState("personalidade"); // Estado para controlar a aba ativa
   const isMobile = useIsMobile();
@@ -91,6 +96,12 @@ const Home = () => {
   const handleDotClick = (index) => {
     setCurrentIndex(index);
   };
+
+  useEffect(() => {
+    if (user) {
+      router.replace("/filme-aleatorio");
+    }
+  }, [user]);
 
   return (
     <main>
@@ -275,10 +286,7 @@ const Home = () => {
                   </h2>
 
                   <div className={styles.BoxMascote}>
-                    <img
-                      src="/mascote/cameo-filtros.png"
-                      alt="Cameo Astronauta Thanos"
-                    />
+                    <img src="/mascote/cameo-filtros.png" alt="Cameo filtros" />
                   </div>
 
                   <div className={styles.BotaoApresentacao}>
@@ -306,7 +314,7 @@ const Home = () => {
                   <div className={styles.BoxMascote}>
                     <img
                       src="/mascote/cameo-avaliacoes.png"
-                      alt="Cameo Astronauta Thanos"
+                      alt="Cameo avaliações"
                     />
                   </div>
 
@@ -333,7 +341,7 @@ const Home = () => {
                   <div className={styles.BoxMascote}>
                     <img
                       src="/mascote/cameo-dados.png"
-                      alt="Cameo Astronauta Thanos"
+                      alt="Cameo Graficos generos"
                     />
                   </div>
 
@@ -644,7 +652,7 @@ const Home = () => {
                     <Link href="/sobre">
                       <div className={styles.BotaoSobreBox}>
                         <span>Sobre a Cameo</span>
-                        <img src="/icones/arrow.svg" />
+                        <img src="/icones/arrow.svg" alt="seta" />
                       </div>
                     </Link>
                   </div>
@@ -683,7 +691,7 @@ const Home = () => {
                       <Link href="mailto:contato@cameo.fun">
                         <div className={styles.BotaoSobreBox}>
                           <span>Entrar em contato</span>
-                          <img src="/icones/arrow.svg" />
+                          <img src="/icones/arrow.svg" alt="seta" />
                         </div>
                       </Link>
 

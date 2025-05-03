@@ -1,197 +1,98 @@
 import styles from "./index.module.scss";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { db } from "@/services/firebaseConection";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { useAuth } from "@/contexts/auth";
 import Loading from "@/components/loading";
 import { useRouter } from "next/router";
 import { useIsMobile } from "@/components/DeviceProvider";
-import { doc, getDoc } from "firebase/firestore";
 import Head from "next/head";
 import Header from "@/components/Header";
 import HeaderDesktop from "@/components/HeaderDesktop";
 import FooterB from "@/components/FooterB";
-import CarrosselCriticas from "@/components/carrossel-criticas";
-import BotoesCarrossel from "@/components/botoes-carrossel";
 import BannerResenhas from "@/components/banner-resenhas";
-import empresas from "@/components/listas/tags/empresas.json";
-import generos from "@/components/listas/tags/generos.json";
 import ListaNoticias from "@/components/ListaNoticias-resumo";
 import ListaResenhas from "@/components/ListaResenhas";
 import BannerInformacao from "@/components/banner-informacao";
+import Image from "next/image";
 
 const Criticas = ({}) => {
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const router = useRouter();
   const isMobile = useIsMobile();
-  const [showAddCriticas, setShowAddCriticas] = useState(false);
   const [userData, setUserData] = useState(null);
   const [criticas, setCriticas] = useState([]);
   const ultimasCriticas = criticas.slice(0, 4);
   const [noticias, setNoticias] = useState([]);
   const ultimasNoticias = noticias.slice(0, 4);
-  const [filtroSelecionado, setFiltroSelecionado] = useState(null);
-  const botoesRef = useRef(null);
-  const [filteredNoticias, setFilteredNoticias] = useState([]);
   const [filteredCriticas, setFilteredCriticas] = useState([]);
+  const [filteredNoticias, setFilteredNoticias] = useState([]);
 
-  const opcoesSelect = [
-    {
-      label: "Empresas",
-      options: empresas.map((empresa) => ({
-        value: `empresa:${empresa.name}`,
-        label: empresa.name,
-      })),
-    },
-    {
-      label: "Gêneros",
-      options: generos.map((genero) => ({
-        value: `genero:${genero.name}`,
-        label: genero.name,
-      })),
-    },
-  ];
+  // SEO: dynamic filtro from query
+  const filtroParam = Array.isArray(router.query.filtro)
+    ? router.query.filtro[0]
+    : router.query.filtro || "";
 
-  // Opções filtradas para os botões
-  const opcoesBotoes = [
-    {
-      label: "Empresas",
-      options: empresas
-        .filter((empresa) => empresa.Exibir === "Sim")
-        .map((empresa) => ({
-          value: `empresa:${empresa.name}`,
-          label: empresa.name,
-        })),
-    },
-    {
-      label: "Gêneros",
-      options: generos
-        .filter((genero) => genero.Exibir === "Sim")
-        .map((genero) => ({
-          value: `genero:${genero.name}`,
-          label: genero.name,
-        })),
-    },
-  ];
-
-  const aplicarFiltro = (noticias, filtro) => {
-    console.log("Filtro selecionado:", filtro?.value);
-
-    if (!filtro) return noticias;
-
-    const [tipo, valor] = filtro.value.split(":");
-
-    const filtradas = noticias.filter((noticia) => {
-      if (tipo === "empresa") {
-        return noticia.empresas?.some(
-          (empresa) =>
-            empresa.trim().toLowerCase() === valor.trim().toLowerCase() // ✅ Correção aplicada
-        );
-      }
-
-      if (tipo === "genero") {
-        return noticia.generos?.some(
-          (genero) => genero.trim().toLowerCase() === valor.trim().toLowerCase() // ✅ Correção aplicada
-        );
-      }
-
-      return false;
+  // Filtro aplicado a críticas e notícias
+  const aplicarFiltro = (items, filtro) => {
+    if (!filtro) return items;
+    const [tipo, valor] = filtro.split(":");
+    return items.filter((item) => {
+      const lista = tipo === "empresa" ? item.empresas : item.generos;
+      return lista?.some(
+        (x) => x.trim().toLowerCase() === valor.trim().toLowerCase()
+      );
     });
-
-    console.log("Notícias filtradas:", filtradas);
-    return filtradas;
   };
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      if (user) {
-        const userDoc = await getDoc(doc(db, "users", user.uid));
-        if (userDoc.exists()) {
-          setUserData(userDoc.data());
-        }
-      }
-    };
-
-    fetchUserData();
-  }, [user]);
-
-  useEffect(() => {
-    setFilteredCriticas(aplicarFiltro(criticas, filtroSelecionado));
-  }, [filtroSelecionado, criticas]);
-
+  // Load críticas
   useEffect(() => {
     const fetchCriticas = async () => {
-      try {
-        const q = query(
-          collection(db, "criticas"),
-          orderBy("dataPublicacao", "desc")
-        );
-        const querySnapshot = await getDocs(q);
-
-        const criticasData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        setCriticas(criticasData);
-      } catch (error) {
-        console.error("Erro ao buscar críticas:", error);
-      } finally {
-        setLoading(false);
-      }
+      const q = query(
+        collection(db, "criticas"),
+        orderBy("dataPublicacao", "desc")
+      );
+      const snapshot = await getDocs(q);
+      setCriticas(snapshot.docs.map((d) => ({ id: d.id, ...d.data() })));
+      setLoading(false);
     };
-
     fetchCriticas();
   }, []);
 
+  // Load notícias
   useEffect(() => {
     const fetchNoticias = async () => {
-      try {
-        const q = query(
-          collection(db, "noticias"),
-          orderBy("dataPublicacao", "desc")
-        );
-        const querySnapshot = await getDocs(q);
-
-        const noticiasData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        setNoticias(noticiasData);
-      } catch (error) {
-        console.error("Erro ao buscar notícias:", error);
-      }
+      const q = query(
+        collection(db, "noticias"),
+        orderBy("dataPublicacao", "desc")
+      );
+      const snapshot = await getDocs(q);
+      setNoticias(snapshot.docs.map((d) => ({ id: d.id, ...d.data() })));
     };
-
     fetchNoticias();
   }, []);
 
-  // Encontra a primeira imagem da crítica
-  const encontrarImagem = (critica) => {
+  // Apply filter when filtroParam changes
+  useEffect(() => {
+    setFilteredCriticas(aplicarFiltro(criticas, filtroParam));
+    setFilteredNoticias(aplicarFiltro(noticias, filtroParam));
+  }, [criticas, noticias, filtroParam]);
+
+  const renderElemento = (elemento, index, critica = {}) => {
+    if (elemento.tipo !== "imagem") return null;
     return (
-      critica.elementos.find((el) => el.tipo === "imagem")?.conteudo ||
-      "/background/placeholder.jpg"
+      <div key={index} className={styles.imagemContainer}>
+        <Image
+          src={elemento.conteudo}
+          alt={critica.titulo || "Imagem da notícia"}
+          width={600}
+          height={200}
+          layout="responsive"
+          objectFit="cover"
+        />
+      </div>
     );
-  };
-
-  const renderElemento = (elemento, index) => {
-    switch (elemento.tipo) {
-      case "imagem":
-        return (
-          <div key={index} className={styles.imagemContainer}>
-            <img
-              src={elemento.conteudo}
-              alt="Imagem da crítica"
-              className={styles.imagem}
-            />
-          </div>
-        );
-
-      default:
-        return null;
-    }
   };
 
   if (loading) {
@@ -202,56 +103,93 @@ const Criticas = ({}) => {
     <>
       {isMobile ? <Header /> : <HeaderDesktop />}
       <Head>
-        <title>Cameo - Resenhas</title>
+        <title>Cameo – Resenhas de Cinema</title>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
           name="description"
-          content="Notícias quentes do cinema, spoilers dos bastidores e lançamentos imperdíveis! Na Cameo.fun, você cria listas personalizadas, debate teorias e celebra filmes com a comunidade cinéfila mais animada."
+          content="As últimas resenhas de filmes: opiniões, avaliações e análises detalhadas para ajudá-lo a escolher o que assistir."
+        />
+        <meta name="robots" content="index, follow" />
+
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://cameo.fun/resenhas" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://cameo.fun/resenhas" />
+        <meta property="og:title" content="Cameo – Resenhas de Cinema" />
+        <meta
+          property="og:description"
+          content="As últimas resenhas de filmes: opiniões, avaliações e análises detalhadas para ajudá-lo a escolher o que assistir."
+        />
+        <meta
+          property="og:image"
+          content="https://cameo.fun/imagens/og-resenhas.jpg"
+        />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@cameo_fun" />
+        <meta name="twitter:title" content="Cameo – Resenhas de Cinema" />
+        <meta
+          name="twitter:description"
+          content="As últimas resenhas de filmes: opiniões, avaliações e análises detalhadas para ajudá-lo a escolher o que assistir."
+        />
+        <meta
+          name="twitter:image"
+          content="https://cameo.fun/imagens/og-resenhas.jpg"
+        />
+
+        {/* Preload critical banner image */}
+        <link rel="preload" as="image" href="/imagens/banner-resenhas.jpg" />
+
+        {/* JSON-LD: WebPage */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebPage",
+              url: "https://cameo.fun/resenhas",
+              name: "Cameo – Resenhas de Cinema",
+              description:
+                "As últimas resenhas de filmes: opiniões, avaliações e análises detalhadas.",
+              breadcrumb: {
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                  {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "Home",
+                    item: "https://cameo.fun/",
+                  },
+                  {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: "Resenhas",
+                    item: "https://cameo.fun/resenhas",
+                  },
+                ],
+              },
+            }),
+          }}
         />
       </Head>
       <main className={styles.ContCriticas}>
-        {/* Botão condicional para usuários logados */}
-        {user && userData ? (
-          userData.adm && (
-            <div className={styles.adicionarCritica}>
-              <button onClick={() => router.push("/add-critica")}>
-                <img src="icones/add.svg" alt="Adicionar notícia" />
-                Adicionar Resenha
-              </button>
-            </div>
-          )
-        ) : (
-          <Loading pequeno /> // Ou null se não quiser mostrar nada
-        )}
-
-        {isMobile ? null : (
-          <section className={styles.bannerResenhas}>
-            <BannerResenhas
-              criticas={ultimasCriticas}
-              tipo="criticas"
-              className={styles.customWidth}
-            />
-          </section>
-        )}
-
-        {isMobile ? (
-          <section className={styles.ultimasECriticasNoticias}>
-            <div className={styles.ultimasCriticas}>
-              <CarrosselCriticas
-                criticas={ultimasCriticas}
-                tipo="criticas"
-                className={styles.customWidth}
-              />
-            </div>
-          </section>
-        ) : null}
-
-        {isMobile ? null : (
-          <div className={styles.tituloPagina}>
-            <BotoesCarrossel
-              opcoesBotoes={opcoesBotoes}
-              onFilterChange={setFiltroSelecionado}
-            />
+        {user && userData?.adm && (
+          <div className={styles.adicionarCritica}>
+            <button onClick={() => router.push("/add-resenha")}>
+              <img src="icones/add.svg" alt="Adicionar Resenha" /> Adicionar
+              Resenha
+            </button>
           </div>
+        )}
+
+        {!isMobile && (
+          <section className={styles.bannerResenhas}>
+            <BannerResenhas criticas={ultimasCriticas} tipo="criticas" />
+          </section>
         )}
 
         <div className={styles.criticasNoticias}>
@@ -263,20 +201,16 @@ const Criticas = ({}) => {
             />
           </div>
 
-          {isMobile ? <div className={styles.divisor}></div> : null}
-
           <div className={styles.colunaNoticias}>
             <ListaNoticias
-              noticias={ultimasNoticias}
+              noticias={filteredNoticias}
               renderElemento={renderElemento}
+              BannerComponent={null}
             />
           </div>
-
-          <div className={styles.containerGoogle}></div>
         </div>
       </main>
-
-      <FooterB></FooterB>
+      <FooterB />
     </>
   );
 };

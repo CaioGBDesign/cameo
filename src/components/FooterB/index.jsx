@@ -77,9 +77,11 @@ const Footer = ({ style }) => {
                     </div>
                   </Link>
 
-                  <Link href="/">
-                    <button>Começar</button>
-                  </Link>
+                  {!isLoggedIn && (
+                    <Link href="/">
+                      <button>Começar</button>
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

@@ -7,7 +7,7 @@ function ListaResenhas({ criticas, renderElemento }) {
   const router = useRouter();
 
   if (!criticas || criticas.length === 0) {
-    return <div className={styles.vazio}>Nenhuma crítica encontrada.</div>;
+    return <div className={styles.vazio}>Nenhuma resenha encontrada.</div>;
   }
 
   return (

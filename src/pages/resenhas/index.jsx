@@ -203,9 +203,8 @@ const Criticas = ({}) => {
 
           <div className={styles.colunaNoticias}>
             <ListaNoticias
-              noticias={filteredNoticias}
+              noticias={ultimasNoticias}
               renderElemento={renderElemento}
-              BannerComponent={null}
             />
           </div>
         </div>

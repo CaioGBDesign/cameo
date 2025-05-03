@@ -287,17 +287,14 @@ const Noticias = ({}) => {
 
       <main className={styles.ContNoticias}>
         {/* Botão condicional para usuários logados */}
-        {user && userData ? (
-          userData.adm && (
-            <div className={styles.adicionarNoticia}>
-              <button onClick={() => router.push("/add-noticia")}>
-                <img src="icones/add.svg" alt="Adicionar notícia" />
-                Adicionar Notícia
-              </button>
-            </div>
-          )
-        ) : (
-          <Loading pequeno /> // Ou null se não quiser mostrar nada
+
+        {user && userData?.adm && (
+          <div className={styles.adicionarNoticia}>
+            <button onClick={() => router.push("/add-noticia")}>
+              <img src="icones/add.svg" alt="Adicionar Resenha" /> Adicionar
+              Notícia
+            </button>
+          </div>
         )}
 
         {isMobile ? null : (

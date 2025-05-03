@@ -28,6 +28,12 @@ export default function Document() {
           src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"
         ></script>
 
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6964667377891288"
+          crossorigin="anonymous"
+        ></script>
+
         {/* canonical */}
         <link rel="canonical" href="https://cameo.fun/noticias" />
 

@@ -260,71 +260,10 @@ const FilmeAleatorio = () => {
     <>
       {isMobile ? <Header /> : <HeaderDesktop />}
       <Head>
-        {/* Primary Meta Tags */}
-        <title>{filme?.title || "Filme"} — Cameo.fun</title>
-        <meta name="charset" content="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Cameo - Home</title>
         <meta
           name="description"
-          content={
-            filme?.overview || "Descubra um filme incrível com o Cameo.fun"
-          }
-        />
-        <meta name="author" content="Cameo.fun" />
-        <meta name="robots" content="index, follow" />
-
-        {/* Canonical URL */}
-        <link rel="canonical" href={pageUrl} />
-
-        {/* Open Graph / Facebook */}
-        <meta property="og:type" content="video.movie" />
-        <meta property="og:url" content={pageUrl} />
-        <meta property="og:title" content={filme?.title} />
-        <meta property="og:description" content={filme?.overview} />
-        <meta property="og:image" content={ogImage} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="628" />
-
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@cameo_fun" />
-        <meta name="twitter:title" content={filme?.title} />
-        <meta name="twitter:description" content={filme?.overview} />
-        <meta name="twitter:image" content={ogImage} />
-
-        {/* Preload poster image */}
-        {filme?.poster_path && (
-          <link
-            rel="preload"
-            as="image"
-            href={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
-          />
-        )}
-
-        {/* JSON-LD: Movie */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Movie",
-              name: filme?.title,
-              image: ogImage,
-              description: filme?.overview,
-              datePublished: filme?.release_date,
-              director: filme?.credits?.crew
-                .filter((c) => c.job === "Director")
-                .map((d) => ({ "@type": "Person", name: d.name })),
-              actor: filme?.credits?.cast
-                .slice(0, 5)
-                .map((a) => ({ "@type": "Person", name: a.name })),
-              aggregateRating: filme?.vote_average && {
-                "@type": "AggregateRating",
-                ratingValue: filme.vote_average.toString(),
-                ratingCount: filme.vote_count.toString(),
-              },
-            }),
-          }}
+          content="Descubra o filme perfeito com o Cameo! Oferecemos sugestões aleatórias e personalizadas, filtradas por gênero, classificação indicativa, serviços de streaming e muito mais. Crie listas de filmes, avalie suas escolhas e compartilhe com amigos. Mergulhe no mundo do cinema e nunca fique sem o que assistir. Cadastre-se agora e transforme sua experiência cinematográfica!"
         />
       </Head>
       <main className={`${styles.main} ${inter.className}`}>

@@ -21,6 +21,13 @@ export default function Document() {
           }}
         />
 
+        {/* AMP Auto Ads for AdSense */}
+        <script
+          async
+          custom-element="amp-auto-ads"
+          src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"
+        ></script>
+
         {/* canonical */}
         <link rel="canonical" href="https://cameo.fun/noticias" />
 
@@ -71,6 +78,12 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
+
+        {/* AMP Auto Ads placeholder */}
+        <amp-auto-ads
+          type="adsense"
+          data-ad-client="ca-pub-6964667377891288"
+        ></amp-auto-ads>
 
         {/* Microsoft Clarity */}
         <script

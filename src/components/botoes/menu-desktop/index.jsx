@@ -19,7 +19,7 @@ const MenuDesktop = () => {
   return (
     <nav className={styles.menuBotoes}>
       <ul>
-        <li>
+        <li className={styles.botaoHome}>
           <Link href="/filme-aleatorio" passHref>
             <span
               className={

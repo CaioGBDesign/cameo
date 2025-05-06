@@ -8,7 +8,7 @@ export const DeviceProvider = ({ children }) => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 1300); // Ajuste o valor conforme necessário
+      setIsMobile(window.innerWidth <= 1200); // Ajuste o valor conforme necessário
     };
 
     handleResize(); // Verifica inicialmente

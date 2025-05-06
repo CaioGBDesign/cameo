@@ -13,5 +13,9 @@
     font-weight: 100;
 
     opacity: 0.3;
+
+    @media only screen and (max-width: 1300px) {
+      font-size: 18px;
+    }
   }
 }

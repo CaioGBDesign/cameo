@@ -20,6 +20,30 @@
 
     width: 1440px;
 
+    @media only screen and (max-width: 1500px) {
+      width: 1100px;
+    }
+
+    @media only screen and (max-width: 1300px) {
+      width: 1010px;
+    }
+
+    @media only screen and (max-width: 1100px) {
+      width: 900px;
+    }
+
+    @media only screen and (max-width: 1000px) {
+      width: 800px;
+    }
+
+    @media only screen and (max-width: 900px) {
+      width: 600px;
+    }
+
+    @media only screen and (max-width: 650px) {
+      width: 500px;
+    }
+
     @media only screen and (max-width: 600px) {
       gap: 30px;
 
@@ -83,6 +107,36 @@
       display: flex;
       justify-content: center;
       align-items: center;
+
+      @media only screen and (max-width: 1500px) {
+        width: 1100px;
+        height: 367px;
+      }
+
+      @media only screen and (max-width: 1300px) {
+        width: 1010px;
+        height: 336px;
+      }
+
+      @media only screen and (max-width: 1100px) {
+        width: 900px;
+        height: 300px;
+      }
+
+      @media only screen and (max-width: 1000px) {
+        width: 800px;
+        height: 267px;
+      }
+
+      @media only screen and (max-width: 900px) {
+        width: 600px;
+        height: 200px;
+      }
+
+      @media only screen and (max-width: 650px) {
+        width: 500px;
+        height: 167px;
+      }
 
       @media only screen and (max-width: 600px) {
         width: 100%;
@@ -315,6 +369,26 @@
         font-size: 20px;
         font-weight: 100;
         opacity: 0.5;
+
+        position: relative;
+
+        a {
+          text-decoration: none;
+          font-style: italic;
+          color: #ffffff;
+
+          background: linear-gradient(180deg, transparent, #1af5eb 0);
+          background-size: 100% 2px;
+          background-position: bottom;
+          background-repeat: no-repeat;
+          transition: 0.2s;
+
+          @media only screen and (min-width: 600px) {
+            &:hover {
+              background-size: 100% 5px;
+            }
+          }
+        }
 
         @media only screen and (max-width: 600px) {
           line-height: 30px;

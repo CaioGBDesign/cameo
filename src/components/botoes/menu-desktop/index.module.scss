@@ -5,6 +5,14 @@
     align-items: center;
     gap: 40px;
 
+    .botaoHome {
+      display: block;
+
+      @media only screen and (max-width: 1300px) {
+        display: none;
+      }
+    }
+
     li {
       a {
         display: flex;

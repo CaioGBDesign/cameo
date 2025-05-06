@@ -146,71 +146,6 @@ const NoticiaDetalhe = () => {
           href="https://cameo.fun/noticias/123"
           hreflang="pt-BR"
         />
-
-        {/* JSON‑LD: NewsArticle */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "NewsArticle",
-              mainEntityOfPage: {
-                "@type": "WebPage",
-                "@id": `https://cameo.fun/noticias/${id}`,
-              },
-              headline: noticia.titulo,
-              image: noticia.elementos
-                .filter((el) => el.tipo === "imagem")
-                .map((el) => el.conteudo),
-              datePublished: noticia.dataPublicacao.toISOString(),
-              dateModified: noticia.dataPublicacao.toISOString(),
-              author: {
-                "@type": "Person",
-                name: noticia.autor.nome,
-              },
-              publisher: {
-                "@type": "Organization",
-                name: "Cameo.fun",
-                logo: {
-                  "@type": "ImageObject",
-                  url: "https://cameo.fun/logo/cameo-logo-miniatura.svg",
-                },
-              },
-              description: noticia.subtitulo || noticia.titulo,
-            }),
-          }}
-        />
-
-        {/* JSON‑LD: BreadcrumbList */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                {
-                  "@type": "ListItem",
-                  position: 1,
-                  name: "Home",
-                  item: "https://cameo.fun/",
-                },
-                {
-                  "@type": "ListItem",
-                  position: 2,
-                  name: "Notícias",
-                  item: "https://cameo.fun/noticias",
-                },
-                {
-                  "@type": "ListItem",
-                  position: 3,
-                  name: noticia.titulo,
-                  item: `https://cameo.fun/noticias/${id}`,
-                },
-              ],
-            }),
-          }}
-        />
       </Head>
 
       <div className={styles.container}>
@@ -315,8 +250,8 @@ const NoticiaDetalhe = () => {
                       __html: DOMPurify.sanitize(
                         processarConteudo(elemento.conteudo),
                         {
-                          ALLOWED_TAGS: ["strong", "em", "p"],
-                          ALLOWED_ATTR: ["class"],
+                          ALLOWED_TAGS: ["strong", "em", "p", "a"],
+                          ALLOWED_ATTR: ["class", "href", "target", "rel"],
                           ADD_ATTR: ["class"],
                         }
                       ),

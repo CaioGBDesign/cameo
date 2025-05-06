@@ -51,11 +51,11 @@ const BannerCriticas = ({ criticas = [], tipo }) => {
                 className={styles.resumoCritica}
                 onClick={() => router.push(`/resenhas/detalhes/${critica.id}`)}
               >
-                <div className={styles.tagCritica}>
-                  <span>{tipo === "criticas" ? "Resenha" : "Notícia"}</span>
-                </div>
-
                 <div className={styles.informacoesCritica}>
+                  <div className={styles.tagCritica}>
+                    <span>{tipo === "criticas" ? "Resenha" : "Notícia"}</span>
+                  </div>
+
                   <h1>{critica.titulo}</h1>
                   <div className={styles.numeroCritica}>
                     <img src="icones/relogio.svg" alt="Tempo de leitura" />

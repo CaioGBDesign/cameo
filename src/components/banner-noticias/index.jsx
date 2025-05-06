@@ -51,11 +51,11 @@ const BannerNoticias = ({ noticias, tipo }) => {
                 className={styles.resumoNoticia}
                 onClick={() => router.push(`/noticias/detalhes/${noticia.id}`)}
               >
-                <div className={styles.tagNoticia}>
-                  <span>Notícia</span>
-                </div>
-
                 <div className={styles.informacoesNoticia}>
+                  <div className={styles.tagNoticia}>
+                    <span>Notícia</span>
+                  </div>
+
                   <h1>{noticia.titulo}</h1>
                   <div className={styles.numeroNoticia}>
                     <img src="icones/relogio.svg" alt="Tempo de leitura" />

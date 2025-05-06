@@ -9,7 +9,7 @@
 
   padding-left: 60px;
 
-  @media only screen and (max-width: 1450px) {
+  @media only screen and (max-width: 1000px) {
     padding: initial;
   }
 
@@ -60,12 +60,13 @@
 
           width: 100%;
 
-          @media only screen and (max-width: 1450px) {
+          @media only screen and (max-width: 1000px) {
             gap: 40px;
           }
 
-          @media only screen and (max-width: 1000px) {
+          @media only screen and (max-width: 900px) {
             flex-direction: column;
+            gap: 40px;
           }
 
           .conteudo {
@@ -81,9 +82,19 @@
               height: 200px;
             }
 
+            @media only screen and (max-width: 1300px) {
+              width: 136px;
+              height: 81px;
+            }
+
             @media only screen and (max-width: 1000px) {
-              width: 100%;
-              height: initial;
+              width: 328px;
+              height: 136px;
+            }
+
+            @media only screen and (max-width: 700px) {
+              width: 400px;
+              height: 130px;
             }
 
             div {
@@ -103,16 +114,32 @@
                 height: 200px;
               }
 
+              @media only screen and (max-width: 1300px) {
+                width: 136px;
+                height: 81px;
+              }
+
               @media only screen and (max-width: 1000px) {
-                width: 100%;
-                height: initial;
+                width: 328px;
+                height: 136px;
+              }
+
+              @media only screen and (max-width: 700px) {
+                width: 400px;
+                height: 130px;
               }
 
               img {
                 width: 450px !important;
 
                 @media only screen and (max-width: 1000px) {
-                  width: 100%;
+                  width: 328px;
+                  height: 196px;
+                }
+
+                @media only screen and (max-width: 700px) {
+                  width: 400px;
+                  height: 130px;
                 }
               }
             }
@@ -148,10 +175,10 @@
                 color: #ffffff;
 
                 font-size: 18px;
-                font-weight: bold;
+                font-weight: 400;
 
                 @media only screen and (max-width: 1450px) {
-                  font-size: 22px;
+                  font-size: 14px;
                 }
               }
             }

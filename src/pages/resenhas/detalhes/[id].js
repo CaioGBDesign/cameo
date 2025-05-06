@@ -245,8 +245,8 @@ const CriticaDetalhe = () => {
                       __html: DOMPurify.sanitize(
                         processarConteudo(elemento.conteudo),
                         {
-                          ALLOWED_TAGS: ["strong", "em", "p"],
-                          ALLOWED_ATTR: ["class"],
+                          ALLOWED_TAGS: ["strong", "em", "p", "a"],
+                          ALLOWED_ATTR: ["class", "href", "target", "rel"],
                           ADD_ATTR: ["class"],
                         }
                       ),

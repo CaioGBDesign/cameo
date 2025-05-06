@@ -316,6 +316,26 @@
         font-weight: 100;
         opacity: 0.5;
 
+        position: relative;
+
+        a {
+          text-decoration: none;
+          font-style: italic;
+          color: #ffffff;
+
+          background: linear-gradient(180deg, transparent, #1af5eb 0);
+          background-size: 100% 2px;
+          background-position: bottom;
+          background-repeat: no-repeat;
+          transition: 0.2s;
+
+          @media only screen and (min-width: 600px) {
+            &:hover {
+              background-size: 100% 5px;
+            }
+          }
+        }
+
         @media only screen and (max-width: 600px) {
           line-height: 30px;
         }

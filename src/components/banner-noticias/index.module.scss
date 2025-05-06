@@ -123,6 +123,41 @@
               width: 85%;
             }
 
+            .tagNoticia {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              padding: 15px 30px;
+
+              background: #2ba8e2;
+              border-radius: 30px;
+
+              width: max-content;
+
+              z-index: 2;
+
+              @media only screen and (max-width: 600px) {
+                padding: 10px 15px;
+                top: 30%;
+                bottom: initial;
+              }
+
+              span {
+                color: #fff;
+                leading-trim: both;
+                text-edge: cap;
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 800;
+                line-height: 90%; /* 18px */
+                text-transform: uppercase;
+
+                @media only screen and (max-width: 600px) {
+                  font-size: 14px;
+                }
+              }
+            }
+
             h1 {
               width: 70%;
 
@@ -228,43 +263,6 @@
               @media only screen and (max-width: 600px) {
                 width: 700px;
                 height: 234px;
-              }
-            }
-          }
-
-          .tagNoticia {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 15px 30px;
-
-            background: #2ba8e2;
-            border-radius: 30px;
-
-            position: absolute;
-            bottom: 30%;
-            left: 10%;
-
-            z-index: 2;
-
-            @media only screen and (max-width: 600px) {
-              padding: 10px 15px;
-              top: 30%;
-              bottom: initial;
-            }
-
-            span {
-              color: #fff;
-              leading-trim: both;
-              text-edge: cap;
-              font-size: 20px;
-              font-style: normal;
-              font-weight: 800;
-              line-height: 90%; /* 18px */
-              text-transform: uppercase;
-
-              @media only screen and (max-width: 600px) {
-                font-size: 14px;
               }
             }
           }

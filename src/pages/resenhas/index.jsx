@@ -143,38 +143,6 @@ const Criticas = ({}) => {
 
         {/* Preload critical banner image */}
         <link rel="preload" as="image" href="/imagens/banner-resenhas.jpg" />
-
-        {/* JSON-LD: WebPage */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebPage",
-              url: "https://cameo.fun/resenhas",
-              name: "Cameo – Resenhas de Cinema",
-              description:
-                "As últimas resenhas de filmes: opiniões, avaliações e análises detalhadas.",
-              breadcrumb: {
-                "@type": "BreadcrumbList",
-                itemListElement: [
-                  {
-                    "@type": "ListItem",
-                    position: 1,
-                    name: "Home",
-                    item: "https://cameo.fun/",
-                  },
-                  {
-                    "@type": "ListItem",
-                    position: 2,
-                    name: "Resenhas",
-                    item: "https://cameo.fun/resenhas",
-                  },
-                ],
-              },
-            }),
-          }}
-        />
       </Head>
       <main className={styles.ContCriticas}>
         {user && userData?.adm && (

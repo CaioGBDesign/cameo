@@ -11,7 +11,9 @@
 
   @media only screen and (max-width: 1350px) {
     width: 100%;
+  }
 
+  @media only screen and (max-width: 1000px) {
     padding: initial;
   }
 
@@ -111,8 +113,13 @@
 
           width: 100%;
 
+          @media only screen and (max-width: 1300px) {
+            justify-content: start;
+          }
+
           @media only screen and (max-width: 1000px) {
             flex-direction: column;
+            align-items: start;
           }
 
           @media only screen and (max-width: 600px) {
@@ -126,6 +133,11 @@
 
             width: 400px;
             height: 200px;
+
+            @media only screen and (max-width: 1300px) {
+              width: 224px;
+              height: 112px;
+            }
 
             @media only screen and (max-width: 1000px) {
               width: 100%;
@@ -146,6 +158,11 @@
 
               background: #161216;
 
+              @media only screen and (max-width: 1300px) {
+                width: 224px;
+                height: 112px;
+              }
+
               @media only screen and (max-width: 1000px) {
                 width: 100%;
                 height: initial;
@@ -156,6 +173,11 @@
                 height: 200px !important;
 
                 transition: 0.2s;
+
+                @media only screen and (max-width: 1300px) {
+                  width: 224px;
+                  height: 112px;
+                }
 
                 @media only screen and (max-width: 1000px) {
                   width: 100%;
@@ -171,6 +193,10 @@
             align-items: start;
             gap: 15px;
 
+            @media only screen and (max-width: 1000px) {
+              width: 100%;
+            }
+
             .cabecalho {
               display: flex;
               flex-direction: column;
@@ -184,7 +210,11 @@
                 color: #ffffff;
 
                 font-size: 22px;
-                font-weight: bold;
+                font-weight: 400;
+
+                @media only screen and (max-width: 1300px) {
+                  font-size: 18px;
+                }
               }
 
               .numeroNoticia {
@@ -197,8 +227,16 @@
                 font-size: 16px;
                 color: #9863ec;
 
+                @media only screen and (max-width: 1300px) {
+                  font-size: 12px;
+                }
+
                 img {
                   width: 20px;
+
+                  @media only screen and (max-width: 1300px) {
+                    width: 15px;
+                  }
                 }
               }
             }
@@ -225,6 +263,10 @@
                     font-size: 14px;
                     font-weight: 100;
                     font-style: italic;
+
+                    @media only screen and (max-width: 1300px) {
+                      font-size: 12px;
+                    }
                   }
 
                   .autorNome {

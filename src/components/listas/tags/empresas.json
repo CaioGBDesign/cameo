@@ -21,6 +21,11 @@
   },
   {
     "id": "empresa",
+    "name": "Globoplay",
+    "Exibir": "Não"
+  },
+  {
+    "id": "empresa",
     "name": "Illumination",
     "Exibir": "Não"
   },

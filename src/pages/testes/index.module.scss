@@ -1,116 +1,72 @@
-.modalListagem {
+.container {
+  margin-top: 10%;
+
   display: flex;
   justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 60px;
 
-  width: 100%;
-  height: 100vh;
+  .detalhesFilmes {
+    width: 85%;
 
-  .tituloGeneroDuracao {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
+    .tituloFilmes {
+      .posterTrailer {
+        width: 267px;
+        height: 150px;
 
-    .tituloFilme {
-      span {
-        font-size: 22px;
-        font-weight: bold;
-        color: #ffffff;
-      }
-    }
+        overflow: hidden;
 
-    .filmeGeneros {
-      display: flex;
-      gap: 10px;
-
-      .genero {
         display: flex;
         justify-content: center;
         align-items: center;
 
-        padding: 5px;
-        border: solid #fff 1px;
-        border-radius: 5px;
+        position: relative;
 
-        span {
-          font-size: 14px;
-          font-weight: 100;
-          color: #ffffff;
-        }
-      }
-    }
-  }
+        border-radius: 10px;
 
-  .contCarousel {
-    width: 280px;
+        transition: 0.2s;
 
-    display: flex;
-    justify-content: center; // Centraliza o carrossel
-    overflow-x: visible;
+        &:hover {
+          width: 267px;
+          height: 150px;
 
-    .carousel {
-      display: flex;
-      justify-content: start;
-      align-items: center;
-
-      width: auto;
-      height: 420px;
-
-      overflow-x: auto; // Habilita o scroll horizontal
-      scroll-snap-type: x mandatory; // Ativa o scroll snap
-
-      /* Estilo para esconder a scrollbar */
-      &::-webkit-scrollbar {
-        display: none; // Você pode remover esta linha se quiser ver a barra de rolagem
-      }
-
-      .slider {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 20px;
-
-        .imagens {
-          width: 280px;
-
-          scroll-snap-align: center; // Define o alinhamento do snap
-
-          .capaFilme {
-            width: 100%;
+          .posterFilme {
+            width: 300px;
+            height: 169px;
 
             img {
-              width: 100%;
+              width: 300px;
+              height: 169px;
+
+              opacity: 0.5;
             }
           }
         }
-      }
-    }
-  }
 
-  .avaliacaoFilme {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
+        .posterFilme {
+          width: 267px;
+          height: 150px;
 
-    width: 60%;
+          transition: 0.2s;
 
-    .escalaAvaliacao {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+          img {
+            width: 267px;
+            height: 150px;
 
-      width: 100%;
+            transition: 0.2s;
+          }
+        }
 
-      span {
-        font-size: 14px;
-        font-weight: 100;
-        color: #ffffff;
+        .botaoTrailer {
+          position: absolute;
+
+          z-index: 1;
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          width: 100%;
+          height: 150px;
+        }
       }
     }
   }

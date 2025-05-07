@@ -51,6 +51,11 @@
   },
   {
     "id": "genero",
+    "name": "História",
+    "Exibir": "Não"
+  },
+  {
+    "id": "genero",
     "name": "Mistério",
     "Exibir": "Sim"
   },

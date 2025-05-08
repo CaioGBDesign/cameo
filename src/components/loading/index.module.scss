@@ -8,7 +8,13 @@
   width: 100%;
   height: 100vh;
 
-  img {
+  .video {
     width: 70%;
+    height: 70%;
+
+    video {
+      width: 100%;
+      object-fit: contain;
+    }
   }
 }

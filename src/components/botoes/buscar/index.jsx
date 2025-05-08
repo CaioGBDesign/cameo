@@ -4,7 +4,7 @@ import Link from "next/link";
 const BotaoBuscar = ({ children }) => {
   return (
     <Link href="/busca" className={styles.miniatura}>
-      <img src="/icones/search.svg" />
+      <img src="/icones/search.svg" alt="buscar filme" />
       {children}
     </Link>
   );

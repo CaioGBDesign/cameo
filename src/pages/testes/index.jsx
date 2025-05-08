@@ -77,7 +77,6 @@ export default function FilmeAleatorio() {
         <link rel="canonical" href="https://cameo.fun/filme-aleatorio" />
       </Head>
       <main className={styles.container}>
-        {loading && <p>Carregando filme...</p>}
         {!loading && filme && (
           <>
             <div className={styles.detalhesFilmes}>
@@ -89,15 +88,23 @@ export default function FilmeAleatorio() {
                     </div>
                   )}
                   {filme.backdrop_path && (
-                    <div className={styles.posterFilme}>
+                    <div
+                      className={styles.posterFilme}
+                      style={{
+                        position: "relative",
+                        width: "300px",
+                        aspectRatio: "2/3",
+                      }}
+                    >
                       <Image
                         src={`https://image.tmdb.org/t/p/w780/${filme.backdrop_path}`}
                         alt={filme.title}
-                        width={780}
-                        height={440}
+                        width={300}
+                        height={450}
                         className={styles.imagem}
                         priority
                         loading="eager"
+                        sizes="(max-width: 640px) 100vw, 300px"
                       />
                     </div>
                   )}

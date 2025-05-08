@@ -17,10 +17,10 @@ const ModalAvaliar = ({ filmeId, nota, onClose }) => {
   // Mapeamento de estrelas para texto
   const estrelasDescricao = {
     1: "Zuado",
-    2: "Ok",
-    3: "Gostei",
-    4: "Sinistro",
-    5: "Cabuloso",
+    2: "Fraco",
+    3: "Bom",
+    4: "Surpreendeu",
+    5: "Foda",
   };
 
   useEffect(() => {

@@ -11,7 +11,10 @@ const FundoTitulosDesktop = ({
   return (
     <div className={styles.contCapa}>
       <div className={styles.capaAssistidos} style={{ opacity: opacidade }}>
-        <div className={styles.imageContainer}>
+        <div
+          className={styles.imageContainer}
+          style={{ position: "relative", width: "80%", aspectRatio: "16/9" }}
+        >
           <div className={styles.fundoA}></div>
           <div className={styles.fundoB}></div>
           <div className={styles.fundoC}></div>

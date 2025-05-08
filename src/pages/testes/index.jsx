@@ -18,7 +18,7 @@ export default function FilmeAleatorio() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+    const apiKey = "c95de8d6070dbf1b821185d759532f05";
     console.log("TMDB Key:", apiKey);
 
     const ids = Array.isArray(listafilmes.filmes) ? listafilmes.filmes : [];

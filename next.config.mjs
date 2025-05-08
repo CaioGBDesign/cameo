@@ -2,11 +2,20 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: [
-      "image.tmdb.org",
-      "via.placeholder.com",
-      "firebasestorage.googleapis.com",
-    ], // Adicione esta linha
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "image.tmdb.org",
+      },
+      {
+        protocol: "https",
+        hostname: "via.placeholder.com",
+      },
+      {
+        protocol: "https",
+        hostname: "firebasestorage.googleapis.com",
+      },
+    ],
   },
 };
 

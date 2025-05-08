@@ -1,17 +1,14 @@
 .container {
   margin-top: 10%;
-  min-height: 100vh;
 
   display: flex;
   justify-content: center;
 
   .detalhesFilmes {
     width: 85%;
-    min-height: 200px;
 
     .tituloFilmes {
       .posterTrailer {
-        aspect-ratio: 16/9;
         width: 267px;
         height: 150px;
 
@@ -36,7 +33,6 @@
         }
 
         .posterFilme {
-          aspect-ratio: 2/3;
           width: 267px;
           height: 150px;
 

@@ -76,7 +76,7 @@ export default function FilmeAleatorio() {
       <Head>
         <title>Cameo – Filme Aleatório</title>
         <meta name="description" content={description} />
-        <link rel="canonical" href="https://cameo.fun/filme-aleatorio" />
+        <link rel="canonical" href="https://cameo.fun/testes" />
       </Head>
 
       <main className={styles.container}>

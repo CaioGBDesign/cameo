@@ -20,7 +20,7 @@ const FundoTitulosDesktop = ({
           <div className={styles.fundoC}></div>
           <Image
             src={capaAssistidos}
-            alt={tituloAssistidos}
+            alt={"O filme sugerido é " + tituloAssistidos}
             width={1600}
             height={860}
             quality={0} // Ajuste a qualidade se necessário

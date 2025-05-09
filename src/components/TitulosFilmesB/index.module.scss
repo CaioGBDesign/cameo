@@ -1,0 +1,125 @@
+.detalhesFilmes {
+  width: 85%;
+
+  .topoFilmes {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+
+    .posterTrailer {
+      width: 267px;
+      height: 150px;
+
+      overflow: hidden;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      position: relative;
+
+      border-radius: 10px;
+
+      transition: 0.2s;
+
+      &:hover {
+        .posterFilme {
+          img {
+            opacity: 0.5;
+          }
+        }
+      }
+
+      .posterFilme {
+        width: 267px;
+        height: 150px;
+
+        transition: 0.2s;
+
+        img {
+          width: 267px;
+          height: 150px;
+
+          transition: 0.2s;
+        }
+      }
+
+      .botaoTrailer {
+        position: absolute;
+
+        z-index: 1;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+        height: 150px;
+      }
+    }
+
+    .detalhesTopo {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+
+      .tituloFilmes {
+        h1 {
+          font-size: 35px;
+          font-weight: 500;
+          color: #fff;
+          text-align: left;
+        }
+      }
+
+      .classificacaoGenero {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+
+        .generosList {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+
+          .genero {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border: 1px solid hsla(0, 0%, 100%, 0.188);
+            border-radius: 5px;
+            padding: 5px;
+
+            font-size: 14px;
+            font-weight: 200;
+            color: #fff;
+            text-align: center;
+          }
+        }
+
+        .dataLancamento,
+        .duracaoFilme {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 20px;
+
+          font-size: 14px;
+          font-weight: 200;
+          color: #fff;
+          text-align: center;
+        }
+
+        span {
+          font-size: 24px;
+          font-weight: 200;
+          color: #fff;
+          text-align: center;
+        }
+      }
+    }
+  }
+}

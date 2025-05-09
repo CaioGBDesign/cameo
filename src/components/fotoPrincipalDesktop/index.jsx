@@ -23,7 +23,7 @@ const FundoTitulosDesktop = ({
             alt={tituloAssistidos}
             width={1600}
             height={860}
-            quality={50} // Ajuste a qualidade se necessário
+            quality={0} // Ajuste a qualidade se necessário
             className={styles.objectFit}
           />
         </div>

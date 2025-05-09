@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { useIsMobile } from "@/components/DeviceProvider";
-import TitulosFilmes from "@/components/titulosfilmesB";
+import TitulosFilmes from "@/components/titulosFilmesB";
 import Sinopse from "@/components/detalhesfilmes/sinopse";
 import NotasFilmes from "@/components/botoes/notas";
 import FavoritarFilme from "@/components/detalhesfilmes/favoritarfilme";

@@ -12,7 +12,11 @@ const Classificacao = dynamic(
   { ssr: false }
 );
 
-export default function TitulosFilmes({ filme, trailerLink, releaseDates }) {
+export default function TitulosFilmesDesktop({
+  filme,
+  trailerLink,
+  releaseDates,
+}) {
   // Renderiza cada gênero em sua própria div
   const renderGeneros = () => {
     if (!Array.isArray(filme.genres) || filme.genres.length === 0) {

@@ -75,7 +75,7 @@ export default function FilmeAleatorio() {
           setLoading(false);
           return;
         }
-        const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+        const apiKey = "c95de8d6070dbf1b821185d759532f05";
         const res = await fetch(
           `https://api.themoviedb.org/3/movie/${randomId}?api_key=${apiKey}&language=pt-BR&append_to_response=videos,release_dates,watch/providers`
         );

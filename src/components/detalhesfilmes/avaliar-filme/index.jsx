@@ -5,7 +5,7 @@ const AvaliarFilme = () => {
     <div className={styles.avaliarFilme}>
       <div className={styles.avaliar}>
         Já assisti
-        <img src="/icones/estrela-stroke.svg" />
+        <img src="/icones/estrela-stroke.svg" alt="estrela de avaliação" />
       </div>
     </div>
   );

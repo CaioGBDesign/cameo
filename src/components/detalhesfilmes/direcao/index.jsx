@@ -1,41 +1,41 @@
+// components/detalhesfilmes/direcao.jsx
 import React from "react";
-import styles from "./index.module.scss";
 import Image from "next/image";
+import styles from "./index.module.scss";
 
-const Direcao = ({ diretores }) => {
-  const diretoresComImagem = diretores.filter((diretor) => diretor.imagemUrl);
+const Direcao = ({ crew }) => {
+  // filtra apenas quem tem job === "Director"
+  const directors = Array.isArray(crew)
+    ? crew.filter((member) => member.job === "Director")
+    : [];
 
-  // Verifica se há diretores com imagem
-  if (diretoresComImagem.length === 0) return null;
+  if (directors.length === 0) return null;
 
   return (
-    <div className={styles.diretoresCameo}>
-      <div className={styles.contDiretores}>
-        <h3>Direção</h3>
-        <div className={styles.diretores}>
-          {diretoresComImagem.map((diretor, index) => (
-            <div key={index} className={styles.diretor}>
-              <div className={styles.fotoDiretor}>
-                <div className={styles.imagemDiretor}>
-                  <Image
-                    src={diretor.imagemUrl}
-                    alt={diretor.nome}
-                    fill
-                    quality={50} // Ajuste a qualidade se necessário
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className={styles.objectFit}
-                  />
-                </div>
-              </div>
-
-              <div className={styles.nomeDiretor}>
-                <p>{diretor.nome}</p>
-              </div>
+    <section className={styles.direcaoSection}>
+      <h2 className={styles.heading}>Direção</h2>
+      <ul className={styles.list}>
+        {directors.map((dir) => (
+          <li key={dir.credit_id} className={styles.card}>
+            <div className={styles.imageWrapper}>
+              {dir.profile_path ? (
+                <Image
+                  src={`https://image.tmdb.org/t/p/w185${dir.profile_path}`}
+                  alt={dir.name}
+                  width={185}
+                  height={185}
+                  className={styles.image}
+                  priority={false}
+                />
+              ) : (
+                <div className={styles.placeholder}>Sem imagem</div>
+              )}
             </div>
-          ))}
-        </div>
-      </div>
-    </div>
+            <p className={styles.name}>{dir.name}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 };
 

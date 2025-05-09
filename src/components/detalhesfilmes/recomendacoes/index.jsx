@@ -1,94 +1,40 @@
-import React, { useState, useRef, Suspense } from "react";
-import { useIsMobile } from "@/components/DeviceProvider";
-import styles from "./index.module.scss";
+import React from "react";
 import Image from "next/image";
-import Loading from "@/components/loading";
+import styles from "./index.module.scss";
+import Link from "next/link";
 
-const Recomendacoes = ({ recomendacoes, selecionarFilmeRecomendado }) => {
-  const isMobile = useIsMobile();
-  const scrollRef = useRef(null); // Referência para a div de scroll
-
-  if (recomendacoes.length === 0) return null;
-
-  const scrollToNext = () => {
-    if (scrollRef.current) {
-      const { scrollLeft, clientWidth } = scrollRef.current;
-      const nextScrollLeft = scrollLeft + clientWidth;
-      if (nextScrollLeft < scrollRef.current.scrollWidth) {
-        scrollRef.current.scrollTo({
-          left: nextScrollLeft,
-          behavior: "smooth",
-        });
-      } else {
-        scrollRef.current.scrollTo({ left: 0, behavior: "smooth" }); // Volta ao início
-      }
-    }
-  };
-
-  const scrollToPrevious = () => {
-    if (scrollRef.current) {
-      const { scrollLeft, clientWidth } = scrollRef.current;
-      const previousScrollLeft = scrollLeft - clientWidth;
-      if (previousScrollLeft >= 0) {
-        scrollRef.current.scrollTo({
-          left: previousScrollLeft,
-          behavior: "smooth",
-        });
-      } else {
-        scrollRef.current.scrollTo({
-          left: scrollRef.current.scrollWidth,
-          behavior: "smooth",
-        }); // Vai para o final
-      }
-    }
-  };
+// Recebe array de filmes relacionados
+const Recomendacoes = ({ movies }) => {
+  if (!Array.isArray(movies) || movies.length === 0) return null;
 
   return (
-    <div className={styles.recomendacoes}>
-      {isMobile ? (
-        <h3>Recomendações</h3>
-      ) : (
-        <div className={styles.headerRecomendações}>
-          <h3>Recomendações</h3>
-          <div className={styles.botoes}>
-            <button onClick={scrollToPrevious}>
-              <img src="/icones/anterior.svg" />
-            </button>
-            <button onClick={scrollToNext}>
-              <img src="/icones/proximo.svg" />
-            </button>
-          </div>
-        </div>
-      )}
-
-      <div className={styles.contRecomendacoes}>
-        <div className={styles.scrollRecomendacoes} ref={scrollRef}>
-          {recomendacoes.map((recomendacao) => (
-            <div
-              className={styles.listaRecomendacoes}
-              key={recomendacao.id}
-              onClick={() =>
-                selecionarFilmeRecomendado(String(recomendacao.id))
-              }
-            >
-              <Suspense fallback={<Loading />}>
-                <div className={styles.fotoRecomendacoes}>
-                  <Image
-                    src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${recomendacao.poster_path}`}
-                    alt={recomendacao.title}
-                    fill
-                    quality={50} // Ajuste a qualidade se necessário
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className={styles.objectFit}
-                  />
-                </div>
-              </Suspense>
-              <span>{recomendacao.title}</span>
-            </div>
+    <section className={styles.relatedSection}>
+      <h2 className={styles.heading}>Filmes Relacionados</h2>
+      <div className={styles.carrossel}>
+        <ul className={styles.list}>
+          {movies.map((movie) => (
+            <li key={movie.id} className={styles.card}>
+              <Link href={`/filme/${movie.id}`}>
+                {movie.poster_path ? (
+                  <div className={styles.imagemRecomendacao}>
+                    <Image
+                      src={`https://image.tmdb.org/t/p/w185${movie.poster_path}`}
+                      alt={movie.title}
+                      width={185}
+                      height={278}
+                      className={styles.image}
+                    />
+                  </div>
+                ) : (
+                  <div className={styles.placeholder}>Sem poster</div>
+                )}
+                <p className={styles.title}>{movie.title}</p>
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
-    </div>
+    </section>
   );
 };
 

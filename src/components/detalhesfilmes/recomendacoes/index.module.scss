@@ -1,115 +1,67 @@
-.recomendacoes {
+.relatedSection {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: start;
   gap: 30px;
+  width: 100%;
 
-  width: 85%;
-
-  h3 {
+  h2 {
     font-size: 24px;
-    color: white;
-
+    color: #fff;
     opacity: 0.3;
-
-    margin: 0;
   }
 
-  .headerRecomendações {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .carrossel {
+    width: 100%;
 
-    width: 950px;
+    overflow-y: scroll;
 
-    .botoes {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-
-      button {
-        background: #ffffff10;
-        border: none;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        width: 50px;
-        height: 50px;
-
-        padding: 5px;
-
-        border-radius: 50px;
-
-        cursor: pointer;
-      }
-    }
-  }
-
-  .contRecomendacoes {
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    gap: 10px;
-
-    @media only screen and (max-width: 600px) {
-      justify-content: center;
+    /* width */
+    &::-webkit-scrollbar {
+      display: none;
     }
 
-    .scrollRecomendacoes {
+    .list {
       display: flex;
-      align-items: start;
       gap: 15px;
 
-      width: 950px;
-
-      overflow-x: scroll;
-
-      /* width */
-      &::-webkit-scrollbar {
-        display: none;
-      }
-
-      @media only screen and (max-width: 600px) {
-        width: 100%;
-      }
-
-      .listaRecomendacoes {
+      .card {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        gap: 10px;
+        justify-content: start;
+        align-items: center;
 
         width: 100px;
 
-        .fotoRecomendacoes {
-          position: relative;
+        a {
+          text-decoration: none;
+
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 10px;
           width: 100px;
-          height: 150px;
 
-          border-radius: 5px;
-          overflow: hidden;
+          .imagemRecomendacao {
+            width: 100px;
+            height: 140px;
 
-          transition: 0.2s;
+            border-radius: 5px;
+            overflow: hidden;
 
-          .objectFit {
-            object-fit: cover;
-
-            width: 100%;
-            height: 100%;
+            img {
+              width: 100%;
+              height: auto;
+            }
           }
-        }
 
-        span {
-          font-size: 14px;
-          font-weight: 200;
-
-          text-align: left;
-
-          color: white;
-          text-align: center;
+          p {
+            font-size: 14px;
+            font-weight: 200;
+            text-align: left;
+            color: #fff;
+            text-align: center;
+          }
         }
       }
     }

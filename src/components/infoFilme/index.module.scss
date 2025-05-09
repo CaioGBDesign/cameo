@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  justify-content: start;
+  gap: 50px;
+
+  width: 100%;
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+
+    .label {
+      font-size: 24px;
+      color: #fff;
+      opacity: 0.3;
+      margin: 0;
+    }
+
+    .value {
+      font-size: 18px;
+      color: #fff;
+    }
+  }
+}

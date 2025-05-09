@@ -9,10 +9,14 @@ import FavoritarFilme from "@/components/detalhesfilmes/favoritarfilme";
 import AssistirFilme from "@/components/detalhesfilmes/paraver";
 import ModalAvaliar from "@/components/modais/avaliar-filmes";
 import Servicos from "@/components/detalhesfilmes/servicos";
+import InfoFilme from "@/components/infoFilme";
+import Cast from "@/components/detalhesfilmes/cast";
+import Direcao from "@/components/detalhesfilmes/direcao";
+import ProducaoFilmes from "@/components/detalhesfilmes/producaoFilme";
+import Recomendacoes from "@/components/detalhesfilmes/recomendacoes";
 import { useAuth } from "@/contexts/auth";
 import styles from "./index.module.scss";
 
-// Lazy-load heavy components
 const Header = dynamic(() => import("@/components/Header"));
 const HeaderDesktop = dynamic(() => import("@/components/HeaderDesktop"));
 const Footer = dynamic(() => import("@/components/Footer"));
@@ -32,11 +36,14 @@ export default function FilmeAleatorio() {
   } = useAuth();
 
   const [filme, setFilme] = useState(null);
+  const [cast, setCast] = useState([]);
+  const [crew, setCrew] = useState([]);
+  const [related, setRelated] = useState([]);
   const [trailerLink, setTrailerLink] = useState(null);
   const [releaseDates, setReleaseDates] = useState([]);
+  const [servicosDisponiveis, setServicosDisponiveis] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalType, setModalType] = useState(null);
-  const [servicosDisponiveis, setServicosDisponiveis] = useState([]);
 
   const [assistList, setAssistList] = useState(user?.assistir || []);
   const [favoritosList, setFavoritosList] = useState(user?.favoritos || []);
@@ -51,13 +58,13 @@ export default function FilmeAleatorio() {
 
   const handleWatchClick = useCallback(
     (id) => {
-      const stringId = String(id);
-      if (assistList.includes(stringId)) {
-        removerAssistir(stringId);
-        setAssistList((prev) => prev.filter((fid) => fid !== stringId));
+      const sid = String(id);
+      if (assistList.includes(sid)) {
+        removerAssistir(sid);
+        setAssistList((prev) => prev.filter((f) => f !== sid));
       } else {
-        assistirFilme(stringId);
-        setAssistList((prev) => [...prev, stringId]);
+        assistirFilme(sid);
+        setAssistList((prev) => [...prev, sid]);
       }
     },
     [assistList, assistirFilme, removerAssistir]
@@ -65,37 +72,41 @@ export default function FilmeAleatorio() {
 
   useEffect(() => {
     const fetchFilme = async () => {
+      setLoading(true);
       try {
         const { default: listafilmes } = await import(
           "@/components/listafilmes/listafilmes.json"
         );
         const ids = Array.isArray(listafilmes.filmes) ? listafilmes.filmes : [];
         const randomId = ids[Math.floor(Math.random() * ids.length)];
-        if (!randomId) {
-          console.error("Nenhum ID válido em listafilmes.json");
-          setLoading(false);
-          return;
-        }
+        if (!randomId) throw new Error("Nenhum ID de filme válido.");
+
         const apiKey = "c95de8d6070dbf1b821185d759532f05";
-        const res = await fetch(
-          `https://api.themoviedb.org/3/movie/${randomId}?api_key=${apiKey}&language=pt-BR&append_to_response=videos,release_dates,watch/providers`
-        );
+        const url = `https://api.themoviedb.org/3/movie/${randomId}?api_key=${apiKey}&language=pt-BR&append_to_response=videos,release_dates,watch/providers,credits,similar`;
+        const res = await fetch(url);
         const data = await res.json();
         setFilme(data);
 
-        const trailer = data.videos?.results?.find(
+        // credits
+        setCast(data.credits?.cast || []);
+        setCrew(data.credits?.crew || []);
+
+        // trailer
+        const tr = data.videos?.results.find(
           (v) => v.type === "Trailer" && v.site === "YouTube"
         );
-        if (trailer)
-          setTrailerLink(`https://www.youtube.com/watch?v=${trailer.key}`);
+        setTrailerLink(tr ? `https://www.youtube.com/watch?v=${tr.key}` : null);
 
+        // releases & providers
         setReleaseDates(data.release_dates?.results || []);
+        setServicosDisponiveis(
+          data["watch/providers"]?.results?.BR?.flatrate || []
+        );
 
-        // move provider logic inside effect
-        const providers = data["watch/providers"]?.results?.BR?.flatrate || [];
-        setServicosDisponiveis(providers);
+        // related movies
+        setRelated(data.similar?.results || []);
       } catch (err) {
-        console.error(err);
+        console.error("Erro ao buscar filme:", err);
       } finally {
         setLoading(false);
       }
@@ -104,16 +115,18 @@ export default function FilmeAleatorio() {
   }, []);
 
   const description = filme
-    ? `Assista a ${filme.title}, um filme de ${(filme.genres || [])
-        .map((g) => g.name)
-        .join(", ")}`
+    ? `Assista a ${filme.title}, um filme de ${
+        Array.isArray(filme.genres)
+          ? filme.genres.map((g) => g.name).join(", ")
+          : ""
+      }`
     : "Carregando filme aleatório...";
 
   return (
     <>
       {isMobile ? <Header /> : <HeaderDesktop />}
       <Head>
-        <title>Cameo – Filme Aleatório</title>
+        <title>Cameo – Filme Aleatório</title>
         <meta name="description" content={description} />
         <link rel="canonical" href="https://cameo.fun/testes" />
       </Head>
@@ -136,7 +149,6 @@ export default function FilmeAleatorio() {
                   usuarioFilmeVisto={user?.visto?.hasOwnProperty(filme.id)}
                   onClickModal={() => openModal("rating")}
                 />
-
                 {!assistList.includes(String(filme.id)) && (
                   <div className={styles.assistirContainer}>
                     <AssistirFilme
@@ -147,7 +159,6 @@ export default function FilmeAleatorio() {
                     />
                   </div>
                 )}
-
                 <FavoritarFilme
                   filmeId={String(filme.id)}
                   salvarFilme={salvarFilme}
@@ -159,6 +170,16 @@ export default function FilmeAleatorio() {
               {servicosDisponiveis.length > 0 && (
                 <Servicos servicos={servicosDisponiveis} />
               )}
+
+              <InfoFilme
+                budget={filme.budget}
+                revenue={filme.revenue}
+                production_countries={filme.production_countries}
+              />
+              <Direcao crew={crew} />
+              <Cast cast={cast} />
+              <ProducaoFilmes companies={filme.production_companies} />
+              <Recomendacoes movies={related} />
 
               <FundoTitulosDesktop
                 capaAssistidos={`https://image.tmdb.org/t/p/original/${filme.backdrop_path}`}

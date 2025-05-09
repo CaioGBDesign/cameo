@@ -1,0 +1,35 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 30px;
+
+  width: 100%;
+
+  h2 {
+    font-size: 24px;
+    color: #fff;
+    opacity: 0.3;
+    margin: 0;
+  }
+
+  .list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    .item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid hsla(0, 0%, 100%, 0.188);
+      border-radius: 5px;
+      padding: 10px;
+
+      span {
+        font-size: 18px;
+        color: #fff;
+      }
+    }
+  }
+}

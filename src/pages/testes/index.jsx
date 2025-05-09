@@ -77,7 +77,6 @@ export default function FilmeAleatorio() {
         <link rel="canonical" href="https://cameo.fun/filme-aleatorio" />
       </Head>
       <main className={styles.container}>
-        {loading && <p>Carregando filme...</p>}
         {!loading && filme && (
           <>
             <div className={styles.detalhesFilmes}>

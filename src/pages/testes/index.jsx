@@ -8,17 +8,23 @@ import styles from "./index.module.scss";
 // Lazy-load components to reduce initial JS bundle
 const Header = dynamic(() => import("@/components/Header"));
 const HeaderDesktop = dynamic(() => import("@/components/HeaderDesktop"));
+const Footer = dynamic(() => import("@/components/Footer"));
 const FundoTitulosDesktop = dynamic(() =>
   import("@/components/fotoPrincipalDesktop")
 );
 const BotaoPlay = dynamic(() => import("@/components/botoes/play"), {
   ssr: false,
 });
+const Classificacao = dynamic(
+  () => import("@/components/detalhesfilmes/classificacao"),
+  { ssr: false }
+);
 
 export default function FilmeAleatorio() {
   const isMobile = useIsMobile();
   const [filme, setFilme] = useState(null);
   const [trailerLink, setTrailerLink] = useState(null);
+  const [releaseDates, setReleaseDates] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,23 +42,25 @@ export default function FilmeAleatorio() {
           return;
         }
 
-        // Use environment variable for API key
-        const apiKey = "c95de8d6070dbf1b821185d759532f05";
+        const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+
+        // Fetch movie details including release dates
         const resFilme = await fetch(
-          `https://api.themoviedb.org/3/movie/${randomId}?api_key=${apiKey}&language=pt-BR`
+          `https://api.themoviedb.org/3/movie/${randomId}?api_key=${apiKey}&language=pt-BR&append_to_response=videos,release_dates`
         );
         const filmeData = await resFilme.json();
         setFilme(filmeData);
 
-        const resVideo = await fetch(
-          `https://api.themoviedb.org/3/movie/${randomId}/videos?api_key=${apiKey}&language=pt-BR`
-        );
-        const videoData = await resVideo.json();
-        const trailer = videoData.results.find(
+        // Extract trailer link
+        const trailer = filmeData.videos.results.find(
           (v) => v.type === "Trailer" && v.site === "YouTube"
         );
         if (trailer)
           setTrailerLink(`https://www.youtube.com/watch?v=${trailer.key}`);
+
+        // Set release dates array for classification component
+        const dates = filmeData.release_dates.results || [];
+        setReleaseDates(dates);
       } catch (err) {
         console.error(err);
       } finally {
@@ -84,7 +92,7 @@ export default function FilmeAleatorio() {
         {!loading && filme && (
           <>
             <div className={styles.detalhesFilmes}>
-              <div className={styles.tituloFilmes}>
+              <div className={styles.topoFilmes}>
                 <div className={styles.posterTrailer}>
                   {trailerLink && (
                     <div className={styles.botaoTrailer}>
@@ -105,6 +113,16 @@ export default function FilmeAleatorio() {
                     </div>
                   )}
                 </div>
+
+                <div className={styles.detalhesTopo}>
+                  <div className={styles.tituloFilmes}>
+                    <h1>{filme.title}</h1>
+                  </div>
+
+                  <div className={styles.classificacao}>
+                    <Classificacao releaseDates={releaseDates} />
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -116,6 +134,8 @@ export default function FilmeAleatorio() {
           </>
         )}
       </main>
+
+      <Footer />
     </>
   );
 }

@@ -42,7 +42,7 @@ export default function FilmeAleatorio() {
           return;
         }
 
-        const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+        const apiKey = "c95de8d6070dbf1b821185d759532f05";
 
         // Fetch movie details including release dates
         const resFilme = await fetch(

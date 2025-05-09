@@ -8,7 +8,6 @@ import styles from "./index.module.scss";
 // Lazy-load components to reduce initial JS bundle
 const Header = dynamic(() => import("@/components/Header"));
 const HeaderDesktop = dynamic(() => import("@/components/HeaderDesktop"));
-const Footer = dynamic(() => import("@/components/Footer"));
 const FundoTitulosDesktop = dynamic(() =>
   import("@/components/fotoPrincipalDesktop")
 );
@@ -117,8 +116,6 @@ export default function FilmeAleatorio() {
           </>
         )}
       </main>
-
-      <Footer />
     </>
   );
 }

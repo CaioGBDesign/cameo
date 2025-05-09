@@ -37,7 +37,7 @@ export default function FilmeAleatorio() {
         }
 
         // Use environment variable for API key
-        const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+        const apiKey = "c95de8d6070dbf1b821185d759532f05";
         const resFilme = await fetch(
           `https://api.themoviedb.org/3/movie/${randomId}?api_key=${apiKey}&language=pt-BR`
         );

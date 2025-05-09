@@ -2,12 +2,12 @@ import React, { useEffect, useState, useCallback } from "react";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { useIsMobile } from "@/components/DeviceProvider";
-import TitulosFilmes from "@/components/titulosFilmesB";
+import TitulosFilmes from "@/components/titulosfilmesB";
 import Sinopse from "@/components/detalhesfilmes/sinopse";
 import NotasFilmes from "@/components/botoes/notas";
+import FavoritarFilme from "@/components/detalhesfilmes/favoritarfilme";
 import AssistirFilme from "@/components/detalhesfilmes/paraver";
 import ModalAvaliar from "@/components/modais/avaliar-filmes";
-import FavoritarFilme from "@/components/detalhesfilmes/favoritarfilme";
 import Servicos from "@/components/detalhesfilmes/servicos";
 import { useAuth } from "@/contexts/auth";
 import styles from "./index.module.scss";
@@ -15,6 +15,7 @@ import styles from "./index.module.scss";
 // Lazy-load heavy components
 const Header = dynamic(() => import("@/components/Header"));
 const HeaderDesktop = dynamic(() => import("@/components/HeaderDesktop"));
+const Footer = dynamic(() => import("@/components/Footer"));
 const FundoTitulosDesktop = dynamic(() =>
   import("@/components/fotoPrincipalDesktop")
 );
@@ -90,6 +91,7 @@ export default function FilmeAleatorio() {
 
         setReleaseDates(data.release_dates?.results || []);
 
+        // move provider logic inside effect
         const providers = data["watch/providers"]?.results?.BR?.flatrate || [];
         setServicosDisponiveis(providers);
       } catch (err) {
@@ -175,6 +177,7 @@ export default function FilmeAleatorio() {
           )}
         </div>
       </main>
+      <Footer />
     </>
   );
 }

@@ -3,4 +3,23 @@
 
   display: flex;
   justify-content: center;
+
+  .homePage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    gap: 40px;
+
+    width: 85%;
+
+    .NotasFavoritos {
+      display: flex;
+      justify-content: start;
+      gap: 10px;
+
+      width: 100%;
+    }
+  }
 }

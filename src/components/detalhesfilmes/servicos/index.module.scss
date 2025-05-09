@@ -1,30 +1,26 @@
-.servicos
-{
+.servicos {
+  display: flex;
+  justify-content: start;
+
+  width: 100%;
+
+  .contServicos {
     display: flex;
-    justify-content: start;
-    
-    width: 85%;
+    flex-direction: column;
+    align-items: start;
+    gap: 30px;
 
-    .contServicos
-    {
-        display: flex;
-        flex-direction: column;
-        align-items: start;
-        gap: 30px;
+    h3 {
+      font-size: 24px;
+      color: white;
 
-        h3
-        {
-            font-size: 24px;
-            color: white;
-
-            opacity: .3;
-        }
-
-        .todosServicos
-        {
-            display: grid;
-            grid-template-columns: auto auto auto auto auto;
-            gap: 10px;
-        }
+      opacity: 0.3;
     }
+
+    .todosServicos {
+      display: grid;
+      grid-template-columns: auto auto auto auto auto;
+      gap: 10px;
+    }
+  }
 }

@@ -34,9 +34,11 @@
 
       transition: 0.2s;
 
-      &:hover {
-        .card {
-          opacity: 0.5;
+      @media only screen and (min-width: 600px) {
+        &:hover {
+          .card {
+            opacity: 0.5;
+          }
         }
       }
 
@@ -50,8 +52,10 @@
 
         transition: 0.2s;
 
-        &:hover {
-          opacity: 1;
+        @media only screen and (min-width: 600px) {
+          &:hover {
+            opacity: 1;
+          }
         }
 
         .linkWrapper {

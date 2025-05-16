@@ -43,7 +43,7 @@ const Busca = () => {
     const { id, title } = filme;
     router.push({
       pathname: "/filme-aleatorio",
-      query: { filmeId: id },
+      query: { id: id },
     });
   };
 

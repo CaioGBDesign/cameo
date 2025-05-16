@@ -1,355 +1,160 @@
-.modal {
+.overlay {
   position: fixed;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-  align-items: center;
-
-  background: #1f0928;
-  border-radius: 30px;
-  border: solid #ffffff50 1px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
   z-index: 999;
 
-  overflow: hidden;
+  background: #00000050;
 
-  width: 912px;
-  height: 653px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  animation: BG 0.3s ease-out;
+  width: 100%;
+  height: 100vh;
 
-  @media only screen and (min-width: 600px) {
-    top: 50%;
-    left: 50%;
-
-    @keyframes OpenUp {
-      from {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(1.1);
-      }
-      to {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-      }
-    }
-  }
-
-  @media only screen and (max-width: 600px) {
-    border: none;
-    border-radius: 15px 15px 0px 0px;
-
-    bottom: 0;
-    left: 0;
-
-    width: 100%;
-
-    @keyframes OpenUp {
-      from {
-        transform: translateY(100%);
-      }
-      to {
-        transform: translateY(0);
-      }
-    }
-
-    &.close {
-      animation: CloseDown 0.3s ease-out;
-      animation-fill-mode: forwards;
-    }
-
-    @keyframes CloseDown {
-      from {
-        transform: translateY(0);
-      }
-      to {
-        transform: translateY(100%);
-      }
-    }
-  }
-  animation: OpenUp 0.3s ease-out;
+  animation: bg 0.3s ease-out;
   animation-fill-mode: forwards;
 
-  .contModal {
+  @media only screen and (max-width: 600px) {
+    align-items: end;
+  }
+
+  @keyframes bg {
+    from {
+      background: #00000000;
+    }
+    to {
+      background: #00000050;
+    }
+  }
+
+  .modal {
     display: flex;
     flex-direction: column;
+    justify-content: end;
     align-items: center;
-    gap: 50px;
+
+    background: #1f0928;
+    border-radius: 30px;
+    border: solid #ffffff50 1px;
+
+    overflow: hidden;
 
     width: 912px;
-    height: 60vh;
+    max-height: 653px;
 
-    overflow: scroll;
+    animation: slideUp 0.1s ease-out;
+    animation-fill-mode: forwards;
 
-    padding-top: 40px;
-    padding-bottom: 120px;
-
-    position: relative;
+    @keyframes slideUp {
+      from {
+        transform: scale(0.95);
+      }
+      to {
+        transform: scale(1);
+      }
+    }
 
     @media only screen and (max-width: 600px) {
-      width: 100%;
-    }
+      border: none;
+      border-radius: 15px 15px 0px 0px;
 
-    /* width */
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
-    .tituloFiltros {
-      width: 85%;
-
-      h2 {
-        font-size: 25px;
-        font-weight: bold;
-
-        color: #fff;
+      @keyframes slideUp {
+        from {
+          transform: translateY(100%);
+        }
+        to {
+          transform: translateY(0);
+        }
       }
     }
 
-    .separador {
+    .contFiltros {
       display: flex;
       flex-direction: column;
-      align-items: start;
-      gap: 20px;
-
-      width: 85%;
-
-      h3 {
-        font-size: 18px;
-        font-weight: 300;
-        color: white;
-        opacity: 0.5;
-      }
-
-      .seletor {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-
-        .opcao {
-          display: flex;
-
-          label {
-            position: relative;
-
-            padding: 10px 15px;
-
-            border: solid #ffffff20 1px;
-            border-radius: 10px;
-
-            font-size: 16px;
-            font-weight: 200;
-            color: white;
-
-            text-align: center;
-
-            cursor: pointer;
-          }
-
-          input {
-            position: absolute;
-            opacity: 0;
-
-            &:checked + label {
-              border: solid #2ba8e280 1px;
-            }
-          }
-        }
-      }
-
-      .streaming {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-
-        .opcaoTodos {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-
-          height: 35px;
-          flex-grow: 1;
-        }
-
-        label {
-          position: relative;
-
-          display: inline-block;
-
-          padding: 10px 10px;
-
-          border: solid #ffffff20 1px;
-          border-radius: 10px;
-
-          font-size: 16px;
-          font-weight: 200;
-          color: white;
-
-          img {
-            width: 35px;
-            display: block;
-          }
-        }
-
-        input {
-          position: absolute;
-          opacity: 0;
-
-          &:checked + label {
-            border: solid #2ba8e280 1px;
-          }
-        }
-      }
-
-      select {
-        width: 100%;
-        height: 60px;
-
-        background: none;
-        border: none;
-        border-bottom: solid 1px #ffffff40;
-
-        padding: 0px 10px;
-
-        font-size: 1rem;
-
-        color: white;
-
-        &:focus {
-          border-color: transparent;
-        }
-
-        option {
-          padding: 0.5rem;
-          background-color: #fff;
-          color: #333;
-        }
-      }
-    }
-
-    .paisAno {
-      display: flex;
       align-items: center;
-      gap: 40px;
+      gap: 50px;
 
-      width: 85%;
+      width: 912px;
+      height: 60vh;
+
+      overflow: scroll;
+
+      padding-top: 40px;
+      padding-bottom: 40px;
+
+      /* width */
+      &::-webkit-scrollbar {
+        display: none;
+      }
 
       @media only screen and (max-width: 600px) {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 50px;
-
         width: 100%;
       }
 
-      .separador {
+      .seletores {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+
+        width: 85%;
+
+        @media only screen and (max-width: 600px) {
+          flex-direction: column;
+          gap: 50px;
+
+          width: 100%;
+
+          align-items: center;
+        }
+      }
+
+      .filtrosGrupo {
         display: flex;
         flex-direction: column;
         align-items: start;
         gap: 20px;
-
-        width: 50%;
-
-        @media only screen and (max-width: 600px) {
-          width: 85%;
-        }
+        width: 85%;
 
         h3 {
           font-size: 18px;
           font-weight: 300;
-          color: white;
+          color: #fff;
           opacity: 0.5;
         }
 
-        .seletor {
+        .seletor,
+        .streaming {
           display: flex;
           flex-wrap: wrap;
           gap: 10px;
 
           .opcao {
             display: flex;
-            label {
-              position: relative;
-
-              padding: 10px 15px;
-
-              border: solid #ffffff20 1px;
-              border-radius: 10px;
-
-              font-size: 16px;
-              font-weight: 200;
-              color: white;
-
-              text-align: center;
-            }
 
             input {
               position: absolute;
               opacity: 0;
-
-              &:checked + label {
-                border: solid #2ba8e280 1px;
-              }
             }
 
-            .cert-L {
-              background: #24ff0030;
+            label {
+              position: relative;
+              padding: 10px 15px;
+              border: 1px solid hsla(0, 0%, 100%, 0.125);
+              border-radius: 10px;
+              font-size: 16px;
+              font-weight: 200;
+              color: #fff;
+              text-align: center;
+              cursor: pointer;
             }
 
-            .cert-10 {
-              background: #00c0ff50;
-            }
-
-            .cert-12 {
-              background: #ffcb0150;
-            }
-
-            .cert-14 {
-              background: #ff5f0150;
-            }
-
-            .cert-16 {
-              background: #ff010350;
-            }
-
-            .cert-18 {
-              background: #00000050;
-            }
-          }
-        }
-
-        .streaming {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
-
-          label {
-            position: relative;
-
-            display: inline-block;
-
-            padding: 10px 10px;
-
-            border: solid #ffffff20 1px;
-            border-radius: 10px;
-
-            font-size: 16px;
-            font-weight: 200;
-            color: white;
-
-            img {
-              width: 35px;
-              display: block;
-            }
-          }
-
-          input {
-            position: absolute;
-            opacity: 0;
-
-            &:checked + label {
-              border: solid #2ba8e280 1px;
+            input:checked + label {
+              border: 1px solid rgba(43, 168, 226, 0.502);
             }
           }
         }
@@ -357,20 +162,12 @@
         select {
           width: 100%;
           height: 60px;
-
           background: none;
           border: none;
-          border-bottom: solid 1px #ffffff40;
-
-          padding: 0px 10px;
-
+          border-bottom: 1px solid hsla(0, 0%, 100%, 0.251);
+          padding: 0 10px;
           font-size: 1rem;
-
-          color: white;
-
-          &:focus {
-            border-color: transparent;
-          }
+          color: #fff;
 
           option {
             padding: 0.5rem;
@@ -380,112 +177,90 @@
         }
       }
     }
-  }
 
-  .botoesFiltro {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    .botoesFiltro {
+      border-top: 1px solid hsla(0, 0%, 100%, 0.125);
 
-    width: 100%;
+      width: 100%;
+      height: 150px;
 
-    @media only screen and (min-width: 600px) {
-      z-index: 1;
-
-      border-top: solid #ffffff20 1px;
-      height: 200px;
-    }
-
-    @media only screen and (max-width: 600px) {
-      position: absolute;
-      bottom: 0px;
-      left: 0px;
-
-      background: linear-gradient(
-        to bottom,
-        rgba(37, 13, 47, 0) 0%,
-        #250d2f 100%
-      );
-
-      height: 100px;
-    }
-
-    .baseBotoes {
       display: flex;
-      justify-content: end;
+      justify-content: center;
       align-items: center;
-      gap: 15px;
 
-      @media only screen and (min-width: 600px) {
-        width: 95%;
-      }
-
-      @media only screen and (max-width: 600px) {
-        width: 85%;
-      }
-
-      .aplicar {
-        width: 200px;
-        height: 50px;
-
-        background: white;
-
-        @media only screen and (max-width: 600px) {
-          width: 80%;
-          height: 45px;
-        }
-      }
-
-      .fechar {
-        width: 20%;
-        height: 45px;
-
-        background: #3b2544;
-      }
-
-      .limparFiltros {
-        width: 200px;
-        height: 50px;
-
-        color: #fff;
-        font-weight: 500;
-
-        @media only screen and (max-width: 600px) {
-          background: #3b2544;
-
-          font-size: 18px;
-        }
-      }
-
-      button {
+      .baseBotoes {
         display: flex;
-        justify-content: center;
+        justify-content: end;
         align-items: center;
+        gap: 15px;
 
-        background: none;
-        border: none;
-
-        border-radius: 10px;
-
-        font-size: 20px;
-        font-weight: bold;
-        color: #1a1c22;
-
-        @media only screen and (min-width: 600px) {
-          cursor: pointer;
-
-          transition: 0.2s;
-
-          &:hover {
-            border-radius: 0px;
-          }
-        }
+        width: 95%;
 
         @media only screen and (max-width: 600px) {
+          width: 85%;
+        }
+
+        button {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: none;
+          border: none;
+          border-radius: 10px;
+          font-size: 20px;
+
+          cursor: pointer;
+        }
+
+        .limparFiltros {
           transition: 0.2s;
 
-          &:active {
-            transform: translateY(5px);
+          width: 200px;
+          height: 50px;
+
+          color: #fff;
+          font-weight: 500;
+
+          background-color: rgb(44, 20, 53);
+        }
+
+        .aplicar {
+          transition: 0.2s;
+
+          width: 200px;
+          height: 50px;
+          background: #fff;
+
+          position: relative;
+
+          .noResults {
+            position: absolute;
+            top: -65px;
+            left: 0px;
+
+            background: #3b2544;
+
+            padding: 10px;
+
+            font-size: 14px;
+            font-weight: 200;
+            color: #fff;
+
+            border-radius: 10px;
+
+            &::after {
+              content: "";
+              position: absolute;
+              bottom: -5px;
+              left: 45%;
+
+              width: 15px;
+              height: 15px;
+
+              background: #3b2544;
+
+              transform: rotate(135deg);
+            }
           }
         }
       }

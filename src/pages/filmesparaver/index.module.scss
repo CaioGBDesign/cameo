@@ -1,250 +1,73 @@
 .filmesAssisti {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  margin-top: 10%;
 
-  width: 100%;
+  display: flex;
+  justify-content: center;
 
   position: relative;
 
-  .blankSlate {
-    background-image: url("/background/background-cameo-desktop.jpg");
-    background-color: #250d2f;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 60px;
-
-    width: 100%;
-    height: 100vh;
+  .assistiPage {
+    width: 85%;
 
     @media only screen and (max-width: 600px) {
-      background-image: url("/background/background-cameo-login.png");
-    }
-
-    .banner {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      @media only screen and (max-width: 600px) {
-        width: 100%;
-        height: 314px;
-      }
-
-      img {
-        width: 100%;
-      }
-    }
-
-    .alertaBlankSlate {
-      span {
-        color: #fff;
-        font-size: 24px;
-        font-weight: bold;
-        text-align: center;
-      }
-    }
-
-    .botaoHome {
-      width: 20%;
-
-      transition: 0.2s;
-
-      a {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        width: 100%;
-        height: 60px;
-
-        border-radius: 45px;
-
-        background: linear-gradient(90deg, #1af5eb 0%, #2ba8e2 100%);
-        text-decoration: none;
-
-        p {
-          color: #fff;
-
-          font-size: 24px;
-          font-weight: bold;
-        }
-      }
-
-      &:hover {
-        width: 23%;
-      }
-
-      @media only screen and (max-width: 600px) {
-        width: 90%;
-      }
-    }
-  }
-
-  .nenhumfilme {
-    background-image: url("/background/background-cameo-login.png");
-    background-color: #250d2f;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-
-    width: 100%;
-    height: 100vh;
-
-    span {
-      width: 70%;
-
-      font-size: 35px;
-      font-weight: 400;
-      color: white;
-      text-align: center;
-    }
-
-    a {
-      text-decoration: none;
-
-      width: 70%;
-      .buscarFilmes {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        background: linear-gradient(90deg, #1af5eb 0%, #2ba8e2 100%);
-        border-radius: 50px;
-
-        width: 100%;
-        height: 60px;
-
-        font-size: 24px;
-        color: white;
-      }
-    }
-  }
-
-  .contFilmes {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    width: 100%;
-    margin-top: 130px;
-
-    @media only screen and (min-width: 600px) {
-      align-items: center;
-
-      gap: 30px;
-    }
-
-    .tituloFilmes {
-      display: flex;
-      justify-content: start;
-      align-items: center;
-
-      z-index: 1;
-
-      width: 85%;
-
-      @media only screen and (max-width: 600px) {
-        justify-content: center;
-
-        width: auto;
-      }
-
-      .contTitulos {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        gap: 20px;
-
-        width: 85%;
-
-        .NotasFavoritos {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 10px;
-        }
-      }
-    }
-
-    .todosOsTitulos {
-      display: flex;
-      justify-content: center;
-
       width: 100%;
 
-      padding-top: 20px;
-      padding-bottom: 50px;
+      margin-top: 20%;
 
-      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 100px;
+    }
+
+    .contAssisti {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
 
       @media only screen and (max-width: 600px) {
-        background: #250d2f;
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+      }
 
-        margin-top: 20px;
+      .tituloEListas {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 40px;
+
+        @media only screen and (max-width: 600px) {
+          order: 1;
+          align-items: center;
+        }
+      }
+    }
+
+    .fundoTitulos {
+      @media only screen and (max-width: 600px) {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+
+        width: 100%;
+        height: 400px;
+
+        overflow: hidden;
 
         &::after {
           content: "";
-
           position: absolute;
-          top: -300px;
+          bottom: 0px;
           left: 0px;
 
           width: 100%;
-          height: 300px;
-          background: linear-gradient(rgba(#250d2f, 0) 0%, #250d2f 100%);
+          height: 400px;
+
+          background: linear-gradient(180deg, rgba(37, 13, 47, 0) 0, #250d2f);
         }
       }
-
-      .contlista {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 40px;
-
-        width: 85%;
-
-        .listaFilmes {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 40px 26px;
-
-          @media only screen and (max-width: 600px) {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-          }
-
-          @media (max-width: 768px) {
-            grid-template-columns: repeat(4, 1fr);
-          }
-
-          @media (max-width: 480px) {
-            grid-template-columns: repeat(4, 1fr);
-          }
-        }
-      }
-    }
-  }
-
-  .footerFilmes {
-    width: 100%;
-
-    @media only screen and (max-width: 600px) {
-      background: #250d2f;
     }
   }
 }

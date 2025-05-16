@@ -5,6 +5,19 @@
 
   width: 100%;
 
+  @media only screen and (max-width: 600px) {
+    order: 4;
+
+    width: 90%;
+
+    overflow: scroll;
+
+    /* width */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
   h2 {
     font-size: 24px;
     color: #fff;

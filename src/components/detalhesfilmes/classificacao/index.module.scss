@@ -4,19 +4,6 @@
   align-items: start;
   gap: 30px;
 
-  @media only screen and (max-width: 600px) {
-    width: 85%;
-  }
-
-  h3 {
-    font-size: 24px;
-    color: white;
-
-    opacity: 0.3;
-
-    margin: 0;
-  }
-
   .livre,
   .dezAnos,
   .dozeAnos,
@@ -27,6 +14,16 @@
     border-radius: 10px;
 
     color: #ffffff;
+
+    @media only screen and (max-width: 600px) {
+      font-size: 14px;
+      font-weight: 200;
+      text-align: center;
+
+      padding: 5px;
+
+      border-radius: 5px;
+    }
   }
 
   .livre {

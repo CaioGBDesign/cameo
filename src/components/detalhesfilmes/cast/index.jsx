@@ -14,7 +14,7 @@ const Elenco = ({ cast }) => {
                 src={
                   ator.profile_path
                     ? `https://image.tmdb.org/t/p/w185${ator.profile_path}`
-                    : "/placeholder.jpg"
+                    : "/background/cameo-placeholder-cast.jpg"
                 }
                 alt={ator.name}
               />

@@ -1,370 +1,98 @@
-.detalhesFilmes {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
+.container {
   margin-top: 10%;
 
-  animation: slideUp 0.3s ease-out;
+  display: flex;
+  justify-content: center;
 
-  @keyframes slideUp {
-    from {
-      transform: translateY(5%);
-    }
-    to {
-      transform: translateY(0);
-    }
-  }
+  position: relative;
 
-  @media only screen and (max-width: 600px) {
-    margin-top: 110%;
-  }
-
-  .informacoes {
-    background: none;
-
-    width: 100%;
-
-    display: flex;
-    flex-direction: column;
-    gap: 50px;
-
-    padding: 40px 0px;
-
-    position: relative;
+  .homePage {
+    width: 85%;
 
     @media only screen and (max-width: 600px) {
-      margin-bottom: 0px;
+      width: 100%;
 
-      background: #250d2f;
-
-      &::after {
-        content: "";
-
-        position: absolute;
-        top: 0px;
-        left: 0px;
-
-        background: linear-gradient(270deg, #fdf57c 0%, #f314fb 100%);
-
-        width: 100%;
-        height: 5px;
-      }
+      margin-top: 110%;
     }
 
-    .tituloFilmes {
+    .contHome {
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
 
-      z-index: 1;
-
-      .contTitulos {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: start;
-        gap: 40px;
-
-        width: 85%;
-
-        @media only screen and (max-width: 600px) {
-          align-items: center;
-        }
-
-        .DuracaoLancamentoMobile {
-          display: flex;
-          justify-content: center;
-          gap: 10px;
-
-          p {
-            font-size: 14px;
-            font-weight: 200;
-            color: white;
-            text-align: center;
-          }
-        }
-
-        .NotasFavoritos {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 10px;
-
-          a {
-            text-decoration: none;
-
-            display: flex;
-            gap: 10px;
-
-            .NotasLogin {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-
-              background: white;
-              border-radius: 5px;
-
-              padding: 13px 15px;
-
-              .avaliar {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 10px;
-
-                font-size: 14px;
-                font-weight: 700;
-                color: #250d2f;
-              }
-            }
-
-            .FavoritarLogin {
-              background: rgba(255, 255, 255, 0.062745098);
-              border-radius: 5px;
-
-              padding: 12px;
-
-              display: flex;
-              justify-content: center;
-              align-items: center;
-
-              cursor: pointer;
-            }
-          }
-        }
-      }
-    }
-
-    .infoFilmes {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 50px;
-
-      width: 100%;
-
-      .detalhesDispositivo {
-        display: flex;
-        gap: 50px;
-
-        width: 85%;
-
-        @media only screen and (max-width: 600px) {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 50px;
-
-          width: 100%;
-        }
-
-        .detalhes {
-          display: flex;
-          flex-direction: column;
-          align-items: start;
-          gap: 30px;
-
-          @media only screen and (max-width: 600px) {
-            display: flex;
-            flex-direction: column;
-            align-items: start;
-            gap: 30px;
-
-            width: 85%;
-          }
-
-          .origemDeskop {
-            display: flex;
-            gap: 20px;
-
-            .produtora {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-
-              p {
-                font-size: 18px;
-                color: white;
-              }
-            }
-          }
-
-          .producao {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-
-            .produtora {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-
-              border: solid #ffffff30 1px;
-              border-radius: 5px;
-
-              padding: 10px;
-
-              p {
-                font-size: 18px;
-                color: white;
-              }
-            }
-          }
-
-          h3 {
-            font-size: 24px;
-            color: white;
-
-            opacity: 0.3;
-
-            margin: 0;
-          }
-
-          p {
-            font-size: 18px;
-            color: white;
-          }
-        }
-      }
-    }
-
-    .dublagem {
-      display: flex;
-      justify-content: center;
-
-      width: 100%;
-
-      position: relative;
-    }
-
-    .elencoGeral {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       gap: 40px;
 
       width: 100%;
 
-      padding: 40px 0px;
-
       @media only screen and (max-width: 600px) {
-        background: #00000020;
+        background: #250d2f;
+
+        padding-top: 40px;
+
+        position: relative;
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          background: linear-gradient(270deg, #fdf57c, #f314fb);
+          width: 100%;
+          height: 5px;
+        }
       }
 
-      hr {
-        width: 85%;
-        height: 1px;
+      .NotasFavoritos {
+        display: flex;
+        justify-content: start;
+        gap: 10px;
 
-        background: white;
+        width: 100%;
 
-        border: none;
+        @media only screen and (max-width: 600px) {
+          order: 0;
 
-        opacity: 0.1;
+          justify-content: center;
+        }
       }
     }
 
-    .recomendacoes {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 30px;
+    .contBotoes {
+      position: fixed;
+      bottom: 50px;
+      right: 50px;
 
-      width: 85%;
+      z-index: 9;
 
-      h3 {
-        font-size: 24px;
-        color: white;
-
-        opacity: 0.3;
-
-        margin: 0;
-      }
-
-      .contRecomendacoes {
+      @media only screen and (max-width: 600px) {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 10px;
 
-        .scrollRecomendacoes {
-          display: flex;
-          align-items: start;
-          gap: 15px;
+        width: 100%;
+        height: 120px;
 
-          width: 100%;
+        bottom: 0px;
+        right: 0px;
 
-          overflow-x: scroll;
+        background: linear-gradient(180deg, rgba(37, 13, 47, 0) 0, #250d2f);
+      }
 
-          /* width */
-          &::-webkit-scrollbar {
-            display: none;
-          }
+      .baseBotoes {
+        display: flex;
+        gap: 15px;
 
-          .listaRecomendacoes {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 10px;
+        @media only screen and (max-width: 600px) {
+          width: 90%;
+        }
 
-            width: 100px;
-
-            .fotoRecomendacoes {
-              position: relative;
-              width: 100px;
-              height: 150px;
-
-              border-radius: 5px;
-              overflow: hidden;
-
-              transition: 0.2s;
-
-              .objectFit {
-                object-fit: cover;
-
-                width: 100%;
-                height: 100%;
-              }
-            }
-
-            span {
-              font-size: 14px;
-              font-weight: 200;
-
-              text-align: left;
-
-              color: white;
-              text-align: center;
-            }
+        .BotaoSecundario {
+          @media only screen and (max-width: 600px) {
+            width: 35%;
           }
         }
       }
     }
-  }
-
-  .footerHome {
-    width: 100%;
-
-    @media only screen and (max-width: 600px) {
-      background: #250d2f;
-    }
-  }
-}
-
-.loadingModal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999; /* Garante que o modal fique sobre outros elementos */
-
-  img {
-    width: 100px; // Tamanho ajustável do GIF
-    height: 100px;
   }
 }

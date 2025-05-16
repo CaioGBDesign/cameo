@@ -6,6 +6,10 @@
     align-items: center;
     gap: 30px;
 
+    @media only screen and (max-width: 600px) {
+      justify-content: center;
+    }
+
     .posterTrailer {
       width: 267px;
       height: 150px;
@@ -69,14 +73,26 @@
           font-weight: 500;
           color: #fff;
           text-align: left;
+
+          @media only screen and (max-width: 600px) {
+            font-size: 24px;
+            font-weight: 300;
+            color: #fff;
+            text-align: center;
+          }
         }
       }
 
       .classificacaoGenero {
         display: flex;
-        justify-content: center;
+        justify-content: start;
         align-items: center;
         gap: 20px;
+
+        @media only screen and (max-width: 600px) {
+          flex-direction: column;
+          justify-content: center;
+        }
 
         .generosList {
           display: flex;
@@ -100,24 +116,26 @@
           }
         }
 
-        .dataLancamento,
-        .duracaoFilme {
+        .lancamentoDuracao {
           display: flex;
           justify-content: center;
           align-items: center;
           gap: 20px;
 
-          font-size: 14px;
-          font-weight: 200;
-          color: #fff;
-          text-align: center;
-        }
+          .dataLancamento,
+          .duracaoFilme {
+            font-size: 14px;
+            font-weight: 200;
+            color: #fff;
+            text-align: center;
+          }
 
-        span {
-          font-size: 24px;
-          font-weight: 200;
-          color: #fff;
-          text-align: center;
+          span {
+            font-size: 24px;
+            font-weight: 200;
+            color: #fff;
+            text-align: center;
+          }
         }
       }
     }

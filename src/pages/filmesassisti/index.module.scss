@@ -1,317 +1,85 @@
 .filmesAssisti {
+  margin-top: 10%;
+
   display: flex;
   justify-content: center;
 
-  width: 100%;
-
   position: relative;
 
-  .blankSlate {
-    background-image: url("/background/background-cameo-desktop.jpg");
-    background-color: #250d2f;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 60px;
-
-    width: 100%;
-    height: 100vh;
+  .assistiPage {
+    width: 85%;
 
     @media only screen and (max-width: 600px) {
-      background-image: url("/background/background-cameo-login.png");
-    }
-
-    .banner {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      @media only screen and (max-width: 600px) {
-        width: 100%;
-        height: 314px;
-      }
-
-      img {
-        width: 100%;
-      }
-    }
-
-    .alertaBlankSlate {
-      span {
-        color: #fff;
-        font-size: 24px;
-        font-weight: bold;
-        text-align: center;
-      }
-    }
-
-    .botaoHome {
-      width: 20%;
-
-      transition: 0.2s;
-
-      a {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        width: 100%;
-        height: 60px;
-
-        border-radius: 45px;
-
-        background: linear-gradient(90deg, #1af5eb 0%, #2ba8e2 100%);
-        text-decoration: none;
-
-        p {
-          color: #fff;
-
-          font-size: 24px;
-          font-weight: bold;
-        }
-      }
-
-      &:hover {
-        width: 23%;
-      }
-
-      @media only screen and (max-width: 600px) {
-        width: 90%;
-      }
-    }
-  }
-
-  .contFilmes {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    width: 100%;
-    margin-top: 130px;
-
-    @media only screen and (min-width: 600px) {
-      align-items: center;
-
-      gap: 30px;
-    }
-
-    .topoInfos {
-      display: flex;
-      justify-content: space-between;
-
-      width: 85%;
-
-      @media only screen and (max-width: 600px) {
-        width: 100%;
-      }
-
-      .InfoFilme {
-        display: flex;
-      }
-    }
-
-    .ContGraficosGeneros {
-      display: flex;
-      justify-content: center;
-
       width: 100%;
-      .GraficosGeneros {
-        display: flex;
-        justify-content: start;
 
-        width: 85%;
+      margin-top: 20%;
 
-        z-index: 1;
-
-        overflow: scroll;
-
-        .ContGraficos {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-
-          width: 100%;
-
-          z-index: 1;
-
-          .BoxtGraficos {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 15px;
-
-            height: 150px;
-
-            padding: 20px 0px;
-
-            .quantidadePercentual {
-              span {
-                color: #fff;
-                font-size: 10px;
-
-                opacity: 0.8;
-                margin: 0;
-                padding: 0;
-              }
-            }
-
-            .BarraGenero {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-
-              width: 50px;
-              min-height: 1px;
-
-              background: #2ba8e2;
-              border-radius: 2px;
-
-              animation: graph 1s forwards ease-in-out;
-
-              overflow: hidden;
-
-              @keyframes graph {
-                0% {
-                  height: 0;
-                }
-              }
-            }
-
-            .GeneroFilmes {
-              display: flex;
-
-              span {
-                width: 45px;
-
-                color: #fff;
-                font-size: 10px;
-
-                opacity: 0.5;
-                margin: 0;
-                padding: 0;
-
-                text-align: center;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                word-wrap: break-word;
-              }
-            }
-          }
-        }
-      }
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 100px;
     }
 
     .contAssisti {
       display: flex;
       justify-content: space-between;
-
-      width: 85%;
+      align-items: start;
 
       @media only screen and (max-width: 600px) {
         flex-direction: column;
-
-        width: 100%;
+        align-items: center;
+        gap: 40px;
       }
 
-      .todosOsTitulos {
+      .tituloEListas {
         display: flex;
-        justify-content: center;
-
-        width: 1004px;
-
-        position: relative;
+        flex-direction: column;
+        align-items: start;
+        gap: 40px;
 
         @media only screen and (max-width: 600px) {
-          width: 100%;
-
-          background: #250d2f;
-          padding: 40px 0px;
-
           order: 1;
-
-          &::after {
-            content: "";
-
-            position: absolute;
-            top: -490px;
-            left: 0px;
-
-            width: 100%;
-            height: 510px;
-            background: linear-gradient(
-              180deg,
-              rgba(37, 13, 47, 0) 0%,
-              #250d2f 35.5%
-            );
-          }
-        }
-
-        .contlista {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          gap: 40px;
-
-          width: 100%;
-
-          @media only screen and (max-width: 600px) {
-            width: 85%;
-          }
-
-          .listaFilmes {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 40px 26px;
-
-            @media only screen and (max-width: 600px) {
-              display: grid;
-              grid-template-columns: repeat(4, 1fr);
-              gap: 20px;
-            }
-
-            @media (max-width: 768px) {
-              grid-template-columns: repeat(4, 1fr);
-            }
-
-            @media (max-width: 480px) {
-              grid-template-columns: repeat(4, 1fr);
-            }
-          }
+          align-items: center;
         }
       }
 
       .graficosGeneroMes {
         display: flex;
         flex-direction: column;
+        justify-content: center;
         align-items: center;
         gap: 20px;
 
         @media only screen and (max-width: 600px) {
-          width: 100%;
-
-          z-index: 1;
-
-          /* width */
-          ::-webkit-scrollbar {
-            display: none;
-          }
+          order: 0;
         }
       }
     }
-  }
 
-  .footerFilmes {
-    width: 100%;
+    .fundoTitulos {
+      @media only screen and (max-width: 600px) {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
 
-    @media only screen and (max-width: 600px) {
-      background: #250d2f;
+        width: 100%;
+        height: 400px;
+
+        overflow: hidden;
+
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: 0px;
+          left: 0px;
+
+          width: 100%;
+          height: 400px;
+
+          background: linear-gradient(180deg, rgba(37, 13, 47, 0) 0, #250d2f);
+        }
+      }
     }
   }
 }

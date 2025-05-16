@@ -8,6 +8,10 @@
 
   // overflow: hidden;
 
+  @media only screen and (max-width: 600px) {
+    position: relative;
+  }
+
   animation: slideUp 1.5s ease-out;
 
   @keyframes slideUp {
@@ -19,7 +23,7 @@
     }
   }
 
-  .play {
+  .botaoTrailer {
     position: absolute;
 
     width: 100%;
@@ -46,6 +50,10 @@
       // Exemplo de altura
 
       transition: 0.2s;
+
+      @media only screen and (max-width: 600px) {
+        width: 100% !important;
+      }
 
       .objectFit {
         object-fit: cover;
@@ -101,6 +109,10 @@
 
       img {
         width: 100%;
+
+        @media only screen and (max-width: 600px) {
+          height: auto;
+        }
       }
     }
   }

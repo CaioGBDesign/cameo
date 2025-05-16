@@ -4,6 +4,12 @@
 
   width: 100%;
 
+  @media only screen and (max-width: 600px) {
+    order: 2;
+
+    width: 90%;
+  }
+
   .contServicos {
     display: flex;
     flex-direction: column;

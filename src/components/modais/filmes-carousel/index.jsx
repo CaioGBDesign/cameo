@@ -58,7 +58,7 @@ const FilmesCarousel = ({
   // Função para atualizar a URL ao clicar na imagem
   const handleImageClick = () => {
     if (selectedFilm) {
-      router.push(`/filme-aleatorio/?filmeId=${selectedFilm.id}`, undefined, {
+      router.push(`/filme-aleatorio/?id=${selectedFilm.id}`, undefined, {
         shallow: true,
       });
     }

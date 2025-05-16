@@ -1,0 +1,79 @@
+.blankSlate {
+  background-image: url("/background/background-cameo-desktop.jpg");
+  background-color: #250d2f;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+
+  width: 100%;
+  height: 100vh;
+
+  @media only screen and (max-width: 600px) {
+    background-image: url("/background/background-cameo-login.png");
+  }
+
+  .banner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @media only screen and (max-width: 600px) {
+      width: 100%;
+      height: 314px;
+    }
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .alertaBlankSlate {
+    span {
+      color: #fff;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+    }
+  }
+
+  .botaoHome {
+    width: 20%;
+
+    transition: 0.2s;
+
+    a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 100%;
+      height: 60px;
+
+      border-radius: 45px;
+
+      background: linear-gradient(90deg, #1af5eb 0%, #2ba8e2 100%);
+      text-decoration: none;
+
+      p {
+        color: #fff;
+
+        font-size: 24px;
+        font-weight: bold;
+      }
+    }
+
+    &:hover {
+      width: 23%;
+    }
+
+    @media only screen and (max-width: 600px) {
+      width: 90%;
+    }
+  }
+}

@@ -4,6 +4,13 @@
   gap: 50px;
 
   width: 100%;
+  @media only screen and (max-width: 600px) {
+    order: 5;
+
+    flex-direction: column;
+
+    width: 90%;
+  }
 
   .item {
     display: flex;

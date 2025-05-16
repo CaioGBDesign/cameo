@@ -47,13 +47,7 @@ const Classificacao = ({ releaseDates }) => {
       <p>Classificação não disponível</p>
     );
 
-    return (
-      <div className={styles.detalhes}>
-        {isMobile ? <h3>Classificação Indicativa</h3> : null}
-
-        {certificationDisplay}
-      </div>
-    );
+    return <div className={styles.detalhes}>{certificationDisplay}</div>;
   }
 
   return null; // Não exibe nada se não houver classificação

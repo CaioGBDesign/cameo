@@ -28,7 +28,16 @@ const Direcao = ({ crew }) => {
                   priority={false}
                 />
               ) : (
-                <div className={styles.placeholder}>Sem imagem</div>
+                <div className={styles.placeholder}>
+                  <Image
+                    src={"/background/cameo-placeholder-cast.jpg"}
+                    alt={dir.name}
+                    width={185}
+                    height={185}
+                    className={styles.image}
+                    priority={false}
+                  />
+                </div>
               )}
             </div>
             <p className={styles.name}>{dir.name}</p>

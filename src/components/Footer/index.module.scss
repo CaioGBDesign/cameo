@@ -3,17 +3,19 @@
   justify-content: center;
   align-items: center;
 
-  background: radial-gradient(
-    89.31% 89.31% at 50% 139.31%,
-    rgba(243, 20, 251, 0.1) 0%,
-    rgba(243, 20, 251, 0) 100%
-  );
-
   position: relative;
 
   margin-top: 200px;
 
   width: 100%;
+
+  @media only screen and (max-width: 600px) {
+    order: 8;
+
+    margin-top: 0px;
+
+    width: 90%;
+  }
 
   a {
     text-decoration: none;
@@ -24,7 +26,7 @@
     justify-content: space-between;
     align-items: center;
 
-    width: 80%;
+    width: 100%;
 
     position: relative;
 
@@ -172,12 +174,12 @@
         font-weight: bold;
         font-size: 34px;
 
-        width: 220px;
+        width: 230px;
 
         @media only screen and (max-width: 600px) {
           font-size: 20px;
 
-          width: 120px;
+          width: 135px;
         }
       }
     }

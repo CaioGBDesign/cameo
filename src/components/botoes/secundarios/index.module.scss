@@ -1,39 +1,63 @@
-.botao-secundario {
-  width: 70px;
-  height: 70px;
+.botaoSecundario {
+  position: relative;
 
-  background: #3b2544;
+  .notificacao {
+    position: absolute;
+    top: -5px;
+    left: -5px;
 
-  color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  border: none;
-  border-radius: 10px;
+    background: #fedc33;
+    border-radius: 20px;
 
-  font-size: 20px;
-  text-align: center;
+    width: 20px;
+    height: 20px;
+    z-index: 999;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  transition: 0.2s;
-
-  cursor: pointer;
-
-  @media only screen and (max-width: 600px) {
-    width: 100%;
-    height: 50px;
+    color: #250d2f;
   }
+  .botao-secundario {
+    width: 70px;
+    height: 70px;
 
-  &:active {
-    transform: translateY(5px);
-  }
+    background: #3b2544;
 
-  @media only screen and (min-width: 600px) {
-    &:hover {
-      width: 80px;
+    color: white;
 
-      border-radius: 0px;
+    border: none;
+    border-radius: 10px;
+
+    font-size: 20px;
+    text-align: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transition: 0.2s;
+
+    cursor: pointer;
+
+    @media only screen and (max-width: 600px) {
+      width: 100%;
+      height: 50px;
+
+      font-size: 18px;
+    }
+
+    &:active {
+      transform: translateY(5px);
+    }
+
+    @media only screen and (min-width: 600px) {
+      &:hover {
+        width: 80px;
+
+        border-radius: 0px;
+      }
     }
   }
 }

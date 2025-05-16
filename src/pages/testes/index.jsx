@@ -1,21 +1,15 @@
-import React, { useEffect, useState, useCallback } from "react";
-import Head from "next/head";
+import React, { useState, useEffect, useCallback } from "react";
+import styles from "./index.module.scss";
 import dynamic from "next/dynamic";
 import { useIsMobile } from "@/components/DeviceProvider";
+import Head from "next/head";
+import Private from "@/components/Private";
 import TitulosFilmesDesktop from "@/components/titulosFilmesDesktop";
-import Sinopse from "@/components/detalhesfilmes/sinopse";
-import NotasFilmes from "@/components/botoes/notas";
-import FavoritarFilme from "@/components/detalhesfilmes/favoritarfilme";
-import AssistirFilme from "@/components/detalhesfilmes/paraver";
-import ModalAvaliar from "@/components/modais/avaliar-filmes";
-import Servicos from "@/components/detalhesfilmes/servicos";
-import InfoFilme from "@/components/infoFilme";
-import Cast from "@/components/detalhesfilmes/cast";
-import Direcao from "@/components/detalhesfilmes/direcao";
-import ProducaoFilmes from "@/components/detalhesfilmes/producaoFilme";
-import Recomendacoes from "@/components/detalhesfilmes/recomendacoes";
+import Titulolistagem from "@/components/titulolistagem";
+import BlankSlate from "@/components/blank-slate";
+import ListaPageFilmes from "@/components/detalhesfilmes/listaPageFilmes";
+import FilmesCarousel from "@/components/modais/filmes-carousel";
 import { useAuth } from "@/contexts/auth";
-import styles from "./index.module.scss";
 
 const Header = dynamic(() => import("@/components/Header"));
 const HeaderDesktop = dynamic(() => import("@/components/HeaderDesktop"));
@@ -24,181 +18,170 @@ const FundoTitulosDesktop = dynamic(() =>
   import("@/components/fotoPrincipalDesktop")
 );
 
-export default function FilmeAleatorio() {
+export default function FilmesAssisti() {
   const isMobile = useIsMobile();
-  const {
-    user,
-    avaliarFilme,
-    assistirFilme,
-    removerAssistir,
-    salvarFilme,
-    removerFilme,
-  } = useAuth();
+  const { user, removerFilme } = useAuth();
+  const apiKey = "c95de8d6070dbf1b821185d759532f05";
 
+  const [filmesParaAssistir, setFilmesParaAssistir] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [filme, setFilme] = useState(null);
-  const [cast, setCast] = useState([]);
-  const [crew, setCrew] = useState([]);
-  const [related, setRelated] = useState([]);
   const [trailerLink, setTrailerLink] = useState(null);
   const [releaseDates, setReleaseDates] = useState([]);
-  const [servicosDisponiveis, setServicosDisponiveis] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [modalType, setModalType] = useState(null);
-
-  const [assistList, setAssistList] = useState(user?.assistir || []);
-  const [favoritosList, setFavoritosList] = useState(user?.favoritos || []);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedFilm, setSelectedFilm] = useState(null);
 
   useEffect(() => {
-    setAssistList(user?.assistir || []);
-    setFavoritosList(user?.favoritos || []);
-  }, [user?.assistir, user?.favoritos]);
+    let ids = [];
 
-  const openModal = (type) => setModalType(type);
-  const closeModal = () => setModalType(null);
+    if (Array.isArray(user?.favoritos)) {
+      // “para favoritos” salvo como array de strings
+      ids = user.favoritos;
+    } else if (user?.favoritos && typeof user.favoritos === "object") {
+      // caso fosse objeto, pegaria as chaves
+      ids = Object.keys(user.favoritos);
+    }
 
-  const handleWatchClick = useCallback(
-    (id) => {
-      const sid = String(id);
-      if (assistList.includes(sid)) {
-        removerAssistir(sid);
-        setAssistList((prev) => prev.filter((f) => f !== sid));
-      } else {
-        assistirFilme(sid);
-        setAssistList((prev) => [...prev, sid]);
+    if (!ids.length) {
+      setLoading(false);
+      return;
+    }
+
+    Promise.all(
+      ids.map((id) =>
+        fetch(
+          `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=pt-BR`
+        )
+          .then((res) => {
+            if (!res.ok) throw new Error(`TMDB retornou status ${res.status}`);
+            return res.json();
+          })
+          .then((data) => ({
+            id: data.id,
+            title: data.title,
+            poster_path: data.poster_path,
+            avaliacao: {
+              nota: Array.isArray(user.favoritos) ? null : user.favoritos[id],
+            },
+          }))
+      )
+    )
+      .then((lista) => {
+        setFilmesParaAssistir(lista);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  }, [user?.favoritos, apiKey]);
+
+  const fetchMovie = useCallback(
+    async (movieId) => {
+      try {
+        const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=pt-BR&append_to_response=videos,release_dates`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`Status ${res.status}`);
+        const data = await res.json();
+        setFilme(data);
+        const trailer = data.videos?.results.find(
+          (v) => v.type === "Trailer" && v.site === "YouTube"
+        );
+        setTrailerLink(
+          trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : null
+        );
+        setReleaseDates(data.release_dates?.results || []);
+      } catch (err) {
+        console.error("Erro ao buscar filme de topo:", err);
       }
     },
-    [assistList, assistirFilme, removerAssistir]
+    [apiKey]
   );
 
   useEffect(() => {
-    const fetchFilme = async () => {
-      setLoading(true);
-      try {
-        const { default: listafilmes } = await import(
-          "@/components/listafilmes/listafilmes.json"
-        );
-        const ids = Array.isArray(listafilmes.filmes) ? listafilmes.filmes : [];
-        const randomId = ids[Math.floor(Math.random() * ids.length)];
-        if (!randomId) throw new Error("Nenhum ID de filme válido.");
+    if (!loading && filmesParaAssistir.length) {
+      const rnd =
+        filmesParaAssistir[
+          Math.floor(Math.random() * filmesParaAssistir.length)
+        ];
+      fetchMovie(rnd.id);
+    }
+  }, [loading, filmesParaAssistir, fetchMovie]);
 
-        const apiKey = "c95de8d6070dbf1b821185d759532f05";
-        const url = `https://api.themoviedb.org/3/movie/${randomId}?api_key=${apiKey}&language=pt-BR&append_to_response=videos,release_dates,watch/providers,credits,similar`;
-        const res = await fetch(url);
-        const data = await res.json();
-        setFilme(data);
+  const handleExcluirFilme = (id) => {
+    removerFilme(id);
+    setFilmesParaAssistir((prev) => prev.filter((f) => f.id !== Number(id)));
+  };
 
-        // credits
-        setCast(data.credits?.cast || []);
-        setCrew(data.credits?.crew || []);
-
-        // trailer
-        const tr = data.videos?.results.find(
-          (v) => v.type === "Trailer" && v.site === "YouTube"
-        );
-        setTrailerLink(tr ? `https://www.youtube.com/watch?v=${tr.key}` : null);
-
-        // releases & providers
-        setReleaseDates(data.release_dates?.results || []);
-        setServicosDisponiveis(
-          data["watch/providers"]?.results?.BR?.flatrate || []
-        );
-
-        // related movies
-        setRelated(data.similar?.results || []);
-      } catch (err) {
-        console.error("Erro ao buscar filme:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchFilme();
-  }, []);
-
-  const description = filme
-    ? `Assista a ${filme.title}, um filme de ${
-        Array.isArray(filme.genres)
-          ? filme.genres.map((g) => g.name).join(", ")
-          : ""
-      }`
-    : "Carregando filme aleatório...";
+  const openModal = (film) => {
+    setSelectedFilm(film);
+    setModalOpen(true);
+  };
 
   return (
-    <>
-      {isMobile ? <Header /> : <HeaderDesktop />}
+    <Private>
       <Head>
-        <title>Cameo – Filme Aleatório</title>
-        <meta name="description" content={description} />
-        <link rel="canonical" href="https://cameo.fun/testes" />
+        <title>Cameo - favoritos</title>
+        <meta
+          name="description"
+          content="Encontre seus filmes favoritos em um só lugar! Salve os títulos que você mais ama e tenha sempre à mão suas melhores recomendações."
+        />
       </Head>
 
-      <main className={styles.container}>
-        <div className={styles.homePage}>
-          {!loading && filme && (
-            <>
-              <TitulosFilmesDesktop
-                filme={filme}
-                trailerLink={trailerLink}
-                releaseDates={releaseDates}
-              />
-              <Sinopse sinopse={filme.overview} />
+      {isMobile ? <Header /> : <HeaderDesktop />}
 
-              <div className={styles.NotasFavoritos}>
-                <NotasFilmes
-                  filmeId={filme.id}
-                  avaliarFilme={avaliarFilme}
-                  usuarioFilmeVisto={user?.visto?.hasOwnProperty(filme.id)}
-                  onClickModal={() => openModal("rating")}
+      {filme ? (
+        <main className={styles.filmesAssisti}>
+          <div className={styles.assistiPage}>
+            <div className={styles.contAssisti}>
+              <div className={styles.tituloEListas}>
+                <TitulosFilmesDesktop
+                  filme={filme}
+                  trailerLink={trailerLink}
+                  releaseDates={releaseDates}
                 />
-                {!assistList.includes(String(filme.id)) && (
-                  <div className={styles.assistirContainer}>
-                    <AssistirFilme
-                      filmeId={filme.id}
-                      assistirFilme={() => handleWatchClick(filme.id)}
-                      removerAssistir={removerAssistir}
-                      usuarioParaVer={assistList}
-                    />
-                  </div>
-                )}
-                <FavoritarFilme
-                  filmeId={String(filme.id)}
-                  salvarFilme={salvarFilme}
-                  removerFilme={removerFilme}
-                  usuarioFavoritos={favoritosList}
+
+                <Titulolistagem
+                  quantidadeFilmes={filmesParaAssistir.length}
+                  titulolistagem={"Meus favoritos"}
+                />
+
+                <ListaPageFilmes
+                  listagemDeFilmes={filmesParaAssistir}
+                  loading={loading}
+                  mostrarBotaoFechar
+                  handleExcluirFilme={handleExcluirFilme}
+                  openModal={openModal}
                 />
               </div>
+            </div>
 
-              {servicosDisponiveis.length > 0 && (
-                <Servicos servicos={servicosDisponiveis} />
-              )}
+            <Footer />
 
-              <InfoFilme
-                budget={filme.budget}
-                revenue={filme.revenue}
-                production_countries={filme.production_countries}
+            {modalOpen && (
+              <FilmesCarousel
+                filmes={filmesParaAssistir}
+                selectedFilm={selectedFilm} // Mantenha esta linha
+                onClose={() => setModalOpen(false)}
+                excluirFilme={() => {
+                  removerFilme(String(selectedFilm.id));
+                  setModalOpen(false);
+                }}
               />
-              <Direcao crew={crew} />
-              <Cast cast={cast} />
-              <ProducaoFilmes companies={filme.production_companies} />
-              <Recomendacoes movies={related} />
+            )}
 
+            <div className={styles.fundoTitulos}>
               <FundoTitulosDesktop
                 capaAssistidos={`https://image.tmdb.org/t/p/original/${filme.backdrop_path}`}
+                capaAssistidosMobile={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
                 tituloAssistidos={filme.title}
-                opacidade={1}
+                opacidade={0.2}
               />
-
-              {modalType === "rating" && (
-                <ModalAvaliar
-                  filmeId={filme.id}
-                  nota={user?.visto?.[filme.id]}
-                  onClose={closeModal}
-                />
-              )}
-            </>
-          )}
-        </div>
-      </main>
-      <Footer />
-    </>
+            </div>
+          </div>
+        </main>
+      ) : (
+        <BlankSlate />
+      )}
+    </Private>
   );
 }

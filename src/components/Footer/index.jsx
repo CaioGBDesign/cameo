@@ -4,6 +4,7 @@ import { useIsMobile } from "@/components/DeviceProvider";
 import { auth } from "@/services/firebaseConection";
 import styles from "./index.module.scss";
 import Link from "next/link";
+import Image from "next/image";
 
 const Footer = ({ style }) => {
   const isMobile = useIsMobile();
@@ -34,7 +35,13 @@ const Footer = ({ style }) => {
                 <Link href="/sobre">
                   <div className={styles.BotaoSobreBox}>
                     <span>Sobre a Cameo</span>
-                    <img src="/icones/arrow.svg" alt="seta" />
+                    <Image
+                      src="/icones/arrow.svg"
+                      alt="seta apontando para a direita"
+                      width={24}
+                      height={24}
+                      priority={false}
+                    />
                   </div>
                 </Link>
               </div>
@@ -45,21 +52,39 @@ const Footer = ({ style }) => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <img src="/icones/instagram.svg" alt="Instagram" />
+                <Image
+                  src="/icones/instagram.svg"
+                  alt="Instagram"
+                  width={24}
+                  height={24}
+                  priority={false}
+                />
               </a>
               <a
                 href="https://www.tiktok.com/@cameo.fun"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <img src="/icones/tiktok.svg" alt="TikTok" />
+                <Image
+                  src="/icones/tiktok.svg"
+                  alt="TikTok"
+                  width={24}
+                  height={24}
+                  priority={false}
+                />
               </a>
               <a
                 href="https://www.youtube.com/@cameo_fun"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <img src="/icones/youtube.svg" alt="YouTube" />
+                <Image
+                  src="/icones/youtube.svg"
+                  alt="YouTube"
+                  width={24}
+                  height={24}
+                  priority={false}
+                />
               </a>
             </div>
           </div>
@@ -90,12 +115,24 @@ const Footer = ({ style }) => {
 
         <div className={styles.MascoteDeadpool}>
           <span>Você ainda está aqui?... Já acabou!!!</span>
-          <img src="/icones/lp-deadpool.png" alt="Mascote Deadpool" />
+          <Image
+            src="/icones/lp-deadpool.png"
+            alt="Mascote Deadpool"
+            width={150}
+            height={185}
+            priority={false}
+          />
         </div>
       </div>
 
       <div className={styles.FooterLogo}>
-        <img src="/logo/cameo-logo-miniatura.svg" alt="Cameo logo" />
+        <Image
+          src="/logo/cameo-logo-miniatura.svg"
+          alt="Cameo logo"
+          width={150}
+          height={55}
+          priority={false}
+        />
       </div>
     </footer>
   );

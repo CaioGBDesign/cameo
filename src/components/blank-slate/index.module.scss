@@ -34,6 +34,11 @@
   }
 
   .alertaBlankSlate {
+    display: flex;
+    justify-content: center;
+
+    width: 90%;
+
     span {
       color: #fff;
       font-size: 24px;

@@ -211,13 +211,15 @@ export default function FilmeAleatorio() {
                 <Footer />
               </div>
 
-              <FundoTitulosDesktop
-                capaAssistidos={`https://image.tmdb.org/t/p/original/${filme.backdrop_path}`}
-                capaAssistidosMobile={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
-                tituloAssistidos={filme.title}
-                trailerLink={trailerLink}
-                opacidade={1}
-              />
+              <div className={styles.fundoTitulos}>
+                <FundoTitulosDesktop
+                  capaAssistidos={`https://image.tmdb.org/t/p/original/${filme.backdrop_path}`}
+                  capaAssistidosMobile={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
+                  tituloAssistidos={filme.title}
+                  trailerLink={trailerLink}
+                  opacidade={1}
+                />
+              </div>
 
               {modalType === "rating" && (
                 <ModalAvaliar

@@ -103,7 +103,7 @@ const Footer = ({ style }) => {
                   </Link>
 
                   {!isLoggedIn && (
-                    <Link href="/">
+                    <Link href="/filme-aleatorio">
                       <button>Começar</button>
                     </Link>
                   )}

@@ -67,7 +67,16 @@
       flex-direction: column;
       gap: 30px;
 
+      @media only screen and (max-width: 600px) {
+        align-items: center;
+
+        width: 100%;
+      }
+
       .tituloFilmes {
+        @media only screen and (max-width: 600px) {
+          width: 85%;
+        }
         h1 {
           font-size: 35px;
           font-weight: 500;
@@ -92,6 +101,8 @@
         @media only screen and (max-width: 600px) {
           flex-direction: column;
           justify-content: center;
+
+          width: 100%;
         }
 
         .generosList {
@@ -99,6 +110,14 @@
           justify-content: center;
           align-items: center;
           gap: 10px;
+
+          @media only screen and (max-width: 600px) {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+
+            width: 85%;
+          }
 
           .genero {
             display: flex;

@@ -10,8 +10,6 @@
     width: 85%;
 
     @media only screen and (max-width: 600px) {
-      width: 100%;
-
       margin-top: 20%;
 
       display: flex;
@@ -66,7 +64,7 @@
         width: 100%;
         height: 400px;
 
-        overflow: hidden;
+        overflow: hidden !important;
 
         &::after {
           content: "";

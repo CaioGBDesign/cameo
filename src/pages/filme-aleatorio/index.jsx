@@ -172,7 +172,7 @@ export default function FilmeAleatorio() {
 
                 <div className={styles.NotasFavoritos}>
                   <NotasFilmes
-                    filmeId={filme.id}
+                    filmeId={String(filme.id)}
                     avaliarFilme={avaliarFilme}
                     usuarioFilmeVisto={user?.visto?.hasOwnProperty(filme.id)}
                     onClickModal={() => openModal("rating")}

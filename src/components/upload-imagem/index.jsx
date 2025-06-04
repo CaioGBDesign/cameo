@@ -1,7 +1,7 @@
 import styles from "./index.module.scss";
 import { useRef } from "react";
 
-const UploadImagem = ({ imagem, onImagemChange }) => {
+const UploadImagem = ({ imagem, onImagemChange, dimensoes }) => {
   const fileInputRef = useRef(null);
 
   const handleFileChange = (e) => {
@@ -26,9 +26,7 @@ const UploadImagem = ({ imagem, onImagemChange }) => {
             />
             <div className={styles.textos}>
               <span className={styles.textoLabel}>Selecionar imagem</span>
-              <span className={styles.subTextoLabel}>
-                Dimensões recomendadas 1440x480
-              </span>
+              <span className={styles.subTextoLabel}>{dimensoes}</span>
             </div>
           </span>
         )}
@@ -67,7 +65,6 @@ const UploadImagem = ({ imagem, onImagemChange }) => {
           onChange={handleFileChange}
           className={styles.hiddenFileInput}
           ref={fileInputRef}
-          required
         />
       </label>
     </div>

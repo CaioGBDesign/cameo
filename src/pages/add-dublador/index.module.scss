@@ -1,0 +1,212 @@
+.containerDublador {
+  display: flex;
+  justify-content: center;
+
+  margin-top: 120px;
+
+  .formWrapper {
+    width: 85%;
+
+    .formDublador {
+      width: 100%;
+
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+
+      gap: 40px;
+
+      input {
+        width: 100%;
+        height: 60px;
+        background: none;
+        border: none;
+        border-bottom: 1px solid hsla(0, 0%, 100%, 0.251);
+        font-size: 16px;
+        color: #fff;
+      }
+
+      input:checked + label {
+        border: 1px solid rgba(43, 168, 226, 0.502);
+      }
+
+      input[type="text"]::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 16px;
+      }
+
+      input[type="text"]::-webkit-inner-spin-button {
+        opacity: 1;
+
+        background: none;
+      }
+
+      input[type="url"]::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 16px;
+      }
+
+      input[type="url"]::-webkit-inner-spin-button {
+        opacity: 1;
+
+        background: none;
+      }
+
+      input[type="number"]::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 16px;
+      }
+
+      input[type="number"]::-webkit-inner-spin-button {
+        opacity: 1;
+
+        background: none;
+      }
+
+      .imagemNomeDublador {
+        width: 100%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+
+        .nomeCompletoeArtistico {
+          width: 100%;
+
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: start;
+
+          h1 {
+            color: #fff;
+            font-size: 30px;
+            font-weight: bold;
+          }
+        }
+      }
+
+      .contForm {
+        width: 100%;
+
+        .formGroup {
+          width: 100%;
+
+          display: flex;
+          flex-direction: column;
+          align-items: start;
+
+          padding: 20px;
+          background: rgba(0, 0, 0, 0.063);
+          border: solid hsla(0, 0%, 100%, 0.063);
+          border-radius: 10px;
+
+          label,
+          h2 {
+            color: #fff;
+            font-size: 18px;
+          }
+
+          .tituloBotao {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            width: 100%;
+
+            button {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              gap: 10px;
+
+              background: hsla(0, 0%, 100%, 0.063);
+              border: none;
+              border-radius: 10px;
+              padding: 20px;
+
+              height: 47px;
+
+              transition: 0.2s;
+
+              cursor: pointer;
+
+              span {
+                font-size: 14px;
+                color: #fff;
+
+                width: max-content;
+              }
+
+              &:hover {
+                border-radius: 0px;
+              }
+            }
+
+            .ocupacoesGrid {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 10px;
+
+              .opcoes {
+                display: flex;
+
+                position: relative;
+
+                input {
+                  position: absolute;
+                  opacity: 0;
+                  top: 0px;
+                  left: 0px;
+
+                  width: 25px;
+                  height: 25px;
+                }
+
+                input:checked + label {
+                  border: 1px solid rgba(43, 168, 226, 0.502);
+                }
+
+                label {
+                  position: relative;
+                  padding: 10px 15px;
+                  border: 1px solid hsla(0, 0%, 100%, 0.125);
+                  border-radius: 10px;
+                  font-size: 16px;
+                  font-weight: 200;
+                  color: #fff;
+                  text-align: center;
+                  cursor: pointer;
+                }
+              }
+            }
+          }
+
+          .inputsForm {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+
+            width: 100%;
+
+            button {
+              background: none;
+              border: none;
+              border-radius: 10px;
+              padding: 0px 20px;
+
+              cursor: pointer;
+
+              transition: 0.2s;
+
+              &:hover {
+                background: #00000030;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

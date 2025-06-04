@@ -720,6 +720,18 @@ function AuthProvider({ children }) {
     }
   };
 
+  const verificarPermissaoDubladores = async () => {
+    if (!user) return false;
+
+    try {
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      return userDoc.data().isAdmin || userDoc.data().isEditor; // Adicione estas propriedades no seu usuário
+    } catch (error) {
+      console.error("Erro ao verificar permissões:", error);
+      return false;
+    }
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -746,6 +758,7 @@ function AuthProvider({ children }) {
         atualizarMeta,
         verificarPermissoesNoticias,
         verificarPermissoesCriticas,
+        verificarPermissaoDubladores,
       }}
     >
       {children}

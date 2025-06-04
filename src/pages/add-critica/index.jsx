@@ -293,6 +293,7 @@ const AddCriticas = () => {
                 <UploadImagem
                   imagem={imagemElemento}
                   onImagemChange={handleImagemChange}
+                  dimensoes={"Dimensões recomendadas 1440x480"}
                 />
 
                 <input

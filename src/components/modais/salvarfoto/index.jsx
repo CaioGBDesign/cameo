@@ -66,7 +66,10 @@ const SalvarFoto = ({ onClose }) => {
           <div className={styles.topoModal}>
             <span>Alterar foto</span>
             <button onClick={closeModal}>
-              <img src="/icones/close.svg" alt="Fechar" />
+              <img
+                src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fclose.svg?alt=media&token=c9af99dc-797e-4364-9df2-5ed76897cc92"
+                alt="Fechar"
+              />
             </button>
           </div>
           <div className={styles.modalFotoPerfil}>

@@ -13,7 +13,7 @@ const fotoUsuario = ({ onClickModal }) => {
     <div className={styles.fotoUsuario}>
       <div onClick={onClickModal} className={styles.fotoPerfil}>
         <div className={styles.iconEditar}>
-          <img src="/icones/editar.svg" />
+          <img src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Feditar.svg?alt=media&token=d70d85da-fe9d-4df9-8276-0da123d876a1" />
         </div>
 
         <div className={styles.avatarIMG}>

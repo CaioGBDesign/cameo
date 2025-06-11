@@ -36,7 +36,7 @@ const Footer = ({ style }) => {
                   <div className={styles.BotaoSobreBox}>
                     <span>Sobre a Cameo</span>
                     <Image
-                      src="/icones/arrow.svg"
+                      src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Farrow.svg?alt=media&token=0ea58b26-50c2-4ba7-b125-4a07e26f5926"
                       alt="seta apontando para a direita"
                       width={24}
                       height={24}
@@ -53,7 +53,7 @@ const Footer = ({ style }) => {
                 rel="noopener noreferrer"
               >
                 <Image
-                  src="/icones/instagram.svg"
+                  src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Finstagram.svg?alt=media&token=f7cec9d2-fcc7-4fc1-971d-f3b3235ec12f"
                   alt="Instagram"
                   width={24}
                   height={24}
@@ -66,7 +66,7 @@ const Footer = ({ style }) => {
                 rel="noopener noreferrer"
               >
                 <Image
-                  src="/icones/tiktok.svg"
+                  src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Ftiktok.svg?alt=media&token=438263b9-26ef-4628-bdbe-635b26e41122"
                   alt="TikTok"
                   width={24}
                   height={24}
@@ -79,7 +79,7 @@ const Footer = ({ style }) => {
                 rel="noopener noreferrer"
               >
                 <Image
-                  src="/icones/youtube.svg"
+                  src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fyoutube.svg?alt=media&token=f18edca3-ab54-4387-a388-d13fe22f87fc"
                   alt="YouTube"
                   width={24}
                   height={24}
@@ -98,7 +98,10 @@ const Footer = ({ style }) => {
                   <Link href="mailto:contato@cameo.fun">
                     <div className={styles.BotaoSobreBox}>
                       <span>Entrar em contato</span>
-                      <img src="/icones/arrow.svg" alt="seta" />
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Farrow.svg?alt=media&token=0ea58b26-50c2-4ba7-b125-4a07e26f5926"
+                        alt="seta"
+                      />
                     </div>
                   </Link>
 
@@ -116,7 +119,7 @@ const Footer = ({ style }) => {
         <div className={styles.MascoteDeadpool}>
           <span>Você ainda está aqui?... Já acabou!!!</span>
           <Image
-            src="/icones/lp-deadpool.png"
+            src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Flp-deadpool.png?alt=media&token=1c720245-b49e-4346-9ce1-f1135a1e7446"
             alt="Mascote Deadpool"
             width={150}
             height={185}
@@ -127,7 +130,7 @@ const Footer = ({ style }) => {
 
       <div className={styles.FooterLogo}>
         <Image
-          src="/logo/cameo-logo-miniatura.svg"
+          src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/logo%2Fcameo-logo-miniatura.svg?alt=media&token=bb482344-e73f-4cee-ac6f-97a1c003b6e7"
           alt="Cameo logo"
           width={150}
           height={55}

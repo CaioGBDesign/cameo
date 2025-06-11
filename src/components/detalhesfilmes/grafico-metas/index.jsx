@@ -254,7 +254,10 @@ const GraficoMetas = () => {
               <div className={styles.metasControle}>
                 {userData && userData.metas && userData.metas.length > 0 && (
                   <button onClick={() => setModalAberto("adicionar-metas")}>
-                    <img src="icones/add.svg" alt="Adicionar" />
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fadd.svg?alt=media&token=6efb9a03-ae69-4a5f-9f16-af5429506ea0"
+                      alt="Adicionar"
+                    />
                     <p>Adicionar meta</p>
                   </button>
                 )}
@@ -326,7 +329,7 @@ const GraficoMetas = () => {
                           }}
                         >
                           <div className={styles.estrado}>
-                            <img src="/icones/estrado-vertical.svg" />
+                            <img src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Festrado-vertical.svg?alt=media&token=4696e9a1-5624-4682-844a-b74f2b8c2648" />
                           </div>
                         </div>
                       </div>
@@ -334,7 +337,10 @@ const GraficoMetas = () => {
 
                     <div className={styles.botaoDeletar}>
                       <button onClick={() => abrirModalDeletar(meta.id)}>
-                        <img src="/icones/deletar.svg" alt="Deletar" />
+                        <img
+                          src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fdeletar.svg?alt=media&token=8542c24b-5124-4c10-91ee-a4918550dc92"
+                          alt="Deletar"
+                        />
                       </button>
                     </div>
                   </li>
@@ -346,7 +352,10 @@ const GraficoMetas = () => {
           <div className={styles.blankMetas}>
             <p>Bora adicionar algumas metas?</p>
             <button onClick={() => setModalAberto("adicionar-metas")}>
-              <img src="icones/add.svg" alt="Adicionar" />
+              <img
+                src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fadd.svg?alt=media&token=6efb9a03-ae69-4a5f-9f16-af5429506ea0"
+                alt="Adicionar"
+              />
               <p>Adicionar meta</p>
             </button>
           </div>

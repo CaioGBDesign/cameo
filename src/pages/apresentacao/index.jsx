@@ -28,56 +28,64 @@ const Apresentacao = () => {
       comentario:
         "A Cameo veio para facilitar nossa vida na hora de escolher os filmes. Adoro assistir filmes sugeridos, e pela Cameo vai ser ainda melhor!! 🤩",
       estrelas: 5,
-      imagem: "/usuario/igor.png",
+      imagem:
+        "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/usuario%2Figor.png?alt=media&token=2632eec1-11e7-463b-ad7e-4099abe348a6",
     },
     {
       usuario: "Pedro Oliveira",
       comentario:
         "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
       estrelas: 3,
-      imagem: "/usuario/usuario.png",
+      imagem:
+        "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/usuario%2Fusuario.png?alt=media&token=5387b6a9-0625-4cbb-b855-8e2e096cf223",
     },
     {
       usuario: "Pedro Oliveira",
       comentario:
         "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
       estrelas: 3,
-      imagem: "/usuario/igor.png",
+      imagem:
+        "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/usuario%2Figor.png?alt=media&token=2632eec1-11e7-463b-ad7e-4099abe348a6",
     },
     {
       usuario: "Pedro Oliveira",
       comentario:
         "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
       estrelas: 3,
-      imagem: "/usuario/igor.png",
+      imagem:
+        "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/usuario%2Figor.png?alt=media&token=2632eec1-11e7-463b-ad7e-4099abe348a6",
     },
     {
       usuario: "Pedro Oliveira",
       comentario:
         "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
       estrelas: 3,
-      imagem: "/usuario/igor.png",
+      imagem:
+        "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/usuario%2Figor.png?alt=media&token=2632eec1-11e7-463b-ad7e-4099abe348a6",
     },
     {
       usuario: "Pedro Oliveira",
       comentario:
         "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
       estrelas: 3,
-      imagem: "/usuario/igor.png",
+      imagem:
+        "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/usuario%2Figor.png?alt=media&token=2632eec1-11e7-463b-ad7e-4099abe348a6",
     },
     {
       usuario: "Pedro Oliveira",
       comentario:
         "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
       estrelas: 3,
-      imagem: "/usuario/igor.png",
+      imagem:
+        "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/usuario%2Figor.png?alt=media&token=2632eec1-11e7-463b-ad7e-4099abe348a6",
     },
     {
       usuario: "Pedro Oliveira",
       comentario:
         "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
       estrelas: 3,
-      imagem: "/usuario/igor.png",
+      imagem:
+        "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/usuario%2Figor.png?alt=media&token=2632eec1-11e7-463b-ad7e-4099abe348a6",
     },
   ];
 
@@ -104,7 +112,10 @@ const Apresentacao = () => {
         </Head>
 
         <section className={styles.ApresentacaoHeader}>
-          <img src="/logo/cameo-logo-miniatura.svg" alt="Cameo logo" />
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/logo%2Fcameo-logo-miniatura.svg?alt=media&token=bb482344-e73f-4cee-ac6f-97a1c003b6e7"
+            alt="Cameo logo"
+          />
         </section>
 
         <section className={styles.ApresentacaoMergulho}>
@@ -121,7 +132,7 @@ const Apresentacao = () => {
           </div>
           <div className={styles.HeroMascote}>
             <img
-              src="/mascote/cameo-astronauta-mergulho.png"
+              src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/mascote%2Fcameo-astronauta-mergulho.png?alt=media&token=ccb6c09f-3761-46cd-b747-f0b7197ec946"
               alt="Cameo Astronauta mergulhando"
             />
           </div>
@@ -156,7 +167,7 @@ const Apresentacao = () => {
                       />
                       <div className={styles.BotaoIcone}>
                         <img
-                          src="/icones/lp-filme-aleatorio.svg"
+                          src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Flp-filme-aleatorio.svg?alt=media&token=8241ab0e-db7b-4c2a-bf0a-c01cb7259092"
                           alt="filme aleatorio"
                         />
                       </div>
@@ -177,7 +188,10 @@ const Apresentacao = () => {
                         aria-checked={activeTab === "filtros"}
                       />
                       <div className={styles.BotaoIcone}>
-                        <img src="/icones/lp-filtros.svg" alt="filtros" />
+                        <img
+                          src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Ffiltros.svg?alt=media&token=ead1e1eb-f88b-48ba-b2e6-26b3ef5c2e56"
+                          alt="filtros"
+                        />
                       </div>
                       <h3>Filtros</h3>
                     </label>
@@ -196,7 +210,10 @@ const Apresentacao = () => {
                         aria-checked={activeTab === "avaliacao"}
                       />
                       <div className={styles.BotaoIcone}>
-                        <img src="/icones/lp-avaliacoes.svg" alt="avaliaçoes" />
+                        <img
+                          src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Favaliacoes.svg?alt=media&token=8eda5b25-2f65-4dec-8ae0-a2e4a5cf68b0"
+                          alt="avaliaçoes"
+                        />
                       </div>
                       <h3>Avalie do seu jeito</h3>
                     </label>
@@ -215,7 +232,10 @@ const Apresentacao = () => {
                         aria-checked={activeTab === "dados"}
                       />
                       <div className={styles.BotaoIcone}>
-                        <img src="/icones/lp-dados.svg" alt="Seus Dados" />
+                        <img
+                          src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Flp-dados.svg?alt=media&token=25aa3d30-2667-4289-a6bd-293abf8be873"
+                          alt="Seus Dados"
+                        />
                       </div>
                       <h3>Seus dados</h3>
                     </label>
@@ -237,7 +257,7 @@ const Apresentacao = () => {
 
                   <div className={styles.BoxMascote}>
                     <img
-                      src="/mascote/cameo-thanos.png"
+                      src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/mascote%2Fcameo-thanos.png?alt=media&token=2afc577a-fc65-419a-90f0-e0bc949275ef"
                       alt="Cameo Astronauta Thanos"
                     />
                   </div>
@@ -264,7 +284,7 @@ const Apresentacao = () => {
 
                   <div className={styles.BoxMascote}>
                     <img
-                      src="/mascote/cameo-filtros.png"
+                      src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/mascote%2Fcameo-filtros.png?alt=media&token=10f4b491-3af0-417c-8f45-683e2c2ef3ab"
                       alt="Cameo Astronauta Thanos"
                     />
                   </div>
@@ -293,7 +313,7 @@ const Apresentacao = () => {
 
                   <div className={styles.BoxMascote}>
                     <img
-                      src="/mascote/cameo-avaliacoes.png"
+                      src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/mascote%2Fcameo-avaliacoes.png?alt=media&token=047d4256-f391-4586-9eca-40e184558a49"
                       alt="Cameo Astronauta Thanos"
                     />
                   </div>
@@ -320,7 +340,7 @@ const Apresentacao = () => {
 
                   <div className={styles.BoxMascote}>
                     <img
-                      src="/mascote/cameo-dados.png"
+                      src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/mascote%2Fcameo-dados.png?alt=media&token=4449b62b-0dd8-40cb-afa5-44baef7c778a"
                       alt="Cameo Astronauta Thanos"
                     />
                   </div>
@@ -337,7 +357,10 @@ const Apresentacao = () => {
           </div>
 
           <div className={styles.Particulas}>
-            <img src="/background/particulas.png" alt="particulas" />
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/background%2Fparticulas.png?alt=media&token=9f77e5fd-de62-4b1f-a59b-c69beac8e0fa"
+              alt="particulas"
+            />
           </div>
         </section>
 
@@ -367,7 +390,7 @@ const Apresentacao = () => {
                     <div className={styles.tituloBotao}>
                       <div className={styles.BotaoIcone}>
                         <img
-                          src="/icones/personalidade-icone.svg"
+                          src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fpersonalidade-icone.svg?alt=media&token=4b93b6d4-59e7-4230-9690-67866a83f4ce"
                           alt="personalidade"
                         />
                       </div>
@@ -391,7 +414,7 @@ const Apresentacao = () => {
                         }}
                       >
                         <img
-                          src="/icones/lp-personalidade.png"
+                          src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Flp-personalidade.png?alt=media&token=417c9034-abc2-4808-9443-608aae8fef54"
                           alt="Suas listas, seus favoritos, suas metas - tudo no seu estilo."
                         />
                       </div>
@@ -417,7 +440,7 @@ const Apresentacao = () => {
                     <div className={styles.tituloBotao}>
                       <div className={styles.BotaoIcone}>
                         <img
-                          src="/icones/lp-filme-aleatorio.svg"
+                          src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Flp-filme-aleatorio.svg?alt=media&token=8241ab0e-db7b-4c2a-bf0a-c01cb7259092"
                           alt="filme aleatorio"
                         />
                       </div>
@@ -440,7 +463,7 @@ const Apresentacao = () => {
                         }}
                       >
                         <img
-                          src="/icones/lp-esqueceram-de-mim.png"
+                          src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Flp-esqueceram-de-mim.png?alt=media&token=d8779970-8a75-4932-b8e2-4809e1cc1a72"
                           alt="Cameo Esqueceram de mim"
                         />
                       </div>
@@ -466,7 +489,7 @@ const Apresentacao = () => {
                     <div className={styles.tituloBotao}>
                       <div className={styles.BotaoIcone}>
                         <img
-                          src="/icones/lp-filme-aleatorio.svg"
+                          src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Flp-filme-aleatorio.svg?alt=media&token=8241ab0e-db7b-4c2a-bf0a-c01cb7259092"
                           alt="filme aleatorio"
                         />
                       </div>
@@ -487,7 +510,10 @@ const Apresentacao = () => {
                           display: activeTabB === "maratona" ? "flex" : "none",
                         }}
                       >
-                        <img src="/icones/lp-samara.png" alt="Cameo Samara" />
+                        <img
+                          src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Flp-samara.png?alt=media&token=88c0c759-97ff-4a11-9902-5a1c79e8b1d3"
+                          alt="Cameo Samara"
+                        />
                       </div>
                     </div>
                   ) : null}
@@ -510,7 +536,7 @@ const Apresentacao = () => {
                   }}
                 >
                   <img
-                    src="/icones/lp-personalidade.png"
+                    src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Flp-personalidade.png?alt=media&token=417c9034-abc2-4808-9443-608aae8fef54"
                     alt="Suas listas, seus favoritos, suas metas - tudo no seu estilo."
                   />
                 </div>
@@ -522,7 +548,7 @@ const Apresentacao = () => {
                   }}
                 >
                   <img
-                    src="/icones/lp-esqueceram-de-mim.png"
+                    src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Flp-esqueceram-de-mim.png?alt=media&token=d8779970-8a75-4932-b8e2-4809e1cc1a72"
                     alt="Cameo Esqueceram de mim"
                   />
                 </div>
@@ -533,7 +559,10 @@ const Apresentacao = () => {
                     display: activeTabB === "maratona" ? "flex" : "none",
                   }}
                 >
-                  <img src="/icones/lp-samara.png" alt="Cameo Samara" />
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Flp-samara.png?alt=media&token=88c0c759-97ff-4a11-9902-5a1c79e8b1d3"
+                    alt="Cameo Samara"
+                  />
                 </div>
               </div>
             )}
@@ -543,7 +572,10 @@ const Apresentacao = () => {
         <section className={styles.ApresentacaoComentarios}>
           <div className={styles.ComentariosCont}>
             <div className={styles.MascoteTodoPoderoso}>
-              <img src="/icones/lp-todo-poderoso.png" alt="Cameo Comentarios" />
+              <img
+                src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Flp-todo-poderoso.png?alt=media&token=eceadd16-b599-4e07-9b3e-0bdd421dd9e9"
+                alt="Cameo Comentarios"
+              />
             </div>
 
             <div className={styles.Comentarios}>
@@ -561,7 +593,7 @@ const Apresentacao = () => {
                           (_, i) => (
                             <img
                               key={i}
-                              src="/icones/estrela-preenchida.svg"
+                              src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Festrela-preenchida.svg?alt=media&token=d59fbabb-c1bf-498f-adad-8a9dc4a88062"
                               alt="estrela preenchida"
                             />
                           )
@@ -615,23 +647,23 @@ const Apresentacao = () => {
 
               <div className={styles.Avaliacao}>
                 <img
-                  src="/icones/estrela-preenchida.svg"
+                  src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Festrela-preenchida.svg?alt=media&token=d59fbabb-c1bf-498f-adad-8a9dc4a88062"
                   alt="estrela preenchida"
                 />
                 <img
-                  src="/icones/estrela-preenchida.svg"
+                  src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Festrela-preenchida.svg?alt=media&token=d59fbabb-c1bf-498f-adad-8a9dc4a88062"
                   alt="estrela preenchida"
                 />
                 <img
-                  src="/icones/estrela-preenchida.svg"
+                  src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Festrela-preenchida.svg?alt=media&token=d59fbabb-c1bf-498f-adad-8a9dc4a88062"
                   alt="estrela preenchida"
                 />
                 <img
-                  src="/icones/estrela-preenchida.svg"
+                  src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Festrela-preenchida.svg?alt=media&token=d59fbabb-c1bf-498f-adad-8a9dc4a88062"
                   alt="estrela preenchida"
                 />
                 <img
-                  src="/icones/estrela-preenchida.svg"
+                  src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Festrela-preenchida.svg?alt=media&token=d59fbabb-c1bf-498f-adad-8a9dc4a88062"
                   alt="estrela preenchida"
                 />
               </div>
@@ -673,7 +705,10 @@ const Apresentacao = () => {
             </div>
 
             <div className={styles.MascoteLover}>
-              <img src="/icones/lp-cameo-lover.png" alt="Cameo lover" />
+              <img
+                src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Flp-cameo-lover.png?alt=media&token=fa71a812-4f00-460c-87f8-426c713ca2fc"
+                alt="Cameo lover"
+              />
             </div>
           </div>
         </section>
@@ -689,7 +724,7 @@ const Apresentacao = () => {
                     <Link href="/sobre">
                       <div className={styles.BotaoSobreBox}>
                         <span>Sobre a Cameo</span>
-                        <img src="/icones/arrow.svg" />
+                        <img src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Farrow.svg?alt=media&token=0ea58b26-50c2-4ba7-b125-4a07e26f5926" />
                       </div>
                     </Link>
                   </div>
@@ -700,21 +735,30 @@ const Apresentacao = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img src="/icones/instagram.svg" alt="Instagram" />
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Finstagram.svg?alt=media&token=f7cec9d2-fcc7-4fc1-971d-f3b3235ec12f"
+                      alt="Instagram"
+                    />
                   </a>
                   <a
                     href="https://www.tiktok.com/@cameo.fun"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img src="/icones/tiktok.svg" alt="TikTok" />
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Ftiktok.svg?alt=media&token=438263b9-26ef-4628-bdbe-635b26e41122"
+                      alt="TikTok"
+                    />
                   </a>
                   <a
                     href="https://www.youtube.com/@cameo_fun"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img src="/icones/youtube.svg" alt="YouTube" />
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fyoutube.svg?alt=media&token=f18edca3-ab54-4387-a388-d13fe22f87fc"
+                      alt="YouTube"
+                    />
                   </a>
                 </div>
               </div>
@@ -728,7 +772,7 @@ const Apresentacao = () => {
                       <Link href="mailto:contato@cameo.fun">
                         <div className={styles.BotaoSobreBox}>
                           <span>Entrar em contato</span>
-                          <img src="/icones/arrow.svg" />
+                          <img src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Farrow.svg?alt=media&token=0ea58b26-50c2-4ba7-b125-4a07e26f5926" />
                         </div>
                       </Link>
 
@@ -743,12 +787,18 @@ const Apresentacao = () => {
 
             <div className={styles.MascoteDeadpool}>
               <span>Você ainda está aqui?... Já acabou!!!</span>
-              <img src="/icones/lp-deadpool.png" alt="Mascote Deadpool" />
+              <img
+                src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Flp-deadpool.png?alt=media&token=1c720245-b49e-4346-9ce1-f1135a1e7446"
+                alt="Mascote Deadpool"
+              />
             </div>
           </div>
 
           <div className={styles.FooterLogo}>
-            <img src="/logo/cameo-logo-miniatura.svg" alt="Cameo logo" />
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/logo%2Fcameo-logo-miniatura.svg?alt=media&token=bb482344-e73f-4cee-ac6f-97a1c003b6e7"
+              alt="Cameo logo"
+            />
           </div>
         </footer>
       </div>

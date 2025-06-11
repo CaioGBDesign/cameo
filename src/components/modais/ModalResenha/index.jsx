@@ -79,8 +79,12 @@ const ModalResenha = ({ filmeId, onClose }) => {
         <HeaderModal
           onClose={onClose}
           titulo="Escrever Resenha"
-          icone={"/icones/avaliacao-cameo-desktop-01.png"}
-          iconeMobile={"/icones/avaliacao-cameo-mobile-01.png"}
+          icone={
+            "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Favaliacao-cameo-desktop-01.png?alt=media&token=a8ec3d92-4a39-43a4-b80c-4fd15832017d"
+          }
+          iconeMobile={
+            "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Favaliacao-cameo-mobile-01.png?alt=media&token=eaf63d83-e8e3-4f47-aa8a-560ddca88716"
+          }
           altIcone={"Escrever Resenha"}
         />
         <div className={styles.contModal}>

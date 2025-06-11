@@ -14,7 +14,10 @@ function ListaNoticias({ noticias, renderElemento }) {
     <ul className={styles.listaNoticiasResumo}>
       {/* Ícone e título */}
       <li className={styles.icone}>
-        <img src="/icones/cameo-noticias.svg" alt="Ícone notícias" />
+        <img
+          src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fcameo-noticias.svg?alt=media&token=a9ca0ad7-d684-4e12-a826-5225c7c196d1"
+          alt="Ícone notícias"
+        />
         <h2>Notícias</h2>
       </li>
 

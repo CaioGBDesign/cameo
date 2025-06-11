@@ -25,26 +25,78 @@ import MultiSelectCheckbox from "@/components/multi-select-checkbox";
 const countryOptions = [
   { value: "", label: "Selecione o país" },
   { value: "Brasil", label: "Brasil" },
+  { value: "Estados Unidos", label: "Estados Unidos" },
+  { value: "Italia", label: "Itália" },
 ];
 
 const statesOptions = {
   Brasil: [
     { value: "", label: "Selecione o estado" },
-    { value: "São Paulo", label: "São Paulo" },
-    { value: "Rio de Janeiro", label: "Rio de Janeiro" },
-    { value: "Minas Gerais", label: "Minas Gerais" },
+    { value: "Acre", label: "Acre" },
+    { value: "Alagoas", label: "Alagoas" },
+    { value: "Amapá", label: "Amapá" },
+    { value: "Amazonas", label: "Amazonas" },
     { value: "Bahia", label: "Bahia" },
+    { value: "Ceará", label: "Ceará" },
+    { value: "Distrito Federal", label: "Distrito Federal" },
+    { value: "Espírito Santo", label: "Espírito Santo" },
+    { value: "Goiás", label: "Goiás" },
+    { value: "Maranhão", label: "Maranhão" },
+    { value: "Mato Grosso", label: "Mato Grosso" },
+    { value: "Mato Grosso do Sul", label: "Mato Grosso do Sul" },
+    { value: "Minas Gerais", label: "Minas Gerais" },
+    { value: "Pará", label: "Pará" },
+    { value: "Paraíba", label: "Paraíba" },
     { value: "Paraná", label: "Paraná" },
+    { value: "Pernambuco", label: "Pernambuco" },
+    { value: "Piauí", label: "Piauí" },
+    { value: "Rio de Janeiro", label: "Rio de Janeiro" },
+    { value: "Rio Grande do Norte", label: "Rio Grande do Norte" },
+    { value: "Rio Grande do Sul", label: "Rio Grande do Sul" },
+    { value: "Rondônia", label: "Rondônia" },
+    { value: "Roraima", label: "Roraima" },
+    { value: "Santa Catarina", label: "Santa Catarina" },
+    { value: "São Paulo", label: "São Paulo" },
+    { value: "Sergipe", label: "Sergipe" },
+    { value: "Tocantins", label: "Tocantins" },
+  ],
+  Italia: [
+    { value: "", label: "Selecione o estado" },
+    { value: "Piemonte", label: "Piemonte" },
+  ],
+  "Estados Unidos": [
+    { value: "", label: "Selecione o estado" },
+    { value: "California", label: "California" },
+    { value: "New York", label: "New York" },
+    { value: "Texas", label: "Texas" },
+    { value: "Florida", label: "Florida" },
+    { value: "Illinois", label: "Illinois" },
   ],
 };
 
 // Opções de relação para familiares
 const relationOptions = [
   { value: "", label: "Selecione a relação" },
-  { value: "mãe", label: "Mãe" },
-  { value: "pai", label: "Pai" },
-  { value: "irmão", label: "Irmão" },
+  { value: "avô", label: "Avô" },
+  { value: "avó", label: "Avó" },
+  { value: "Bisneto", label: "Bisneto" },
+  { value: "conhada", label: "Conhada" },
+  { value: "conhado", label: "Conhado" },
+  { value: "cônjuge", label: "Cônjuge" },
+  { value: "filha", label: "Filha" },
+  { value: "filho", label: "Filho" },
   { value: "irmã", label: "Irmã" },
+  { value: "irmão", label: "Irmão" },
+  { value: "mãe", label: "Mãe" },
+  { value: "neta", label: "Neta" },
+  { value: "neto", label: "Neto" },
+  { value: "pai", label: "Pai" },
+  { value: "prima", label: "Prima" },
+  { value: "primo", label: "Primo" },
+  { value: "sobrinha", label: "Sobrinha" },
+  { value: "sobrinho", label: "Sobrinho" },
+  { value: "tia", label: "Tia" },
+  { value: "tio", label: "Tio" },
 ];
 
 // Opções de ocupações
@@ -52,11 +104,24 @@ const occupationOptions = [
   { value: "Atuação", label: "Atuação" },
   { value: "Dublagem", label: "Dublagem" },
   { value: "Direção de dublagem", label: "Direção de dublagem" },
-  { value: "Influencer Digital", label: "Influencer Digital" },
+  { value: "Apresentação", label: "Apresentação" },
+  { value: "Aulas de dublagem", label: "Aulas de dublagem" },
+  { value: "Aulas de interpretação", label: "Aulas de interpretação" },
+  { value: "Balé", label: "Balé" },
   { value: "Canto", label: "Canto" },
+  { value: "Comédia", label: "Comédia" },
+  { value: "Coreografia", label: "Coreografia" },
+  { value: "Direção teatral", label: "Direção teatral" },
+  { value: "Escrita", label: "Escrita" },
+  { value: "Influencer Digital", label: "Influencer Digital" },
+  { value: "Jornalismo", label: "Jornalismo" },
   { value: "Locução", label: "Locução" },
-  { value: "Tradução", label: "Tradução" },
   { value: "Música", label: "Música" },
+  { value: "Narração", label: "Narração" },
+  { value: "Produção", label: "Produção" },
+  { value: "Radialista", label: "Radialista" },
+  { value: "Roteirização", label: "Roteirização" },
+  { value: "Tradução", label: "Tradução" },
 ];
 
 // Opções de status
@@ -74,6 +139,7 @@ const linkTypeOptions = [
   { value: "youtube", label: "YouTube" },
   { value: "tiktok", label: "TikTok" },
   { value: "imdb", label: "IMDB" },
+  { value: "twitter", label: "X (twitter)" },
 ];
 
 const CreateDubladorPage = () => {
@@ -81,9 +147,14 @@ const CreateDubladorPage = () => {
   const router = useRouter();
   const fileInputRef = useRef(null);
 
+  // Campos originais
   const [fullName, setFullName] = useState("");
   const [stageName, setStageName] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
+  // Campos de falecimento
+  const [dateOfDeath, setDateOfDeath] = useState("");
+  const [causeOfDeath, setCauseOfDeath] = useState("");
+  // Outros campos…
   const [country, setCountry] = useState("");
   const [stateBirth, setStateBirth] = useState("");
   const [startDubYear, setStartDubYear] = useState("");
@@ -148,6 +219,8 @@ const CreateDubladorPage = () => {
     setFullName("");
     setStageName("");
     setDateOfBirth("");
+    setDateOfDeath("");
+    setCauseOfDeath("");
     setCountry("");
     setStateBirth("");
     setStartDubYear("");
@@ -258,9 +331,15 @@ const CreateDubladorPage = () => {
       if (!stageName.trim()) {
         throw new Error("Informe o nome artístico do dublador.");
       }
-      if (!dateOfBirth) {
-        throw new Error("Informe a data de nascimento do dublador.");
+
+      // Se um dos campos de falecimento estiver preenchido, obriga o outro
+      if (
+        (dateOfDeath && !causeOfDeath.trim()) ||
+        (!dateOfDeath && causeOfDeath.trim())
+      ) {
+        throw new Error("Informe data e motivo de falecimento juntos.");
       }
+
       if (!country) {
         throw new Error("Selecione o país de nascimento.");
       }
@@ -285,9 +364,6 @@ const CreateDubladorPage = () => {
         }
         if (!fam.relation) {
           throw new Error(`Selecione a relação do familiar #${i + 1}.`);
-        }
-        if (!fam.link.trim()) {
-          throw new Error(`Informe o link do familiar #${i + 1}.`);
         }
       }
 
@@ -317,11 +393,16 @@ const CreateDubladorPage = () => {
       }
 
       // 3. Prepara o array de familiares (filtra apenas os preenchidos)
-      const familiaresParaSalvar = familyMembers.map((fam) => ({
-        nome: fam.name.trim(),
-        relacao: fam.relation,
-        link: fam.link.trim(),
-      }));
+      const familiaresParaSalvar = familyMembers.map((fam) => {
+        const obj = {
+          nome: fam.name.trim(),
+          relacao: fam.relation,
+        };
+        if (fam.link && fam.link.trim()) {
+          obj.link = fam.link.trim();
+        }
+        return obj;
+      });
 
       // 4. Prepara array de links
       const linksParaSalvar = linkEntries.map((lnk) => ({
@@ -335,6 +416,13 @@ const CreateDubladorPage = () => {
         nomeCompleto: fullName.trim(),
         nomeArtistico: stageName.trim(),
         dataNascimento: dateOfBirth,
+
+        // Somente adicionar falecimento se houver
+        ...(dateOfDeath && {
+          dataFalecimento: dateOfDeath,
+          motivoFalecimento: causeOfDeath.trim(),
+        }),
+
         paisNascimento: country,
         estadoNascimento: stateBirth,
         anoInicioDublagem: startDubYear,
@@ -396,7 +484,7 @@ const CreateDubladorPage = () => {
                     : null
                 }
                 onImagemChange={handleImageChange}
-                dimensoes={"Dimensões recomendadas 400x400"}
+                dimensoes={"Dimensões recomendadas 1000x1000"}
                 ref={fileInputRef}
               />
 
@@ -432,7 +520,6 @@ const CreateDubladorPage = () => {
                     id="dataNascimento"
                     value={dateOfBirth}
                     onChange={(e) => setDateOfBirth(e.target.value)}
-                    required
                   />
 
                   <SelectInput
@@ -455,6 +542,27 @@ const CreateDubladorPage = () => {
                         : [{ value: "", label: "Selecione o país primeiro" }]
                     }
                     onValue={(val) => setStateBirth(val)}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* NOVO: Data e Motivo de Falecimento */}
+            <div className={styles.contForm}>
+              <div className={styles.formGroup}>
+                <label>Falecimento (opcional)</label>
+                <div className={styles.inputsForm}>
+                  <input
+                    type="date"
+                    value={dateOfDeath}
+                    onChange={(e) => setDateOfDeath(e.target.value)}
+                    placeholder="Data de falecimento"
+                  />
+                  <input
+                    type="text"
+                    value={causeOfDeath}
+                    onChange={(e) => setCauseOfDeath(e.target.value)}
+                    placeholder="Motivo do falecimento"
                   />
                 </div>
               </div>
@@ -500,7 +608,6 @@ const CreateDubladorPage = () => {
                       onChange={(e) =>
                         handleFamilyLinkChange(idx, e.target.value)
                       }
-                      required
                       placeholder="Link do familiar"
                       className={styles.linkInput}
                     />
@@ -510,7 +617,10 @@ const CreateDubladorPage = () => {
                       className={styles.deleteButton}
                       onClick={() => handleRemoveFamilyMember(idx)}
                     >
-                      <img src="icones/deletar.svg" alt="Deletar" />
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fdeletar.svg?alt=media&token=8542c24b-5124-4c10-91ee-a4918550dc92"
+                        alt="Deletar"
+                      />
                     </button>
                   </div>
                 ))}
@@ -616,7 +726,10 @@ const CreateDubladorPage = () => {
                       className={styles.deleteButton}
                       onClick={() => handleRemoveLinkEntry(idx)}
                     >
-                      <img src="icones/deletar.svg" alt="Deletar" />
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fdeletar.svg?alt=media&token=8542c24b-5124-4c10-91ee-a4918550dc92"
+                        alt="Deletar"
+                      />
                     </button>
                   </div>
                 ))}

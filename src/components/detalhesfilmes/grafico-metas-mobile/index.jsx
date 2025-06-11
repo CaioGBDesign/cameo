@@ -281,7 +281,7 @@ const GraficoMetasMobile = () => {
                   <button onClick={() => setMostrarTodas(!mostrarTodas)}>
                     <p>{mostrarTodas ? "Ver menos" : "Ver todas"}</p>
                     <img
-                      src="/icones/anterior.svg"
+                      src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fanterior.svg?alt=media&token=9564b079-3d4f-4b07-922d-1275ef619523"
                       alt="Seta"
                       className={
                         mostrarTodas ? styles.setaRotacionada : styles.seta
@@ -354,7 +354,7 @@ const GraficoMetasMobile = () => {
                           }}
                         >
                           <div className={styles.estrado}>
-                            <img src="/icones/estrado-vertical.svg" />
+                            <img src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Festrado-vertical.svg?alt=media&token=4696e9a1-5624-4682-844a-b74f2b8c2648" />
                           </div>
                         </div>
                       </div>
@@ -362,7 +362,10 @@ const GraficoMetasMobile = () => {
 
                     <div className={styles.botaoDeletar}>
                       <button onClick={() => abrirModalDeletar(meta.id)}>
-                        <img src="icones/deletar.svg" alt="Deletar" />
+                        <img
+                          src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fdeletar.svg?alt=media&token=8542c24b-5124-4c10-91ee-a4918550dc92"
+                          alt="Deletar"
+                        />
                       </button>
                     </div>
                   </li>
@@ -431,14 +434,17 @@ const GraficoMetasMobile = () => {
                             }}
                           >
                             <div className={styles.estrado}>
-                              <img src="/icones/estrado-vertical.svg" />
+                              <img src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Festrado-vertical.svg?alt=media&token=4696e9a1-5624-4682-844a-b74f2b8c2648" />
                             </div>
                           </div>
                         </div>
                       </div>
                       <div className={styles.botaoDeletar}>
                         <button onClick={() => abrirModalDeletar(meta.id)}>
-                          <img src="icones/deletar.svg" alt="Deletar" />
+                          <img
+                            src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fdeletar.svg?alt=media&token=8542c24b-5124-4c10-91ee-a4918550dc92"
+                            alt="Deletar"
+                          />
                         </button>
                       </div>
                     </li>
@@ -448,7 +454,10 @@ const GraficoMetasMobile = () => {
 
             <div className={styles.metasControle}>
               <button onClick={() => setModalAberto("adicionar-metas")}>
-                <img src="icones/add-mobile.svg" alt="Adicionar" />
+                <img
+                  src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fadd-mobile.svg?alt=media&token=fc2e1d5b-d9db-44ce-b6c0-9166ee2bfd70"
+                  alt="Adicionar"
+                />
                 <p>Adicionar meta</p>
               </button>
             </div>
@@ -457,7 +466,10 @@ const GraficoMetasMobile = () => {
           <div className={styles.blankMetas}>
             <p>Bora adicionar algumas metas?</p>
             <button onClick={() => setModalAberto("adicionar-metas")}>
-              <img src="icones/add-mobile.svg" alt="Adicionar" />
+              <img
+                src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fadd-mobile.svg?alt=media&token=fc2e1d5b-d9db-44ce-b6c0-9166ee2bfd70"
+                alt="Adicionar"
+              />
               <p>Adicionar meta</p>
             </button>
           </div>

@@ -10,12 +10,12 @@ export default function BlankSlate() {
       <div className={styles.banner}>
         {isMobile ? (
           <img
-            src="background/banner-blank-slate-cameo.png"
+            src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/background%2Fbanner-blank-slate-cameo.png?alt=media&token=8c439e86-c147-42c4-9952-c39767a99255"
             alt="Filmes já vistos"
           />
         ) : (
           <img
-            src="background/banner-blank-slate-desktop-cameo.png"
+            src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/background%2Fbanner-blank-slate-desktop-cameo.png?alt=media&token=dc21cf0c-2f56-4424-81ba-3a4a8d324684"
             alt="Filmes já vistos"
           />
         )}

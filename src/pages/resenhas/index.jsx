@@ -148,8 +148,11 @@ const Criticas = ({}) => {
         {user && userData?.adm && (
           <div className={styles.adicionarCritica}>
             <button onClick={() => router.push("/add-resenha")}>
-              <img src="icones/add.svg" alt="Adicionar Resenha" /> Adicionar
-              Resenha
+              <img
+                src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fadd.svg?alt=media&token=6efb9a03-ae69-4a5f-9f16-af5429506ea0"
+                alt="Adicionar Resenha"
+              />{" "}
+              Adicionar Resenha
             </button>
           </div>
         )}

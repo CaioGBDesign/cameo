@@ -8,7 +8,10 @@ const BotaoPlay = ({ linkTrailer }) => {
     <Link target="blank" href={linkTrailer} passHref>
       <div className={styles.contBotaoPlay}>
         <div className={styles.botaoPlay}>
-          <img src="/icones/play.svg" alt="Play" />
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fplay.svg?alt=media&token=f7305473-6f1e-4234-964d-d3682c2b77f3"
+            alt="Play"
+          />
         </div>
       </div>
     </Link>

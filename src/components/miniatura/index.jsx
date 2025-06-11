@@ -28,7 +28,10 @@ const Miniatura = ({ children }) => {
       href="/filme-aleatorio"
       className={`${styles.miniatura} ${styles[logoSize]}`}
     >
-      <img src="/logo/cameo-logo-miniatura.svg" alt="Cameo logo" />
+      <img
+        src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/logo%2Fcameo-logo-miniatura.svg?alt=media&token=bb482344-e73f-4cee-ac6f-97a1c003b6e7"
+        alt="Cameo logo"
+      />
       {children}
     </Link>
   );

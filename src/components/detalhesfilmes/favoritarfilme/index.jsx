@@ -68,9 +68,15 @@ const FavoritarFilme = ({
     <div className={styles.favoritarFilme}>
       <button onClick={handleClick}>
         {favoritado ? (
-          <img src="icones/favoritos-marcados.svg" alt="Favorito" />
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Ffavoritos-marcados.svg?alt=media&token=08db249d-90f6-4f03-b97b-6238812c5a08"
+            alt="Favorito"
+          />
         ) : (
-          <img src="icones/favoritos-desmarcados.svg" alt="Não favorito" />
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Ffavoritos-desmarcados.svg?alt=media&token=10e8844a-ec98-4075-922c-39dfce522062"
+            alt="Não favorito"
+          />
         )}
       </button>
 

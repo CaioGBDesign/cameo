@@ -27,7 +27,10 @@ const ModalRedefinirSenha = ({ onClose }) => {
     <div className={styles.modal}>
       <div className={styles.modalContainer}>
         <div className={styles.contModal}>
-          <img src="/icones/confirmacao-cadastro.svg" alt="Confirmação" />
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fconfirmacao-cadastro.svg?alt=media&token=363389e5-7513-4ccf-95cc-e050866ed110"
+            alt="Confirmação"
+          />
           <div className={styles.tituloModal}>
             <p>Link de redefinição de senha enviado para seu e-mail.</p>
           </div>

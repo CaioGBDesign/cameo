@@ -30,7 +30,9 @@ const Direcao = ({ crew }) => {
               ) : (
                 <div className={styles.placeholder}>
                   <Image
-                    src={"/background/cameo-placeholder-cast.jpg"}
+                    src={
+                      "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/background%2Fcameo-placeholder-cast.jpg?alt=media&token=f0331d80-cf03-4240-b33c-f90c773c8520"
+                    }
                     alt={dir.name}
                     width={185}
                     height={185}

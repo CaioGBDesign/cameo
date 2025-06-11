@@ -1,0 +1,78 @@
+.containerDublador {
+  width: 100%;
+
+  margin: 120px 0px;
+
+  .contListaDubladores {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    .conteudoDubladores {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+
+      width: 85%;
+
+      h1 {
+        color: #fff;
+        font-size: 30px;
+        font-weight: bold;
+      }
+
+      .listaDubladores {
+        width: 100%;
+
+        display: flex;
+        flex-wrap: wrap;
+        gap: 50px 20px;
+
+        .boxDublador {
+          width: 200px;
+
+          a {
+            text-decoration: none;
+
+            width: 100%;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+
+            .imagemDublador {
+              width: 200px;
+              height: 200px;
+
+              border-radius: 10px;
+
+              overflow: hidden;
+
+              transition: 0.2s;
+
+              img {
+                width: 200px;
+                height: 200px;
+              }
+
+              &:hover {
+                opacity: 0.5;
+              }
+            }
+
+            h2 {
+              font-size: 16px;
+              font-weight: normal;
+              color: #fff;
+
+              width: max-content;
+            }
+          }
+        }
+      }
+    }
+  }
+}

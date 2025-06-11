@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
 
-  margin-top: 120px;
+  margin: 120px 0px;
 
   .formWrapper {
     width: 85%;
@@ -147,7 +147,10 @@
             .ocupacoesGrid {
               display: flex;
               flex-wrap: wrap;
+              justify-content: end;
               gap: 10px;
+
+              width: 80%;
 
               .opcoes {
                 display: flex;

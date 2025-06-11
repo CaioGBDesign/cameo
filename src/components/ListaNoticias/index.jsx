@@ -25,7 +25,10 @@ function ListaNoticias({ noticias, renderElemento, BannerComponent }) {
     <ul className={styles.listaNoticias}>
       <div className={styles.tituloFiltros}>
         <li className={styles.icone}>
-          <img src="/icones/cameo-noticias.svg" alt="Ícone notícias" />
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fcameo-noticias.svg?alt=media&token=a9ca0ad7-d684-4e12-a826-5225c7c196d1"
+            alt="Ícone notícias"
+          />
           <h2>Últimas notícias</h2>
         </li>
 
@@ -67,7 +70,7 @@ function ListaNoticias({ noticias, renderElemento, BannerComponent }) {
                         {noticia.numero && (
                           <div className={styles.numeroNoticia}>
                             <img
-                              src="/icones/relogio.svg"
+                              src="/https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Frelogio.svg?alt=media&token=5ca19f7c-5421-408d-ae41-15b351db2c38"
                               alt="Tempo de leitura"
                             />
                             {noticia.numero} min de leitura

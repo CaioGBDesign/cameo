@@ -1,0 +1,103 @@
+.containerFilmeDubladores {
+  color: #fff;
+
+  display: flex;
+  justify-content: center;
+
+  margin-top: 120px;
+
+  .formFilmesDubladores {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
+    width: 35%;
+
+    input {
+      width: 100%;
+      height: 60px;
+      background: none;
+      border: none;
+      border-bottom: 1px solid hsla(0, 0%, 100%, 0.251);
+      font-size: 16px;
+      color: #fff;
+
+      margin-left: 0px !important;
+    }
+
+    input[type="text"]::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 16px;
+    }
+
+    input[type="text"]::-webkit-inner-spin-button {
+      opacity: 1;
+
+      background: none;
+    }
+
+    h1 {
+      color: #fff;
+      font-size: 30px;
+      font-weight: 700;
+    }
+
+    .codigoFilme {
+      width: 100%;
+
+      display: flex;
+
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.063);
+      border: solid hsla(0, 0%, 100%, 0.063);
+      border-radius: 10px;
+    }
+
+    .codigoDublador {
+      width: 100%;
+
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.063);
+      border: solid hsla(0, 0%, 100%, 0.063);
+      border-radius: 10px;
+    }
+
+    .botoes {
+      display: flex;
+      justify-content: end;
+      align-items: center;
+      gap: 20px;
+
+      .botaoSecundario {
+        background: hsla(0, 0%, 100%, 0.063);
+
+        border: none;
+        border-radius: 10px;
+        padding: 15px 25px;
+
+        font-size: 20px;
+        font-weight: 200;
+        color: #fff;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+
+        cursor: pointer;
+
+        height: 70px;
+
+        transition: 0.2s;
+
+        &:hover {
+          border-radius: 0px;
+        }
+      }
+    }
+  }
+}

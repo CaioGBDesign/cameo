@@ -31,7 +31,9 @@ const Seguidores = () => {
             <div className={styles.sessao}>
               <div className={styles.seguidores}>
                 <Rede
-                  iconePerfil={"/icones/seguidores.svg"}
+                  iconePerfil={
+                    "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fseguidores.svg?alt=media&token=c8124dbe-3d69-46e2-a739-3dff41ded3e7"
+                  }
                   linkRede={"/seguidores"}
                   titulo="Seguidores"
                   valor={2}
@@ -40,7 +42,9 @@ const Seguidores = () => {
 
               <div className={styles.seguido}>
                 <Rede
-                  iconePerfil={"/icones/seguindo.svg"}
+                  iconePerfil={
+                    "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fseguindo.svg?alt=media&token=6a1a95cb-feac-4b36-83bb-9b519054572b"
+                  }
                   linkRede={"/seguindo"}
                   titulo="Seguindo"
                   valor={2}

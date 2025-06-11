@@ -53,7 +53,7 @@ export default function Document() {
                 name: "Cameo.fun",
                 logo: {
                   "@type": "ImageObject",
-                  url: "https://cameo.fun/logo/cameo-logo-miniatura.svg",
+                  url: "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/logo%2Fcameo-logo-miniatura.svg?alt=media&token=bb482344-e73f-4cee-ac6f-97a1c003b6e7",
                 },
               },
             }),
@@ -71,7 +71,7 @@ export default function Document() {
               url: "https://cameo.fun",
               logo: {
                 "@type": "ImageObject",
-                url: "https://cameo.fun/logo/cameo-logo-miniatura.svg",
+                url: "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/logo%2Fcameo-logo-miniatura.svg?alt=media&token=bb482344-e73f-4cee-ac6f-97a1c003b6e7",
               },
               sameAs: [
                 "https://www.instagram.com/seucameo",

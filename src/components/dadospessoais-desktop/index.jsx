@@ -156,7 +156,10 @@ const DadosPessoaisModalDesktop = ({ closeModal, isClosing }) => {
       >
         <div className={styles.fecharDesktop}>
           <button onClick={closeModal}>
-            <img src="/icones/fechar-filtros.svg" alt="Fechar" />
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Ffechar-filtros.svg?alt=media&token=acbd8385-64e1-4a68-96a1-748bb560ca46"
+              alt="Fechar"
+            />
           </button>
         </div>
         <div className={styles.contModal}>
@@ -211,7 +214,10 @@ const DadosPessoaisModalDesktop = ({ closeModal, isClosing }) => {
                   <div className={styles.sair}>
                     <button type="button" onClick={handleLogout}>
                       Sair
-                      <img src="/icones/sair.svg" alt="Sair" />
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fsair.svg?alt=media&token=952b91e4-381b-4d2d-a59a-c4d362e678a9"
+                        alt="Sair"
+                      />
                     </button>
                   </div>
 

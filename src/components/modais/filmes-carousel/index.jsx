@@ -67,7 +67,10 @@ const FilmesCarousel = ({
   return (
     <div className={styles.modalListagem}>
       <div className={styles.fecharModalFilmes} onClick={onClose}>
-        <img src="/icones/close.svg" alt="Fechar" />
+        <img
+          src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fclose.svg?alt=media&token=c9af99dc-797e-4364-9df2-5ed76897cc92"
+          alt="Fechar"
+        />
       </div>
 
       <div className={styles.tituloGeneroDuracao}>
@@ -108,7 +111,10 @@ const FilmesCarousel = ({
       <div className={styles.avaliacaoFilme}>
         {showDeletar && (
           <div className={styles.deletarFilme} onClick={handleOpenDeleteModal}>
-            <img src="icones/deletar.svg" alt="" />
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fdeletar.svg?alt=media&token=8542c24b-5124-4c10-91ee-a4918550dc92"
+              alt=""
+            />
           </div>
         )}
         <FavoritarFilme

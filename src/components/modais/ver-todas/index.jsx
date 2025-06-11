@@ -135,7 +135,7 @@ const VerTodas = ({
                         >
                           <div className={styles.estrado}>
                             <img
-                              src="/icones/estrado-vertical.svg"
+                              src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Festrado-vertical.svg?alt=media&token=4696e9a1-5624-4682-844a-b74f2b8c2648"
                               alt="Estrado"
                             />
                           </div>
@@ -144,7 +144,10 @@ const VerTodas = ({
                     </div>
                     <div className={styles.botaoDeletar}>
                       <button onClick={() => removerMeta(meta.id)}>
-                        <img src="icones/deletar.svg" alt="Deletar" />
+                        <img
+                          src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fdeletar.svg?alt=media&token=8542c24b-5124-4c10-91ee-a4918550dc92"
+                          alt="Deletar"
+                        />
                       </button>
                     </div>
                   </li>

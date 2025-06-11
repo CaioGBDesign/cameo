@@ -1,5 +1,5 @@
 .blankSlate {
-  background-image: url("/background/background-cameo-desktop.jpg");
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/background%2Fbackground-cameo-desktop.jpg?alt=media&token=8a1a0051-6e3b-4d17-8fcb-888fb50752bb");
   background-color: #250d2f;
   background-size: cover;
   background-repeat: no-repeat;
@@ -15,7 +15,7 @@
   height: 100vh;
 
   @media only screen and (max-width: 600px) {
-    background-image: url("/background/background-cameo-login.png");
+    background-image: url("https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/background%2Fbackground-cameo-login.png?alt=media&token=a0fe26ee-0631-45db-9140-14150c7d2034");
   }
 
   .banner {

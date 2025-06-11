@@ -77,7 +77,10 @@ function FiltroNoticias({ noticias, onFilter, filtroInicial = "" }) {
         onClick={() => setOpen((o) => !o)}
       >
         <div className={styles.tituloSelect}>
-          <img src="/icones/filtros.svg" alt="Filtros" />
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Ffiltros.svg?alt=media&token=ead1e1eb-f88b-48ba-b2e6-26b3ef5c2e56"
+            alt="Filtros"
+          />
           <span>{label}</span>
         </div>
         {filtroSelecionado && (

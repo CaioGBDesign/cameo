@@ -732,6 +732,18 @@ function AuthProvider({ children }) {
     }
   };
 
+  const verificarPermissaoFilmes = async () => {
+    if (!user) return false;
+
+    try {
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      return userDoc.data().isAdmin || userDoc.data().isEditor;
+    } catch (error) {
+      console.error("Erro ao verificar permissões:", error);
+      return false;
+    }
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -759,6 +771,7 @@ function AuthProvider({ children }) {
         verificarPermissoesNoticias,
         verificarPermissoesCriticas,
         verificarPermissaoDubladores,
+        verificarPermissaoFilmes,
       }}
     >
       {children}

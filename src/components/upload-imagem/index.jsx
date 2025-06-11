@@ -20,7 +20,7 @@ const UploadImagem = ({ imagem, onImagemChange, dimensoes }) => {
         {!imagem && (
           <span className={styles.labelContent}>
             <img
-              src="/icones/upload.svg"
+              src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fupload.svg?alt=media&token=2f137f1e-ff02-4400-9096-4812704df4b6"
               alt="Ícone upload"
               className={styles.uploadIcon}
             />
@@ -49,7 +49,7 @@ const UploadImagem = ({ imagem, onImagemChange, dimensoes }) => {
                 title="Alterar imagem"
               >
                 <img
-                  src="/icones/editar.svg"
+                  src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Feditar.svg?alt=media&token=d70d85da-fe9d-4df9-8276-0da123d876a1"
                   alt="Alterar"
                   className={styles.actionIcon}
                 />

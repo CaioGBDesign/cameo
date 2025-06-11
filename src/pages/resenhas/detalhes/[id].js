@@ -227,7 +227,10 @@ const CriticaDetalhe = () => {
 
             <div className={styles.metaInfo}>
               <div className={styles.tempoLeitura}>
-                <img src="/icones/relogio.svg" alt="Tempo de leitura" />
+                <img
+                  src="/https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Frelogio.svg?alt=media&token=5ca19f7c-5421-408d-ae41-15b351db2c38"
+                  alt="Tempo de leitura"
+                />
                 <span>{critica.numero} min de leitura</span>
               </div>
             </div>

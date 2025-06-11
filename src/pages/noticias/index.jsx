@@ -218,7 +218,7 @@ const Noticias = ({}) => {
   const encontrarImagem = (noticia) => {
     return (
       noticia.elementos.find((el) => el.tipo === "imagem")?.conteudo ||
-      "/background/placeholder.jpg"
+      "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/background%2Fplaceholder.jpg?alt=media&token=1b8dfa35-bcaa-487c-8ddc-8dec7482cfe5"
     );
   };
 
@@ -291,8 +291,11 @@ const Noticias = ({}) => {
         {user && userData?.adm && (
           <div className={styles.adicionarNoticia}>
             <button onClick={() => router.push("/add-noticia")}>
-              <img src="icones/add.svg" alt="Adicionar Resenha" /> Adicionar
-              Notícia
+              <img
+                src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fadd.svg?alt=media&token=6efb9a03-ae69-4a5f-9f16-af5429506ea0"
+                alt="Adicionar Resenha"
+              />{" "}
+              Adicionar Notícia
             </button>
           </div>
         )}

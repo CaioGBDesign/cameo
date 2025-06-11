@@ -46,7 +46,7 @@ const ModalAvaliar = ({ filmeId, nota, onClose }) => {
         {isMobile ? null : (
           <div className={styles.fecharDesktop}>
             <button onClick={onClose}>
-              <img src="/icones/fechar-filtros.svg" />
+              <img src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Ffechar-filtros.svg?alt=media&token=acbd8385-64e1-4a68-96a1-748bb560ca46" />
             </button>
           </div>
         )}
@@ -55,7 +55,10 @@ const ModalAvaliar = ({ filmeId, nota, onClose }) => {
             <h2>Avaliar Filme</h2>
             {isMobile ? (
               <button onClick={onClose}>
-                <img src="/icones/close.svg" alt="" />
+                <img
+                  src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fclose.svg?alt=media&token=c9af99dc-797e-4364-9df2-5ed76897cc92"
+                  alt=""
+                />
               </button>
             ) : null}
           </div>

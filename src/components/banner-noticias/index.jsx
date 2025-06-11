@@ -17,7 +17,7 @@ const BannerNoticias = ({ noticias, tipo }) => {
   const encontrarImagem = (noticia) => {
     return (
       noticia.elementos.find((el) => el.tipo === "imagem")?.conteudo ||
-      "/background/placeholder.jpg"
+      "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/background%2Fplaceholder.jpg?alt=media&token=1b8dfa35-bcaa-487c-8ddc-8dec7482cfe5"
     );
   };
 
@@ -58,7 +58,10 @@ const BannerNoticias = ({ noticias, tipo }) => {
 
                   <h1>{noticia.titulo}</h1>
                   <div className={styles.numeroNoticia}>
-                    <img src="icones/relogio.svg" alt="Tempo de leitura" />
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Frelogio.svg?alt=media&token=5ca19f7c-5421-408d-ae41-15b351db2c38"
+                      alt="Tempo de leitura"
+                    />
                     {noticia.numero} min de leitura
                   </div>
                 </div>
@@ -72,7 +75,8 @@ const BannerNoticias = ({ noticias, tipo }) => {
                     src={encontrarImagem(noticia)}
                     alt="Capa Noticia"
                     onError={(e) => {
-                      e.target.src = "/background/placeholder.jpg";
+                      e.target.src =
+                        "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/background%2Fplaceholder.jpg?alt=media&token=1b8dfa35-bcaa-487c-8ddc-8dec7482cfe5";
                     }}
                   />
                 </div>

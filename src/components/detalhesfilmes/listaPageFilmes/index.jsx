@@ -10,6 +10,7 @@ const ListaPageFilmes = ({
   mostrarBotaoFechar,
   handleExcluirFilme,
   openModal,
+  mostrarEstrelas = true,
 }) => {
   // quantidade inicial de filmes exibidos
   const INITIAL_COUNT = 20;
@@ -40,7 +41,7 @@ const ListaPageFilmes = ({
               <Miniaturafilmes
                 capaminiatura={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
                 titulofilme={filme.title}
-                mostrarEstrelas={true}
+                mostrarEstrelas={mostrarEstrelas}
                 mostrarBotaoFechar={mostrarBotaoFechar}
                 excluirFilme={() => handleExcluirFilme(String(filme.id))}
                 avaliacao={filme.avaliacao.nota}
@@ -55,7 +56,10 @@ const ListaPageFilmes = ({
       {!loading && visibleCount < listagemDeFilmes.length && (
         <div className={styles.loadMoreWrapper}>
           <button className={styles.loadMoreButton} onClick={handleLoadMore}>
-            <img src="icones/add.svg" alt="Ver mais filmes" />
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fadd.svg?alt=media&token=6efb9a03-ae69-4a5f-9f16-af5429506ea0"
+              alt="Ver mais filmes"
+            />
             Ver mais filmes
           </button>
         </div>

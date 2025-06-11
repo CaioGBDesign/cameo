@@ -71,7 +71,10 @@ const AssistirFilme = ({
       <button onClick={handleClick}>
         <div className={styles.paraVer}>
           <span>Quero ver</span>
-          <img src="icones/para-ver-desabilitado.svg" alt="Assistido" />
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fpara-ver-desabilitado.svg?alt=media&token=a18aced1-1b26-49ff-b413-4f12e246ebd4"
+            alt="Assistido"
+          />
         </div>
       </button>
 

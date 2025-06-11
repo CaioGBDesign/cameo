@@ -26,7 +26,10 @@ function ListaResenhas({ criticas, renderElemento, BannerComponent }) {
       {/* título + select de filtro */}
       <div className={styles.tituloFiltros}>
         <li className={styles.icone}>
-          <img src="/icones/cameo-resenhas.svg" alt="Ícone resenhas" />
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fcameo-resenhas.svg?alt=media&token=033e5f31-7519-4c59-ae62-7ba6eedcc6d4"
+            alt="Ícone resenhas"
+          />
           <h2>Últimas resenhas</h2>
         </li>
         <li className={styles.filtroSelect}>
@@ -67,7 +70,7 @@ function ListaResenhas({ criticas, renderElemento, BannerComponent }) {
                         {critica.numero && (
                           <div className={styles.numeroNoticia}>
                             <img
-                              src="/icones/relogio.svg"
+                              src="/https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Frelogio.svg?alt=media&token=5ca19f7c-5421-408d-ae41-15b351db2c38"
                               alt="Tempo de leitura"
                             />
                             {critica.numero} min de leitura

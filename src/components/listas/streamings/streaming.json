@@ -2,36 +2,36 @@
   {
     "provider_id": 8,
     "provider_name": "Netflix",
-    "logo_path": "/icones/servicos/netflix.svg"
+    "logo_path": "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fservicos%2Fnetflix.svg?alt=media&token=40ce329b-9743-4b0d-a679-b5de96d813cb"
   },
   {
     "provider_id": 119,
     "provider_name": "Amazon Prime Video",
-    "logo_path": "/icones/servicos/prime-video.svg"
+    "logo_path": "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fservicos%2Fprime-video.svg?alt=media&token=a58a961e-cedd-444c-aba1-c674b32f6ebc"
   },
   {
     "provider_id": 1899,
     "provider_name": "Max",
-    "logo_path": "/icones/servicos/hbo.svg"
+    "logo_path": "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fservicos%2Fhbo.svg?alt=media&token=a8d6ebb1-d682-4e76-974c-bae6172b24a9"
   },
   {
     "provider_id": 337,
     "provider_name": "Disney Plus",
-    "logo_path": "/icones/servicos/disney-plus.svg"
+    "logo_path": "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fservicos%2Fdisney-plus.svg?alt=media&token=de5ce0c7-a2a8-4aa7-8c06-9811ce1070a8"
   },
   {
     "provider_id": 350,
     "provider_name": "Apple TV Plus",
-    "logo_path": "/icones/servicos/apple-tv.svg"
+    "logo_path": "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fservicos%2Fapple-tv.svg?alt=media&token=e1c53762-9401-43d2-94ee-ba0342b0265d"
   },
   {
     "provider_id": 531,
     "provider_name": "Paramount Plus",
-    "logo_path": "/icones/servicos/paramount.svg"
+    "logo_path": "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fservicos%2Fparamount.svg?alt=media&token=90976466-b0fd-47fe-a26c-ca265a0febfa"
   },
   {
     "provider_id": 307,
     "provider_name": "Globoplay",
-    "logo_path": "/icones/servicos/globoplay.svg"
+    "logo_path": "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fservicos%2Fgloboplay.svg?alt=media&token=299df099-994c-4640-99d0-7f5c590f76c2"
   }
 ]

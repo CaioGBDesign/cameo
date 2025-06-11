@@ -82,7 +82,7 @@ const RedefinirSenha = () => {
         {isMobile ? null : (
           <div className={styles.fundoFilmes}>
             <img
-              src="/background/background-cameo-desktop.jpg"
+              src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/background%2Fbackground-cameo-desktop.jpg?alt=media&token=8a1a0051-6e3b-4d17-8fcb-888fb50752bb"
               alt="background cameo"
             />
           </div>
@@ -113,8 +113,8 @@ const RedefinirSenha = () => {
                   <img
                     src={
                       showPassword
-                        ? "/icones/ver-senha.svg"
-                        : "/icones/esconder-senha.svg"
+                        ? "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fver-senha.svg?alt=media&token=5912f675-7fdd-400c-bef7-623002f35fa4"
+                        : "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fesconder-senha.svg?alt=media&token=139f4e7c-7b25-4719-9bbb-ea8387de6183"
                     }
                     alt="Toggle Password"
                   />
@@ -135,8 +135,8 @@ const RedefinirSenha = () => {
                   <img
                     src={
                       showPassword
-                        ? "/icones/ver-senha.svg"
-                        : "/icones/esconder-senha.svg"
+                        ? "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fver-senha.svg?alt=media&token=5912f675-7fdd-400c-bef7-623002f35fa4"
+                        : "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fesconder-senha.svg?alt=media&token=139f4e7c-7b25-4719-9bbb-ea8387de6183"
                     }
                     alt="Toggle Password"
                   />

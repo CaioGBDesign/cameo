@@ -134,8 +134,12 @@ const AlterarMeta = ({ onClose, meta = {}, onAlterarMeta }) => {
         <HeaderModal
           onClose={onClose}
           titulo="Detalhes da Meta"
-          icone={"/icones/alterar-metas-cameo-02.png"}
-          iconeMobile={"/icones/alterar-metas-cameo-02.png"}
+          icone={
+            "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Falterar-metas-cameo-02.png?alt=media&token=f9e015bd-5d21-4d47-83aa-55c01751f94d"
+          }
+          iconeMobile={
+            "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Falterar-metas-cameo-02.png?alt=media&token=f9e015bd-5d21-4d47-83aa-55c01751f94d"
+          }
           altIcone={"Metas Cameo"}
         />
 

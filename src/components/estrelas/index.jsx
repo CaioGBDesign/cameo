@@ -12,7 +12,7 @@ const Estrelas = ({ estrelas, starWidth }) => {
       stars.push(
         <img
           key={i}
-          src="/icones/estrela-preenchida.svg"
+          src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Festrela-preenchida.svg?alt=media&token=d59fbabb-c1bf-498f-adad-8a9dc4a88062"
           style={{ width: starWidth }}
           alt="nota"
         />
@@ -28,7 +28,7 @@ const Estrelas = ({ estrelas, starWidth }) => {
       stars.push(
         <img
           key={i}
-          src="/icones/estrela-vazia.svg"
+          src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Festrela-vazia.svg?alt=media&token=a3d23b07-dd81-4729-bb4f-d73efb72feed"
           style={{ width: starWidth }}
           alt="nota"
         />

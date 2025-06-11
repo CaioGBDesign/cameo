@@ -14,7 +14,7 @@ const Elenco = ({ cast }) => {
                 src={
                   ator.profile_path
                     ? `https://image.tmdb.org/t/p/w185${ator.profile_path}`
-                    : "/background/cameo-placeholder-cast.jpg"
+                    : "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/background%2Fcameo-placeholder-cast.jpg?alt=media&token=f0331d80-cf03-4240-b33c-f90c773c8520"
                 }
                 alt={ator.name}
               />

@@ -119,7 +119,10 @@ const GraficoVistos = ({ filmesVistos }) => {
                   backgroundColor: colors[genero] || "#FAFAFA", // Aplica a cor para o gênero
                 }}
               >
-                <img src="/icones/estrado.svg" alt={`Ícone de ${genero}`} />
+                <img
+                  src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Festrado.svg?alt=media&token=d1186983-6065-43a6-8436-ef3d5477afc9"
+                  alt={`Ícone de ${genero}`}
+                />
               </div>
               <div className={styles.GeneroFilmes}>
                 <span>{genero}</span>

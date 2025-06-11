@@ -18,7 +18,10 @@ const Bio = () => {
         </Head>
 
         <div className={styles.BioHeader}>
-          <img src="/logo/cameo-logo-miniatura.svg" alt="Cameo logo" />
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/logo%2Fcameo-logo-miniatura.svg?alt=media&token=bb482344-e73f-4cee-ac6f-97a1c003b6e7"
+            alt="Cameo logo"
+          />
         </div>
 
         <div className={styles.BioLista}>
@@ -38,21 +41,30 @@ const Bio = () => {
 
           <Link href="https://www.tiktok.com/@cameo.fun" target="blank">
             <div className={styles.item}>
-              <img src="/icones/tiktok.svg" alt="TikTok" />
+              <img
+                src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Ftiktok.svg?alt=media&token=438263b9-26ef-4628-bdbe-635b26e41122"
+                alt="TikTok"
+              />
               TikTok
             </div>
           </Link>
 
           <Link href="https://www.instagram.com/cameo.fun/" target="blank">
             <div className={styles.item}>
-              <img src="/icones/instagram.svg" alt="Instagram" />
+              <img
+                src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Finstagram.svg?alt=media&token=f7cec9d2-fcc7-4fc1-971d-f3b3235ec12f"
+                alt="Instagram"
+              />
               Instagram
             </div>
           </Link>
 
           <Link href="https://www.youtube.com/@cameo_fun" target="blank">
             <div className={styles.item}>
-              <img src="/icones/youtube.svg" alt="YouTube" />
+              <img
+                src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fyoutube.svg?alt=media&token=f18edca3-ab54-4387-a388-d13fe22f87fc"
+                alt="YouTube"
+              />
               YouTube
             </div>
           </Link>
@@ -61,12 +73,12 @@ const Bio = () => {
         <div className={styles.imgfundo}>
           {isMobile ? (
             <img
-              src="/background/cameo-background-bio-mobile.png"
+              src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/background%2Fcameo-background-bio-mobile.png?alt=media&token=adf8f4fb-0775-4d80-ba3c-4cfa7fdbe7d8"
               alt="Cameo bio background"
             />
           ) : (
             <img
-              src="/background/cameo-background-bio.png"
+              src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/background%2Fcameo-background-bio.png?alt=media&token=5a905a68-a42f-4fe1-a1f5-99aaaaab87dd"
               alt="Cameo bio background"
             />
           )}

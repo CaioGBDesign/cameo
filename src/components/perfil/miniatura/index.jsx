@@ -55,7 +55,7 @@ const FotoPerfil = ({ href = "/perfil", children }) => {
             // Se o usuário não estiver logado, renderiza o texto "Login"
             <div className={styles.entrar}>
               <img
-                src="/icones/seta-direita.svg"
+                src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fseta-direita.svg?alt=media&token=7cc2c37f-f8d8-4643-aefb-c5190b01e3e3"
                 alt="seta  usuário não logado"
               />
               <span>Entrar</span>
@@ -80,7 +80,7 @@ const FotoPerfil = ({ href = "/perfil", children }) => {
             // Se o usuário não estiver logado, renderiza o texto "Login"
             <div className={styles.entrar}>
               <img
-                src="/icones/seta-direita.svg"
+                src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fseta-direita.svg?alt=media&token=7cc2c37f-f8d8-4643-aefb-c5190b01e3e3"
                 alt="seta  usuário não logado"
               />
               <span>Entrar</span>

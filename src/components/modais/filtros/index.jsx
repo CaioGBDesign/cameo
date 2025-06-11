@@ -253,8 +253,8 @@ export default function ModalFiltros({ onClose, user, onSelectMovie }) {
         <HeaderModal
           onClose={onClose}
           titulo="Filtros"
-          icone="/icones/filtros-cameo-02.png"
-          iconeMobile="/icones/filtros-cameo-mobile-01.png"
+          icone="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Ffiltros-cameo-02.png?alt=media&token=4e691c49-c482-49b7-9f0b-4de953eabe68"
+          iconeMobile="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Ffiltros-cameo-mobile-01.png?alt=media&token=fa335112-96ee-4f38-99f9-921cd213f686"
           altIcone="Filtros Cameo"
         />
 

@@ -78,8 +78,12 @@ const AdicionarMeta = ({ onClose, nomeBotao }) => {
         <HeaderModal
           onClose={onClose}
           titulo="Adicionar Meta"
-          icone={"/icones/metas-cameo-02.png"}
-          iconeMobile={"/icones/metas-cameo-02.png"}
+          icone={
+            "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fmetas-cameo-02.png?alt=media&token=4c075955-afa8-48cd-b8f2-34be43f95f9c"
+          }
+          iconeMobile={
+            "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fmetas-cameo-02.png?alt=media&token=4c075955-afa8-48cd-b8f2-34be43f95f9c"
+          }
           altIcone={"Metas Cameo"}
         />
 

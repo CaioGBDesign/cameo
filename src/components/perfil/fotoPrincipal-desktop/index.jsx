@@ -8,7 +8,7 @@ const fotoUsuarioDesktop = ({ avatarUrl, nomeUsuario, handleFile }) => {
       <div className={styles.fotoPerfil}>
         <label htmlFor="fotoUsuario">
           <div className={styles.iconEditar}>
-            <img src="/icones/editar.svg" />
+            <img src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Feditar.svg?alt=media&token=d70d85da-fe9d-4df9-8276-0da123d876a1" />
           </div>
           <input
             type="file"

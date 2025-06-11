@@ -13,7 +13,10 @@ function ListaResenhas({ criticas, renderElemento }) {
   return (
     <ul className={styles.listaCriticas}>
       <li className={styles.icone}>
-        <img src="/icones/cameo-resenhas.svg" alt="Ícone resenhas" />
+        <img
+          src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fcameo-resenhas.svg?alt=media&token=033e5f31-7519-4c59-ae62-7ba6eedcc6d4"
+          alt="Ícone resenhas"
+        />
         <h2>Resenhas</h2>
       </li>
 

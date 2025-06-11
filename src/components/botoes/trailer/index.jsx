@@ -9,7 +9,10 @@ const Trailer = ({ linkTrailer }) => {
       <div className={styles.contBotaoTrailer}>
         <div className={styles.botaoTrailer}>
           <p>Trailer</p>
-          <img src="/icones/trailer-play.svg" alt="Play" />
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Ftrailer-play.svg?alt=media&token=93fb10a4-121d-480f-9e62-b14d43cd28b5"
+            alt="Play"
+          />
         </div>
       </div>
     </Link>

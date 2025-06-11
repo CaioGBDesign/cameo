@@ -37,7 +37,7 @@ const ModalLoginCadastro = ({ closeModal }) => {
             <button onClick={closeModal}>
               {" "}
               {/* Adicione o onClick aqui */}
-              <img src="/icones/fechar-filtros.svg" />
+              <img src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Ffechar-filtros.svg?alt=media&token=acbd8385-64e1-4a68-96a1-748bb560ca46" />
             </button>
           </div>
 

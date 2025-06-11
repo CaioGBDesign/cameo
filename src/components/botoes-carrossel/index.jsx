@@ -55,10 +55,16 @@ function GrupoBotoesFiltro({ opcoesBotoes, onFilterChange }) {
       {!isMobile && (
         <div className={styles.navBotoes}>
           <button onClick={() => handleScroll("next")}>
-            <img src="/icones/proximo.svg" alt="Próximo" />
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fproximo.svg?alt=media&token=dc8fe2b3-ead3-49b4-aa1e-926b16f4a3fc"
+              alt="Próximo"
+            />
           </button>
           <button onClick={() => handleScroll("prev")}>
-            <img src="/icones/anterior.svg" alt="Anterior" />
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fanterior.svg?alt=media&token=9564b079-3d4f-4b07-922d-1275ef619523"
+              alt="Anterior"
+            />
           </button>
         </div>
       )}

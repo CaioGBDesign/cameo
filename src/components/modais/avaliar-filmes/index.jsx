@@ -106,17 +106,22 @@ const ModalAvaliar = ({ filmeId, nota, onClose }) => {
               <span>{descricaoNota}</span>
             </div>
             <div className={styles.estrelas}>
-              {[1, 2, 3, 4, 5].map((value) => (
-                <img
-                  key={value}
-                  src={`/icones/${
-                    avaliacao >= value ? "estrela-preenchida" : "estrela-vazia"
-                  }.svg`}
-                  alt={`Estrela ${value}`}
-                  onClick={() => handleEstrelaClick(value)}
-                  className={styles.estrela}
-                />
-              ))}
+              {[1, 2, 3, 4, 5].map((value) => {
+                const isFilled = avaliacao >= value;
+                const src = isFilled
+                  ? "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Festrela-preenchida.svg?alt=media&token=d59fbabb-c1bf-498f-adad-8a9dc4a88062"
+                  : "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Festrela-vazia.svg?alt=media&token=a3d23b07-dd81-4729-bb4f-d73efb72feed";
+
+                return (
+                  <img
+                    key={value}
+                    src={src}
+                    alt={`Estrela ${value}`}
+                    onClick={() => handleEstrelaClick(value)}
+                    className={styles.estrela}
+                  />
+                );
+              })}
             </div>
 
             <div className={styles.comentario}>

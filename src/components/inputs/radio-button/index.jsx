@@ -2,7 +2,6 @@ import RadioIcon from "@/components/icons/RadioIcon";
 import EditIcon from "@/components/icons/EditIcon";
 import styles from "./index.module.scss";
 
-// iconVariant: "radio" | "none" | "edit"
 export default function RadioButton({
   id,
   name,
@@ -26,12 +25,8 @@ export default function RadioButton({
         onChange={onChange}
         className={styles.input}
       />
-      {iconVariant === "radio" && (
-        <RadioIcon size={20} filled={checked} />
-      )}
-      {iconVariant === "edit" && (
-        <EditIcon size={20} color="currentColor" />
-      )}
+      {iconVariant === "radio" && <RadioIcon size={20} filled={checked} />}
+      {iconVariant === "edit" && <EditIcon size={20} color="currentColor" />}
       <span className={styles.label}>{label}</span>
     </label>
   );

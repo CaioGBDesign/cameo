@@ -1,3 +1,4 @@
+import styles from "./content.module.scss";
 import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import { useAuth } from "@/contexts/auth";
 import { doc, getDoc } from "firebase/firestore";
@@ -5,7 +6,6 @@ import { db } from "@/services/firebaseConection";
 import StarRatingIcon from "@/components/icons/StarRatingIcon";
 import RadioButton from "@/components/inputs/radio-button";
 import Switch from "@/components/inputs/switch";
-import styles from "./content.module.scss";
 
 const estrelasDescricao = {
   1: "Zuado",

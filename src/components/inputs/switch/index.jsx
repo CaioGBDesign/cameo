@@ -4,8 +4,8 @@ export default function Switch({ id, checked = false, onChange }) {
   return (
     <label className={styles.wrapper} htmlFor={id}>
       <input
-        type="checkbox"
         id={id}
+        type="checkbox"
         checked={checked}
         onChange={onChange}
         className={styles.input}

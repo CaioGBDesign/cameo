@@ -41,10 +41,13 @@ export default function Modal({
   return (
     <div className={styles.overlay} onClick={handleClose}>
       <div className={modalClass} onClick={(e) => e.stopPropagation()}>
-
         <div className={styles.header}>
           <span className={styles.title}>{title}</span>
-          <button className={styles.closeBtn} onClick={handleClose} type="button">
+          <button
+            className={styles.closeBtn}
+            onClick={handleClose}
+            type="button"
+          >
             <div className={styles.closeBtnIcon}>
               <CloseIcon size={isMobile ? 15 : 24} color="currentColor" />
             </div>
@@ -57,9 +60,17 @@ export default function Modal({
           <div className={styles.footer}>
             {secondaryAction && (
               <Button
-                variant={isMobile ? (secondaryAction.mobileVariant ?? secondaryAction.variant) : secondaryAction.variant}
+                variant={
+                  isMobile
+                    ? (secondaryAction.mobileVariant ?? secondaryAction.variant)
+                    : secondaryAction.variant
+                }
                 label={isMobile ? undefined : secondaryAction.label}
-                icon={isMobile ? <WandIcon size={16} color="currentColor" /> : undefined}
+                icon={
+                  isMobile ? (
+                    <WandIcon size={16} color="currentColor" />
+                  ) : undefined
+                }
                 stars={secondaryAction.stars}
                 onClick={secondaryAction.onClick}
               />
@@ -71,7 +82,6 @@ export default function Modal({
             />
           </div>
         )}
-
       </div>
     </div>
   );

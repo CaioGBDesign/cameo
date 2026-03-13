@@ -3,10 +3,6 @@ import TextIcon from "@/components/icons/TextIcon";
 import InfoIcon from "@/components/icons/InfoIcon";
 import styles from "./index.module.scss";
 
-// actions: array de { label?, icon?, onClick?, href?, border? }
-// verTodos: { label?, onClick?, href? } — ghost com cor --text-header
-// Apenas um dos dois (actions ou verTodos) deve ser passado por vez.
-
 export default function SectionCard({
   title,
   showListIcon = false,
@@ -19,7 +15,8 @@ export default function SectionCard({
   verTodos,
   children,
 }) {
-  const hasHeader = title || showListIcon || count || avatars || actions || verTodos;
+  const hasHeader =
+    title || showListIcon || count || avatars || actions || verTodos;
 
   return (
     <div className={styles.sectionCard}>
@@ -33,7 +30,12 @@ export default function SectionCard({
             {title && (
               <div className={styles.titleGroup}>
                 <span className={styles.title}>{title}</span>
-                {showInfoIcon && <InfoIcon size={24} color={infoIconColor ?? "var(--text-base)"} />}
+                {showInfoIcon && (
+                  <InfoIcon
+                    size={24}
+                    color={infoIconColor ?? "var(--text-base)"}
+                  />
+                )}
               </div>
             )}
 
@@ -41,24 +43,23 @@ export default function SectionCard({
               <span className={styles.count}>{count}</span>
             )}
 
-            {avatars && (
-              <div className={styles.avatars}>{avatars}</div>
-            )}
+            {avatars && <div className={styles.avatars}>{avatars}</div>}
           </div>
 
           {(actions || verTodos) && (
             <div className={styles.buttons}>
-              {actions && actions.map((action, i) => (
-                <Button
-                  key={i}
-                  variant="outline"
-                  label={action.label}
-                  icon={action.icon}
-                  onClick={action.onClick}
-                  href={action.href}
-                  border={i === 0 ? "var(--stroke-base)" : undefined}
-                />
-              ))}
+              {actions &&
+                actions.map((action, i) => (
+                  <Button
+                    key={i}
+                    variant="outline"
+                    label={action.label}
+                    icon={action.icon}
+                    onClick={action.onClick}
+                    href={action.href}
+                    border={i === 0 ? "var(--stroke-base)" : undefined}
+                  />
+                ))}
 
               {verTodos && (
                 <Button

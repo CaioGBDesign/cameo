@@ -1,7 +1,7 @@
 import Link from "next/link";
-import styles from "./index.module.scss";
 import CornerArrowIcon from "@/components/icons/CornerArrowIcon";
 import StarRatingIcon from "@/components/icons/StarRatingIcon";
+import styles from "./index.module.scss";
 
 const PADRAO_VARIANTS = ["gradiente", "solid", "submit", "outline"];
 
@@ -75,7 +75,12 @@ export default function Button({
   }
 
   return (
-    <button type={type} onClick={onClick} className={className} style={inlineStyle}>
+    <button
+      type={type}
+      onClick={onClick}
+      style={inlineStyle}
+      className={className}
+    >
       {content}
     </button>
   );

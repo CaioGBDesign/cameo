@@ -29,13 +29,13 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-2xl);
-}
 
-.title {
-  font-size: 20px;
-  font-style: italic;
-  font-weight: bold;
-  color: var(--text-breadcrumb);
+  .title {
+    font-size: 20px;
+    font-style: italic;
+    font-weight: bold;
+    color: var(--text-breadcrumb);
+  }
 }
 
 .closeBtn {

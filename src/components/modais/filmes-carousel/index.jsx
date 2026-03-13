@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/auth";
 import styles from "./index.module.scss";
 import Image from "next/image";
 import DeletarFilme from "@/components/modais/deletar-filmes";
-import FavoritarFilme from "@/components/detalhesfilmes/favoritarfilme";
+import HeartIcon from "@/components/icons/HeartIcon";
 import { useIsMobile } from "@/components/DeviceProvider";
 import Estrelas from "@/components/estrelas";
 
@@ -117,12 +117,18 @@ const FilmesCarousel = ({
             />
           </div>
         )}
-        <FavoritarFilme
-          filmeId={String(selectedFilm?.id)}
-          salvarFilme={salvarFilme}
-          removerFilme={removerFilme}
-          usuarioFavoritos={user?.favoritos || []}
-        />
+        {(() => {
+          const fid = String(selectedFilm?.id);
+          const isFav = (user?.favoritos || []).includes(fid);
+          return (
+            <button
+              onClick={() => isFav ? removerFilme(fid) : salvarFilme(fid)}
+              style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
+            >
+              <HeartIcon size={24} color="var(--text-header)" filled={isFav} />
+            </button>
+          );
+        })()}
 
         {user?.visto?.[String(selectedFilm?.id)]?.nota && (
           <div className={styles.avaliacaoUsuario}>

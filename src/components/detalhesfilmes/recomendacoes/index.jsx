@@ -1,16 +1,16 @@
 // components/detalhesfilmes/recomendacoes.jsx
-import React from "react";
+import { forwardRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import styles from "./index.module.scss";
 
-const Recomendacoes = ({ movies }) => {
+const Recomendacoes = forwardRef(({ movies }, ref) => {
   const router = useRouter();
   if (!Array.isArray(movies) || movies.length === 0) return null;
 
   return (
     <section className={styles.relatedSection}>
-      <div className={styles.carrossel}>
+      <div ref={ref} className={styles.carrossel}>
         <ul className={styles.list}>
           {movies.map((movie) => (
             <li key={movie.id} className={styles.card}>
@@ -52,6 +52,6 @@ const Recomendacoes = ({ movies }) => {
       </div>
     </section>
   );
-};
+});
 
 export default Recomendacoes;

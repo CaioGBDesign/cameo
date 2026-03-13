@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Header from "@/components/Header";
 import Button from "@/components/button";
 import Modal from "@/components/modal";
@@ -6,6 +6,7 @@ import Checkbox from "@/components/inputs/checkbox";
 import CheckboxCard from "@/components/inputs/checkbox-card";
 import Switch from "@/components/inputs/switch";
 import SectionCard from "@/components/section-card";
+import ArrowButton from "@/components/arrow-button";
 import NewsIcon from "@/components/icons/NewsIcon";
 import ListIcon from "@/components/icons/ListIcon";
 import styles from "./teste.module.scss";
@@ -31,6 +32,7 @@ export default function Teste() {
   const [cb8, setCb8] = useState(true);
   const [sw1, setSw1] = useState(false);
   const [sw2, setSw2] = useState(true);
+  const carrosselRef = useRef(null);
 
   return (
     <div className={styles.page}>
@@ -189,6 +191,42 @@ export default function Teste() {
             Conteúdo da seção aqui.
           </p>
         </SectionCard>
+      </Secao>
+
+      <h1 className={styles.titulo}>ArrowButton</h1>
+
+      <Secao titulo="Carrossel com setas de navegação">
+        <ArrowButton scrollRef={carrosselRef} />
+        <div
+          ref={carrosselRef}
+          style={{
+            display: "flex",
+            gap: "12px",
+            overflowX: "auto",
+            width: "100%",
+            scrollbarWidth: "none",
+          }}
+        >
+          {Array.from({ length: 12 }, (_, i) => (
+            <div
+              key={i}
+              style={{
+                minWidth: "120px",
+                height: "80px",
+                background: "var(--bg-overlay)",
+                border: "1px solid var(--stroke-base)",
+                borderRadius: "var(--space-md)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "var(--text-base)",
+                flexShrink: 0,
+              }}
+            >
+              Item {i + 1}
+            </div>
+          ))}
+        </div>
       </Secao>
 
       <h1 className={styles.titulo}>Modal</h1>

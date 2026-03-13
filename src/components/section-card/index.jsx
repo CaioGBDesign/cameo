@@ -1,4 +1,5 @@
 import Button from "@/components/button";
+import ArrowButton from "@/components/arrow-button";
 import TextIcon from "@/components/icons/TextIcon";
 import InfoIcon from "@/components/icons/InfoIcon";
 import styles from "./index.module.scss";
@@ -13,10 +14,11 @@ export default function SectionCard({
   avatars,
   actions,
   verTodos,
+  scrollRef,
   children,
 }) {
   const hasHeader =
-    title || showListIcon || count || avatars || actions || verTodos;
+    title || showListIcon || count || avatars || actions || verTodos || scrollRef;
 
   return (
     <div className={styles.sectionCard}>
@@ -46,8 +48,9 @@ export default function SectionCard({
             {avatars && <div className={styles.avatars}>{avatars}</div>}
           </div>
 
-          {(actions || verTodos) && (
+          {(actions || verTodos || scrollRef) && (
             <div className={styles.buttons}>
+              {scrollRef && <ArrowButton scrollRef={scrollRef} />}
               {actions &&
                 actions.map((action, i) => (
                   <Button

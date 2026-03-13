@@ -1,0 +1,41 @@
+.arrowButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-sm);
+
+  .arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--space-md);
+    border: 1px solid;
+    padding: 0;
+    cursor: pointer;
+    transition:
+      width 0.2s,
+      height 0.2s,
+      background 0.2s,
+      border-color 0.2s;
+
+    &.inactive {
+      width: 40px;
+      height: 40px;
+      background: var(--bg-quintenario);
+      border-color: var(--stroke-quaternary);
+    }
+
+    &.active {
+      width: 50px;
+      height: 50px;
+      background: var(--bg-submit);
+      border-color: var(--stroke-submit);
+    }
+  }
+}
+
+.hideMobile {
+  @media only screen and (max-width: 768px) {
+    display: none;
+  }
+}

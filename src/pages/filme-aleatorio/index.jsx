@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
@@ -27,13 +27,10 @@ const ModalAvaliar = dynamic(
 const ModalFiltros = dynamic(() => import("@/components/modais/filtros"));
 const Servicos = dynamic(() => import("@/components/detalhesfilmes/servicos"));
 const InfoFilme = dynamic(() => import("@/components/infoFilme"));
-const Cast = dynamic(() => import("@/components/detalhesfilmes/cast"));
-const Direcao = dynamic(() => import("@/components/detalhesfilmes/direcao"));
+import Cast from "@/components/detalhesfilmes/cast";
+import Recomendacoes from "@/components/detalhesfilmes/recomendacoes";
 const ProducaoFilmes = dynamic(
   () => import("@/components/detalhesfilmes/producaoFilme"),
-);
-const Recomendacoes = dynamic(
-  () => import("@/components/detalhesfilmes/recomendacoes"),
 );
 
 export default function FilmeAleatorio() {
@@ -60,6 +57,9 @@ export default function FilmeAleatorio() {
   const [modalListaAberto, setModalListaAberto] = useState(false);
   const [selecionarFavorito, setSelecionarFavorito] = useState(false);
   const [selecionarParaVer, setSelecionarParaVer] = useState(false);
+
+  const elencoRef = useRef(null);
+  const recomendacoesRef = useRef(null);
 
   useEffect(() => {
     setAssistList(user?.assistir || []);
@@ -268,17 +268,17 @@ export default function FilmeAleatorio() {
                   />
                 </SectionCard>
               </div>
-              <SectionCard title="Elenco">
-                <Cast cast={cast} />
+              <SectionCard title="Elenco" scrollRef={elencoRef}>
+                <Cast ref={elencoRef} items={cast} />
               </SectionCard>
               <SectionCard title="Direção">
-                <Direcao crew={crew} />
+                <Cast items={crew.filter((m) => m.job === "Director")} showCharacter={false} />
               </SectionCard>
               <SectionCard title="Produção">
                 <ProducaoFilmes companies={filme.production_companies} />
               </SectionCard>
-              <SectionCard title="Recomendações">
-                <Recomendacoes movies={related} />
+              <SectionCard title="Recomendações" scrollRef={recomendacoesRef}>
+                <Recomendacoes ref={recomendacoesRef} movies={related} />
               </SectionCard>
             </div>
             <Footer />

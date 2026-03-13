@@ -13,7 +13,6 @@ const Direcao = ({ crew }) => {
 
   return (
     <section className={styles.direcaoSection}>
-      <h2 className={styles.heading}>Direção</h2>
       <ul className={styles.list}>
         {directors.map((dir) => (
           <li key={dir.credit_id} className={styles.card}>

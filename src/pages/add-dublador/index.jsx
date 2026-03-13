@@ -18,7 +18,6 @@ import BotaoPrimario from "@/components/botoes/primarios";
 import Loading from "@/components/loading";
 import UploadImagem from "@/components/upload-imagem";
 import Header from "@/components/Header";
-import HeaderDesktop from "@/components/HeaderDesktop";
 import SelectInput from "@/components/SelectInput";
 import MultiSelectCheckbox from "@/components/multi-select-checkbox";
 
@@ -470,12 +469,7 @@ const CreateDubladorPage = () => {
         />
       </Head>
 
-      {/** Header responsivo */}
-      {typeof window !== "undefined" && window.innerWidth < 768 ? (
-        <Header />
-      ) : (
-        <HeaderDesktop />
-      )}
+      <Header />
 
       <main className={styles.containerDublador}>
         <div className={styles.formWrapper}>

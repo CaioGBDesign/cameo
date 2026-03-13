@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm uninstall:*)",
+      "Bash(npm install:*)",
+      "Bash(for f:*)",
+      "Bash(do)",
+      "Bash(echo \"=== $f ===\")",
+      "Read(//c/Users/win11/OneDrive/Área de Trabalho/Cameo/**)",
+      "Bash(done)",
+      "Bash(grep -r Menu02 'c:/Users/win11/OneDrive/Área de Trabalho/Cameo/node_modules/@hugeicons/react/dist' --include=*.js -l)",
+      "Bash(python3 -c \":*)",
+      "mcp__claude_ai_Figma__get_design_context",
+      "Bash(\"c:/Users/win11/OneDrive/Área de:*)"
+    ]
+  }
+}

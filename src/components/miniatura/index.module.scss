@@ -1,27 +1,9 @@
-.normal {
+.miniatura {
   display: flex;
   justify-content: center;
   align-items: center;
 
-  transition: 0.2s;
-
   img {
     width: 100%;
-
-    transition: 0.2s;
-  }
-}
-
-.small {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  transition: 0.2s;
-
-  img {
-    width: 100%;
-
-    transition: 0.2s;
   }
 }

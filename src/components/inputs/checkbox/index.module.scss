@@ -1,0 +1,48 @@
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  cursor: pointer;
+  user-select: none;
+}
+
+.input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.box {
+  flex-shrink: 0;
+
+  width: 15px;
+  height: 15px;
+
+  border-radius: var(--space-xs);
+  border: 1px solid var(--stroke-solid);
+  background: var(--bg-base);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.input:checked + .box {
+  background: var(--bg-submit);
+  border: none;
+  color: var(--text-solid);
+}
+
+.label {
+  font-size: 15px;
+  color: var(--text-base);
+
+  a {
+    text-decoration: none;
+  }
+}

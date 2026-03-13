@@ -7,7 +7,6 @@ const ProducaoFilmes = ({ companies }) => {
 
   return (
     <section className={styles.section}>
-      <h2 className={styles.heading}>Produção</h2>
       <ul className={styles.list}>
         {companies.map((company) => (
           <li key={company.id} className={styles.item}>

@@ -1,0 +1,44 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  cursor: pointer;
+  user-select: none;
+  border-radius: var(--space-sm);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+/* ── Variante card — com padding, fundo e borda ── */
+.card {
+  padding: var(--space-lg);
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+
+  &.checked {
+    background: var(--bg-quintenario);
+  }
+}
+
+/* ── Variante bare — sem padding, fundo ou borda ── */
+.bare {
+  padding: var(--space-nn);
+  background: none;
+  border: none;
+}
+
+/* ── Texto ── */
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.label {
+  font-size: 15px;
+  color: var(--text-base);
+}
+
+.sublabel {
+  font-size: 12px;
+  color: var(--text-sub);
+}

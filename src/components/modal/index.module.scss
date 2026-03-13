@@ -1,0 +1,145 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal {
+  width: 900px;
+  max-width: calc(100vw - var(--space-2xl) * 2);
+
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-2xl);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-nn);
+}
+
+/* ── Header ── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2xl);
+}
+
+.title {
+  font-size: 20px;
+  font-style: italic;
+  font-weight: bold;
+  color: var(--text-breadcrumb);
+}
+
+.closeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-base);
+
+  .closeBtnIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: var(--space-8xl);
+    height: var(--space-8xl);
+
+    border-radius: var(--space-sm);
+    border: solid 1px var(--stroke-quaternary);
+
+    @media only screen and (max-width: 600px) {
+      width: var(--space-2xl);
+      height: var(--space-2xl);
+
+      border-radius: var(--space-xs);
+    }
+  }
+}
+
+/* ── Content ── */
+.content {
+  width: 100%;
+  max-height: 450px;
+  overflow-y: auto;
+  padding: var(--space-2xl);
+  padding-top: var(--space-nn);
+}
+
+/* ── Mobile ── */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+.modalMobile {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  width: 100%;
+  max-width: 100%;
+  max-height: 90vh;
+
+  border-radius: var(--space-2xl) var(--space-2xl) 0 0;
+}
+
+.slideUp {
+  animation: slideUp 300ms ease-out forwards;
+}
+
+.slideDown {
+  animation: slideDown 300ms ease-in forwards;
+}
+
+/* ── Footer ── */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  padding: var(--space-2xl);
+  border-top: solid 1px var(--stroke-base);
+
+  a,
+  button {
+    width: 220px;
+  }
+
+  @media only screen and (max-width: 600px) {
+    a:first-child,
+    button:first-child {
+      width: auto;
+    }
+
+    a:last-child,
+    button:last-child {
+      flex: 1;
+    }
+  }
+}

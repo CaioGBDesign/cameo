@@ -5,7 +5,6 @@ import { useIsMobile } from "@/components/DeviceProvider";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import HeaderDesktop from "@/components/HeaderDesktop";
 
 const Sobre = () => {
   const isMobile = useIsMobile();
@@ -21,7 +20,7 @@ const Sobre = () => {
           />
         </Head>
 
-        {isMobile ? <Header /> : <HeaderDesktop />}
+        <Header />
 
         <section className={styles.SobreHero}>
           <div className={styles.SobreHeroBox}>

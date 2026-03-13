@@ -1,0 +1,38 @@
+.banner {
+  position: relative;
+  width: 276px;
+  height: 363px;
+  aspect-ratio: 2 / 3;
+  border-radius: var(--space-lg);
+  border: solid 2px var(--stroke-submit);
+  overflow: hidden;
+}
+
+.imagem {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: var(--space-8xl);
+  height: var(--space-8xl);
+
+  background: var(--bg-quintenario);
+  border-radius: var(--space-8xl);
+
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

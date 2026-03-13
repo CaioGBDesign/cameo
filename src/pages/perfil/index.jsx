@@ -4,7 +4,6 @@ import { useIsMobile } from "@/components/DeviceProvider";
 import Head from "next/head";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import HeaderDesktop from "@/components/HeaderDesktop";
 import FotoPrincipal from "@/components/perfil/fotoPrincipal";
 import NomeUsuario from "@/components/perfil/nomeUsuario";
 import Handle from "@/components/perfil/handle";
@@ -49,7 +48,7 @@ const PerfilUsuario = () => {
       </Head>
       <div className={styles.perfilUsuario}>
         {/* Header */}
-        {isMobile ? <Header /> : <HeaderDesktop />}
+        <Header />
 
         <div className={styles.apresentacao}>
           <FotoPrincipal onClickModal={abrirModal}></FotoPrincipal>

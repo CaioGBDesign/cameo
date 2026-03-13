@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 import { useIsMobile } from "@/components/DeviceProvider";
 import Head from "next/head";
 import Header from "@/components/Header";
-import HeaderDesktop from "@/components/HeaderDesktop";
 import Footer from "@/components/Footer";
 import BannerResenhas from "@/components/banner-resenhas";
 import ListaNoticias from "@/components/ListaNoticias-resumo";
@@ -101,7 +100,7 @@ const Criticas = ({}) => {
 
   return (
     <>
-      {isMobile ? <Header /> : <HeaderDesktop />}
+      <Header />
       <Head>
         <title>Cameo – Resenhas de Cinema</title>
         <meta charSet="utf-8" />

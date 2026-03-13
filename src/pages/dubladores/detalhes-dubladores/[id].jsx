@@ -7,7 +7,6 @@ import Loading from "@/components/loading";
 import styles from "./index.module.scss";
 import Head from "next/head";
 import Header from "@/components/Header";
-import HeaderDesktop from "@/components/HeaderDesktop";
 import ListaPageFilmes from "@/components/detalhesfilmes/listaPageFilmes";
 import Titulolistagem from "@/components/titulolistagem";
 
@@ -178,12 +177,7 @@ export default function DetalhesDubladorPage() {
         />
       </Head>
 
-      {/** Header responsivo */}
-      {typeof window !== "undefined" && window.innerWidth < 768 ? (
-        <Header />
-      ) : (
-        <HeaderDesktop />
-      )}
+      <Header />
       <div className={styles.containerDetalhes}>
         <div className={styles.contDetalhesBox}>
           <div className={styles.detalhesBox}>

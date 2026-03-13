@@ -9,7 +9,6 @@ import dynamic from "next/dynamic";
 import BotaoPrimario from "@/components/botoes/primarios";
 
 const Header = dynamic(() => import("@/components/Header"));
-const HeaderDesktop = dynamic(() => import("@/components/HeaderDesktop"));
 
 export default function FilmesDubladores() {
   const [codigoFilme, setCodigoFilme] = useState("");
@@ -78,7 +77,7 @@ export default function FilmesDubladores() {
         />
       </Head>
 
-      {isMobile ? <Header /> : <HeaderDesktop />}
+      <Header />
 
       <div className={styles.formFilmesDubladores}>
         <h1>Cadastro de Dubladores por Filme</h1>

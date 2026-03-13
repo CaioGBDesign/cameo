@@ -3,62 +3,40 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 40px;
+    gap: var(--space-sm);
 
     .botaoHome {
-      display: block;
-
       @media only screen and (max-width: 1300px) {
         display: none;
       }
     }
 
     li {
+      display: flex;
+
       a {
-        display: flex;
-
+        color: var(--text-sub);
+        font-size: 1rem;
+        font-family: inherit;
+        font-weight: 400;
         text-decoration: none;
+        font-style: italic;
+        transition: 0.2s;
 
-        span {
-          display: flex;
+        padding: var(--space-nn) var(--space-lg);
 
-          width: auto;
+        height: var(--space-8xl);
 
-          color: #fff;
+        display: flex;
+        align-items: center;
 
-          font-size: 16px;
-          font-weight: 200;
-
-          opacity: 0.5;
-
-          white-space: nowrap;
-
-          transition: 0.2s;
-
-          &.active {
-            color: #1af5eb;
-            font-weight: bold;
-
-            opacity: 1;
-          }
-
-          &:hover {
-            color: #1af5eb;
-            font-weight: bold;
-
-            opacity: 1;
-          }
+        &.active {
+          color: var(--text-header);
         }
-      }
-
-      .ponto {
-        font-size: 10px;
-
-        color: #fff;
-
-        opacity: 0.5;
-
-        cursor: context-menu;
+        &:hover {
+          background: var(--bg-overlay);
+          border-radius: var(--space-sm);
+        }
       }
     }
   }

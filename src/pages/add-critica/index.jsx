@@ -16,7 +16,6 @@ import SelectInput from "@/components/SelectInput";
 import { useIsMobile } from "@/components/DeviceProvider";
 import Head from "next/head";
 import Header from "@/components/Header";
-import HeaderDesktop from "@/components/HeaderDesktop";
 
 const AddCriticas = () => {
   const { user } = useAuth();
@@ -274,7 +273,7 @@ const AddCriticas = () => {
 
   return (
     <main className={styles.ContCriticas}>
-      {isMobile ? <Header /> : <HeaderDesktop />}
+      <Header />
       <Head>
         <title>Cameo - Home</title>
         <meta

@@ -4,7 +4,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { useIsMobile } from "@/components/DeviceProvider";
 import styles from "./index.module.scss";
 import Header from "@/components/Header";
-import HeaderDesktop from "@/components/HeaderDesktop";
 import Sinopse from "@/components/detalhesfilmes/sinopse";
 import Loading from "@/components/loading";
 
@@ -103,7 +102,7 @@ const Novidades = () => {
 
   return (
     <div className={styles.contNovidades}>
-      {isMobile ? <Header /> : <HeaderDesktop />}
+      <Header />
       <div className={styles.novidadeList}>
         {novidades.map(
           ({

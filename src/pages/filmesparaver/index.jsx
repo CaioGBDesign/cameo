@@ -12,7 +12,6 @@ import FilmesCarousel from "@/components/modais/filmes-carousel";
 import { useAuth } from "@/contexts/auth";
 
 const Header = dynamic(() => import("@/components/Header"));
-const HeaderDesktop = dynamic(() => import("@/components/HeaderDesktop"));
 const Footer = dynamic(() => import("@/components/Footer"));
 const FundoTitulosDesktop = dynamic(() =>
   import("@/components/fotoPrincipalDesktop")
@@ -128,7 +127,7 @@ export default function filmesParaVer() {
         />
       </Head>
 
-      {isMobile ? <Header /> : <HeaderDesktop />}
+      <Header />
 
       {filme ? (
         <main className={styles.filmesAssisti}>
@@ -173,7 +172,6 @@ export default function filmesParaVer() {
             <div className={styles.fundoTitulos}>
               <FundoTitulosDesktop
                 capaAssistidos={`https://image.tmdb.org/t/p/original/${filme.backdrop_path}`}
-                capaAssistidosMobile={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
                 tituloAssistidos={filme.title}
                 opacidade={0.2}
               />

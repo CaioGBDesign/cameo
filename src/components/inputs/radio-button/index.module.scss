@@ -1,0 +1,35 @@
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+
+  padding: var(--space-sm);
+  border-radius: var(--space-sm);
+  border: 1px solid var(--stroke-quaternary);
+
+  color: var(--text-base);
+  cursor: pointer;
+  user-select: none;
+
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+
+  &.checked {
+    background: var(--bg-submit);
+    border-color: var(--stroke-submit);
+  }
+}
+
+.input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.label {
+  font-size: 16px;
+  font-style: italic;
+  color: var(--text-base);
+}

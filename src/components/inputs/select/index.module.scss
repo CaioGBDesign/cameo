@@ -1,0 +1,97 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.label {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--text-sub);
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: inherit;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text-sub);
+  border-radius: var(--space-sm);
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+
+  // variante default
+  &.default {
+    background: var(--bg-overlay);
+    border: 1px solid var(--stroke-base);
+    padding: var(--space-sm) var(--space-md);
+
+    &:hover,
+    &.open {
+      border-color: var(--stroke-submit);
+    }
+  }
+
+  // variante ghost
+  &.ghost {
+    background: transparent;
+    border: 1px solid transparent;
+    padding: var(--space-nn) var(--space-lg);
+    height: var(--space-8xl);
+
+    &:hover,
+    &.open {
+      background: var(--bg-overlay);
+    }
+  }
+}
+
+.chevron {
+  flex-shrink: 0;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + var(--space-xs));
+  left: 0;
+  min-width: 100%;
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  overflow: hidden;
+  z-index: 100;
+  list-style: none;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: var(--space-xs);
+}
+
+.option {
+  padding: var(--space-sm) var(--space-md);
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text-sub);
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+
+  display: flex;
+  width: 100%;
+
+  &:hover {
+    background: var(--bg-base);
+  }
+
+  &.selected {
+    color: var(--text-header);
+  }
+}

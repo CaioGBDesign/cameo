@@ -6,7 +6,6 @@ import { sendPasswordResetEmail } from "firebase/auth";
 import { useIsMobile } from "@/components/DeviceProvider";
 import Head from "next/head";
 import Header from "@/components/Header";
-import HeaderDesktop from "@/components/HeaderDesktop";
 import Link from "next/link";
 import EntrarCadastrar from "@/components/botoes/acesso";
 import styles from "./index.module.scss";
@@ -85,15 +84,7 @@ const Login = () => {
           content="Acesse sua conta Cameo para gerenciar suas listas de filmes, receber recomendações e muito mais. Entre agora e descubra o que assistir!"
         />
       </Head>
-      {isMobile ? (
-        <Header showBuscar={false} showFotoPerfil={false} />
-      ) : (
-        <HeaderDesktop
-          showBuscar={false}
-          showMenu={false}
-          showFotoPerfil={false}
-        />
-      )}
+      <Header showBuscar={false} showMenu={false} showFotoPerfil={false} />
       <div className={styles.login}>
         {isMobile ? null : (
           <div className={styles.fundoFilmes}>

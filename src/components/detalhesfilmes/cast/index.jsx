@@ -5,7 +5,6 @@ const Elenco = ({ cast }) => {
 
   return (
     <div className={styles.elencoContainer}>
-      <h2>Elenco</h2>
       <ul className={styles.carrosselElenco}>
         {cast.slice(0, 10).map((ator) => (
           <li key={ator.id} className={styles.ator}>

@@ -9,7 +9,6 @@ import { useIsMobile } from "@/components/DeviceProvider";
 import { doc, getDoc } from "firebase/firestore";
 import Head from "next/head";
 import Header from "@/components/Header";
-import HeaderDesktop from "@/components/HeaderDesktop";
 import Footer from "@/components/Footer";
 import BannerNoticias from "@/components/banner-noticias";
 import CarrosselNticias from "@/components/carrossel-noticias";
@@ -244,7 +243,7 @@ const Noticias = ({}) => {
 
   return (
     <>
-      {isMobile ? <Header /> : <HeaderDesktop />}
+      <Header />
       <Head>
         <title>Cameo – Notícias</title>
         <meta

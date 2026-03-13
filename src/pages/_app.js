@@ -1,29 +1,21 @@
 import "@/styles/globals.css";
-import { Nunito } from "next/font/google";
-import { Poppins } from "next/font/google";
+import { Nunito_Sans } from "next/font/google";
 import AuthProvider from "@/contexts/auth";
-import { MantineProvider } from "@mantine/core";
-import { ToastContainer } from "react-toastify"; // Importa o ToastContainer
+import { ToastContainer } from "react-toastify";
 import { DeviceProvider } from "@/components/DeviceProvider";
-import "react-toastify/dist/ReactToastify.css"; // Importa o CSS do Toastify
+import "react-toastify/dist/ReactToastify.css";
 
-const nunito = Nunito({ subsets: ["latin"] });
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-});
+const nunitoSans = Nunito_Sans({ subsets: ["latin"] });
 
 export default function App({ Component, pageProps }) {
   return (
-    <MantineProvider withGlobalStyles withNormalizeCSS>
-      <main className={`${nunito.className} ${poppins.className}`}>
-        <AuthProvider>
-          <DeviceProvider>
-            <Component {...pageProps} />
-            <ToastContainer />
-          </DeviceProvider>
-        </AuthProvider>
-      </main>
-    </MantineProvider>
+    <main className={nunitoSans.className}>
+      <AuthProvider>
+        <DeviceProvider>
+          <Component {...pageProps} />
+          <ToastContainer />
+        </DeviceProvider>
+      </AuthProvider>
+    </main>
   );
 }

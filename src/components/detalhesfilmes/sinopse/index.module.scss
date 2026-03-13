@@ -42,11 +42,9 @@
         font-size: 16px;
         font-weight: 300;
 
-        color: white;
+        color: var(--text-sub);
 
         line-height: 24px;
-
-        opacity: 0.5;
 
         @media only screen and (max-width: 600px) {
           font-weight: 200;

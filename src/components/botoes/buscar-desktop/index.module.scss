@@ -5,17 +5,12 @@
   gap: 20px;
 
   text-decoration: none;
+  color: var(--text-base);
 
-  p {
-    color: #fff;
+  width: var(--space-5xl);
+  height: var(--space-5xl);
 
-    font-size: 24px;
-    font-weight: 100;
+  border-radius: var(--space-5xl);
+  border: 1px solid var(--stroke-base);
 
-    opacity: 0.3;
-
-    @media only screen and (max-width: 1300px) {
-      font-size: 18px;
-    }
-  }
 }

@@ -23,7 +23,6 @@ import MultiSelectCheckbox from "@/components/multi-select-checkbox";
 import { useIsMobile } from "@/components/DeviceProvider";
 import Head from "next/head";
 import Header from "@/components/Header";
-import HeaderDesktop from "@/components/HeaderDesktop";
 
 const AddNoticias = ({ onClose }) => {
   const { user } = useAuth();
@@ -316,7 +315,7 @@ const AddNoticias = ({ onClose }) => {
 
   return (
     <main className={styles.ContNoticias}>
-      {isMobile ? <Header /> : <HeaderDesktop />}
+      <Header />
       <Head>
         <title>Cameo - Home</title>
         <meta

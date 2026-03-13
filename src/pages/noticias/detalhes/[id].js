@@ -8,7 +8,6 @@ import styles from "./index.module.scss";
 import Footer from "@/components/Footer";
 import Head from "next/head";
 import Header from "@/components/Header";
-import HeaderDesktop from "@/components/HeaderDesktop";
 import { useIsMobile } from "@/components/DeviceProvider";
 import DOMPurify from "isomorphic-dompurify";
 import Link from "next/link";
@@ -90,7 +89,7 @@ const NoticiaDetalhe = () => {
 
   return (
     <>
-      {isMobile ? <Header /> : <HeaderDesktop />}
+      <Header />
       <Head>
         <title>{noticia.titulo} — Cameo</title>
         <meta

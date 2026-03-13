@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import styles from "./index.module.scss";
 import Header from "@/components/Header";
-import HeaderDesktop from "@/components/HeaderDesktop";
 import Search from "@/components/busca";
 
 const Miniaturafilmes = lazy(() => import("@/components/miniaturafilmes"));
@@ -56,7 +55,7 @@ const Busca = () => {
           content="Encontre o filme perfeito em segundos! Utilize nossa busca avançada para filtrar por gênero, ano, classificação indicativa e muito mais. O filme ideal está a um clique de distância!"
         />
       </Head>
-      {isMobile ? <Header showBuscar={false} /> : <HeaderDesktop />}
+      <Header showBuscar={false} />
       <div className={styles.searchPage}>
         <div className={styles.conteudo}>
           <div className={styles.search}>

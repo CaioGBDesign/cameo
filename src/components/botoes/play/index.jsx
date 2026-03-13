@@ -1,17 +1,13 @@
-// components/botoes/play/index.jsx
-import React from "react";
 import styles from "./index.module.scss";
 import Link from "next/link";
+import PlayIcon from "@/components/icons/PlayIcon";
 
 const BotaoPlay = ({ linkTrailer }) => {
   return (
-    <Link target="blank" href={linkTrailer} passHref>
+    <Link target="_blank" href={linkTrailer} passHref rel="noopener noreferrer">
       <div className={styles.contBotaoPlay}>
         <div className={styles.botaoPlay}>
-          <img
-            src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fplay.svg?alt=media&token=f7305473-6f1e-4234-964d-d3682c2b77f3"
-            alt="Play"
-          />
+          <PlayIcon size={32} color="currentColor" />
         </div>
       </div>
     </Link>

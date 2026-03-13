@@ -1,41 +1,19 @@
-import React, { useState, useEffect } from "react";
-import styles from "./index.module.scss";
+import React from "react";
+import Badge from "@/components/badge";
 
 const certificationMap = {
-  L: <div className={styles.livre}>Livre</div>,
-  10: <div className={styles.dezAnos}>10 anos</div>,
-  12: <div className={styles.dozeAnos}>12 anos</div>,
-  14: <div className={styles.quatorzeAnos}>14 anos</div>,
-  16: <div className={styles.dezesseisAnos}>16 anos</div>,
-  18: <div className={styles.dezoitoAnos}>18 anos</div>,
+  L:  { variant: "livre",      label: "Livre"    },
+  10: { variant: "dez",        label: "10 anos"  },
+  12: { variant: "doze",       label: "12 anos"  },
+  14: { variant: "quatorze",   label: "14 anos"  },
+  16: { variant: "dezesseis",  label: "16 anos"  },
+  18: { variant: "dezoito",    label: "18 anos"  },
 };
 
 const Classificacao = ({ releaseDates }) => {
   if (!releaseDates) return null;
 
-  // define se desktop ou mobile
-  const useIsMobile = () => {
-    const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-      const handleResize = () => {
-        setIsMobile(window.innerWidth <= 768);
-      };
-
-      handleResize();
-      window.addEventListener("resize", handleResize);
-
-      return () => {
-        window.removeEventListener("resize", handleResize);
-      };
-    }, []);
-
-    return isMobile;
-  };
-
-  const isMobile = useIsMobile();
-
-  const brRelease = releaseDates.find((result) => result.iso_3166_1 === "BR");
+  const brRelease = releaseDates.find((r) => r.iso_3166_1 === "BR");
 
   if (
     brRelease &&
@@ -43,14 +21,14 @@ const Classificacao = ({ releaseDates }) => {
     brRelease.release_dates[0].certification
   ) {
     const certification = brRelease.release_dates[0].certification;
-    const certificationDisplay = certificationMap[certification] || (
-      <p>Classificação não disponível</p>
-    );
+    const entry = certificationMap[certification];
 
-    return <div className={styles.detalhes}>{certificationDisplay}</div>;
+    if (!entry) return null;
+
+    return <Badge variant={entry.variant} label={entry.label} />;
   }
 
-  return null; // Não exibe nada se não houver classificação
+  return null;
 };
 
 export default Classificacao;

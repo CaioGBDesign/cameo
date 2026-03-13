@@ -1,17 +1,11 @@
 import React from "react";
-import dynamic from "next/dynamic";
 import Image from "next/image";
+import Link from "next/link";
 import styles from "./index.module.scss";
 import { useIsMobile } from "@/components/DeviceProvider";
-
-// Lazy-load play button and classification
-const BotaoPlay = dynamic(() => import("@/components/botoes/play"), {
-  ssr: false,
-});
-const Classificacao = dynamic(
-  () => import("@/components/detalhesfilmes/classificacao"),
-  { ssr: false }
-);
+import PlayIcon from "@/components/icons/PlayIcon";
+import Badge from "@/components/badge";
+import Classificacao from "@/components/detalhesfilmes/classificacao";
 
 export default function TitulosFilmesDesktop({
   filme,
@@ -21,12 +15,10 @@ export default function TitulosFilmesDesktop({
   // Renderiza cada gênero em sua própria div
   const renderGeneros = () => {
     if (!Array.isArray(filme.genres) || filme.genres.length === 0) {
-      return <div className={styles.genero}>--</div>;
+      return <Badge variant="genero" label="--" />;
     }
     return filme.genres.map((g) => (
-      <div key={g.id} className={styles.genero}>
-        {g.name}
-      </div>
+      <Badge key={g.id} variant="genero" label={g.name} />
     ));
   };
 
@@ -67,7 +59,11 @@ export default function TitulosFilmesDesktop({
           <div className={styles.posterTrailer}>
             {trailerLink && (
               <div className={styles.botaoTrailer}>
-                <BotaoPlay linkTrailer={trailerLink} />
+                <div className={styles.play}>
+                  <Link href={trailerLink} target="_blank" rel="noopener noreferrer">
+                    <PlayIcon size={24} color="#fff" />
+                  </Link>
+                </div>
               </div>
             )}
             {filme.backdrop_path && (
@@ -91,21 +87,17 @@ export default function TitulosFilmesDesktop({
           </div>
 
           <div className={styles.classificacaoGenero}>
-            {/* Classificação indicativa */}
-
-            {isMobile ? null : <Classificacao releaseDates={releaseDates} />}
-
-            {/* Exibição dos gêneros em divs separadas */}
             <div className={styles.generosList}>{renderGeneros()}</div>
 
             <div className={styles.lancamentoDuracao}>
-              {/* Duração do filme */}
+              <Classificacao releaseDates={releaseDates} />
               <div className={styles.duracaoFilme}>{duracao}</div>
-              <span>•</span>
-              {/* Data de lançamento */}
-              <div className={styles.dataLancamento}>{dataLancamento}</div>
-
-              {isMobile ? <Classificacao releaseDates={releaseDates} /> : null}
+              {isMobile && (
+                <>
+                  <span className={styles.separador}>•</span>
+                  <div className={styles.dataLancamento}>{dataLancamento}</div>
+                </>
+              )}
             </div>
           </div>
         </div>

@@ -13,20 +13,14 @@ const Servicos = ({ servicos }) => {
   );
 
   return (
-    <div className={styles.servicos}>
-      <div className={styles.contServicos}>
-        <h3>Serviços</h3>
-
-        <div className={styles.todosServicos}>
-          {servicosFiltrados.map((servico, index) => (
-            <NomeServico
-              key={index}
-              streaming={servico.logo_path}
-              nomeServico={servico.provider_name} // passa o nome do serviço como propriedade
-            />
-          ))}
-        </div>
-      </div>
+    <div className={styles.todosServicos}>
+      {servicosFiltrados.map((servico, index) => (
+        <NomeServico
+          key={index}
+          streaming={servico.logo_path}
+          nomeServico={servico.provider_name}
+        />
+      ))}
     </div>
   );
 };

@@ -1,49 +1,49 @@
-// pages/filme-aleatorio.js
 import React, { useEffect, useState, useCallback } from "react";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useIsMobile } from "@/components/DeviceProvider";
 import TitulosFilmesDesktop from "@/components/titulosFilmesDesktop";
+import BannerFilme from "@/components/banner-filme";
 import Sinopse from "@/components/detalhesfilmes/sinopse";
-import NotasFilmes from "@/components/botoes/notas";
-import FavoritarFilme from "@/components/detalhesfilmes/favoritarfilme";
-import AssistirFilme from "@/components/detalhesfilmes/paraver";
-import ModalAvaliar from "@/components/modais/avaliar-filmes";
-import Servicos from "@/components/detalhesfilmes/servicos";
-import InfoFilme from "@/components/infoFilme";
-import Cast from "@/components/detalhesfilmes/cast";
-import Direcao from "@/components/detalhesfilmes/direcao";
-import ProducaoFilmes from "@/components/detalhesfilmes/producaoFilme";
-import Recomendacoes from "@/components/detalhesfilmes/recomendacoes";
 import BotaoPrimario from "@/components/botoes/primarios";
 import BotaoSecundario from "@/components/botoes/secundarios";
-import ModalFiltros from "@/components/modais/filtros";
+import Button from "@/components/button";
+import SectionCard from "@/components/section-card";
+import Modal from "@/components/modal";
+import CheckboxCard from "@/components/inputs/checkbox-card";
+import NewsIcon from "@/components/icons/NewsIcon";
 import { useAuth } from "@/contexts/auth";
 import styles from "./index.module.scss";
 
 const Header = dynamic(() => import("@/components/Header"));
-const HeaderDesktop = dynamic(() => import("@/components/HeaderDesktop"));
 const Footer = dynamic(() => import("@/components/Footer"));
-const FundoTitulosDesktop = dynamic(() =>
-  import("@/components/fotoPrincipalDesktop")
+const FundoTitulosDesktop = dynamic(
+  () => import("@/components/fotoPrincipalDesktop"),
+);
+const ModalAvaliar = dynamic(
+  () => import("@/components/modais/avaliar-filmes"),
+);
+const ModalFiltros = dynamic(() => import("@/components/modais/filtros"));
+const Servicos = dynamic(() => import("@/components/detalhesfilmes/servicos"));
+const InfoFilme = dynamic(() => import("@/components/infoFilme"));
+const Cast = dynamic(() => import("@/components/detalhesfilmes/cast"));
+const Direcao = dynamic(() => import("@/components/detalhesfilmes/direcao"));
+const ProducaoFilmes = dynamic(
+  () => import("@/components/detalhesfilmes/producaoFilme"),
+);
+const Recomendacoes = dynamic(
+  () => import("@/components/detalhesfilmes/recomendacoes"),
 );
 
 export default function FilmeAleatorio() {
   const router = useRouter();
   const { pathname, query } = router;
-
   const { id: queryId } = router.query;
   const isReady = router.isReady;
   const isMobile = useIsMobile();
-  const {
-    user,
-    avaliarFilme,
-    assistirFilme,
-    removerAssistir,
-    salvarFilme,
-    removerFilme,
-  } = useAuth();
+  const { user, assistirFilme, removerAssistir, salvarFilme, removerFilme } =
+    useAuth();
 
   const [filme, setFilme] = useState(null);
   const [cast, setCast] = useState([]);
@@ -57,6 +57,10 @@ export default function FilmeAleatorio() {
   const [assistList, setAssistList] = useState(user?.assistir || []);
   const [favoritosList, setFavoritosList] = useState(user?.favoritos || []);
 
+  const [modalListaAberto, setModalListaAberto] = useState(false);
+  const [selecionarFavorito, setSelecionarFavorito] = useState(false);
+  const [selecionarParaVer, setSelecionarParaVer] = useState(false);
+
   useEffect(() => {
     setAssistList(user?.assistir || []);
     setFavoritosList(user?.favoritos || []);
@@ -65,28 +69,53 @@ export default function FilmeAleatorio() {
   const openModal = (type) => setModalType(type);
   const closeModal = () => setModalType(null);
 
-  const handleWatchClick = useCallback(
-    (id) => {
-      const sid = String(id);
-      if (assistList.includes(sid)) {
-        removerAssistir(sid);
-        setAssistList((prev) => prev.filter((f) => f !== sid));
-      } else {
-        assistirFilme(sid);
-        setAssistList((prev) => [...prev, sid]);
+  const abrirModalLista = () => {
+    if (!user) {
+      if (isMobile) {
+        router.push("/login");
+        return;
       }
-    },
-    [assistList, assistirFilme, removerAssistir]
-  );
+      openModal("login");
+      return;
+    }
+    const sid = String(filme.id);
+    setSelecionarFavorito(favoritosList.includes(sid));
+    setSelecionarParaVer(assistList.includes(sid));
+    setModalListaAberto(true);
+  };
+
+  const confirmarLista = () => {
+    if (!filme) return;
+    const sid = String(filme.id);
+
+    const jaFavorito = favoritosList.includes(sid);
+    if (selecionarFavorito && !jaFavorito) {
+      salvarFilme(sid);
+      setFavoritosList((prev) => [...prev, sid]);
+    } else if (!selecionarFavorito && jaFavorito) {
+      removerFilme(sid);
+      setFavoritosList((prev) => prev.filter((f) => f !== sid));
+    }
+
+    const jaParaVer = assistList.includes(sid);
+    if (selecionarParaVer && !jaParaVer) {
+      assistirFilme(sid);
+      setAssistList((prev) => [...prev, sid]);
+    } else if (!selecionarParaVer && jaParaVer) {
+      removerAssistir(sid);
+      setAssistList((prev) => prev.filter((f) => f !== sid));
+    }
+
+    setModalListaAberto(false);
+  };
 
   const fetchMovie = useCallback(async (movieId) => {
     setLoading(true);
     try {
       let idToFetch = movieId;
       if (!idToFetch) {
-        const module = await import(
-          "@/components/listafilmes/listafilmes.json"
-        );
+        const module =
+          await import("@/components/listafilmes/listafilmes.json");
         const ids = module.default.filmes;
         idToFetch = ids[Math.floor(Math.random() * ids.length)];
       }
@@ -98,12 +127,12 @@ export default function FilmeAleatorio() {
       setCast(data.credits?.cast || []);
       setCrew(data.credits?.crew || []);
       const tr = data.videos?.results.find(
-        (v) => v.type === "Trailer" && v.site === "YouTube"
+        (v) => v.type === "Trailer" && v.site === "YouTube",
       );
       setTrailerLink(tr ? `https://www.youtube.com/watch?v=${tr.key}` : null);
       setReleaseDates(data.release_dates?.results || []);
       setServicosDisponiveis(
-        data["watch/providers"]?.results?.BR?.flatrate || []
+        data["watch/providers"]?.results?.BR?.flatrate || [],
       );
       setRelated(data.similar?.results || []);
     } catch (err) {
@@ -135,7 +164,7 @@ export default function FilmeAleatorio() {
 
   return (
     <>
-      {isMobile ? <Header /> : <HeaderDesktop />}
+      <Header />
       <Head>
         <title>Cameo – Filme Aleatório</title>
         <meta name="description" content={description} />
@@ -143,103 +172,187 @@ export default function FilmeAleatorio() {
       </Head>
 
       <main className={styles.container}>
-        <div className={styles.homePage}>
-          <div className={styles.contBotoes}>
-            <div className={styles.baseBotoes}>
-              <BotaoPrimario
-                textoBotaoPrimario="Filme aleatório"
-                onClick={handleRandomClick}
+        <div className={styles.contBotoes}>
+          <BotaoPrimario
+            textoBotaoPrimario="Filme aleatório"
+            onClick={handleRandomClick}
+          />
+          <BotaoSecundario
+            textoBotaoSecundario="Filtros"
+            onClick={() => openModal("filters")}
+          />
+        </div>
+
+        {!loading && filme && (
+          <>
+            {isMobile ? (
+              <BannerFilme
+                src={`https://image.tmdb.org/t/p/w780/${filme.poster_path}`}
+                alt={filme.title}
+                trailerLink={trailerLink}
+                showPlay
               />
-
-              <div className={styles.BotaoSecundario}>
-                <BotaoSecundario
-                  textoBotaoSecundario="Filtros"
-                  onClick={() => openModal("filters")}
-                />
-              </div>
-            </div>
-          </div>
-
-          {!loading && filme && (
-            <>
-              <div className={styles.contHome}>
-                <TitulosFilmesDesktop
-                  filme={filme}
-                  trailerLink={trailerLink}
-                  releaseDates={releaseDates}
-                />
-                <Sinopse sinopse={filme.overview} />
-
-                <div className={styles.NotasFavoritos}>
-                  <NotasFilmes
-                    filmeId={String(filme.id)}
-                    avaliarFilme={avaliarFilme}
-                    usuarioFilmeVisto={user?.visto?.hasOwnProperty(filme.id)}
-                    onClickModal={() => openModal("rating")}
-                  />
-                  {!assistList.includes(String(filme.id)) && (
-                    <div className={styles.assistirContainer}>
-                      <AssistirFilme
-                        filmeId={filme.id}
-                        assistirFilme={() => handleWatchClick(filme.id)}
-                        removerAssistir={removerAssistir}
-                        usuarioParaVer={assistList}
-                      />
-                    </div>
-                  )}
-                  <FavoritarFilme
-                    filmeId={String(filme.id)}
-                    salvarFilme={salvarFilme}
-                    removerFilme={removerFilme}
-                    usuarioFavoritos={favoritosList}
-                  />
-                </div>
-
-                {servicosDisponiveis.length > 0 && (
-                  <Servicos servicos={servicosDisponiveis} />
-                )}
-
-                <InfoFilme
-                  budget={filme.budget}
-                  revenue={filme.revenue}
-                  production_countries={filme.production_countries}
-                />
-                <Cast cast={cast} />
-                <Direcao crew={crew} />
-                <ProducaoFilmes companies={filme.production_companies} />
-                <Recomendacoes movies={related} />
-                <Footer />
-              </div>
-
+            ) : (
               <div className={styles.fundoTitulos}>
                 <FundoTitulosDesktop
-                  capaAssistidos={`https://image.tmdb.org/t/p/original/${filme.backdrop_path}`}
-                  capaAssistidosMobile={`https://image.tmdb.org/t/p/original/${filme.poster_path}`}
+                  capaAssistidos={`https://image.tmdb.org/t/p/w1280/${filme.backdrop_path}`}
                   tituloAssistidos={filme.title}
                   trailerLink={trailerLink}
                   opacidade={1}
                 />
               </div>
+            )}
+            <TitulosFilmesDesktop
+              filme={filme}
+              trailerLink={trailerLink}
+              releaseDates={releaseDates}
+            />
+            {isMobile ? (
+              <SectionCard
+                title="Sinopse"
+                verTodos={{
+                  label: "Ver mais",
+                  onClick: () => openModal("sinopse"),
+                }}
+              >
+                <p className={styles.sinopseMobile}>{filme.overview}</p>
+              </SectionCard>
+            ) : (
+              <Sinopse sinopse={filme.overview} />
+            )}
 
-              {modalType === "rating" && (
-                <ModalAvaliar
-                  filmeId={filme.id}
-                  nota={user?.visto?.[filme.id]}
-                  onClose={closeModal}
+            <div className={styles.acoes}>
+              <Button
+                variant="outline"
+                label={isMobile ? undefined : "Ler resenhas"}
+                icon={<NewsIcon size={16} color="currentColor" />}
+                href={`/resenhas?filmeId=${filme.id}`}
+              />
+              {!user ? (
+                <Button variant="outline" label="Já assisti" href="/login" />
+              ) : user?.visto?.[filme.id] ? (
+                <Button
+                  variant="outline"
+                  stars={user.visto[filme.id].nota}
+                  onClick={() => openModal("rating")}
+                />
+              ) : (
+                <Button
+                  variant="outline"
+                  label="Já assisti"
+                  onClick={() => openModal("rating")}
                 />
               )}
+              <Button
+                variant="submit"
+                label="Adicionar a lista"
+                onClick={abrirModalLista}
+              />
+            </div>
 
-              {modalType === "filters" && (
-                <ModalFiltros
-                  onClose={closeModal}
-                  user={user}
-                  onSelectMovie={(id) => fetchMovie(id)}
-                />
-              )}
-            </>
-          )}
-        </div>
+            <div className={styles.todasAsInformacoes}>
+              <div className={styles.servicosDetalhes}>
+                {servicosDisponiveis.length > 0 && (
+                  <div className={styles.servicosStreaming}>
+                    <SectionCard title="Serviços">
+                      <Servicos servicos={servicosDisponiveis} />
+                    </SectionCard>
+                  </div>
+                )}
+                <SectionCard title="Detalhes">
+                  <InfoFilme
+                    release_date={filme.release_date}
+                    budget={filme.budget}
+                    revenue={filme.revenue}
+                    production_countries={filme.production_countries}
+                  />
+                </SectionCard>
+              </div>
+              <SectionCard title="Elenco">
+                <Cast cast={cast} />
+              </SectionCard>
+              <SectionCard title="Direção">
+                <Direcao crew={crew} />
+              </SectionCard>
+              <SectionCard title="Produção">
+                <ProducaoFilmes companies={filme.production_companies} />
+              </SectionCard>
+              <SectionCard title="Recomendações">
+                <Recomendacoes movies={related} />
+              </SectionCard>
+            </div>
+            <Footer />
+
+            {modalType === "sinopse" && (
+              <Modal title="Sinópse completa" onClose={closeModal}>
+                <div
+                  style={{
+                    background: "var(--bg-overlay)",
+                    padding: "var(--space-lg)",
+                    borderRadius: "var(--space-lg)",
+                    border: "1px solid var(--stroke-base)",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontSize: 16,
+                      color: "var(--text-base)",
+                      lineHeight: "24px",
+                    }}
+                  >
+                    {filme.overview}
+                  </p>
+                </div>
+              </Modal>
+            )}
+            {modalType === "rating" && (
+              <ModalAvaliar
+                filmeId={filme.id}
+                nota={user?.visto?.[filme.id]}
+                onClose={closeModal}
+              />
+            )}
+            {modalType === "filters" && (
+              <ModalFiltros
+                onClose={closeModal}
+                user={user}
+                onSelectMovie={(id) => fetchMovie(id)}
+              />
+            )}
+          </>
+        )}
       </main>
+
+      {modalListaAberto && (
+        <Modal
+          title="Adicionar a lista"
+          onClose={() => setModalListaAberto(false)}
+          primaryAction={{ label: "Confirmar", onClick: confirmarLista }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "var(--space-sm)",
+            }}
+          >
+            <CheckboxCard
+              id="modal-favorito"
+              variant="card"
+              label="Adicionar aos favoritos"
+              checked={selecionarFavorito}
+              onChange={(e) => setSelecionarFavorito(e.target.checked)}
+            />
+            <CheckboxCard
+              id="modal-para-ver"
+              variant="card"
+              label="Quero assistir"
+              checked={selecionarParaVer}
+              onChange={(e) => setSelecionarParaVer(e.target.checked)}
+            />
+          </div>
+        </Modal>
+      )}
     </>
   );
 }

@@ -7,7 +7,6 @@ import styles from "./index.module.scss";
 import Footer from "@/components/Footer";
 import Head from "next/head";
 import Header from "@/components/Header";
-import HeaderDesktop from "@/components/HeaderDesktop";
 import { useIsMobile } from "@/components/DeviceProvider";
 import DOMPurify from "isomorphic-dompurify";
 import Link from "next/link";
@@ -76,7 +75,7 @@ const CriticaDetalhe = () => {
 
   return (
     <>
-      {isMobile ? <Header /> : <HeaderDesktop />}
+      <Header />
       <Head>
         {/* Primary Meta Tags */}
         <title>{critica.titulo} — Resenha | Cameo</title>

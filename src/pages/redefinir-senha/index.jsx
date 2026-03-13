@@ -9,7 +9,6 @@ import { useIsMobile } from "@/components/DeviceProvider";
 import styles from "./index.module.scss";
 import Head from "next/head";
 import Header from "@/components/Header";
-import HeaderDesktop from "@/components/HeaderDesktop";
 
 const RedefinirSenha = () => {
   const [novaSenha, setNovaSenha] = useState("");
@@ -68,15 +67,7 @@ const RedefinirSenha = () => {
         />
       </Head>
 
-      {isMobile ? (
-        <Header showBuscar={false} showFotoPerfil={false} />
-      ) : (
-        <HeaderDesktop
-          showBuscar={false}
-          showMenu={false}
-          showFotoPerfil={false}
-        />
-      )}
+      <Header showBuscar={false} showMenu={false} showFotoPerfil={false} />
 
       <div className={styles.RedefinirSenha}>
         {isMobile ? null : (

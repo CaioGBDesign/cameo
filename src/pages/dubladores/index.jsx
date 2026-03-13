@@ -8,7 +8,6 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 
 const Header = dynamic(() => import("@/components/Header"));
-const HeaderDesktop = dynamic(() => import("@/components/HeaderDesktop"));
 
 export default function DubladoresPage() {
   const isMobile = useIsMobile();
@@ -43,7 +42,7 @@ export default function DubladoresPage() {
         />
       </Head>
 
-      {isMobile ? <Header /> : <HeaderDesktop />}
+      <Header />
 
       <div className={styles.contListaDubladores}>
         <div className={styles.conteudoDubladores}>

@@ -1,0 +1,128 @@
+.button {
+  position: relative;
+  overflow: hidden;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+
+  border-radius: var(--space-sm);
+  border: none;
+
+  font-size: 15px;
+  font-weight: bold;
+  font-style: italic;
+  white-space: nowrap;
+  text-decoration: none;
+
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.85;
+  }
+
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .stars {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+}
+
+.arrow {
+  position: absolute;
+  display: flex;
+  pointer-events: none;
+}
+
+.arrowBottomLeft {
+  top: 3px;
+  left: 3px;
+}
+
+.arrowTopRight {
+  bottom: 3px;
+  right: 3px;
+  transform: rotate(180deg);
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+/* ── Botões padrão — altura fixa, padding horizontal ── */
+.gradiente,
+.solid,
+.submit,
+.soft,
+.outline,
+.ghost {
+  height: var(--space-8xl);
+  padding: 0 var(--space-lg);
+}
+
+.gradiente {
+  background: linear-gradient(
+    to right,
+    var(--primitive-azul-01),
+    var(--primitive-azul-02)
+  );
+  color: var(--text-solid);
+}
+
+.solid {
+  background: var(--bg-solid);
+  color: var(--text-solid);
+}
+
+.submit {
+  background: var(--bg-submit);
+  border: 1px solid var(--stroke-submit);
+  color: var(--text-base);
+
+  .arrow {
+    color: var(--text-solid);
+  }
+}
+
+.soft {
+  background: var(--bg-overlay);
+  color: var(--text-base);
+}
+
+.outline {
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-solid);
+  color: var(--text-base);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--text-base);
+}
+
+/* ── Botões simples — padding vertical + horizontal ── */
+.default,
+.active {
+  padding: var(--space-sm) var(--space-lg);
+}
+
+.default {
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  color: var(--text-base);
+  font-weight: 400;
+}
+
+.active {
+  background: var(--bg-submit);
+  color: var(--text-base);
+  font-weight: 400;
+}

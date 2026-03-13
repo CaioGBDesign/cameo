@@ -10,7 +10,6 @@ const Recomendacoes = ({ movies }) => {
 
   return (
     <section className={styles.relatedSection}>
-      <h2 className={styles.heading}>Filmes Relacionados</h2>
       <div className={styles.carrossel}>
         <ul className={styles.list}>
           {movies.map((movie) => (

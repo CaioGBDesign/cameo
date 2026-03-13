@@ -12,10 +12,6 @@
     "@firebasegen/default": "file:generated/javascript/default",
     "@fontsource/nunito-sans": "^5.0.13",
     "@fontsource/poppins": "^5.2.5",
-    "@mantine/core": "^7.13.2",
-    "@mantine/hooks": "^7.13.2",
-    "axios": "^1.7.7",
-    "date-fns": "^3.6.0",
     "firebase": "^10.12.4",
     "isomorphic-dompurify": "^2.22.0",
     "next": "14.2.4",
@@ -23,11 +19,8 @@
     "react": "^18",
     "react-dom": "^18",
     "react-modal": "^3.16.1",
-    "react-responsive": "^10.0.0",
-    "react-router-dom": "^6.24.0",
     "react-toastify": "^10.0.6",
     "sass": "^1.77.6",
-    "styled-components": "^6.1.11",
     "uuid": "^11.0.2",
     "zustand": "^5.0.3"
   }

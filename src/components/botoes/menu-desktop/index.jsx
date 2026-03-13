@@ -1,96 +1,68 @@
-import React, { useState, useEffect } from "react";
+import { useContext } from "react";
 import { useRouter } from "next/router";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/services/firebaseConection";
+import { AuthContext } from "@/contexts/auth";
 import styles from "./index.module.scss";
 import Link from "next/link";
+import Select from "@/components/inputs/select";
+
+const LISTAS = [
+  { value: "/filmesassisti", label: "Já assisti" },
+  { value: "/filmesparaver", label: "Quero ver" },
+  { value: "/favoritos", label: "Favoritos" },
+];
+
+const DUBLAGEM = [
+  { value: "/dubladores", label: "Dubladores" },
+  { value: "/estudios", label: "Estúdios" },
+];
 
 const MenuDesktop = () => {
   const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user } = useContext(AuthContext);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setIsLoggedIn(!!user);
-    });
-    return () => unsubscribe();
-  }, []);
+  const isActive = (path) => router.pathname === path ? styles.active : "";
+
+  const navegar = (e) => {
+    if (e.target.value) router.push(e.target.value);
+  };
 
   return (
     <nav className={styles.menuBotoes}>
       <ul>
-        <li className={styles.botaoHome}>
-          <Link href="/filme-aleatorio" passHref>
-            <span
-              className={
-                router.pathname === "/filme-aleatorio" ? styles.active : ""
-              }
-            >
-              Home
-            </span>
-          </Link>
+        <li>
+          <Link href="/filme-aleatorio" className={isActive("/filme-aleatorio")}>Home</Link>
         </li>
 
-        {isLoggedIn && (
-          <>
-            <li>
-              <Link href="/filmesassisti" passHref>
-                <span
-                  className={
-                    router.pathname === "/filmesassisti" ? styles.active : ""
-                  }
-                >
-                  Já assisti
-                </span>
-              </Link>
-            </li>
-            <li>
-              <Link href="/filmesparaver" passHref>
-                <span
-                  className={
-                    router.pathname === "/filmesparaver" ? styles.active : ""
-                  }
-                >
-                  Quero ver
-                </span>
-              </Link>
-            </li>
-            <li>
-              <Link href="/favoritos" passHref>
-                <span
-                  className={
-                    router.pathname === "/favoritos" ? styles.active : ""
-                  }
-                >
-                  Meus favoritos
-                </span>
-              </Link>
-            </li>
-          </>
+        {user && (
+          <li>
+            <Select
+              placeholder="Minhas listas"
+              options={LISTAS}
+              value=""
+              onChange={navegar}
+              variant="ghost"
+            />
+          </li>
         )}
 
         <li>
-          <div className={styles.ponto}>
-            <span>•</span>
-          </div>
+          <Select
+            placeholder="Dublagem"
+            options={DUBLAGEM}
+            value=""
+            onChange={navegar}
+            variant="ghost"
+          />
+        </li>
+
+        <li>
+          <Link href="/noticias" className={isActive("/noticias")}>Notícias</Link>
         </li>
         <li>
-          <Link href="/noticias" passHref>
-            <span
-              className={router.pathname === "/noticias" ? styles.active : ""}
-            >
-              Notícias
-            </span>
-          </Link>
+          <Link href="/resenhas" className={isActive("/resenhas")}>Resenhas</Link>
         </li>
         <li>
-          <Link href="/resenhas" passHref>
-            <span
-              className={router.pathname === "/resenhas" ? styles.active : ""}
-            >
-              Resenhas
-            </span>
-          </Link>
+          <Link href="/game" className={isActive("/game")}>Game</Link>
         </li>
       </ul>
     </nav>

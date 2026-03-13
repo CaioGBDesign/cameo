@@ -1,0 +1,180 @@
+/* ============================================================
+   CAMEO — Design Tokens
+   Gerado a partir do Figma Design System
+   Atualizado em: 2026
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   CORES PRIMITIVAS
+   Valores base, não usar diretamente nos componentes.
+   Prefira as variáveis semânticas abaixo.
+   ------------------------------------------------------------ */
+:root {
+  /* Roxo */
+  --primitive-roxo-01: #6a0dad;
+  --primitive-roxo-02: #9863ec;
+  --primitive-roxo-03: #3b2544;
+  --primitive-roxo-04: #250d2f;
+  --primitive-roxo-05: #191419;
+  --primitive-roxo-06: #161216;
+  --primitive-roxo-07: #2f2b2f;
+
+  /* Rosa */
+  --primitive-rosa-01: #f314fb;
+  --primitive-rosa-02: #ca33cf;
+  --primitive-rosa-03: #a244a5;
+  --primitive-rosa-04: #79477a;
+
+  /* Azul */
+  --primitive-azul-01: #1af5eb;
+  --primitive-azul-02: #2ba8e2;
+  --primitive-azul-03: #4293b8;
+  --primitive-azul-04: #4a798e;
+
+  /* Amarelo */
+  --primitive-amarelo-01: #fdf57c;
+  --primitive-amarelo-02: #fedc33;
+
+  /* Branco / Neutros */
+  --primitive-branco-01: #ffffff;
+  --primitive-branco-02: #e5e5e5;
+  --primitive-branco-03: #939393;
+
+  /* Feedback */
+  --primitive-verde-01: #21d48c;
+  --primitive-verde-02: #0dad6d;
+  --primitive-erro-01: #c44545;
+}
+
+/* ------------------------------------------------------------
+   ESPAÇAMENTOS
+   ------------------------------------------------------------ */
+:root {
+  --space-nn: 0px;
+  --space-xs: 5px;
+  --space-sm: 10px;
+  --space-md: 15px;
+  --space-lg: 20px;
+  --space-1xl: 25px;
+  --space-2xl: 30px;
+  --space-3xl: 35px;
+  --space-4xl: 40px;
+  --space-5xl: 45px;
+  --space-6xl: 50px;
+  --space-7xl: 55px;
+  --space-8xl: 60px;
+  --space-9xl: 65px;
+  --space-10xl: 70px;
+}
+
+/* ------------------------------------------------------------
+   TIPOGRAFIA
+   ------------------------------------------------------------ */
+:root {
+  --font-family-base: "Nunito Sans", sans-serif;
+}
+
+/* ------------------------------------------------------------
+   CORES SEMÂNTICAS — DARK MODE (padrão)
+   ------------------------------------------------------------ */
+:root,
+[data-theme="dark"] {
+  /* Background */
+  --bg-base: var(--primitive-roxo-06); /* #161216 */
+  --bg-overlay: var(--primitive-roxo-05); /* #191419 */
+  --bg-solid: var(--primitive-branco-01); /* #ffffff */
+  --bg-submit: var(--primitive-roxo-01); /* #6a0dad */
+  --bg-quintenario: var(--primitive-roxo-04); /* #250d2f */
+
+  /* Texto */
+  --text-base: var(--primitive-branco-01); /* #ffffff */
+  --text-sub: var(--primitive-branco-03); /* #939393 */
+  --text-solid: var(--primitive-roxo-06); /* #161216 */
+  --text-breadcrumb: var(--primitive-roxo-02); /* #9863ec */
+  --text-header: var(--primitive-azul-01); /* #1af5eb */
+
+  /* Stroke */
+  --stroke-base: var(--primitive-roxo-07); /* #2f2b2f */
+  --stroke-solid: var(--primitive-branco-01); /* #ffffff */
+  --stroke-secondary: var(--primitive-roxo-06); /* #161216 */
+  --stroke-quaternary: var(--primitive-roxo-03); /* #3b2544 */
+  --stroke-submit: var(--primitive-roxo-02); /* #9863ec */
+
+  /* Logo */
+  --logo-base: var(--primitive-branco-01); /* #ffffff */
+
+  /* Ícones */
+  --icon-base: var(--primitive-branco-01); /* #ffffff */
+  --icon-primary: var(--primitive-roxo-06); /* #161216 */
+  --icon-secondary: var(--primitive-branco-03); /* #939393 */
+  --icon-breadcrumb: var(--primitive-roxo-03); /* #3b2544 */
+  --icon-card: var(--primitive-azul-01); /* #1af5eb */
+
+  /* Switch */
+  --switch-light: var(--primitive-roxo-03); /* #3b2544 */
+  --switch-base: var(--primitive-roxo-02); /* #9863ec */
+  --switch-dark: var(--primitive-roxo-01); /* #6a0dad */
+  --switch-darker: var(--primitive-roxo-06); /* #161216 */
+
+  /* Static */
+  --static-light: var(--primitive-branco-01); /* #ffffff */
+  --static-dark: var(--primitive-roxo-06); /* #161216 */
+  --static-roxo: var(--primitive-roxo-04); /* #250d2f */
+
+  /* Feedback */
+  --color-success: var(--primitive-verde-01); /* #21d48c */
+  --color-success-alt: var(--primitive-verde-02); /* #0dad6d */
+  --color-error: var(--primitive-erro-01); /* #c44545 */
+}
+
+/* ------------------------------------------------------------
+   CORES SEMÂNTICAS — LIGHT MODE
+   ------------------------------------------------------------ */
+[data-theme="light"] {
+  /* Background */
+  --bg-base: var(--primitive-branco-01); /* #ffffff */
+  --bg-overlay: var(--primitive-branco-02); /* #e5e5e5 */
+  --bg-solid: var(--primitive-roxo-06); /* #161216 */
+  --bg-submit: var(--primitive-roxo-01); /* #6a0dad */
+  --bg-quintenario: var(--primitive-branco-03); /* #939393 */
+
+  /* Texto */
+  --text-base: var(--primitive-roxo-06); /* #161216 */
+  --text-sub: var(--primitive-roxo-07); /* #2f2b2f */
+  --text-solid: var(--primitive-branco-01); /* #ffffff */
+  --text-breadcrumb: var(--primitive-roxo-02); /* #9863ec */
+  --text-header: var(--primitive-roxo-02); /* #9863ec */
+
+  /* Stroke */
+  --stroke-base: var(--primitive-roxo-06); /* #161216 */
+  --stroke-solid: var(--primitive-roxo-07); /* #2f2b2f */
+  --stroke-secondary: var(--primitive-branco-01); /* #ffffff */
+  --stroke-quaternary: var(--primitive-roxo-06); /* #161216 */
+  --stroke-submit: var(--primitive-branco-01); /* #ffffff */
+
+  /* Logo */
+  --logo-base: var(--primitive-roxo-02); /* #9863ec */
+
+  /* Ícones */
+  --icon-base: var(--primitive-roxo-06); /* #161216 */
+  --icon-primary: var(--primitive-branco-01); /* #ffffff */
+  --icon-secondary: var(--primitive-branco-03); /* #939393 */
+  --icon-breadcrumb: var(--primitive-branco-03); /* #939393 */
+  --icon-card: var(--primitive-roxo-02); /* #9863ec */
+
+  /* Switch */
+  --switch-light: var(--primitive-roxo-07); /* #2f2b2f */
+  --switch-base: var(--primitive-roxo-02); /* #9863ec */
+  --switch-dark: var(--primitive-roxo-01); /* #6a0dad */
+  --switch-darker: var(--primitive-roxo-06); /* #161216 */
+
+  /* Static — não muda entre temas */
+  --static-claro: var(--primitive-branco-01); /* #ffffff */
+  --static-escuro: var(--primitive-roxo-06); /* #161216 */
+  --static-roxo: var(--primitive-roxo-04); /* #250d2f */
+
+  /* Feedback — não muda entre temas */
+  --color-success: var(--primitive-verde-01); /* #21d48c */
+  --color-success-alt: var(--primitive-verde-02); /* #0dad6d */
+  --color-error: var(--primitive-erro-01); /* #c44545 */
+}

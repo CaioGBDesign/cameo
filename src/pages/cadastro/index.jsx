@@ -7,7 +7,6 @@ import styles from "./index.module.scss";
 import EntrarCadastrar from "@/components/botoes/acesso";
 import Head from "next/head";
 import Header from "@/components/Header";
-import HeaderDesktop from "@/components/HeaderDesktop";
 
 const Cadastro = () => {
   const [handle, setHandle] = useState("");
@@ -69,15 +68,7 @@ const Cadastro = () => {
           content="Junte-se à comunidade Cameo! Crie sua conta para receber sugestões personalizadas de filmes, gerenciar suas listas e compartilhar suas avaliações. É rápido e fácil—comece sua jornada cinematográfica hoje!"
         />
       </Head>
-      {isMobile ? (
-        <Header showBuscar={false} showFotoPerfil={false} />
-      ) : (
-        <HeaderDesktop
-          showBuscar={false}
-          showMenu={false}
-          showFotoPerfil={false}
-        />
-      )}
+      <Header showBuscar={false} showMenu={false} showFotoPerfil={false} />
 
       <div className={styles.cadastro}>
         {isMobile ? null : (

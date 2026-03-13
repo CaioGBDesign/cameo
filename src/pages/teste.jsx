@@ -1,8 +1,5 @@
 import { useState } from "react";
 import Header from "@/components/Header";
-import AvatarSm from "@/components/avatar/sm";
-import AvatarLg from "@/components/avatar/lg";
-import AvatarEdit from "@/components/avatar/edit";
 import Button from "@/components/button";
 import Modal from "@/components/modal";
 import Checkbox from "@/components/inputs/checkbox";
@@ -40,22 +37,6 @@ export default function Teste() {
       <Header />
 
       <h1 className={styles.titulo}>Componentes — Página de Teste</h1>
-
-      <div className={styles.avatares}>
-        <Secao titulo="Avatar SM (Header)">
-          <AvatarSm />
-        </Secao>
-
-        <Secao titulo="Avatar LG (Perfil — só leitura)">
-          <AvatarLg />
-        </Secao>
-
-        <Secao titulo="Avatar Edit (Perfil — com edição)">
-          <AvatarEdit
-            onImageChange={(file) => console.log("Arquivo selecionado:", file)}
-          />
-        </Secao>
-      </div>
 
       <h1 className={styles.titulo}>Checkbox</h1>
 

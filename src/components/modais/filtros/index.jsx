@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { useIsMobile } from "@/components/DeviceProvider";
-import HeaderModal from "@/components/modais/header-modais";
+import Modal from "@/components/modal";
+import RadioButton from "@/components/inputs/radio-button";
+import ClearFiltersIcon from "@/components/icons/ClearFiltersIcon";
 import streamingServices from "@/components/listas/streamings/streaming.json";
-import { doc, onSnapshot } from "firebase/firestore";
-import { db } from "@/services/firebaseConection";
 
-// Lista estática de países
+const TMDB_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+
 const countriesList = [
   { iso_3166_1: "BR", name: "Brasil" },
   { iso_3166_1: "US", name: "Estados Unidos" },
@@ -17,118 +17,76 @@ const countriesList = [
   { iso_3166_1: "ES", name: "Espanha" },
 ];
 
-export default function ModalFiltros({ onClose, user, onSelectMovie }) {
-  const isMobile = useIsMobile();
+const currentYear = new Date().getFullYear();
+const yearOptions = Array.from(
+  { length: currentYear - 1937 + 1 },
+  (_, i) => currentYear - i,
+);
 
-  const [statusFilter, setStatusFilter] = useState(
-    () => localStorage.getItem("filterStatus") || ""
+const ls = (key) =>
+  typeof window !== "undefined" ? localStorage.getItem(key) || "" : "";
+
+export default function ModalFiltros({ onClose, user, onSelectMovie }) {
+  const [statusFilter, setStatusFilter] = useState(() => ls("filterStatus"));
+  const [providerId, setProviderId] = useState(() => ls("filterProvider"));
+  const [selectedGenre, setSelectedGenre] = useState(() => ls("filterGenre"));
+  const [selectedCertification, setSelectedCertification] = useState(() =>
+    ls("filterCert"),
   );
-  const [providerId, setProviderId] = useState(
-    () => localStorage.getItem("filterProvider") || ""
+  const [selectedCountry, setSelectedCountry] = useState(() =>
+    ls("filterCountry"),
   );
-  const [selectedGenre, setSelectedGenre] = useState(
-    () => localStorage.getItem("filterGenre") || ""
-  );
-  const [selectedCertification, setSelectedCertification] = useState(
-    () => localStorage.getItem("filterCert") || ""
-  );
-  const [selectedCountry, setSelectedCountry] = useState(
-    () => localStorage.getItem("filterCountry") || ""
-  );
-  const [selectedYear, setSelectedYear] = useState(
-    () => localStorage.getItem("filterYear") || ""
-  );
+  const [selectedYear, setSelectedYear] = useState(() => ls("filterYear"));
 
   const [genres, setGenres] = useState([]);
   const [certifications, setCertifications] = useState([]);
-  const [assistirList, setAssistirList] = useState([]);
-  const [vistoList, setVistoList] = useState([]);
-  const [favoritosList, setFavoritosList] = useState([]);
-
   const [noResultsMessage, setNoResultsMessage] = useState("");
 
-  const [filledCount, setFilledCount] = useState(0);
-  const hasFilters = filledCount > 0;
-
-  // Persistência no localStorage
+  // Persiste todos os filtros em um único efeito
   useEffect(() => {
     localStorage.setItem("filterStatus", statusFilter);
-  }, [statusFilter]);
-  useEffect(() => {
     localStorage.setItem("filterProvider", providerId);
-  }, [providerId]);
-  useEffect(() => {
     localStorage.setItem("filterGenre", selectedGenre);
-  }, [selectedGenre]);
-  useEffect(() => {
     localStorage.setItem("filterCert", selectedCertification);
-  }, [selectedCertification]);
-  useEffect(() => {
     localStorage.setItem("filterCountry", selectedCountry);
-  }, [selectedCountry]);
-  useEffect(() => {
     localStorage.setItem("filterYear", selectedYear);
-  }, [selectedYear]);
+  }, [
+    statusFilter,
+    providerId,
+    selectedGenre,
+    selectedCertification,
+    selectedCountry,
+    selectedYear,
+  ]);
 
-  // função para contar filtros
-  const countFilters = useCallback(() => {
-    const keys = [
-      "filterCert",
-      "filterCountry",
-      "filterGenre",
-      "filterProvider",
-      "filterStatus",
-      "filterYear",
-    ];
-    return keys.reduce((acc, key) => {
-      const val = localStorage.getItem(key);
-      return acc + (val && val !== "null" ? 1 : 0);
-    }, 0);
-  }, []);
+  // Deriva contagem de filtros ativos direto do estado
+  const hasFilters = [
+    statusFilter,
+    providerId,
+    selectedGenre,
+    selectedCertification,
+    selectedCountry,
+    selectedYear,
+  ].some(Boolean);
 
-  useEffect(() => {
-    // atualiza no mount
-    setFilledCount(countFilters());
-
-    const onFiltersChanged = () => {
-      setFilledCount(countFilters());
-    };
-
-    window.addEventListener("filtersChanged", onFiltersChanged);
-    window.addEventListener("storage", onFiltersChanged);
-
-    return () => {
-      window.removeEventListener("filtersChanged", onFiltersChanged);
-      window.removeEventListener("storage", onFiltersChanged);
-    };
-  }, [countFilters]);
-
-  // Ouvir lists do Firebase
-  useEffect(() => {
-    if (!user?.uid) return;
-    const unsub = onSnapshot(doc(db, "users", user.uid), (snap) => {
-      const data = snap.data() || {};
-      setAssistirList(data.assistir || []);
-      setVistoList(data.visto || []);
-      setFavoritosList(data.favoritos || []);
-    });
-    return () => unsub();
-  }, [user?.uid]);
+  // Listas do usuário vindas do contexto
+  const assistirList = user?.assistir || [];
+  const favoritosList = user?.favoritos || [];
+  const vistoList = Object.keys(user?.visto || {});
 
   useEffect(() => {
     const fetchAuxData = async () => {
       try {
         const [genresRes, certRes] = await Promise.all([
           fetch(
-            "https://api.themoviedb.org/3/genre/movie/list?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR"
+            `https://api.themoviedb.org/3/genre/movie/list?api_key=${TMDB_KEY}&language=pt-BR`,
           ),
           fetch(
-            "https://api.themoviedb.org/3/certification/movie/list?api_key=c95de8d6070dbf1b821185d759532f05"
+            `https://api.themoviedb.org/3/certification/movie/list?api_key=${TMDB_KEY}`,
           ),
         ]);
         const genresData = await genresRes.json();
         const certData = await certRes.json();
-
         setGenres(genresData.genres || []);
         setCertifications(certData.certifications?.BR || []);
       } catch (err) {
@@ -139,34 +97,28 @@ export default function ModalFiltros({ onClose, user, onSelectMovie }) {
   }, []);
 
   const handleApply = async () => {
-    // Se status for uma lista específica, retorna aleatório dessa lista
     if (statusFilter === "NaoAssisti" && assistirList.length) {
-      const id = assistirList[Math.floor(Math.random() * assistirList.length)];
-      console.log("Quero assistir ID:", id);
-      onSelectMovie(id);
+      onSelectMovie(
+        assistirList[Math.floor(Math.random() * assistirList.length)],
+      );
       onClose();
       return;
     }
     if (statusFilter === "JaAssisti" && vistoList.length) {
-      const id = vistoList[Math.floor(Math.random() * vistoList.length)];
-      console.log("Já assisti ID:", id);
-      onSelectMovie(id);
+      onSelectMovie(vistoList[Math.floor(Math.random() * vistoList.length)]);
       onClose();
       return;
     }
     if (statusFilter === "favoritos" && favoritosList.length) {
-      const id =
-        favoritosList[Math.floor(Math.random() * favoritosList.length)];
-      console.log("Favoritos ID:", id);
-      onSelectMovie(id);
+      onSelectMovie(
+        favoritosList[Math.floor(Math.random() * favoritosList.length)],
+      );
       onClose();
       return;
     }
 
-    // build discover params
-    const key = "c95de8d6070dbf1b821185d759532f05";
     const params = new URLSearchParams({
-      api_key: key,
+      api_key: TMDB_KEY,
       language: "pt-BR",
       sort_by: "popularity.desc",
       watch_region: "BR",
@@ -185,18 +137,18 @@ export default function ModalFiltros({ onClose, user, onSelectMovie }) {
 
     try {
       const res = await fetch(
-        `https://api.themoviedb.org/3/discover/movie?${params}`
+        `https://api.themoviedb.org/3/discover/movie?${params}`,
       );
       const json = await res.json();
       let results = Array.isArray(json.results) ? json.results : [];
-      // aplica status filter acumulado
-      if (statusFilter !== "todos") {
+
+      if (statusFilter && statusFilter !== "todos") {
         const list =
           statusFilter === "NaoAssisti"
             ? assistirList
             : statusFilter === "JaAssisti"
-            ? vistoList
-            : favoritosList;
+              ? vistoList
+              : favoritosList;
         results = results.filter((m) => list.includes(String(m.id)));
       }
 
@@ -205,39 +157,30 @@ export default function ModalFiltros({ onClose, user, onSelectMovie }) {
         return;
       }
 
-      const film = results[Math.floor(Math.random() * results.length)];
-      console.log("Filme filtrado ID:", film.id);
-      onSelectMovie(film.id);
+      onSelectMovie(results[Math.floor(Math.random() * results.length)].id);
       onClose();
     } catch (e) {
       console.error(e);
     }
+
     window.dispatchEvent(new Event("filtersChanged"));
   };
 
   useEffect(() => {
     if (!noResultsMessage) return;
-
-    const timeout = setTimeout(() => {
-      setNoResultsMessage("");
-    }, 5000);
-
+    const timeout = setTimeout(() => setNoResultsMessage(""), 5000);
     return () => clearTimeout(timeout);
   }, [noResultsMessage]);
 
   const handleClearFilters = () => {
-    // Remover cada chave individualmente
     localStorage.removeItem("filterStatus");
     localStorage.removeItem("filterProvider");
     localStorage.removeItem("filterGenre");
     localStorage.removeItem("filterCert");
     localStorage.removeItem("filterCountry");
     localStorage.removeItem("filterYear");
-    // Se quiser limpar tudo (cuidado se houver outras coisas no LS!)
-    // localStorage.clear();
 
-    // Resetar estados para valores iniciais
-    setStatusFilter("todos");
+    setStatusFilter("");
     setProviderId("");
     setSelectedGenre("");
     setSelectedCertification("");
@@ -248,17 +191,24 @@ export default function ModalFiltros({ onClose, user, onSelectMovie }) {
   };
 
   return (
-    <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <HeaderModal
-          onClose={onClose}
-          titulo="Filtros"
-          icone="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Ffiltros-cameo-02.png?alt=media&token=4e691c49-c482-49b7-9f0b-4de953eabe68"
-          iconeMobile="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Ffiltros-cameo-mobile-01.png?alt=media&token=fa335112-96ee-4f38-99f9-921cd213f686"
-          altIcone="Filtros Cameo"
-        />
-
-        <div className={styles.contFiltros}>
+    <Modal
+      title="Filtros"
+      onClose={onClose}
+      primaryAction={{
+        label: "Aplicar filtros",
+        onClick: handleApply,
+      }}
+      secondaryAction={{
+        label: "Limpar filtros",
+        variant: "ghost",
+        mobileVariant: "outline",
+        mobileIcon: <ClearFiltersIcon size={16} color="currentColor" />,
+        onClick: handleClearFilters,
+        disabled: !hasFilters,
+      }}
+    >
+      <div className={styles.contFiltros}>
+        <div className={styles.boxFiltros}>
           {/* Status */}
           <div className={styles.filtrosGrupo}>
             <h3>Exibir filmes que</h3>
@@ -268,16 +218,15 @@ export default function ModalFiltros({ onClose, user, onSelectMovie }) {
                 { id: "JaAssisti", label: "Já assisti" },
                 { id: "favoritos", label: "Meus favoritos" },
               ].map((o) => (
-                <div key={o.id} className={styles.opcao}>
-                  <input
-                    type="radio"
-                    id={o.id}
-                    name="status"
-                    checked={statusFilter === o.id}
-                    onChange={() => setStatusFilter(o.id)}
-                  />
-                  <label htmlFor={o.id}>{o.label}</label>
-                </div>
+                <RadioButton
+                  key={o.id}
+                  id={o.id}
+                  name="status"
+                  label={o.label}
+                  checked={statusFilter === o.id}
+                  onChange={() => setStatusFilter(o.id)}
+                  iconVariant="none"
+                />
               ))}
             </div>
           </div>
@@ -287,70 +236,69 @@ export default function ModalFiltros({ onClose, user, onSelectMovie }) {
             <h3>Streaming</h3>
             <div className={styles.streaming}>
               {streamingServices.map((s) => (
-                <div key={s.provider_id} className={styles.opcao}>
-                  <input
-                    type="radio"
-                    id={`prov-${s.provider_id}`}
-                    name="servicos"
-                    checked={providerId === String(s.provider_id)}
-                    onChange={() => setProviderId(String(s.provider_id))}
-                  />
-                  <label htmlFor={`prov-${s.provider_id}`}>
-                    {s.provider_name}
-                  </label>
-                </div>
+                <RadioButton
+                  key={s.provider_id}
+                  id={`prov-${s.provider_id}`}
+                  name="servicos"
+                  label={s.provider_name}
+                  checked={providerId === String(s.provider_id)}
+                  onChange={() => setProviderId(String(s.provider_id))}
+                  iconVariant="none"
+                />
               ))}
             </div>
           </div>
+        </div>
 
+        <div className={styles.boxFiltros}>
           {/* Gênero */}
           <div className={styles.filtrosGrupo}>
             <h3>Gênero</h3>
             <div className={styles.seletor}>
               {genres.map((g) => (
-                <div key={g.id} className={styles.opcao}>
-                  <input
-                    type="radio"
-                    id={`g-${g.id}`}
-                    name="genre"
-                    checked={selectedGenre === String(g.id)}
-                    onChange={() => setSelectedGenre(String(g.id))}
-                  />
-                  <label htmlFor={`g-${g.id}`}>{g.name}</label>
-                </div>
+                <RadioButton
+                  key={g.id}
+                  id={`g-${g.id}`}
+                  name="genre"
+                  label={g.name}
+                  checked={selectedGenre === String(g.id)}
+                  onChange={() => setSelectedGenre(String(g.id))}
+                  iconVariant="none"
+                />
               ))}
             </div>
           </div>
+        </div>
 
+        <div className={styles.boxFiltros}>
           {/* Classificação indicativa */}
           <div className={styles.filtrosGrupo}>
             <h3>Classificação indicativa</h3>
             <div className={styles.seletor}>
-              <div className={styles.opcao}>
-                <input
-                  type="radio"
-                  id="cert-todos"
-                  name="cert"
-                  checked={!selectedCertification}
-                  onChange={() => setSelectedCertification(null)}
-                />
-                <label htmlFor="cert-todos">Todos</label>
-              </div>
+              <RadioButton
+                id="cert-todos"
+                name="cert"
+                label="Todos"
+                checked={!selectedCertification}
+                onChange={() => setSelectedCertification("")}
+                iconVariant="none"
+              />
               {certifications.map((c) => (
-                <div key={c.certification} className={styles.opcao}>
-                  <input
-                    type="radio"
-                    id={c.certification}
-                    name="cert"
-                    checked={selectedCertification === c.certification}
-                    onChange={() => setSelectedCertification(c.certification)}
-                  />
-                  <label htmlFor={c.certification}>{c.certification}</label>
-                </div>
+                <RadioButton
+                  key={c.certification}
+                  id={c.certification}
+                  name="cert"
+                  label={c.certification}
+                  checked={selectedCertification === c.certification}
+                  onChange={() => setSelectedCertification(c.certification)}
+                  iconVariant="none"
+                />
               ))}
             </div>
           </div>
+        </div>
 
+        <div className={styles.boxFiltros}>
           {/* País e Ano */}
           <div className={styles.seletores}>
             <div className={styles.filtrosGrupo}>
@@ -375,10 +323,7 @@ export default function ModalFiltros({ onClose, user, onSelectMovie }) {
                 onChange={(e) => setSelectedYear(e.target.value)}
               >
                 <option value="">Todos</option>
-                {Array.from(
-                  { length: new Date().getFullYear() - 1937 + 1 },
-                  (_, i) => new Date().getFullYear() - i
-                ).map((y) => (
+                {yearOptions.map((y) => (
                   <option key={y} value={y}>
                     {y}
                   </option>
@@ -388,30 +333,10 @@ export default function ModalFiltros({ onClose, user, onSelectMovie }) {
           </div>
         </div>
 
-        <div className={styles.botoesFiltro}>
-          <div className={styles.baseBotoes}>
-            <button
-              className={styles.limparFiltros}
-              type="button"
-              onClick={handleClearFilters}
-              disabled={!hasFilters}
-              style={{
-                backgroundColor: hasFilters ? "#3b2544" : "#2C1435",
-                color: hasFilters ? "#FFFFFF" : "#66556D",
-                pointerEvents: hasFilters ? "auto" : "none",
-              }}
-            >
-              Limpar filtros
-            </button>
-            <button className={styles.aplicar} onClick={handleApply}>
-              Aplicar filtros
-              {noResultsMessage && (
-                <div className={styles.noResults}>{noResultsMessage}</div>
-              )}
-            </button>
-          </div>
-        </div>
+        {noResultsMessage && (
+          <p className={styles.noResults}>{noResultsMessage}</p>
+        )}
       </div>
-    </div>
+    </Modal>
   );
 }

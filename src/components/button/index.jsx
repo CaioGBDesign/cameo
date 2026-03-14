@@ -36,6 +36,7 @@ export default function Button({
   border,
   arrowColor,
   width,
+  disabled = false,
 }) {
   const className = [
     styles.button,
@@ -50,7 +51,7 @@ export default function Button({
   const inlineStyle = {};
   if (bg) inlineStyle.background = bg;
   if (color) inlineStyle.color = color;
-  if (border) inlineStyle.borderColor = border;
+  if (border) inlineStyle.border = `1px solid ${border}`;
   if (width) inlineStyle.width = width;
 
   const content = (
@@ -82,6 +83,7 @@ export default function Button({
       onClick={onClick}
       style={inlineStyle}
       className={className}
+      disabled={disabled}
     >
       {content}
     </button>

@@ -1,33 +1,34 @@
 import styles from "./index.module.scss";
 import { useIsMobile } from "@/components/DeviceProvider";
+import CloseIcon from "@/components/icons/CloseIcon";
 
 const HeaderModal = ({
   onClose,
   titulo,
   icone,
   iconeMobile,
+  iconeNode,
   altIcone,
   showBotaoFechar = true,
 }) => {
-  // define se desktop ou mobile
   const isMobile = useIsMobile();
 
   return (
     <div className={styles.headerModal}>
       {showBotaoFechar && (
         <button onClick={onClose}>
-          <img src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fclose.svg?alt=media&token=c9af99dc-797e-4364-9df2-5ed76897cc92" />
+          <CloseIcon size={20} />
         </button>
       )}
 
       <div className={styles.tituloModal}>
         <h2>{titulo}</h2>
         <div className={styles.imagemCapa}>
-          {isMobile ? (
+          {iconeNode ?? (isMobile ? (
             <img src={iconeMobile} alt={altIcone} />
           ) : (
             <img src={icone} alt={altIcone} />
-          )}
+          ))}
         </div>
       </div>
     </div>

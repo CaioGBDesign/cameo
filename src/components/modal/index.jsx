@@ -67,12 +67,13 @@ export default function Modal({
                 }
                 label={isMobile ? undefined : secondaryAction.label}
                 icon={
-                  isMobile ? (
-                    <WandIcon size={16} color="currentColor" />
-                  ) : undefined
+                  isMobile
+                    ? (secondaryAction.mobileIcon ?? <WandIcon size={16} color="currentColor" />)
+                    : undefined
                 }
                 stars={secondaryAction.stars}
                 onClick={secondaryAction.onClick}
+                disabled={secondaryAction.disabled}
               />
             )}
             <Button

@@ -6,8 +6,7 @@ import { useIsMobile } from "@/components/DeviceProvider";
 import TitulosFilmesDesktop from "@/components/titulosFilmesDesktop";
 import BannerFilme from "@/components/banner-filme";
 import Sinopse from "@/components/detalhesfilmes/sinopse";
-import BotaoPrimario from "@/components/botoes/primarios";
-import BotaoSecundario from "@/components/botoes/secundarios";
+import FilterIcon from "@/components/icons/FilterIcon";
 import Button from "@/components/button";
 import SectionCard from "@/components/section-card";
 import Modal from "@/components/modal";
@@ -173,13 +172,19 @@ export default function FilmeAleatorio() {
 
       <main className={styles.container}>
         <div className={styles.contBotoes}>
-          <BotaoPrimario
-            textoBotaoPrimario="Filme aleatório"
+          <Button
+            variant="gradiente"
+            label="Filme aleatório"
             onClick={handleRandomClick}
+            width="100%"
           />
-          <BotaoSecundario
-            textoBotaoSecundario="Filtros"
+          <Button
+            variant="solid"
+            icon={<FilterIcon size={20} color="white" />}
             onClick={() => openModal("filters")}
+            bg="var(--bg-submit)"
+            border="var(--stroke-submit)"
+            arrowColor="var(--stroke-submit)"
           />
         </div>
 

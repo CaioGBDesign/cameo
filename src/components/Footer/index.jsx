@@ -4,8 +4,10 @@ import Button from "@/components/button";
 import InstagramIcon from "@/components/icons/InstagramIcon";
 import TiktokIcon from "@/components/icons/TiktokIcon";
 import YoutubeIcon from "@/components/icons/YoutubeIcon";
+import { useAuth } from "@/contexts/auth";
 
 const Footer = () => {
+  const { user } = useAuth();
   return (
     <footer className={styles.footer}>
       <div className={styles.footerContent}>
@@ -37,16 +39,18 @@ const Footer = () => {
                 width="220px"
               />
             </div>
-            <div className={styles.comecar}>
-              <Button
-                variant="outline"
-                label={"Começar"}
-                href={"/login"}
-                border="var(--stroke-solid)"
-                arrowColor="var(--stroke-solid)"
-                width="220px"
-              />
-            </div>
+            {!user && (
+              <div className={styles.comecar}>
+                <Button
+                  variant="outline"
+                  label={"Começar"}
+                  href={"/login"}
+                  border="var(--stroke-solid)"
+                  arrowColor="var(--stroke-solid)"
+                  width="220px"
+                />
+              </div>
+            )}
           </div>
 
           <div className={styles.redes}>

@@ -8,7 +8,7 @@ const BannerFilme = ({ src, alt, trailerLink, showPlay = false }) => {
 
   return (
     <div className={styles.banner}>
-      <Image
+      <Image unoptimized
         src={src}
         alt={alt}
         width={780}

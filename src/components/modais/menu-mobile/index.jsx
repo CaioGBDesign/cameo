@@ -149,7 +149,7 @@ const MenuMobile = ({ open, onClose }) => {
           <Link href="/perfil" className={styles.perfilBtn} onClick={onClose}>
             <div className={styles.avatarWrapper}>
               {user?.avatarUrl ? (
-                <Image
+                <Image unoptimized
                   src={user.avatarUrl}
                   alt={user.nome ?? "Avatar"}
                   fill

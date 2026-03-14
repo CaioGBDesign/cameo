@@ -18,7 +18,7 @@ const FundoTitulosDesktop = ({
           <div className={styles.fundoB}></div>
           <div className={styles.fundoC}></div>
 
-          <Image
+          <Image unoptimized
             src={capaAssistidos}
             alt={"O filme sugerido é " + tituloAssistidos}
             width={1280}

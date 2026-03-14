@@ -18,7 +18,7 @@ const Miniaturafilmes = ({
       <div className={styles.boxminiatura}>
         <div className={styles.capaminiatura}>
           <div className={styles.imageContainer}>
-            <Image
+            <Image unoptimized
               src={capaminiatura}
               alt={titulofilme}
               layout="fill"

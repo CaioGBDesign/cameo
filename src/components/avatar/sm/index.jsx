@@ -25,7 +25,7 @@ const AvatarSm = ({ href = "/perfil", children }) => {
 
   const conteudo = user ? (
     <div className={styles.fotoPerfilMiniatura}>
-      <Image
+      <Image unoptimized
         src={user.avatarUrl}
         alt={user.nome ?? "Usuário"}
         layout="fill"

@@ -225,7 +225,7 @@ const Noticias = ({}) => {
     if (elemento.tipo !== "imagem") return null;
     return (
       <div key={index} className={styles.imagemContainer}>
-        <Image
+        <Image unoptimized
           src={elemento.conteudo}
           alt={noticia.titulo || "Imagem da notícia"}
           width={600}

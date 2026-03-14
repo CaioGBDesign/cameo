@@ -22,7 +22,7 @@ const FundoTitulos = ({
 
       <div className={styles.capaAssistidos} style={{ opacity: opacidade }}>
         <div className={styles.imageContainer}>
-          <Image
+          <Image unoptimized
             src={capaAssistidos}
             alt={tituloAssistidos}
             fill

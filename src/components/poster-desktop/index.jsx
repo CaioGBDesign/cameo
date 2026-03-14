@@ -18,7 +18,7 @@ const PosterDesktop = ({
 
       <div className={styles.posterAssistidos}>
         <div className={styles.imageContainer}>
-          <Image
+          <Image unoptimized
             src={capaAssistidos}
             alt={tituloAssistidos}
             fill

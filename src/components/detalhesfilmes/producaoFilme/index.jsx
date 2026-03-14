@@ -1,7 +1,5 @@
-import React from "react";
 import styles from "./index.module.scss";
 
-// Componente para exibir empresas de produção do filme
 const ProducaoFilmes = ({ companies }) => {
   if (!Array.isArray(companies) || companies.length === 0) return null;
 

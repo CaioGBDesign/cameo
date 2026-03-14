@@ -33,7 +33,7 @@ const Recomendacoes = forwardRef(({ movies }, ref) => {
               >
                 {movie.poster_path ? (
                   <div className={styles.imagemRecomendacao}>
-                    <Image
+                    <Image unoptimized
                       src={`https://image.tmdb.org/t/p/w185${movie.poster_path}`}
                       alt={movie.title}
                       width={185}

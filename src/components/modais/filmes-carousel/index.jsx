@@ -91,7 +91,7 @@ const FilmesCarousel = ({
           <div className={styles.slider}>
             <div className={styles.imagens}>
               <div className={styles.capaFilme} onClick={handleImageClick}>
-                <Image
+                <Image unoptimized
                   src={`https://image.tmdb.org/t/p/original/${
                     isMobile
                       ? selectedFilm?.poster_path

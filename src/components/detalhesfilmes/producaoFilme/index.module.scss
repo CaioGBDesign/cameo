@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: start;
-  gap: 30px;
+  gap: var(--space-2xl);
 
   width: 100%;
 
@@ -22,19 +22,23 @@
   .list {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: var(--space-sm);
 
     .item {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      border: 1px solid hsla(0, 0%, 100%, 0.188);
-      border-radius: 5px;
-      padding: 10px;
+      justify-content: start;
+      align-items: end;
+
+      background: var(--bg-base);
+      border-radius: var(--space-sm);
+      border: solid 1px var(--stroke-base);
+      padding: var(--space-md);
 
       span {
-        font-size: 18px;
-        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        font-style: italic;
+        color: var(--text-base);
       }
     }
   }

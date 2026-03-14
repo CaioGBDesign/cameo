@@ -19,7 +19,7 @@ const Elenco = forwardRef(({ items = [], showCharacter = true }, ref) => {
           >
             <div className={styles.ator}>
               <div className={styles.imagemArtista}>
-                <Image
+                <Image unoptimized
                   src={
                     pessoa.profile_path
                       ? `https://image.tmdb.org/t/p/w185${pessoa.profile_path}`

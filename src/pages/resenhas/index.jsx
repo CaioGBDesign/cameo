@@ -82,7 +82,7 @@ const Criticas = ({}) => {
     if (elemento.tipo !== "imagem") return null;
     return (
       <div key={index} className={styles.imagemContainer}>
-        <Image
+        <Image unoptimized
           src={elemento.conteudo}
           alt={critica.titulo || "Imagem da notícia"}
           width={600}

@@ -68,7 +68,7 @@ export default function TitulosFilmesDesktop({
             )}
             {filme.backdrop_path && (
               <div className={styles.posterFilme}>
-                <Image
+                <Image unoptimized
                   src={`https://image.tmdb.org/t/p/w780/${filme.backdrop_path}`}
                   alt={filme.title}
                   width={780}

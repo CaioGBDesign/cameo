@@ -19,7 +19,7 @@ const fotoUsuario = ({ onClickModal }) => {
         <div className={styles.avatarIMG}>
           {avatarUrl === null ? (
             <div className={styles.foto}>
-              <Image
+              <Image unoptimized
                 src="/usuario/usuario.jpg"
                 alt="Foto de perfil"
                 layout="fill" // Usa o layout fill
@@ -29,7 +29,7 @@ const fotoUsuario = ({ onClickModal }) => {
             </div>
           ) : (
             <div className={styles.foto}>
-              <Image
+              <Image unoptimized
                 src={avatarUrl}
                 alt={nomeUsuario}
                 layout="fill" // Usa o layout fill

@@ -9,7 +9,7 @@ const AvatarLg = () => {
   return (
     <div className={styles.avatar}>
       {user?.avatarUrl ? (
-        <Image
+        <Image unoptimized
           src={user.avatarUrl}
           alt={user.nome ?? "Usuário"}
           layout="fill"

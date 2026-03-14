@@ -227,20 +227,32 @@ export default function FilmeAleatorio() {
                 label={isMobile ? undefined : "Ler resenhas"}
                 icon={<NewsIcon size={16} color="currentColor" />}
                 href={`/resenhas?filmeId=${filme.id}`}
+                border="var(--stroke-base)"
+                arrowColor="var(--stroke-base)"
               />
               {!user ? (
-                <Button variant="outline" label="Já assisti" href="/login" />
+                <Button
+                  variant="outline"
+                  label="Já assisti"
+                  href="/login"
+                  border="var(--stroke-base)"
+                  arrowColor="var(--stroke-base)"
+                />
               ) : user?.visto?.[filme.id] ? (
                 <Button
                   variant="outline"
                   stars={user.visto[filme.id].nota}
                   onClick={() => openModal("rating")}
+                  border="var(--stroke-base)"
+                  arrowColor="var(--stroke-base)"
                 />
               ) : (
                 <Button
                   variant="outline"
                   label="Já assisti"
                   onClick={() => openModal("rating")}
+                  border="var(--stroke-base)"
+                  arrowColor="var(--stroke-base)"
                 />
               )}
               <Button
@@ -307,7 +319,6 @@ export default function FilmeAleatorio() {
                 </div>
               </SectionCard>
             </div>
-            <Footer />
 
             {modalType === "sinopse" && (
               <Modal title="Sinópse completa" onClose={closeModal}>
@@ -348,6 +359,7 @@ export default function FilmeAleatorio() {
           </>
         )}
       </main>
+      <Footer />
 
       {modalListaAberto && (
         <Modal

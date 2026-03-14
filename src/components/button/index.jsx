@@ -35,6 +35,7 @@ export default function Button({
   color,
   border,
   arrowColor,
+  width,
 }) {
   const className = [
     styles.button,
@@ -50,6 +51,7 @@ export default function Button({
   if (bg) inlineStyle.background = bg;
   if (color) inlineStyle.color = color;
   if (border) inlineStyle.borderColor = border;
+  if (width) inlineStyle.width = width;
 
   const content = (
     <>

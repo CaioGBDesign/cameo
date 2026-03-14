@@ -29,13 +29,34 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-2xl);
+}
 
-  .title {
-    font-size: 20px;
-    font-style: italic;
-    font-weight: bold;
-    color: var(--text-breadcrumb);
-  }
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.title {
+  font-size: 20px;
+  font-style: italic;
+  font-weight: bold;
+  color: var(--text-breadcrumb);
+}
+
+.backBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-base);
+  padding: 0;
+}
+
+.backBtnIcon {
+  transform: rotate(90deg);
 }
 
 .closeBtn {

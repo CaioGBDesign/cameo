@@ -16,10 +16,11 @@
   .contBotoes {
     position: fixed;
     bottom: 50px;
-    right: 50px;
+    right: 8%;
     z-index: 9;
     display: flex;
-    gap: 15px;
+    gap: var(--space-sm);
+    width: 295px;
 
     @media only screen and (max-width: 768px) {
       bottom: 0;
@@ -27,11 +28,7 @@
       width: 100%;
       justify-content: center;
       padding: var(--space-lg);
-      background: linear-gradient(
-        180deg,
-        rgba(37, 13, 47, 0) 0,
-        var(--bg-quintenario)
-      );
+      background: linear-gradient(180deg, rgba(22, 18, 22, 0) 0%, #161216 75%);
     }
   }
 

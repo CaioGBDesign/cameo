@@ -5,15 +5,18 @@ export default function SelectInput({
   name,
   label,
   options,
-  onValue, // callback para retornar valor ao pai
+  value: controlledValue,
+  onValue,
   required = false,
   disabled = false,
 }) {
-  const [value, setValue] = useState("");
+  const isControlled = controlledValue !== undefined;
+  const [internalValue, setInternalValue] = useState("");
+  const value = isControlled ? controlledValue : internalValue;
 
   const handleChange = (e) => {
     const newVal = e.target.value;
-    setValue(newVal);
+    if (!isControlled) setInternalValue(newVal);
     if (onValue) onValue(newVal);
   };
 

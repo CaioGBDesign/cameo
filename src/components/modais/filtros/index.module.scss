@@ -23,7 +23,6 @@
 
   @media only screen and (max-width: 600px) {
     flex-direction: column;
-    gap: 50px;
     width: 100%;
     align-items: center;
   }
@@ -39,7 +38,7 @@
 
   background: var(--bg-overlay);
   border: solid 1px var(--stroke-base);
-  border-radius: var(--space-sm);
+  border-radius: var(--space-lg);
   width: 100%;
 
   .filtrosGrupo {
@@ -85,4 +84,59 @@
   font-size: 14px;
   color: var(--text-base);
   opacity: 0.7;
+}
+
+/* ── Sliding panels (mobile) ── */
+.slidingWrapper {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.slidingTrack {
+  display: flex;
+  width: 200%;
+  transition: transform 300ms ease-in-out;
+  transform: translateX(0);
+
+  &.showCountry {
+    transform: translateX(-50%);
+  }
+}
+
+.panel {
+  flex: 0 0 50%;
+  min-width: 0;
+}
+
+.hiddenPanel {
+  opacity: 0;
+}
+
+/* ── Country button (mobile) ── */
+.countryBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs);
+  width: 100%;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: inherit;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text-sub);
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: var(--stroke-submit);
+  }
+}
+
+.countryBtnChevron {
+  flex-shrink: 0;
+  transform: rotate(-90deg);
 }

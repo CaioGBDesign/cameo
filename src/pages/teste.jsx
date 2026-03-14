@@ -1,10 +1,14 @@
+import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Button from "@/components/button";
 import NewsIcon from "@/components/icons/NewsIcon";
+import TextInput from "@/components/inputs/text-input";
 import styles from "./teste.module.scss";
 
 export default function Teste() {
+  const [ano, setAno] = useState("");
+
   return (
     <div className={styles.page}>
       <Header />
@@ -70,6 +74,37 @@ export default function Teste() {
             <Button variant="outline" label="220px de largura" width="220px" />
           </div>
         </section>
+
+        <h1 className={styles.titulo}>Inputs</h1>
+
+        <section className={styles.secao}>
+          <h2 className={styles.secaoTitulo}>TextInput — type number</h2>
+          <div className={styles.secaoItens}>
+            <TextInput
+              id="ano"
+              name="ano"
+              type="number"
+              label="Ano de lançamento"
+              placeholder="Ex: 2023"
+              value={ano}
+              onChange={(e) => setAno(e.target.value)}
+              min="1937"
+              max={String(new Date().getFullYear())}
+            />
+            <TextInput
+              id="ano-disabled"
+              name="ano-disabled"
+              type="number"
+              label="Desabilitado"
+              placeholder="Ex: 2023"
+              value=""
+              onChange={() => {}}
+              disabled
+            />
+          </div>
+        </section>
+
+        <h1 className={styles.titulo}>Botões</h1>
 
         <section className={styles.secao}>
           <h2 className={styles.secaoTitulo}>Outline — com ícone / estrelas</h2>

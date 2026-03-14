@@ -1,7 +1,8 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useLayoutEffect } from "react";
 import Button from "@/components/button";
 import CloseIcon from "@/components/icons/CloseIcon";
 import WandIcon from "@/components/icons/WandIcon";
+import ChevronDownIcon from "@/components/icons/ChevronDownIcon";
 import { useIsMobile } from "@/components/DeviceProvider";
 import styles from "./index.module.scss";
 
@@ -10,6 +11,7 @@ const ANIMATION_DURATION = 300;
 export default function Modal({
   title,
   onClose,
+  onBack,
   children,
   primaryAction,
   secondaryAction,
@@ -17,6 +19,11 @@ export default function Modal({
   const isMobile = useIsMobile();
   const hasFooter = !!primaryAction;
   const [isClosing, setIsClosing] = useState(false);
+  const contentRef = useRef(null);
+
+  useLayoutEffect(() => {
+    if (contentRef.current) contentRef.current.scrollTop = 0;
+  }, [onBack]);
 
   const handleClose = useCallback(() => {
     if (!isMobile) {
@@ -42,7 +49,18 @@ export default function Modal({
     <div className={styles.overlay} onClick={handleClose}>
       <div className={modalClass} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
-          <span className={styles.title}>{title}</span>
+          <div className={styles.headerLeft}>
+            {onBack && (
+              <button className={styles.backBtn} onClick={onBack} type="button">
+                <ChevronDownIcon
+                  size={16}
+                  color="currentColor"
+                  className={styles.backBtnIcon}
+                />
+              </button>
+            )}
+            <span className={styles.title}>{title}</span>
+          </div>
           <button
             className={styles.closeBtn}
             onClick={handleClose}
@@ -54,7 +72,7 @@ export default function Modal({
           </button>
         </div>
 
-        <div className={styles.content}>{children}</div>
+        <div className={styles.content} ref={contentRef}>{children}</div>
 
         {hasFooter && (
           <div className={styles.footer}>

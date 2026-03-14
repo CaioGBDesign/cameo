@@ -2,9 +2,13 @@ import { useState, useRef, useEffect } from "react";
 import styles from "./index.module.scss";
 import ChevronDownIcon from "@/components/icons/ChevronDownIcon";
 
-const Select = ({ label, options = [], value, onChange, placeholder, variant = "default" }) => {
+const DROPDOWN_HEIGHT_ESTIMATE = 220;
+
+const Select = ({ label, options = [], value, onChange, placeholder, variant = "default", width, forceUpward = false }) => {
   const [open, setOpen] = useState(false);
+  const [openUpward, setOpenUpward] = useState(false);
   const ref = useRef(null);
+  const triggerRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -16,30 +20,44 @@ const Select = ({ label, options = [], value, onChange, placeholder, variant = "
 
   const selected = options.find((opt) => opt.value === value);
 
+  const handleToggle = () => {
+    if (!open && triggerRef.current) {
+      if (forceUpward) {
+        setOpenUpward(true);
+      } else {
+        const rect = triggerRef.current.getBoundingClientRect();
+        const spaceBelow = window.innerHeight - rect.bottom;
+        setOpenUpward(spaceBelow < DROPDOWN_HEIGHT_ESTIMATE);
+      }
+    }
+    setOpen((prev) => !prev);
+  };
+
   const handleSelect = (opt) => {
     onChange({ target: { value: opt.value } });
     setOpen(false);
   };
 
   return (
-    <div className={styles.wrapper} ref={ref}>
+    <div className={styles.wrapper} ref={ref} style={width ? { width } : undefined}>
       {label && <label className={styles.label}>{label}</label>}
 
       <button
+        ref={triggerRef}
         type="button"
         className={`${styles.trigger} ${styles[variant]} ${open ? styles.open : ""}`}
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={handleToggle}
       >
         <span>{selected?.label ?? placeholder}</span>
         <ChevronDownIcon
           size={16}
           color="var(--text-sub)"
-          className={styles.chevron}
+          className={`${styles.chevron} ${openUpward && open ? styles.chevronUp : ""}`}
         />
       </button>
 
       {open && (
-        <ul className={styles.dropdown}>
+        <ul className={`${styles.dropdown} ${openUpward ? styles.dropdownUp : ""}`}>
           {options.map((opt) => (
             <li
               key={opt.value}

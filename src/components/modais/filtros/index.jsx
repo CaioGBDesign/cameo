@@ -2,8 +2,12 @@ import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import Modal from "@/components/modal";
 import RadioButton from "@/components/inputs/radio-button";
+import Select from "@/components/inputs/select";
+import TextInput from "@/components/inputs/text-input";
 import ClearFiltersIcon from "@/components/icons/ClearFiltersIcon";
+import ChevronDownIcon from "@/components/icons/ChevronDownIcon";
 import streamingServices from "@/components/listas/streamings/streaming.json";
+import { useIsMobile } from "@/components/DeviceProvider";
 
 const TMDB_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
@@ -18,15 +22,17 @@ const countriesList = [
 ];
 
 const currentYear = new Date().getFullYear();
-const yearOptions = Array.from(
-  { length: currentYear - 1937 + 1 },
-  (_, i) => currentYear - i,
-);
 
 const ls = (key) =>
   typeof window !== "undefined" ? localStorage.getItem(key) || "" : "";
 
 export default function ModalFiltros({ onClose, user, onSelectMovie }) {
+  const isMobile = useIsMobile();
+  const [view, setView] = useState("filters"); // "filters" | "country"
+  const [pendingCountry, setPendingCountry] = useState("");
+
+
+
   const [statusFilter, setStatusFilter] = useState(() => ls("filterStatus"));
   const [providerId, setProviderId] = useState(() => ls("filterProvider"));
   const [selectedGenre, setSelectedGenre] = useState(() => ls("filterGenre"));
@@ -59,7 +65,6 @@ export default function ModalFiltros({ onClose, user, onSelectMovie }) {
     selectedYear,
   ]);
 
-  // Deriva contagem de filtros ativos direto do estado
   const hasFilters = [
     statusFilter,
     providerId,
@@ -69,7 +74,6 @@ export default function ModalFiltros({ onClose, user, onSelectMovie }) {
     selectedYear,
   ].some(Boolean);
 
-  // Listas do usuário vindas do contexto
   const assistirList = user?.assistir || [];
   const favoritosList = user?.favoritos || [];
   const vistoList = Object.keys(user?.visto || {});
@@ -190,153 +194,241 @@ export default function ModalFiltros({ onClose, user, onSelectMovie }) {
     window.dispatchEvent(new Event("filtersChanged"));
   };
 
-  return (
-    <Modal
-      title="Filtros"
-      onClose={onClose}
-      primaryAction={{
-        label: "Aplicar filtros",
-        onClick: handleApply,
-      }}
-      secondaryAction={{
-        label: "Limpar filtros",
-        variant: "ghost",
-        mobileVariant: "outline",
-        mobileIcon: <ClearFiltersIcon size={16} color="currentColor" />,
-        onClick: handleClearFilters,
-        disabled: !hasFilters,
-      }}
-    >
-      <div className={styles.contFiltros}>
-        <div className={styles.boxFiltros}>
-          {/* Status */}
-          <div className={styles.filtrosGrupo}>
-            <h3>Exibir filmes que</h3>
-            <div className={styles.seletor}>
-              {[
-                { id: "NaoAssisti", label: "Quero assistir" },
-                { id: "JaAssisti", label: "Já assisti" },
-                { id: "favoritos", label: "Meus favoritos" },
-              ].map((o) => (
-                <RadioButton
-                  key={o.id}
-                  id={o.id}
-                  name="status"
-                  label={o.label}
-                  checked={statusFilter === o.id}
-                  onChange={() => setStatusFilter(o.id)}
-                  iconVariant="none"
-                />
-              ))}
-            </div>
-          </div>
+  // Country drawer handlers
+  const handleOpenCountry = () => {
+    setPendingCountry(selectedCountry);
+    setView("country");
+  };
 
-          {/* Streaming */}
-          <div className={styles.filtrosGrupo}>
-            <h3>Streaming</h3>
-            <div className={styles.streaming}>
-              {streamingServices.map((s) => (
-                <RadioButton
-                  key={s.provider_id}
-                  id={`prov-${s.provider_id}`}
-                  name="servicos"
-                  label={s.provider_name}
-                  checked={providerId === String(s.provider_id)}
-                  onChange={() => setProviderId(String(s.provider_id))}
-                  iconVariant="none"
-                />
-              ))}
-            </div>
-          </div>
-        </div>
+  const handleBackFromCountry = () => setView("filters");
 
-        <div className={styles.boxFiltros}>
-          {/* Gênero */}
-          <div className={styles.filtrosGrupo}>
-            <h3>Gênero</h3>
-            <div className={styles.seletor}>
-              {genres.map((g) => (
-                <RadioButton
-                  key={g.id}
-                  id={`g-${g.id}`}
-                  name="genre"
-                  label={g.name}
-                  checked={selectedGenre === String(g.id)}
-                  onChange={() => setSelectedGenre(String(g.id))}
-                  iconVariant="none"
-                />
-              ))}
-            </div>
-          </div>
-        </div>
+  const handleSelectCountry = () => {
+    setSelectedCountry(pendingCountry);
+    setView("filters");
+  };
 
-        <div className={styles.boxFiltros}>
-          {/* Classificação indicativa */}
-          <div className={styles.filtrosGrupo}>
-            <h3>Classificação indicativa</h3>
-            <div className={styles.seletor}>
+  const selectedCountryName =
+    countriesList.find((c) => c.iso_3166_1 === selectedCountry)?.name ??
+    "Todos";
+
+  const inCountryView = isMobile && view === "country";
+
+  const filtersContent = (
+    <div className={styles.contFiltros}>
+      <div className={styles.boxFiltros}>
+        {/* Status */}
+        <div className={styles.filtrosGrupo}>
+          <h3>Exibir filmes que</h3>
+          <div className={styles.seletor}>
+            {[
+              { id: "NaoAssisti", label: "Quero assistir" },
+              { id: "JaAssisti", label: "Já assisti" },
+              { id: "favoritos", label: "Meus favoritos" },
+            ].map((o) => (
               <RadioButton
-                id="cert-todos"
-                name="cert"
-                label="Todos"
-                checked={!selectedCertification}
-                onChange={() => setSelectedCertification("")}
+                key={o.id}
+                id={o.id}
+                name="status"
+                label={o.label}
+                checked={statusFilter === o.id}
+                onChange={() => setStatusFilter(o.id)}
                 iconVariant="none"
               />
-              {certifications.map((c) => (
-                <RadioButton
-                  key={c.certification}
-                  id={c.certification}
-                  name="cert"
-                  label={c.certification}
-                  checked={selectedCertification === c.certification}
-                  onChange={() => setSelectedCertification(c.certification)}
-                  iconVariant="none"
-                />
-              ))}
-            </div>
+            ))}
           </div>
         </div>
 
-        <div className={styles.boxFiltros}>
-          {/* País e Ano */}
-          <div className={styles.seletores}>
-            <div className={styles.filtrosGrupo}>
-              <h3>País de origem</h3>
-              <select
+        {/* Streaming */}
+        <div className={styles.filtrosGrupo}>
+          <h3>Streaming</h3>
+          <div className={styles.streaming}>
+            {streamingServices.map((s) => (
+              <RadioButton
+                key={s.provider_id}
+                id={`prov-${s.provider_id}`}
+                name="servicos"
+                label={s.provider_name}
+                checked={providerId === String(s.provider_id)}
+                onChange={() => setProviderId(String(s.provider_id))}
+                iconVariant="none"
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.boxFiltros}>
+        {/* Gênero */}
+        <div className={styles.filtrosGrupo}>
+          <h3>Gênero</h3>
+          <div className={styles.seletor}>
+            {genres.map((g) => (
+              <RadioButton
+                key={g.id}
+                id={`g-${g.id}`}
+                name="genre"
+                label={g.name}
+                checked={selectedGenre === String(g.id)}
+                onChange={() => setSelectedGenre(String(g.id))}
+                iconVariant="none"
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.boxFiltros}>
+        {/* Classificação indicativa */}
+        <div className={styles.filtrosGrupo}>
+          <h3>Classificação indicativa</h3>
+          <div className={styles.seletor}>
+            <RadioButton
+              id="cert-todos"
+              name="cert"
+              label="Todos"
+              checked={!selectedCertification}
+              onChange={() => setSelectedCertification("")}
+              iconVariant="none"
+            />
+            {certifications.map((c) => (
+              <RadioButton
+                key={c.certification}
+                id={c.certification}
+                name="cert"
+                label={c.certification}
+                checked={selectedCertification === c.certification}
+                onChange={() => setSelectedCertification(c.certification)}
+                iconVariant="none"
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.boxFiltros}>
+        {/* País e Ano */}
+        <div className={styles.seletores}>
+          <div className={styles.filtrosGrupo}>
+            <h3>País de origem</h3>
+            {isMobile ? (
+              <button
+                className={styles.countryBtn}
+                onClick={handleOpenCountry}
+                type="button"
+              >
+                <span>{selectedCountryName}</span>
+                <ChevronDownIcon
+                  size={16}
+                  color="var(--text-sub)"
+                  className={styles.countryBtnChevron}
+                />
+              </button>
+            ) : (
+              <Select
                 value={selectedCountry}
                 onChange={(e) => setSelectedCountry(e.target.value)}
-              >
-                <option value="">Todos</option>
-                {countriesList.map((c) => (
-                  <option key={c.iso_3166_1} value={c.iso_3166_1}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+                placeholder="Todos"
+                options={[
+                  { value: "", label: "Todos" },
+                  ...countriesList.map((c) => ({
+                    value: c.iso_3166_1,
+                    label: c.name,
+                  })),
+                ]}
+                width="100%"
+                forceUpward
+              />
+            )}
+          </div>
 
-            <div className={styles.filtrosGrupo}>
-              <h3>Ano de lançamento</h3>
-              <select
-                value={selectedYear}
-                onChange={(e) => setSelectedYear(e.target.value)}
-              >
-                <option value="">Todos</option>
-                {yearOptions.map((y) => (
-                  <option key={y} value={y}>
-                    {y}
-                  </option>
-                ))}
-              </select>
-            </div>
+          <div className={styles.filtrosGrupo}>
+            <h3>Ano de lançamento</h3>
+            <TextInput
+              id="filterYear"
+              name="filterYear"
+              type="number"
+              placeholder="Ex: 2023"
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(e.target.value)}
+              min="1937"
+              max={String(currentYear)}
+              width="100%"
+            />
           </div>
         </div>
-
-        {noResultsMessage && (
-          <p className={styles.noResults}>{noResultsMessage}</p>
-        )}
       </div>
+
+      {noResultsMessage && (
+        <p className={styles.noResults}>{noResultsMessage}</p>
+      )}
+    </div>
+  );
+
+  const countryContent = (
+    <div className={styles.contFiltros}>
+      <div className={styles.boxFiltros}>
+        <div className={styles.filtrosGrupo}>
+          <div className={styles.seletor}>
+            <RadioButton
+              id="country-todos"
+              name="country"
+              label="Todos"
+              checked={pendingCountry === ""}
+              onChange={() => setPendingCountry("")}
+              iconVariant="none"
+            />
+            {countriesList.map((c) => (
+              <RadioButton
+                key={c.iso_3166_1}
+                id={`country-${c.iso_3166_1}`}
+                name="country"
+                label={c.name}
+                checked={pendingCountry === c.iso_3166_1}
+                onChange={() => setPendingCountry(c.iso_3166_1)}
+                iconVariant="none"
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <Modal
+      title={inCountryView ? "País de origem" : "Filtros"}
+      onClose={onClose}
+      onBack={inCountryView ? handleBackFromCountry : undefined}
+      primaryAction={
+        inCountryView
+          ? { label: "Selecionar", onClick: handleSelectCountry }
+          : { label: "Aplicar filtros", onClick: handleApply }
+      }
+      secondaryAction={
+        inCountryView
+          ? undefined
+          : {
+              label: "Limpar filtros",
+              variant: "ghost",
+              mobileVariant: "outline",
+              mobileIcon: <ClearFiltersIcon size={16} color="currentColor" />,
+              onClick: handleClearFilters,
+              disabled: !hasFilters,
+            }
+      }
+    >
+      {isMobile ? (
+        <div className={styles.slidingWrapper}>
+          <div
+            className={`${styles.slidingTrack} ${view === "country" ? styles.showCountry : ""}`}
+          >
+            <div className={`${styles.panel} ${view === "country" ? styles.hiddenPanel : ""}`}>{filtersContent}</div>
+            <div className={styles.panel}>{countryContent}</div>
+          </div>
+        </div>
+      ) : (
+        filtersContent
+      )}
     </Modal>
   );
 }

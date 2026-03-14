@@ -1,0 +1,51 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.label {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--text-sub);
+}
+
+.field {
+  font-size: 1rem;
+  font-family: inherit;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text-sub);
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  outline: none;
+  transition: border-color 0.2s;
+
+  &::placeholder {
+    color: var(--text-sub);
+    opacity: 0.5;
+  }
+
+  &:hover,
+  &:focus {
+    border-color: var(--stroke-submit);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  // remove setas do input type=number
+  &[type="number"] {
+    appearance: textfield;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+}

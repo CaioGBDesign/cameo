@@ -28,7 +28,7 @@ const ModalFiltros = dynamic(() => import("@/components/modais/filtros"));
 const Servicos = dynamic(() => import("@/components/detalhesfilmes/servicos"));
 const InfoFilme = dynamic(() => import("@/components/infoFilme"));
 import Cast from "@/components/detalhesfilmes/cast";
-import Recomendacoes from "@/components/detalhesfilmes/recomendacoes";
+import CardFilme from "@/components/card-filme";
 const ProducaoFilmes = dynamic(
   () => import("@/components/detalhesfilmes/producaoFilme"),
 );
@@ -272,13 +272,39 @@ export default function FilmeAleatorio() {
                 <Cast ref={elencoRef} items={cast} />
               </SectionCard>
               <SectionCard title="Direção">
-                <Cast items={crew.filter((m) => m.job === "Director")} showCharacter={false} />
+                <Cast
+                  items={crew.filter((m) => m.job === "Director")}
+                  showCharacter={false}
+                />
               </SectionCard>
               <SectionCard title="Produção">
                 <ProducaoFilmes companies={filme.production_companies} />
               </SectionCard>
               <SectionCard title="Recomendações" scrollRef={recomendacoesRef}>
-                <Recomendacoes ref={recomendacoesRef} movies={related} />
+                <div
+                  ref={recomendacoesRef}
+                  style={{
+                    display: "flex",
+                    gap: "var(--space-sm)",
+                    overflowX: "auto",
+                    overflowY: "hidden",
+                    scrollbarWidth: "none",
+                  }}
+                >
+                  {related.map((movie) => (
+                    <CardFilme
+                      key={movie.id}
+                      movie={movie}
+                      variant="titulo"
+                      onClick={() =>
+                        router.push({
+                          pathname: router.pathname,
+                          query: { id: movie.id },
+                        })
+                      }
+                    />
+                  ))}
+                </div>
               </SectionCard>
             </div>
             <Footer />

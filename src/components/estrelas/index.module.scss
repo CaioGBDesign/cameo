@@ -1,4 +1,8 @@
 .notasFilmes {
   display: flex;
-  gap: 3px;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-xs);
+
+  width: 100%;
 }

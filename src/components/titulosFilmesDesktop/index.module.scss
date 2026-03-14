@@ -31,11 +31,13 @@
 
       transition: 0.2s;
 
+      &:hover .posterFilme img {
+        opacity: 0.5;
+      }
+
       .posterFilme {
         width: 267px;
         height: 150px;
-
-        transition: 0.2s;
 
         img {
           width: 267px;

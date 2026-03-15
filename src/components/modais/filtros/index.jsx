@@ -9,7 +9,7 @@ import ChevronDownIcon from "@/components/icons/ChevronDownIcon";
 import streamingServices from "@/components/listas/streamings/streaming.json";
 import { useIsMobile } from "@/components/DeviceProvider";
 
-const TMDB_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+const TMDB_KEY = "c95de8d6070dbf1b821185d759532f05";
 
 const countriesList = [
   { iso_3166_1: "BR", name: "Brasil" },

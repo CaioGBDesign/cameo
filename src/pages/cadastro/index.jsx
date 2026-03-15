@@ -1,66 +1,67 @@
-import React, { useContext, useState } from "react";
-import { useRouter } from "next/router";
-import { AuthContext } from "@/contexts/auth";
-import { useIsMobile } from "@/components/DeviceProvider";
+import { useState } from "react";
+import { useAuth } from "@/contexts/auth";
 import Link from "next/link";
-import styles from "./index.module.scss";
-import EntrarCadastrar from "@/components/botoes/acesso";
 import Head from "next/head";
 import Header from "@/components/Header";
+import Button from "@/components/button";
+import TextInput from "@/components/inputs/text-input";
+import AtIcon from "@/components/icons/AtIcon";
+import EyeIcon from "@/components/icons/EyeIcon";
+import EyeOffIcon from "@/components/icons/EyeOffIcon";
+import styles from "./index.module.scss";
 
 const Cadastro = () => {
   const [handle, setHandle] = useState("");
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [error, setError] = useState("");
-  const [handleError, setHandleError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [errorPassword, setErrorPassword] = useState("");
+  const [error, setError] = useState({ field: "", message: "" });
   const [showPassword, setShowPassword] = useState(false);
-  const isMobile = useIsMobile();
 
-  const router = useRouter();
-  const { signUp, loadingAuth } = useContext(AuthContext);
+  const { signUp, loadingAuth } = useAuth();
+
+  const clearError = () => setError({ field: "", message: "" });
 
   async function handleSubmit(e) {
     e.preventDefault();
+    clearError();
 
-    // Limpa mensagens de erro ao tentar submeter
-    setError("");
-    setHandleError("");
-    setEmailError("");
-    setErrorPassword("");
+    if (!nome || !email || !senha || !handle) {
+      setError({
+        field: "geral",
+        message: "Todos os campos são obrigatórios.",
+      });
+      return;
+    }
 
-    if (nome !== "" && email !== "" && senha !== "" && handle !== "") {
-      try {
-        await signUp(email, senha, nome, handle);
-        // Redireciona ou exibe uma mensagem de sucesso aqui, se necessário
-      } catch (err) {
-        console.log("Erro recebido:", err);
-        if (err.message.includes("Esse nome de usuário já está em uso")) {
-          setHandleError("Esse nome de usuário já está em uso. Escolha outro.");
-        } else if (err.message.includes("Email inválido")) {
-          setEmailError("O e-mail fornecido é inválido.");
-        } else if (
-          err.message.includes("A senha deve ter pelo menos 8 caracteres.")
-        ) {
-          setErrorPassword("A senha deve ter pelo menos 8 caracteres.");
-        } else {
-          setError("Ocorreu um erro ao cadastrar. Tente novamente.");
-        }
+    try {
+      await signUp(email, senha, nome, handle);
+    } catch (err) {
+      if (err.message.includes("Esse nome de usuário já está em uso")) {
+        setError({
+          field: "handle",
+          message: "Esse nome de usuário já está em uso. Escolha outro.",
+        });
+      } else if (err.message.includes("Email inválido")) {
+        setError({ field: "email", message: "O e-mail fornecido é inválido." });
+      } else if (
+        err.message.includes("A senha deve ter pelo menos 8 caracteres")
+      ) {
+        setError({
+          field: "senha",
+          message: "A senha deve ter pelo menos 8 caracteres.",
+        });
+      } else {
+        setError({
+          field: "geral",
+          message: "Ocorreu um erro ao cadastrar. Tente novamente.",
+        });
       }
-    } else {
-      setError("Todos os campos são obrigatórios.");
     }
   }
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
   return (
-    <main className={styles["background"]}>
+    <main className={styles.background}>
       <Head>
         <title>Cameo - Cadastro</title>
         <meta
@@ -68,125 +69,99 @@ const Cadastro = () => {
           content="Junte-se à comunidade Cameo! Crie sua conta para receber sugestões personalizadas de filmes, gerenciar suas listas e compartilhar suas avaliações. É rápido e fácil—comece sua jornada cinematográfica hoje!"
         />
       </Head>
-      <Header showBuscar={false} showMenu={false} showFotoPerfil={false} />
+      <Header showBuscar={false} showFotoPerfil={false} />
 
       <div className={styles.cadastro}>
-        {isMobile ? null : (
-          <div className={styles.fundoFilmes}>
-            <img
-              src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/background%2Fbackground-cameo-desktop.jpg?alt=media&token=8a1a0051-6e3b-4d17-8fcb-888fb50752bb"
-              alt="background cameo"
-            />
-          </div>
-        )}
-
         <div className={styles.contFormulario}>
           <div className={styles.formulario}>
-            {isMobile ? null : (
-              <div className={styles.tituloSenha}>
-                <h2>Cadastro!</h2>
-                <p>Escolha uma senha com o mínimo de 8 caracteres.</p>
-              </div>
-            )}
+            <div className={styles.tituloSenha}>
+              <h1>Crie sua conta</h1>
+            </div>
 
             <form onSubmit={handleSubmit}>
-              <div className={styles.inputCameo}>
-                <div className={styles.imgHandle}>
-                  <img
-                    src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fhandle-cadastro.svg?alt=media&token=80384928-1f15-40c9-80d7-02d04ec943da"
-                    alt="@"
-                  />
-                </div>
-                <input
-                  type="handle" // Corrigido para "text"
+              <div className={styles.inputCont}>
+                <TextInput
+                  type="text"
                   placeholder="usuário"
                   value={handle}
                   onChange={(e) => {
-                    const lowerCaseHandle = e.target.value.toLowerCase();
-                    setHandle(lowerCaseHandle);
-                    setHandleError(""); // Limpa o erro ao começar a digitar
+                    setHandle(e.target.value.toLowerCase());
+                    clearError();
                   }}
                   required
+                  width="100%"
+                  prefix={<AtIcon size={18} color="rgba(255,255,255,0.4)" />}
                 />
-              </div>
-              {handleError && (
-                <div className={styles.error}>
-                  <p>{handleError}</p>
-                </div>
-              )}
+                {error.field === "handle" && (
+                  <p className={styles.errorMsg}>{error.message}</p>
+                )}
 
-              <div className={styles.inputCameo}>
-                <input
-                  type="name" // Corrigido para "text"
-                  placeholder="Digite seu nome"
+                <TextInput
+                  type="text"
+                  placeholder="Nome completo"
                   value={nome}
                   onChange={(e) => setNome(e.target.value)}
                   required
+                  width="100%"
                 />
-              </div>
 
-              <div className={styles.inputCameo}>
-                <input
+                <TextInput
                   type="email"
                   placeholder="E-mail"
                   value={email}
                   onChange={(e) => {
                     setEmail(e.target.value);
-                    setEmailError(""); // Limpa o erro ao começar a digitar
+                    clearError();
                   }}
                   required
+                  width="100%"
                 />
-              </div>
-              {emailError && (
-                <div className={styles.error}>
-                  <p>{emailError}</p>
-                </div>
-              )}
+                {error.field === "email" && (
+                  <p className={styles.errorMsg}>{error.message}</p>
+                )}
 
-              <div className={styles.inputCameo}>
-                <input
+                <TextInput
                   type={showPassword ? "text" : "password"}
-                  placeholder="Senha"
+                  placeholder="Senha (mínimo 8 caracteres)"
                   value={senha}
                   onChange={(e) => setSenha(e.target.value)}
                   required
+                  width="100%"
+                  suffix={
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((v) => !v)}
+                      className={styles.passwordToggle}
+                    >
+                      {showPassword ? (
+                        <EyeOffIcon size={20} color="rgba(255,255,255,0.4)" />
+                      ) : (
+                        <EyeIcon size={20} color="rgba(255,255,255,0.4)" />
+                      )}
+                    </button>
+                  }
                 />
-                <button
-                  type="button"
-                  onClick={togglePasswordVisibility}
-                  className={styles.passwordToggle}
-                >
-                  <img
-                    src={
-                      showPassword
-                        ? "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fver-senha.svg?alt=media&token=5912f675-7fdd-400c-bef7-623002f35fa4"
-                        : "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fesconder-senha.svg?alt=media&token=139f4e7c-7b25-4719-9bbb-ea8387de6183"
-                    }
-                    alt="Toggle Password"
-                  />
-                </button>
+                {error.field === "senha" && (
+                  <p className={styles.errorMsg}>{error.message}</p>
+                )}
+                {error.field === "geral" && (
+                  <p className={styles.errorMsg}>{error.message}</p>
+                )}
               </div>
-              {errorPassword && (
-                <div className={styles.error}>
-                  <p>{errorPassword}</p>
-                </div>
-              )}
 
-              <EntrarCadastrar onClick={handleSubmit}>
-                {loadingAuth ? "Carregando..." : "Cadastrar"}
-              </EntrarCadastrar>
+              <Button
+                type="submit"
+                variant="solid"
+                label={loadingAuth ? "Carregando..." : "Cadastrar"}
+                width="100%"
+                disabled={loadingAuth}
+              />
 
               <div className={styles.loginCadastro}>
                 <span>
                   Já tenho cadastro. <Link href="/login">Entrar.</Link>
                 </span>
               </div>
-
-              {error && (
-                <div className={styles.errorDesconhecido}>
-                  <p>{error}</p>
-                </div>
-              )}
             </form>
           </div>
         </div>

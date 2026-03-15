@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useLayoutEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Button from "@/components/button";
 import CloseIcon from "@/components/icons/CloseIcon";
 import WandIcon from "@/components/icons/WandIcon";
@@ -19,11 +19,11 @@ export default function Modal({
   const isMobile = useIsMobile();
   const hasFooter = !!primaryAction;
   const [isClosing, setIsClosing] = useState(false);
-  const contentRef = useRef(null);
 
-  useLayoutEffect(() => {
-    if (contentRef.current) contentRef.current.scrollTop = 0;
-  }, [onBack]);
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
 
   const handleClose = useCallback(() => {
     if (!isMobile) {
@@ -72,7 +72,7 @@ export default function Modal({
           </button>
         </div>
 
-        <div className={styles.content} ref={contentRef}>{children}</div>
+        <div className={styles.content}>{children}</div>
 
         {hasFooter && (
           <div className={styles.footer}>

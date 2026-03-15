@@ -1,82 +1,70 @@
-import React, { useState, useContext } from "react";
-import { useRouter } from "next/router";
-import { AuthContext } from "@/contexts/auth";
+import { useState } from "react";
+import { useAuth } from "@/contexts/auth";
 import { auth } from "@/services/firebaseConection";
 import { sendPasswordResetEmail } from "firebase/auth";
-import { useIsMobile } from "@/components/DeviceProvider";
 import Head from "next/head";
 import Header from "@/components/Header";
 import Link from "next/link";
-import EntrarCadastrar from "@/components/botoes/acesso";
+import Button from "@/components/button";
+import TextInput from "@/components/inputs/text-input";
+import EyeIcon from "@/components/icons/EyeIcon";
+import EyeOffIcon from "@/components/icons/EyeOffIcon";
 import styles from "./index.module.scss";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [erro, setErro] = useState("");
-  const router = useRouter();
-  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const isMobile = useIsMobile();
 
-  const { signIn, loadingAuth } = useContext(AuthContext);
+  const { signIn, loadingAuth } = useAuth();
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
-    setErrorMessage("");
+    setError("");
     setSuccessMessage("");
 
     if (!email) {
-      setErrorMessage("Por favor, preencha o campo de e-mail.");
+      setError("Por favor, preencha o campo de e-mail.");
       return;
     }
 
     try {
       await sendPasswordResetEmail(auth, email);
       setSuccessMessage("Um e-mail de redefinição de senha foi enviado.");
-      setEmail(""); // Limpa o campo após o envio
-    } catch (error) {
-      console.error("Erro ao enviar e-mail de redefinição de senha:", error);
-      setErrorMessage(
-        "Erro ao enviar e-mail. Verifique se o e-mail está correto."
-      );
+      setEmail("");
+    } catch {
+      setError("Erro ao enviar e-mail. Verifique se o e-mail está correto.");
     }
   };
 
-  async function handleSignIn(e) {
+  const handleSignIn = async (e) => {
     e.preventDefault();
+    setError("");
 
-    if (email !== "" && senha !== "") {
-      try {
-        await signIn(email, senha);
-      } catch (error) {
-        console.error("Erro capturado no componente de login:", error);
-        if (error.code === "auth/user-not-found") {
-          setErro("E-mail não encontrado. Faça o cadastro ou tente novamente.");
-        } else if (error.code === "auth/wrong-password") {
-          setErro("Senha incorreta. Verifique e tente novamente.");
-        } else if (error.code === "auth/invalid-credential") {
-          setErro(
-            "Usuário não encontrado. Verifique seu e-mail ou faça seu registro."
-          );
-        } else {
-          setErro(
-            error.message || "Erro ao tentar fazer login. Tente novamente."
-          );
-        }
-      }
-    } else {
-      setErro("Por favor, preencha todos os campos.");
+    if (!email || !senha) {
+      setError("Por favor, preencha todos os campos.");
+      return;
     }
-  }
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+    try {
+      await signIn(email, senha);
+    } catch (err) {
+      if (
+        err.code === "auth/user-not-found" ||
+        err.code === "auth/wrong-password" ||
+        err.code === "auth/invalid-credential"
+      ) {
+        setError("E-mail ou senha incorretos, tente novamente.");
+      } else {
+        setError("Erro ao tentar fazer login. Tente novamente.");
+      }
+    }
   };
 
   return (
-    <main className={styles["background"]}>
+    <main className={styles.background}>
       <Head>
         <title>Cameo - Login</title>
         <meta
@@ -84,59 +72,49 @@ const Login = () => {
           content="Acesse sua conta Cameo para gerenciar suas listas de filmes, receber recomendações e muito mais. Entre agora e descubra o que assistir!"
         />
       </Head>
-      <Header showBuscar={false} showMenu={false} showFotoPerfil={false} />
+      <Header showBuscar={false} showFotoPerfil={false} />
       <div className={styles.login}>
-        {isMobile ? null : (
-          <div className={styles.fundoFilmes}>
-            <img
-              src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/background%2Fbackground-cameo-desktop.jpg?alt=media&token=8a1a0051-6e3b-4d17-8fcb-888fb50752bb"
-              alt="background cameo"
-            />
-          </div>
-        )}
         <div className={styles.contFormulario}>
           <div className={styles.formulario}>
-            {isMobile ? null : (
-              <div className={styles.tituloSenha}>
-                <h2>Login!</h2>
-              </div>
-            )}
+            <div className={styles.tituloSenha}>
+              <span>Vamos começar</span>
+              <h1>Acesse sua conta</h1>
+            </div>
             <form onSubmit={handleSignIn}>
               <div className={styles.inputCont}>
-                <div className={styles.inputCameo}>
-                  <input
-                    type="email"
-                    placeholder="E-mail"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                {errorMessage && !email && <p>{errorMessage}</p>}
-                {erro && <p>{erro}</p>}
-                <div className={styles.inputCameo}>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Senha"
-                    value={senha}
-                    onChange={(e) => setSenha(e.target.value)}
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={togglePasswordVisibility}
-                    className={styles.passwordToggle}
-                  >
-                    <img
-                      src={
-                        showPassword
-                          ? "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fver-senha.svg?alt=media&token=5912f675-7fdd-400c-bef7-623002f35fa4"
-                          : "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fesconder-senha.svg?alt=media&token=139f4e7c-7b25-4719-9bbb-ea8387de6183"
-                      }
-                      alt="Toggle Password"
-                    />
-                  </button>
-                </div>
+                <TextInput
+                  type="email"
+                  placeholder="E-mail"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  width="100%"
+                />
+                <TextInput
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Senha"
+                  value={senha}
+                  onChange={(e) => setSenha(e.target.value)}
+                  required
+                  width="100%"
+                  suffix={
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((v) => !v)}
+                      className={styles.passwordToggle}
+                    >
+                      {showPassword ? (
+                        <EyeOffIcon size={20} color="rgba(255,255,255,0.4)" />
+                      ) : (
+                        <EyeIcon size={20} color="rgba(255,255,255,0.4)" />
+                      )}
+                    </button>
+                  }
+                />
+                {error && <p className={styles.errorMsg}>{error}</p>}
+                {successMessage && (
+                  <p className={styles.successMsg}>{successMessage}</p>
+                )}
                 <div className={styles.contSenha}>
                   <button type="button" onClick={handleResetPassword}>
                     Esqueci minha senha
@@ -144,9 +122,13 @@ const Login = () => {
                 </div>
               </div>
 
-              <EntrarCadastrar onClick={handleSignIn}>
-                {loadingAuth ? "Carregando..." : "Acessar"}
-              </EntrarCadastrar>
+              <Button
+                type="submit"
+                variant="solid"
+                label={loadingAuth ? "Carregando..." : "Acessar"}
+                width="100%"
+                disabled={loadingAuth}
+              />
 
               <div className={styles.loginCadastro}>
                 <span>
@@ -155,9 +137,6 @@ const Login = () => {
                 </span>
               </div>
             </form>
-            {successMessage && (
-              <p style={{ color: "green" }}>{successMessage}</p>
-            )}
           </div>
         </div>
       </div>

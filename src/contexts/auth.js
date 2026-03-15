@@ -146,16 +146,9 @@ function AuthProvider({ children }) {
         theme: "dark",
       });
     } catch (error) {
-      console.error("Erro ao tentar fazer login:", error);
-
-      // Limpar o estado do usuário e do localStorage em caso de erro
       setUser(null);
       localStorage.removeItem("@ticketsPro");
-
-      // Exibir mensagem de erro ao usuário
-      setErrorMessage(
-        error.message || "Falha ao fazer login. Por favor, tente novamente."
-      );
+      throw error;
     } finally {
       setLoadingAuth(false);
     }

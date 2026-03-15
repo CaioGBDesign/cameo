@@ -1,232 +1,157 @@
 .background {
-  background-color: #250d2f;
-
   width: 100%;
 
-  .cadastro {
-    display: flex;
+  @media only screen and (max-width: 600px) {
+    background-image: url("../../components/background/background-mobile.jpg");
+    background-color: var(--bg-base);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}
+
+.cadastro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+
+  @media only screen and (min-width: 600px) {
+    background-image: url("../../components/background/background-desktop.jpg");
+    background-size: cover;
+    background-position: left center;
+    background-repeat: no-repeat;
+  }
+
+  @media only screen and (max-width: 600px) {
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    gap: var(--space-4xl);
+  }
+}
+
+.contFormulario {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end;
+  padding: var(--space-lg);
+
+  width: 80%;
+
+  @media only screen and (max-width: 600px) {
     align-items: center;
 
     width: 100%;
+  }
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: var(--space-8xl);
+
+  width: 550px;
+
+  @media only screen and (max-width: 600px) {
+    background: var(--bg-overlay);
+    border: solid 1px var(--stroke-base);
+    border-radius: var(--space-2xl);
+    gap: var(--space-4xl);
+
+    padding: var(--space-4xl) var(--space-lg);
+
+    width: 100%;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: var(--space-8xl);
+    width: 100%;
 
     @media only screen and (max-width: 600px) {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 40px;
-
-      width: 100%;
-      height: 100vh;
+      gap: var(--space-4xl);
     }
+  }
+}
 
-    .fundoFilmes {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+.tituloSenha {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  gap: var(--space-4xl);
 
-      width: 50%;
+  width: 100%;
 
-      overflow: hidden;
+  @media only screen and (max-width: 600px) {
+    align-items: center;
+  }
+
+  span {
+    font-size: 14px;
+    color: var(--text-sub);
+  }
+
+  h1 {
+    font-size: 36px;
+    font-weight: bold;
+    color: var(--text-base);
+
+    @media only screen and (max-width: 600px) {
+      font-size: 28px;
     }
+  }
+}
 
-    .contFormulario {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+.inputCont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  width: 100%;
+}
 
-      width: 50%;
+.passwordToggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  flex-shrink: 0;
+}
 
-      overflow: hidden;
+.errorMsg {
+  font-size: 12px;
+  font-weight: 200;
+  color: var(--color-error);
+  width: 100%;
+}
 
-      @media only screen and (max-width: 600px) {
-        width: 100%;
-      }
+.loginCadastro {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 
-      .formulario {
-        @media only screen and (min-width: 600px) {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: start;
-          gap: 60px;
+  @media only screen and (min-width: 600px) {
+    justify-content: start;
+  }
 
-          width: 75%;
-        }
+  span {
+    font-size: 16px;
+    color: var(--static-light);
+    text-align: center;
 
-        @media only screen and (max-width: 600px) {
-          width: 85%;
-        }
-
-        form {
-          display: flex;
-          flex-direction: column;
-          align-items: start;
-          gap: 30px;
-
-          @media only screen and (min-width: 600px) {
-            width: 100%;
-
-            gap: 60px;
-          }
-
-          .inputCameo {
-            .imgHandle {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-
-              padding: 10px 0px 10px 10px;
-            }
-
-            display: flex;
-            align-items: center;
-
-            width: 100%;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.4);
-
-            input[type="email"],
-            input[type="handle"],
-            input[type="password"],
-            input[type="text"],
-            input[type="name"],
-            select {
-              width: 100%;
-              padding: 10px;
-              margin: 10px 0;
-              border: none;
-              background: none;
-              font-size: 16px;
-              outline: none;
-
-              color: white;
-            }
-
-            input[type="name"]::placeholder,
-            input[type="handle"]::placeholder,
-            input[type="email"]::placeholder,
-            input[type="password"]::placeholder {
-              color: rgba(255, 255, 255, 0.4);
-              font-size: 16px;
-            }
-
-            button {
-              background: none;
-              border: none;
-
-              width: auto;
-            }
-
-            .contSenha {
-              display: flex;
-              justify-content: center;
-
-              width: 50%;
-
-              font-size: 14px;
-              color: #f314fb;
-              font-weight: bolder;
-            }
-
-            select {
-              option {
-                color: black;
-              }
-            }
-          }
-
-          .error {
-            width: 100%;
-            margin-top: -20px;
-            p {
-              font-size: 12px;
-              font-weight: 200;
-              color: #ff0000;
-
-              width: 100%;
-            }
-          }
-
-          .errorDesconhecido {
-            width: 100%;
-
-            p {
-              font-size: 12px;
-              font-weight: 200;
-              color: #ff0000;
-              text-align: center;
-
-              width: 100%;
-            }
-          }
-
-          .loginCadastro {
-            display: flex;
-            justify-content: center;
-
-            width: 100%;
-
-            @media only screen and (min-width: 600px) {
-              justify-content: start;
-            }
-
-            span {
-              font-size: 14px;
-
-              color: white;
-
-              a {
-                color: #f314fb;
-
-                text-decoration: none;
-
-                font-weight: 500;
-              }
-            }
-          }
-
-          .loginButtons {
-            display: flex;
-            justify-content: space-around;
-
-            width: 80%;
-
-            button {
-              background: none;
-              border: none;
-
-              width: auto;
-              height: auto;
-            }
-          }
-        }
-
-        .tituloSenha {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: start;
-          gap: 15px;
-
-          h2 {
-            font-size: 36px;
-            font-weight: bold;
-
-            color: #fff;
-          }
-
-          p {
-            font-size: 16px;
-            font-weight: 100;
-
-            color: #ffffff;
-
-            opacity: 0.8;
-          }
-        }
-      }
+    a {
+      color: var(--primitive-rosa-01);
+      text-decoration: none;
+      font-weight: 500;
     }
   }
 }

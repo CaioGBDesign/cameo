@@ -12,6 +12,9 @@ const TextInput = ({
   max,
   width,
   disabled = false,
+  required = false,
+  prefix,
+  suffix,
 }) => {
   return (
     <div className={styles.wrapper} style={width ? { width } : undefined}>
@@ -20,18 +23,23 @@ const TextInput = ({
           {label}
         </label>
       )}
-      <input
-        id={id}
-        name={name}
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        min={min}
-        max={max}
-        disabled={disabled}
-        className={styles.field}
-      />
+      <div className={styles.inputRow}>
+        {prefix && <div className={styles.prefix}>{prefix}</div>}
+        <input
+          id={id}
+          name={name}
+          type={type}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          min={min}
+          max={max}
+          disabled={disabled}
+          required={required}
+          className={styles.field}
+        />
+        {suffix && <div className={styles.suffix}>{suffix}</div>}
+      </div>
     </div>
   );
 };

@@ -56,11 +56,18 @@
   .acoes {
     display: flex;
     justify-content: flex-start;
-    gap: 10px;
+    color: var(--space-sm);
     width: 100%;
 
     @media only screen and (max-width: 768px) {
       justify-content: center;
+      width: 90%;
+    }
+  }
+
+  .btnResenhas {
+    @media only screen and (max-width: 768px) {
+      width: 90px;
     }
   }
 
@@ -77,7 +84,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 10px;
+      color: var(--space-sm);
       width: 100%;
 
       @media only screen and (max-width: 768px) {

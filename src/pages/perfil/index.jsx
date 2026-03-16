@@ -1,41 +1,65 @@
 import styles from "./index.module.scss";
-import React, { useState, useEffect } from "react";
-import { useIsMobile } from "@/components/DeviceProvider";
 import Head from "next/head";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import FotoPrincipal from "@/components/perfil/fotoPrincipal";
+import AvatarEdit from "@/components/avatar/edit";
 import NomeUsuario from "@/components/perfil/nomeUsuario";
 import Handle from "@/components/perfil/handle";
-import CardsPerfil from "@/components/perfil/cards";
-import FundoTitulos from "@/components/fundotitulos";
-import SalvarFoto from "@/components/modais/salvarfoto";
 import Private from "@/components/Private";
-import NoticiasCard from "@/components/Noticias-Card";
+import Button from "@/components/button";
+import EditIcon from "@/components/icons/EditIcon";
+import LogOutIcon from "@/components/icons/LogOutIcon";
+import ChevronDownIcon from "@/components/icons/ChevronDownIcon";
+import capaDesktop from "@/components/background/capa-perfil-default-desktop.jpg";
+import capaMobile from "@/components/background/capa-perfil-default-mobile.jpg";
+import SectionCard from "@/components/section-card";
+import TextInput from "@/components/inputs/text-input";
+import Select from "@/components/inputs/select";
+import Modal from "@/components/modal";
+import RadioButton from "@/components/inputs/radio-button";
+import { useAuth } from "@/contexts/auth";
+import { useIsMobile } from "@/components/DeviceProvider";
+import { useState } from "react";
+
+const ESTILO_OPTIONS = [
+  { value: "potterhead", label: "Potterhead" },
+  { value: "meio-sangue", label: "Meio Sangue" },
+  { value: "tolkienistas", label: "Tolkienistas" },
+  { value: "whovians", label: "Whovians" },
+  { value: "trekkies", label: "Trekkies" },
+  { value: "jedis-padawans", label: "Jedis/Padawans" },
+  { value: "jack-sparrows-crew", label: "Jack Sparrow's Crew" },
+  { value: "twilighters", label: "Twilighters" },
+  { value: "iniciados", label: "Iniciados" },
+  { value: "narnianos", label: "Narnianos" },
+  { value: "marvelmaniaco", label: "Marvelmaníaco" },
+  { value: "dcnautas", label: "DCnautas" },
+];
 
 const PerfilUsuario = () => {
-  // Estado para controlar se o modal está aberto ou fechado
-  const [modalAberto, setModalAberto] = useState(false);
-
+  const { user } = useAuth();
   const isMobile = useIsMobile();
 
-  useEffect(() => {
-    // Efeito para controlar o overflow do body
-    if (modalAberto) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-  }, [modalAberto]);
+  const [nome, setNome] = useState(user?.nome ?? "");
+  const [handle, setHandle] = useState(user?.handle ?? "");
+  const [email, setEmail] = useState(user?.email ?? "");
+  const [genero, setGenero] = useState(user?.genero ?? "");
+  const [estilo, setEstilo] = useState(user?.estilo ?? "");
 
-  // Função para abrir o modal
-  const abrirModal = () => {
-    setModalAberto(true);
+  const [estiloModalOpen, setEstiloModalOpen] = useState(false);
+  const [pendingEstilo, setPendingEstilo] = useState(estilo);
+
+  const handleOpenEstiloModal = () => {
+    setPendingEstilo(estilo);
+    setEstiloModalOpen(true);
   };
 
-  const fecharModal = () => {
-    setModalAberto(false);
+  const handleConfirmEstilo = () => {
+    setEstilo(pendingEstilo);
+    setEstiloModalOpen(false);
   };
+
+  const estiloLabel = ESTILO_OPTIONS.find((o) => o.value === estilo)?.label;
 
   return (
     <Private>
@@ -43,98 +67,167 @@ const PerfilUsuario = () => {
         <title>Cameo - Perfil</title>
         <meta
           name="description"
-          content="Gerencie suas informações pessoais e preferências de filmes no seu perfil. Atualize seus dados, ajuste configurações de conta e descubra recomendações personalizadas para você."
+          content="Gerencie suas informações pessoais e preferências de filmes no seu perfil."
         />
       </Head>
-      <div className={styles.perfilUsuario}>
-        {/* Header */}
+      <div className={styles.container}>
         <Header />
+        <div className={styles.TopoInfoPerfil}>
+          <div className={styles.alterarCapa}>
+            <Button
+              variant="outline"
+              label="Alterar capa"
+              icon={<EditIcon size={16} color="currentColor" />}
+              width="100%"
+              arrowColor="var(--stroke-base)"
+              border="var(--stroke-base)"
+              bg="var(--bg-base)"
+            />
+          </div>
+          <div className={styles.infoPrincipal}>
+            <AvatarEdit />
+            <NomeUsuario />
+            <Handle />
+          </div>
 
-        <div className={styles.apresentacao}>
-          <FotoPrincipal onClickModal={abrirModal}></FotoPrincipal>
-
-          <div className={styles.contPerfil}>
-            <NomeUsuario></NomeUsuario>
-
-            <div className={styles.compartilhar}>
-              <Handle></Handle>
+          <div className={styles.progresso}>
+            <div className={styles.perfilStatus}>
+              <span>Perfil iniciante</span>
+            </div>
+            <div className={styles.barProgresso}>
+              <div className={styles.percentual}></div>
             </div>
           </div>
 
-          <div className={styles.contDados}>
-            <div className={styles.botoesDados}>
-              <div className={styles.contCards}>
-                <div className={styles.cardsPerfil}>
-                  <CardsPerfil
-                    linkDadosPerfil={"/dadospessoais"}
-                    DadosdoPerfil={"Dados pessoais"}
-                    imagemPerfil={
-                      "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fperfil.svg?alt=media&token=d84914ca-d29d-440c-a300-b1d61b8e1d56"
-                    }
-                  />
-
-                  <CardsPerfil
-                    linkDadosPerfil={"/filmesassisti"}
-                    DadosdoPerfil={"Filmes que assisti"}
-                    imagemPerfil={
-                      "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fclaquete-azul.svg?alt=media&token=d8abc08b-9dfd-4097-9363-613096f59d4c"
-                    }
-                  />
-
-                  <CardsPerfil
-                    linkDadosPerfil={"/filmesparaver"}
-                    DadosdoPerfil={"Filmes para ver"}
-                    imagemPerfil={
-                      "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fclaquete-amarela.svg?alt=media&token=45c08b4f-5558-4b71-aeb5-0154fe698ebb"
-                    }
-                  />
-
-                  <CardsPerfil
-                    linkDadosPerfil={"/favoritos"}
-                    DadosdoPerfil={"Meus favoritos"}
-                    imagemPerfil={
-                      "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Ffavoritos.svg?alt=media&token=0791783b-b986-4023-9149-81880a518395"
-                    }
-                  />
-                </div>
-
-                <div className={styles.cardsPerfil}>
-                  <NoticiasCard
-                    linkDadosPerfil={"/noticias"}
-                    DadosdoPerfil={"Notícias"}
-                    imagemPerfil={
-                      "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fcameo-noticias.svg?alt=media&token=a9ca0ad7-d684-4e12-a826-5225c7c196d1"
-                    }
-                  />
-
-                  <NoticiasCard
-                    linkDadosPerfil={"/resenhas"}
-                    DadosdoPerfil={"Resenhas"}
-                    imagemPerfil={
-                      "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fcameo-resenhas.svg?alt=media&token=033e5f31-7519-4c59-ae62-7ba6eedcc6d4"
-                    }
-                  />
-                </div>
-              </div>
-            </div>
-
-            <Footer />
+          <div className={styles.backgroundPerfil}>
+            <img
+              src={capaDesktop.src}
+              alt="Capa do perfil"
+              className={styles.capaDesktop}
+            />
           </div>
         </div>
 
-        <FundoTitulos
-          exibirPlay={false}
-          capaAssistidos={
-            "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/background%2Fbackground-cameo-perfil.png?alt=media&token=5f65af7f-6231-4e49-80c9-a49f0c31a9bd"
-          }
-          tituloAssistidos={"background"}
-          style={{
-            height: "600px",
-          }}
-        ></FundoTitulos>
+        <div className={styles.sectionsCards}>
+          <SectionCard title="Dados pessoais">
+            <div className={styles.conteudoSectionCard}>
+              <TextInput
+                id="nome"
+                name="nome"
+                placeholder="Seu nome"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                width="100%"
+              />
+              <TextInput
+                id="handle"
+                name="handle"
+                placeholder="seuhandle"
+                value={handle}
+                onChange={(e) => setHandle(e.target.value)}
+                width="100%"
+              />
+              <TextInput
+                id="email"
+                name="email"
+                placeholder="seu@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                width="100%"
+              />
+              <Select
+                placeholder={genero || "Selecione o gênero"}
+                value={genero}
+                onChange={setGenero}
+                width="100%"
+                options={[
+                  { value: "masculino", label: "Masculino" },
+                  { value: "feminino", label: "Feminino" },
+                  { value: "nao-binario", label: "Não-binário" },
+                  {
+                    value: "prefiro-nao-informar",
+                    label: "Prefiro não informar",
+                  },
+                ]}
+              />
+            </div>
+          </SectionCard>
 
-        {modalAberto && <SalvarFoto onClose={() => setModalAberto(false)} />}
+          <SectionCard title="Configurações">
+            <div className={styles.conteudoSectionCard}>
+              {isMobile ? (
+                <button
+                  className={styles.selectBtn}
+                  onClick={handleOpenEstiloModal}
+                >
+                  <span>{estiloLabel || "Estilo cinéfilo"}</span>
+                  <ChevronDownIcon
+                    size={16}
+                    color="currentColor"
+                    className={styles.selectBtnChevron}
+                  />
+                </button>
+              ) : (
+                <Select
+                  placeholder={estiloLabel || "Estilo cinéfilo"}
+                  value={estilo}
+                  onChange={setEstilo}
+                  width="100%"
+                  options={ESTILO_OPTIONS}
+                />
+              )}
+              <Button
+                variant="soft"
+                label="Sair"
+                icon={<LogOutIcon size={16} color="currentColor" />}
+                width="100%"
+                bg="var(--bg-base)"
+              />
+              <Button
+                variant="outline"
+                label="Alterar senha"
+                width="100%"
+                border="var(--stroke-base)"
+                arrowColor="var(--stroke-base)"
+              />
+              <Button variant="solid" label="Salvar alterações" width="100%" />
+            </div>
+          </SectionCard>
+        </div>
       </div>
+
+      <div className={styles.backgroundPerfilMobile}>
+        <img
+          src={capaMobile.src}
+          alt="Capa do perfil"
+          className={styles.capaMobile}
+        />
+      </div>
+      <Footer />
+
+      {estiloModalOpen && (
+        <Modal
+          title="Estilo cinéfilo"
+          onClose={() => setEstiloModalOpen(false)}
+          primaryAction={{
+            label: "Selecionar",
+            onClick: handleConfirmEstilo,
+          }}
+        >
+          <div className={styles.estiloOpcoes}>
+            {ESTILO_OPTIONS.map((op) => (
+              <RadioButton
+                key={op.value}
+                label={op.label}
+                checked={pendingEstilo === op.value}
+                onChange={() => setPendingEstilo(op.value)}
+                iconVariant="none"
+              />
+            ))}
+          </div>
+        </Modal>
+      )}
     </Private>
   );
 };

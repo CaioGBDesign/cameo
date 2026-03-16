@@ -1,12 +1,15 @@
 .nomeUsuario {
-  .nome {
-    background: linear-gradient(90deg, #f314fb 0%, #fdf57c 100%);
+  h1 {
+    font-size: 35px;
+    text-align: center;
+
+    background: linear-gradient(
+      90deg,
+      var(--primitive-rosa-01) 0%,
+      var(--primitive-amarelo-01) 100%
+    );
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-  }
-
-  h1 {
-    font-size: 40px;
-    text-align: center;
   }
 }

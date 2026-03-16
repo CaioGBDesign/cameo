@@ -227,14 +227,17 @@ export default function FilmeAleatorio() {
             )}
 
             <div className={styles.acoes}>
-              <Button
-                variant="outline"
-                label={isMobile ? undefined : "Ler resenhas"}
-                icon={<NewsIcon size={16} color="currentColor" />}
-                href={`/resenhas?filmeId=${filme.id}`}
-                border="var(--stroke-base)"
-                arrowColor="var(--stroke-base)"
-              />
+              <div className={styles.btnResenhas}>
+                <Button
+                  variant="outline"
+                  label={isMobile ? undefined : "Ler resenhas"}
+                  icon={<NewsIcon size={16} color="currentColor" />}
+                  href={`/resenhas?filmeId=${filme.id}`}
+                  border="var(--stroke-base)"
+                  arrowColor="var(--stroke-base)"
+                  width="100%"
+                />
+              </div>
               {!user ? (
                 <Button
                   variant="outline"

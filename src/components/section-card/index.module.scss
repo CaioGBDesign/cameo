@@ -4,7 +4,6 @@
   background: var(--bg-overlay);
   border: 1px solid var(--stroke-base);
   border-radius: var(--space-lg);
-  overflow: clip;
 
   @media only screen and (max-width: 768px) {
     width: 90%;
@@ -57,5 +56,9 @@
   .content {
     display: flex;
     padding: var(--space-2xl);
+
+    @media only screen and (max-width: 768px) {
+      padding: var(--space-lg);
+    }
   }
 }

@@ -2,6 +2,7 @@ import styles from "./index.module.scss";
 import { useContext, useRef } from "react";
 import { AuthContext } from "@/contexts/auth";
 import Image from "next/image";
+import EditIcon from "@/components/icons/EditIcon";
 
 const AvatarEdit = ({ onImageChange }) => {
   const { user } = useContext(AuthContext);
@@ -17,23 +18,24 @@ const AvatarEdit = ({ onImageChange }) => {
   return (
     <div className={styles.avatar} onClick={handleClick}>
       {user?.avatarUrl ? (
-        <Image unoptimized
-          src={user.avatarUrl}
-          alt={user.nome ?? "Usuário"}
-          layout="fill"
-          objectFit="cover"
-          quality={80}
-        />
+        <div className={styles.borderImage}>
+          <div className={styles.contentImage}>
+            <Image
+              unoptimized
+              src={user.avatarUrl}
+              alt={user.nome ?? "Usuário"}
+              fill
+              style={{ objectFit: "cover" }}
+              quality={80}
+            />
+          </div>
+        </div>
       ) : (
         <div className={styles.placeholder} />
       )}
 
       <div className={styles.overlay}>
-        <img
-          src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Feditar.svg?alt=media"
-          alt="Editar foto"
-          className={styles.iconeEdicao}
-        />
+        <EditIcon size={16} color="white" />
       </div>
 
       <input

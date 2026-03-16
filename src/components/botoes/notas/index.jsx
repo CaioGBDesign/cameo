@@ -1,29 +1,18 @@
-import { useState } from "react";
 import styles from "./index.module.scss";
 import Estrelas from "@/components/estrelas";
 import AvaliarFilme from "@/components/detalhesfilmes/avaliar-filme";
 import { useAuth } from "@/contexts/auth";
-import { useIsMobile } from "@/components/DeviceProvider";
-import ModalLoginCadastro from "@/components/modais/ModalLoginCadastro";
 
 const NotasFilmes = ({ filmeId, avaliarFilme, usuarioFilmeVisto, onClickModal }) => {
   const { user } = useAuth();
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const isMobile = useIsMobile();
 
   const filmeVisto = user?.visto?.hasOwnProperty(filmeId);
-
-  const closeModal = () => setShowLoginModal(false);
 
   const handleClick = async (event) => {
     event.preventDefault();
 
     if (!user) {
-      if (isMobile) {
-        window.location.href = "/login";
-        return;
-      }
-      setShowLoginModal(true);
+      window.location.href = "/login";
       return;
     }
 
@@ -49,10 +38,6 @@ const NotasFilmes = ({ filmeId, avaliarFilme, usuarioFilmeVisto, onClickModal })
           <AvaliarFilme />
         )}
       </button>
-
-      {showLoginModal && !isMobile && (
-        <ModalLoginCadastro closeModal={closeModal} isClosing={false} />
-      )}
     </div>
   );
 };

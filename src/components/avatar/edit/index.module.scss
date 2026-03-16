@@ -5,12 +5,30 @@
   height: 175px;
 
   border-radius: 100px;
-  overflow: hidden;
 
   cursor: pointer;
 
-  &:hover .overlay {
-    opacity: 1;
+  .borderImage {
+    border: solid 1px var(--stroke-base);
+    border-radius: 150px;
+
+    width: 166px;
+    height: 166px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .contentImage {
+      position: relative;
+      overflow: hidden;
+      border-radius: 150px;
+
+      background: var(--bg-overlay);
+
+      width: 150px;
+      height: 150px;
+    }
   }
 
   .placeholder {
@@ -18,19 +36,21 @@
     height: 100%;
     background: #3a1a4a;
   }
-
   .overlay {
     position: absolute;
-    inset: 0;
+    bottom: 10px;
+    right: 10px;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
-    background: rgba(0, 0, 0, 0.45);
-    opacity: 0;
+    background: var(--bg-submit);
+    border: solid 1px var(--stroke-submit);
+    border-radius: 60px;
 
-    transition: opacity 0.2s;
+    width: 60px;
+    height: 60px;
 
     .iconeEdicao {
       width: 32px;

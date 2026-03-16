@@ -13,10 +13,12 @@
 .inputRow {
   display: flex;
   align-items: center;
+  height: 60px;
   border: 1px solid var(--stroke-base);
   border-radius: var(--space-sm);
   transition: border-color 0.2s;
   background: var(--bg-overlay);
+  overflow: hidden;
 
   &:hover,
   &:focus-within {
@@ -48,7 +50,7 @@
   background: var(--bg-overlay);
   border: none;
   border-radius: var(--space-sm);
-  padding: var(--space-sm) var(--space-md);
+  padding-left: var(--space-md);
   outline: none;
   min-width: 0;
   height: 60px;

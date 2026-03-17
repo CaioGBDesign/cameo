@@ -1,83 +1,33 @@
-.filmesAssisti {
+.page {
   margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  width: 85%;
+  margin-inline: auto;
+  font-style: italic;
+
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+    margin-top: 30%;
+  }
+}
+
+.listaFilmes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--space-sm);
 
   display: flex;
   justify-content: center;
+  align-items: center;
+  align-content: center;
+  align-self: stretch;
+  flex-wrap: wrap;
 
-  position: relative;
-
-  .assistiPage {
-    width: 85%;
-
-    @media only screen and (max-width: 600px) {
-      margin-top: 20%;
-
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--space-8xl);
-    }
-
-    .contAssisti {
-      display: flex;
-      justify-content: space-between;
-      align-items: start;
-
-      @media only screen and (max-width: 600px) {
-        flex-direction: column;
-        align-items: center;
-        gap: var(--space-4xl);
-      }
-
-      .tituloEListas {
-        display: flex;
-        flex-direction: column;
-        align-items: start;
-        gap: var(--space-4xl);
-
-        @media only screen and (max-width: 600px) {
-          order: 1;
-          align-items: center;
-        }
-      }
-
-      .graficosGeneroMes {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: var(--space-lg);
-
-        @media only screen and (max-width: 600px) {
-          order: 0;
-        }
-      }
-    }
-
-    .fundoTitulos {
-      @media only screen and (max-width: 600px) {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: -1;
-
-        width: 100%;
-        height: 400px;
-
-        overflow: hidden !important;
-
-        &::after {
-          content: "";
-          position: absolute;
-          bottom: 0px;
-          left: 0px;
-
-          width: 100%;
-          height: 400px;
-
-          background: linear-gradient(180deg, rgba(37, 13, 47, 0) 0, var(--static-roxo));
-        }
-      }
-    }
+  @media only screen and (max-width: 600px) {
+    display: flex;
+    width: 100%;
   }
 }

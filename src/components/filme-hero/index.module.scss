@@ -1,108 +1,195 @@
 .hero {
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--space-xl);
+
+  padding: var(--space-4xl) var(--space-10xl);
+  border-radius: var(--space-2xl);
+  border: solid 2px var(--stroke-submit);
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  overflow: hidden;
+
   width: 100%;
+
+  &::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+
+    background: linear-gradient(0deg, #250d2f 0%, rgba(37, 13, 47, 0.5) 100%);
+  }
 
   @media only screen and (max-width: 600px) {
     flex-direction: column;
-    align-items: center;
+    align-content: space-between;
+
+    border-radius: var(--space-lg);
+
+    padding: var(--space-lg);
+
+    width: 90%;
+    height: 220px;
+    justify-content: space-between;
   }
 }
 
-.posterTrailer {
-  flex-shrink: 0;
-  width: 267px;
-  height: 150px;
-  overflow: hidden;
-  position: relative;
-  border: 2px solid var(--stroke-submit);
-  border-radius: var(--space-lg);
-  transition: 0.2s;
+.infoSide {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
 
-  &:hover .imagem {
-    opacity: 0.5;
+  z-index: 1;
+
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+
+    justify-content: space-between;
+    flex: 1 0 0;
   }
-}
 
-.posterFilme {
-  width: 267px;
-  height: 150px;
-
-  .imagem {
+  .posterTrailer {
+    flex-shrink: 0;
     width: 267px;
     height: 150px;
-    object-fit: cover;
+    overflow: hidden;
+    position: relative;
+    border: 2px solid var(--stroke-submit);
+    border-radius: var(--space-lg);
     transition: 0.2s;
-  }
-}
 
-.botaoTrailer {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  pointer-events: none;
+    &:hover .imagem {
+      opacity: 0.5;
+    }
 
-  .play {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: var(--space-8xl);
-    height: var(--space-8xl);
-    background: var(--bg-quintenario);
-    border-radius: 50%;
-    pointer-events: auto;
-
-    a {
+    .botaoTrailer {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
       display: flex;
       justify-content: center;
       align-items: center;
+      pointer-events: none;
+
+      .play {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: var(--space-8xl);
+        height: var(--space-8xl);
+        background: var(--bg-quintenario);
+        border-radius: 50%;
+        pointer-events: auto;
+
+        a {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+
+    .posterFilme {
+      width: 267px;
+      height: 150px;
+
+      .imagem {
+        width: 267px;
+        height: 150px;
+        object-fit: cover;
+        transition: 0.2s;
+      }
     }
   }
-}
 
-.detalhes {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
+  .detalhes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
 
-  @media only screen and (max-width: 600px) {
-    align-items: center;
-    width: 100%;
+    @media only screen and (max-width: 600px) {
+      align-items: center;
+      width: 100%;
+
+      justify-content: space-between;
+      flex: 1 0 0;
+    }
+
+    .filmInfo {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+
+      @media only screen and (max-width: 600px) {
+        order: 1;
+
+        width: 100%;
+      }
+
+      .titulo {
+        font-size: 35px;
+        font-weight: bolder;
+        color: #fff;
+
+        @media only screen and (max-width: 600px) {
+          font-size: 20px;
+          text-align: left;
+
+          width: 100%;
+        }
+      }
+
+      .generosList {
+        display: flex;
+        align-items: center;
+        gap: var(--space-xs);
+        flex-wrap: wrap;
+      }
+
+      .info {
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+
+        .duracao {
+          font-size: 20px;
+          font-weight: 200;
+          color: #fff;
+        }
+      }
+    }
+
+    .botoes {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      gap: var(--space-sm);
+
+      @media only screen and (max-width: 600px) {
+        order: 0;
+
+        justify-content: space-between;
+
+        width: 100%;
+        height: 40px;
+      }
+
+      .sugestao {
+        font-size: 15px;
+        font-style: italic;
+        color: var(--text-base);
+      }
+    }
   }
-}
-
-.titulo {
-  font-size: 35px;
-  font-weight: bolder;
-  color: #fff;
-
-  @media only screen and (max-width: 600px) {
-    font-size: 24px;
-    text-align: center;
-  }
-}
-
-.generosList {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  flex-wrap: wrap;
-}
-
-.info {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-}
-
-.duracao {
-  font-size: 20px;
-  font-weight: 200;
-  color: #fff;
 }
 
 .modalOpcoes {

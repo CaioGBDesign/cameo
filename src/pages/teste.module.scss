@@ -1,7 +1,17 @@
 .page {
-  padding: 2rem;
-  min-height: 100vh;
-  background: var(--bg-base);
+  margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  width: 85%;
+  margin-inline: auto;
+  font-style: italic;
+
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+    margin-top: 30%;
+  }
 }
 
 .titulo {

@@ -1,57 +1,49 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import styles from "./index.module.scss";
-import dynamic from "next/dynamic";
-import { useIsMobile } from "@/components/DeviceProvider";
 import Head from "next/head";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import Private from "@/components/Private";
 import FilmeHero from "@/components/filme-hero";
-import Titulolistagem from "@/components/titulolistagem";
-import GraficoVistos from "@/components/detalhesfilmes/grafico-vistos";
-import GraficoMetas from "@/components/detalhesfilmes/grafico-metas";
-import GraficoMetasMobile from "@/components/detalhesfilmes/grafico-metas-mobile";
-import BlankSlate from "@/components/blank-slate";
-import ListaPageFilmes from "@/components/detalhesfilmes/listaPageFilmes";
-import FilmesCarousel from "@/components/modais/filmes-carousel";
+import SectionCard from "@/components/section-card";
+import CardFilme from "@/components/card-filme";
+import FilterIcon from "@/components/icons/FilterIcon";
+import Breadcrumb from "@/components/breadcrumb";
 import { useAuth } from "@/contexts/auth";
+import { useIsMobile } from "@/components/DeviceProvider";
 
 const TMDB_KEY = "c95de8d6070dbf1b821185d759532f05";
 
-const Header = dynamic(() => import("@/components/Header"));
-const Footer = dynamic(() => import("@/components/Footer"));
-const FundoTitulosDesktop = dynamic(() =>
-  import("@/components/fotoPrincipalDesktop")
-);
-
 export default function FilmesAssisti() {
+  const { user } = useAuth();
   const isMobile = useIsMobile();
-  const { user, removerFilme, removerNota } = useAuth();
 
-  // Lista completa de filmes para gráfico e miniaturas
-  const [filmesVistos, setFilmesVistos] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // Detalhes do filme aleatório no topo
   const [filme, setFilme] = useState(null);
   const [trailerLink, setTrailerLink] = useState(null);
   const [releaseDates, setReleaseDates] = useState([]);
+  const [filmesVistos, setFilmesVistos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 24;
 
-  // Estado para modal e filme selecionado
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedFilm, setSelectedFilm] = useState(null);
+  const totalPages = Math.ceil(filmesVistos.length / ITEMS_PER_PAGE);
+  const filmesPaginados = filmesVistos.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
 
-  // Carrega todos os filmes vistos com dados necessários
   useEffect(() => {
     if (!user?.visto) return;
-    const idsVistos = Object.keys(user.visto);
-    if (!idsVistos.length) {
+    const ids = Object.keys(user.visto);
+    if (!ids.length) {
       setLoading(false);
       return;
     }
 
     Promise.all(
-      idsVistos.map((id) =>
+      ids.map((id) =>
         fetch(
-          `https://api.themoviedb.org/3/movie/${id}?api_key=${TMDB_KEY}&language=pt-BR&append_to_response=videos,release_dates`
+          `https://api.themoviedb.org/3/movie/${id}?api_key=${TMDB_KEY}&language=pt-BR&append_to_response=videos,release_dates`,
         )
           .then((res) => res.json())
           .then((data) => ({
@@ -59,48 +51,38 @@ export default function FilmesAssisti() {
             title: data.title,
             genres: data.genres || [],
             poster_path: data.poster_path,
-            avaliacao: user.visto[id] || 0,
             backdrop_path: data.backdrop_path,
             videos: data.videos?.results || [],
             release_dates: data.release_dates?.results || [],
-          }))
-      )
+          })),
+      ),
     )
       .then((lista) => {
         setFilmesVistos(lista);
         setLoading(false);
       })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
+      .catch(() => setLoading(false));
   }, [user?.visto]);
 
-  const totalFilmesVistos = filmesVistos.length;
+  const fetchMovie = useCallback(async (movieId) => {
+    try {
+      const res = await fetch(
+        `https://api.themoviedb.org/3/movie/${movieId}?api_key=${TMDB_KEY}&language=pt-BR&append_to_response=videos,release_dates`,
+      );
+      const data = await res.json();
+      setFilme(data);
+      const trailer = data.videos?.results.find(
+        (v) => v.type === "Trailer" && v.site === "YouTube",
+      );
+      setTrailerLink(
+        trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : null,
+      );
+      setReleaseDates(data.release_dates?.results || []);
+    } catch (err) {
+      console.error("Erro ao buscar filme:", err);
+    }
+  }, []);
 
-  // Busca aleatório do topo
-  const fetchMovie = useCallback(
-    async (movieId) => {
-      try {
-        const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${TMDB_KEY}&language=pt-BR&append_to_response=videos,release_dates`;
-        const res = await fetch(url);
-        const data = await res.json();
-        setFilme(data);
-        const trailer = data.videos?.results.find(
-          (v) => v.type === "Trailer" && v.site === "YouTube"
-        );
-        setTrailerLink(
-          trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : null
-        );
-        setReleaseDates(data.release_dates?.results || []);
-      } catch (err) {
-        console.error("Erro ao buscar filme de topo:", err);
-      }
-    },
-    []
-  );
-
-  // Ao ter a lista completa, escolhe um filme aleatório para o topo
   useEffect(() => {
     if (!loading && filmesVistos.length) {
       const random =
@@ -108,15 +90,6 @@ export default function FilmesAssisti() {
       fetchMovie(random.id);
     }
   }, [loading, filmesVistos, fetchMovie]);
-
-  const handleExcluirFilme = (id) => {
-    removerFilme(id);
-    setFilmesVistos((prev) => prev.filter((f) => String(f.id) !== id));
-  };
-  const openModal = (film) => {
-    setSelectedFilm(film);
-    setModalOpen(true);
-  };
 
   return (
     <Private>
@@ -130,82 +103,42 @@ export default function FilmesAssisti() {
 
       <Header />
 
-      {loading || filme ? (
-        <main className={styles.filmesAssisti}>
-          <div className={styles.assistiPage}>
-            <div className={styles.contAssisti}>
-              <div className={styles.tituloEListas}>
-                {filme && (
-                  <FilmeHero
-                    filme={filme}
-                    trailerLink={trailerLink}
-                    releaseDates={releaseDates}
-                  />
-                )}
+      <main className={styles.page}>
+        <Breadcrumb items={[{ label: "Já assisti" }]} />
 
-                <Titulolistagem
-                  quantidadeFilmes={filmesVistos.length}
-                  titulolistagem={"Filmes que já assisti"}
-                />
+        {filme && (
+          <FilmeHero
+            filme={filme}
+            trailerLink={trailerLink}
+            releaseDates={releaseDates}
+          />
+        )}
 
-                <ListaPageFilmes
-                  listagemDeFilmes={filmesVistos}
-                  loading={loading}
-                  mostrarBotaoFechar={true}
-                  handleExcluirFilme={handleExcluirFilme}
-                  openModal={openModal}
-                />
-              </div>
-
-              <div className={styles.graficosGeneroMes}>
-                <GraficoVistos
-                  filmesVistos={filmesVistos}
-                  totalFilmesVistos={totalFilmesVistos}
-                />
-                {isMobile ? (
-                  <GraficoMetasMobile
-                    filmesVistos={filmesVistos}
-                    totalFilmesVistos={totalFilmesVistos}
-                    user={user}
-                  />
-                ) : (
-                  <GraficoMetas
-                    filmesVistos={filmesVistos}
-                    totalFilmesVistos={totalFilmesVistos}
-                    user={user}
-                  />
-                )}
-              </div>
-            </div>
-
-            <Footer />
-
-            {modalOpen && (
-              <FilmesCarousel
-                filmes={filmesVistos}
-                selectedFilm={selectedFilm} // Mantenha esta linha
-                onClose={() => setModalOpen(false)}
-                excluirFilme={() => {
-                  removerNota(String(selectedFilm.id)); // Chama a função de remoção passando o ID do filme em foco
-                  setModalOpen(false); // Fecha o modal após a exclusão
-                }}
+        <SectionCard
+          title="Já assisti"
+          count={filmesVistos.length}
+          actions={[
+            {
+              label: isMobile ? undefined : "Filtros",
+              icon: <FilterIcon size={20} color="currentColor" />,
+              border: "var(--stroke-solid)",
+            },
+          ]}
+          pagination={{ page: currentPage, totalPages, onChange: setCurrentPage }}
+        >
+          <div className={styles.listaFilmes}>
+            {filmesPaginados.map((f) => (
+              <CardFilme
+                key={f.id}
+                movie={f}
+                variant={isMobile ? "mini" : "nota"}
               />
-            )}
-
-            {filme && (
-              <div className={styles.fundoTitulos}>
-                <FundoTitulosDesktop
-                  capaAssistidos={`https://image.tmdb.org/t/p/original/${filme.backdrop_path}`}
-                  tituloAssistidos={filme.title}
-                  opacidade={0.2}
-                />
-              </div>
-            )}
+            ))}
           </div>
-        </main>
-      ) : (
-        <BlankSlate />
-      )}
+        </SectionCard>
+      </main>
+
+      <Footer />
     </Private>
   );
 }

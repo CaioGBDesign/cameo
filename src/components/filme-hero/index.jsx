@@ -1,10 +1,14 @@
 import { useState } from "react";
+import dynamic from "next/dynamic";
+
+const ModalAvaliar = dynamic(
+  () => import("@/components/modais/avaliar-filmes"),
+);
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./index.module.scss";
 import { useAuth } from "@/contexts/auth";
 import { useIsMobile } from "@/components/DeviceProvider";
-import { useRouter } from "next/router";
 import PlayIcon from "@/components/icons/PlayIcon";
 import Badge from "@/components/badge";
 import Classificacao from "@/components/detalhesfilmes/classificacao";
@@ -17,8 +21,7 @@ export default function FilmeHero({ filme, trailerLink, releaseDates }) {
   const { user, salvarFilme, removerFilme, assistirFilme, removerAssistir } =
     useAuth();
   const isMobile = useIsMobile();
-  const router = useRouter();
-
+  const [ratingOpen, setRatingOpen] = useState(false);
   const [modalListaAberto, setModalListaAberto] = useState(false);
   const [selecionarFavorito, setSelecionarFavorito] = useState(false);
   const [selecionarParaVer, setSelecionarParaVer] = useState(false);
@@ -66,21 +69,32 @@ export default function FilmeHero({ filme, trailerLink, releaseDates }) {
   };
 
   return (
-    <div className={styles.hero}>
-      {!isMobile && trailerLink && (
-        <div className={styles.posterTrailer}>
-          <div className={styles.botaoTrailer}>
-            <div className={styles.play}>
-              <Link
-                href={trailerLink}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <PlayIcon size={24} color="#fff" />
-              </Link>
-            </div>
-          </div>
-          {filme.backdrop_path && (
+    <div
+      className={styles.hero}
+      style={
+        filme.backdrop_path
+          ? {
+              backgroundImage: `url(https://image.tmdb.org/t/p/original/${filme.backdrop_path})`,
+            }
+          : undefined
+      }
+    >
+      <div className={styles.infoSide}>
+        {!isMobile && filme.backdrop_path && (
+          <div className={styles.posterTrailer}>
+            {trailerLink && (
+              <div className={styles.botaoTrailer}>
+                <div className={styles.play}>
+                  <Link
+                    href={trailerLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <PlayIcon size={24} color="#fff" />
+                  </Link>
+                </div>
+              </div>
+            )}
             <div className={styles.posterFilme}>
               <Image
                 unoptimized
@@ -92,27 +106,71 @@ export default function FilmeHero({ filme, trailerLink, releaseDates }) {
                 loading="lazy"
               />
             </div>
-          )}
+          </div>
+        )}
+
+        <div className={styles.detalhes}>
+          <div className={styles.filmInfo}>
+            <h1 className={styles.titulo}>{filme.title}</h1>
+
+            <div className={styles.generosList}>{renderGeneros()}</div>
+
+            {!isMobile && (
+              <div className={styles.info}>
+                <Classificacao releaseDates={releaseDates} />
+                <span className={styles.duracao}>
+                  {formatRuntime(filme.runtime)}
+                </span>
+              </div>
+            )}
+          </div>
+
+          <div className={styles.botoes}>
+            {user.visto?.[filme.id] ? (
+              <Button
+                variant={isMobile ? "ghost" : "outline"}
+                stars={user.visto[filme.id].nota}
+                onClick={() => setRatingOpen(true)}
+                {...(!isMobile && {
+                  border: "var(--stroke-solid)",
+                  arrowColor: "var(--stroke-solid)",
+                  bg: "none",
+                })}
+              />
+            ) : (
+              <Button
+                variant={isMobile ? "ghost" : "outline"}
+                label="Já assisti"
+                onClick={() => setRatingOpen(true)}
+                {...(!isMobile && {
+                  border: "var(--stroke-solid)",
+                  arrowColor: "var(--stroke-solid)",
+                  bg: "none",
+                })}
+              />
+            )}
+
+            {!isMobile && (
+              <Button
+                variant="submit"
+                label="Adicionar a lista"
+                icon={<AddToListIcon size={20} color="currentColor" />}
+                onClick={abrirModalLista}
+                width="220px"
+              />
+            )}
+            {isMobile && <div className={styles.sugestao}>Sugestão</div>}
+          </div>
         </div>
-      )}
-
-      <div className={styles.detalhes}>
-        <h1 className={styles.titulo}>{filme.title}</h1>
-
-        <div className={styles.generosList}>{renderGeneros()}</div>
-
-        <div className={styles.info}>
-          <Classificacao releaseDates={releaseDates} />
-          <span className={styles.duracao}>{formatRuntime(filme.runtime)}</span>
-        </div>
-
-        <Button
-          variant="submit"
-          label="Adicionar a lista"
-          icon={<AddToListIcon size={20} color="currentColor" />}
-          onClick={abrirModalLista}
-        />
       </div>
+
+      {ratingOpen && (
+        <ModalAvaliar
+          filmeId={filme.id}
+          nota={user?.visto?.[filme.id]}
+          onClose={() => setRatingOpen(false)}
+        />
+      )}
 
       {modalListaAberto && (
         <Modal

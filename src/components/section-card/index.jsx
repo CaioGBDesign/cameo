@@ -2,6 +2,7 @@ import Button from "@/components/button";
 import ArrowButton from "@/components/arrow-button";
 import TextIcon from "@/components/icons/TextIcon";
 import InfoIcon from "@/components/icons/InfoIcon";
+import Pagination from "@/components/pagination";
 import styles from "./index.module.scss";
 
 export default function SectionCard({
@@ -15,6 +16,7 @@ export default function SectionCard({
   actions,
   verTodos,
   scrollRef,
+  pagination,
   children,
 }) {
   const hasHeader =
@@ -60,7 +62,7 @@ export default function SectionCard({
                     icon={action.icon}
                     onClick={action.onClick}
                     href={action.href}
-                    border={i === 0 ? "var(--stroke-base)" : undefined}
+                    border={action.border ?? (i === 0 ? "var(--stroke-base)" : undefined)}
                   />
                 ))}
 
@@ -79,6 +81,14 @@ export default function SectionCard({
       )}
 
       <div className={styles.content}>{children}</div>
+
+      {pagination && (
+        <Pagination
+          page={pagination.page}
+          totalPages={pagination.totalPages}
+          onChange={pagination.onChange}
+        />
+      )}
     </div>
   );
 }

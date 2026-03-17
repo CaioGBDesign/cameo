@@ -1,0 +1,134 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: var(--space-xs);
+
+  margin-bottom: var(--space-2xl);
+
+  @media only screen and (min-width: 768px) {
+    margin-right: var(--space-2xl);
+  }
+
+  @media only screen and (max-width: 768px) {
+    margin-bottom: var(--space-lg);
+
+    justify-content: center;
+  }
+
+  .skip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--space-sm);
+    border: 1px solid var(--stroke-secondary);
+    background: transparent;
+    color: var(--icon-base);
+    cursor: pointer;
+    transition: 0.2s;
+
+    @media only screen and (max-width: 768px) {
+      border-color: var(--stroke-base);
+    }
+
+    &:hover:not(:disabled) {
+      border-color: var(--stroke-submit);
+      background: var(--bg-overlay);
+      border: 1px solid var(--stroke-base);
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+  }
+
+  .arrow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+
+    padding: 0 var(--space-md);
+    height: 36px;
+
+    border-radius: var(--space-sm);
+    border: 1px solid var(--stroke-secondary);
+    background: transparent;
+
+    color: var(--text-base);
+    font-size: 0.875rem;
+    font-style: italic;
+
+    cursor: pointer;
+    transition: 0.2s;
+
+    @media only screen and (max-width: 768px) {
+      justify-content: center;
+
+      border-color: var(--stroke-base);
+
+      width: 36px;
+
+      padding: 0;
+    }
+
+    &:hover:not(:disabled) {
+      border-color: var(--stroke-submit);
+      background: var(--bg-overlay);
+      border: 1px solid var(--stroke-base);
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+  }
+
+  .label {
+    @media only screen and (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  .pageBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 36px;
+    height: 36px;
+
+    padding: 0 var(--space-sm);
+    border-radius: var(--space-sm);
+    border: 1px solid transparent;
+
+    background: transparent;
+
+    color: var(--text-base);
+    font-size: 0.875rem;
+    font-style: italic;
+    font-family: inherit;
+
+    cursor: pointer;
+    transition: 0.2s;
+
+    @media only screen and (max-width: 768px) {
+      border: 1px solid transparent;
+    }
+
+    &:hover {
+      border-color: var(--stroke-base);
+    }
+
+    &.active {
+      border-color: var(--stroke-base);
+      background: var(--bg-overlay);
+
+      @media only screen and (max-width: 768px) {
+        border-color: var(--stroke-solid);
+      }
+    }
+  }
+}

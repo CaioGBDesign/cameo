@@ -7,6 +7,7 @@ import TitulosFilmesDesktop from "@/components/titulosFilmesDesktop";
 import BannerFilme from "@/components/banner-filme";
 import Sinopse from "@/components/detalhesfilmes/sinopse";
 import FilterIcon from "@/components/icons/FilterIcon";
+import AddToListIcon from "@/components/icons/AddToListIcon";
 import Button from "@/components/button";
 import SectionCard from "@/components/section-card";
 import Modal from "@/components/modal";
@@ -238,36 +239,45 @@ export default function FilmeAleatorio() {
                   width="100%"
                 />
               </div>
-              {!user ? (
+              <div className={styles.btnAvaliacao}>
+                {!user ? (
+                  <Button
+                    variant="outline"
+                    label="Já assisti"
+                    href="/login"
+                    border="var(--stroke-base)"
+                    arrowColor="var(--stroke-base)"
+                    width="100%"
+                  />
+                ) : user?.visto?.[filme.id] ? (
+                  <Button
+                    variant="outline"
+                    stars={user.visto[filme.id].nota}
+                    onClick={() => openModal("rating")}
+                    border="var(--stroke-base)"
+                    arrowColor="var(--stroke-base)"
+                    width="100%"
+                  />
+                ) : (
+                  <Button
+                    variant="outline"
+                    label="Já assisti"
+                    onClick={() => openModal("rating")}
+                    border="var(--stroke-base)"
+                    arrowColor="var(--stroke-base)"
+                    width="100%"
+                  />
+                )}
+              </div>
+              <div className={styles.btnListas}>
                 <Button
-                  variant="outline"
-                  label="Já assisti"
-                  href="/login"
-                  border="var(--stroke-base)"
-                  arrowColor="var(--stroke-base)"
+                  variant="submit"
+                  label="Adicionar a lista"
+                  icon={<AddToListIcon size={20} color="currentColor" />}
+                  onClick={abrirModalLista}
+                  width="100%"
                 />
-              ) : user?.visto?.[filme.id] ? (
-                <Button
-                  variant="outline"
-                  stars={user.visto[filme.id].nota}
-                  onClick={() => openModal("rating")}
-                  border="var(--stroke-base)"
-                  arrowColor="var(--stroke-base)"
-                />
-              ) : (
-                <Button
-                  variant="outline"
-                  label="Já assisti"
-                  onClick={() => openModal("rating")}
-                  border="var(--stroke-base)"
-                  arrowColor="var(--stroke-base)"
-                />
-              )}
-              <Button
-                variant="submit"
-                label="Adicionar a lista"
-                onClick={abrirModalLista}
-              />
+              </div>
             </div>
 
             <div className={styles.todasAsInformacoes}>
@@ -371,7 +381,7 @@ export default function FilmeAleatorio() {
 
       {modalListaAberto && (
         <Modal
-          title="Adicionar a lista"
+          title={<>Adicionar <span style={{ color: "var(--text-base)" }}>{filme.title}</span> à lista</>}
           onClose={() => setModalListaAberto(false)}
           primaryAction={{ label: "Confirmar", onClick: confirmarLista }}
         >

@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback, Suspense } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styles from "./index.module.scss";
 import dynamic from "next/dynamic";
 import { useIsMobile } from "@/components/DeviceProvider";
 import Head from "next/head";
 import Private from "@/components/Private";
-import TitulosFilmesDesktop from "@/components/titulosFilmesDesktop";
+import FilmeHero from "@/components/filme-hero";
 import Titulolistagem from "@/components/titulolistagem";
 import GraficoVistos from "@/components/detalhesfilmes/grafico-vistos";
 import GraficoMetas from "@/components/detalhesfilmes/grafico-metas";
@@ -14,6 +14,8 @@ import ListaPageFilmes from "@/components/detalhesfilmes/listaPageFilmes";
 import FilmesCarousel from "@/components/modais/filmes-carousel";
 import { useAuth } from "@/contexts/auth";
 
+const TMDB_KEY = "c95de8d6070dbf1b821185d759532f05";
+
 const Header = dynamic(() => import("@/components/Header"));
 const Footer = dynamic(() => import("@/components/Footer"));
 const FundoTitulosDesktop = dynamic(() =>
@@ -22,8 +24,7 @@ const FundoTitulosDesktop = dynamic(() =>
 
 export default function FilmesAssisti() {
   const isMobile = useIsMobile();
-  const { user, removerFilme } = useAuth();
-  const apiKey = "c95de8d6070dbf1b821185d759532f05";
+  const { user, removerFilme, removerNota } = useAuth();
 
   // Lista completa de filmes para gráfico e miniaturas
   const [filmesVistos, setFilmesVistos] = useState([]);
@@ -50,7 +51,7 @@ export default function FilmesAssisti() {
     Promise.all(
       idsVistos.map((id) =>
         fetch(
-          `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=pt-BR&append_to_response=videos,release_dates`
+          `https://api.themoviedb.org/3/movie/${id}?api_key=${TMDB_KEY}&language=pt-BR&append_to_response=videos,release_dates`
         )
           .then((res) => res.json())
           .then((data) => ({
@@ -73,7 +74,7 @@ export default function FilmesAssisti() {
         console.error(err);
         setLoading(false);
       });
-  }, [user?.visto, apiKey]);
+  }, [user?.visto]);
 
   const totalFilmesVistos = filmesVistos.length;
 
@@ -81,7 +82,7 @@ export default function FilmesAssisti() {
   const fetchMovie = useCallback(
     async (movieId) => {
       try {
-        const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=pt-BR&append_to_response=videos,release_dates`;
+        const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${TMDB_KEY}&language=pt-BR&append_to_response=videos,release_dates`;
         const res = await fetch(url);
         const data = await res.json();
         setFilme(data);
@@ -96,7 +97,7 @@ export default function FilmesAssisti() {
         console.error("Erro ao buscar filme de topo:", err);
       }
     },
-    [apiKey]
+    []
   );
 
   // Ao ter a lista completa, escolhe um filme aleatório para o topo
@@ -108,8 +109,6 @@ export default function FilmesAssisti() {
     }
   }, [loading, filmesVistos, fetchMovie]);
 
-  // Funções de miniatura
-  const mostrarBotaoFechar = true;
   const handleExcluirFilme = (id) => {
     removerFilme(id);
     setFilmesVistos((prev) => prev.filter((f) => String(f.id) !== id));
@@ -131,13 +130,13 @@ export default function FilmesAssisti() {
 
       <Header />
 
-      {filme ? (
+      {loading || filme ? (
         <main className={styles.filmesAssisti}>
           <div className={styles.assistiPage}>
             <div className={styles.contAssisti}>
               <div className={styles.tituloEListas}>
-                {isMobile ? null : (
-                  <TitulosFilmesDesktop
+                {filme && (
+                  <FilmeHero
                     filme={filme}
                     trailerLink={trailerLink}
                     releaseDates={releaseDates}
@@ -152,7 +151,7 @@ export default function FilmesAssisti() {
                 <ListaPageFilmes
                   listagemDeFilmes={filmesVistos}
                   loading={loading}
-                  mostrarBotaoFechar={mostrarBotaoFechar}
+                  mostrarBotaoFechar={true}
                   handleExcluirFilme={handleExcluirFilme}
                   openModal={openModal}
                 />
@@ -193,13 +192,15 @@ export default function FilmesAssisti() {
               />
             )}
 
-            <div className={styles.fundoTitulos}>
-              <FundoTitulosDesktop
-                capaAssistidos={`https://image.tmdb.org/t/p/original/${filme.backdrop_path}`}
-                tituloAssistidos={filme.title}
-                opacidade={0.2}
-              />
-            </div>
+            {filme && (
+              <div className={styles.fundoTitulos}>
+                <FundoTitulosDesktop
+                  capaAssistidos={`https://image.tmdb.org/t/p/original/${filme.backdrop_path}`}
+                  tituloAssistidos={filme.title}
+                  opacidade={0.2}
+                />
+              </div>
+            )}
           </div>
         </main>
       ) : (

@@ -45,7 +45,7 @@
     }
 
     .alterarCapa {
-      width: 220px;
+      width: 380px;
 
       @media only screen and (max-width: 768px) {
         width: 100%;
@@ -145,7 +145,7 @@
   .sectionsCards {
     display: flex;
     justify-content: center;
-    align-items: start;
+    align-items: center;
     gap: var(--space-sm);
 
     width: 100%;
@@ -209,4 +209,10 @@
       width: 100%;
     }
   }
+}
+
+.estiloOpcoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
 }

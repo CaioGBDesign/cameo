@@ -58,16 +58,25 @@
     justify-content: flex-start;
     color: var(--space-sm);
     width: 100%;
+    gap: var(--space-sm);
 
     @media only screen and (max-width: 768px) {
-      justify-content: center;
+      justify-content: space-between;
       width: 90%;
+      gap: var(--space-xs);
     }
   }
 
   .btnResenhas {
     @media only screen and (max-width: 768px) {
       width: 90px;
+    }
+  }
+
+  .btnAvaliacao,
+  .btnListas {
+    @media only screen and (max-width: 768px) {
+      width: 100%;
     }
   }
 

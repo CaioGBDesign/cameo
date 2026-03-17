@@ -18,8 +18,16 @@ import Select from "@/components/inputs/select";
 import Modal from "@/components/modal";
 import RadioButton from "@/components/inputs/radio-button";
 import { useAuth } from "@/contexts/auth";
+import Breadcrumb from "@/components/breadcrumb";
 import { useIsMobile } from "@/components/DeviceProvider";
 import { useState } from "react";
+
+const GENERO_OPTIONS = [
+  { value: "masculino", label: "Masculino" },
+  { value: "feminino", label: "Feminino" },
+  { value: "nao-binario", label: "Não-binário" },
+  { value: "prefiro-nao-informar", label: "Prefiro não informar" },
+];
 
 const ESTILO_OPTIONS = [
   { value: "potterhead", label: "Potterhead" },
@@ -37,7 +45,7 @@ const ESTILO_OPTIONS = [
 ];
 
 const PerfilUsuario = () => {
-  const { user } = useAuth();
+  const { user, atualizarPerfil } = useAuth();
   const isMobile = useIsMobile();
 
   const [nome, setNome] = useState(user?.nome ?? "");
@@ -45,6 +53,22 @@ const PerfilUsuario = () => {
   const [email, setEmail] = useState(user?.email ?? "");
   const [genero, setGenero] = useState(user?.genero ?? "");
   const [estilo, setEstilo] = useState(user?.estilo ?? "");
+
+  const handleSalvar = () => atualizarPerfil({ nome, handle, genero, estilo });
+
+  const [generoModalOpen, setGeneroModalOpen] = useState(false);
+  const [pendingGenero, setPendingGenero] = useState(genero);
+  const generoLabel = GENERO_OPTIONS.find((o) => o.value === genero)?.label;
+
+  const handleOpenGeneroModal = () => {
+    setPendingGenero(genero);
+    setGeneroModalOpen(true);
+  };
+
+  const handleConfirmGenero = () => {
+    setGenero(pendingGenero);
+    setGeneroModalOpen(false);
+  };
 
   const [estiloModalOpen, setEstiloModalOpen] = useState(false);
   const [pendingEstilo, setPendingEstilo] = useState(estilo);
@@ -72,6 +96,7 @@ const PerfilUsuario = () => {
       </Head>
       <div className={styles.container}>
         <Header />
+        <Breadcrumb items={[{ label: "Perfil" }]} />
         <div className={styles.TopoInfoPerfil}>
           <div className={styles.alterarCapa}>
             <Button
@@ -136,21 +161,23 @@ const PerfilUsuario = () => {
                 type="email"
                 width="100%"
               />
-              <Select
-                placeholder={genero || "Selecione o gênero"}
-                value={genero}
-                onChange={setGenero}
-                width="100%"
-                options={[
-                  { value: "masculino", label: "Masculino" },
-                  { value: "feminino", label: "Feminino" },
-                  { value: "nao-binario", label: "Não-binário" },
-                  {
-                    value: "prefiro-nao-informar",
-                    label: "Prefiro não informar",
-                  },
-                ]}
-              />
+              {isMobile ? (
+                <button
+                  className={styles.selectBtn}
+                  onClick={handleOpenGeneroModal}
+                >
+                  <span>{generoLabel || "Selecione o gênero"}</span>
+                  <ChevronDownIcon size={16} color="currentColor" />
+                </button>
+              ) : (
+                <Select
+                  placeholder={generoLabel || "Selecione o gênero"}
+                  value={genero}
+                  onChange={setGenero}
+                  width="100%"
+                  options={GENERO_OPTIONS}
+                />
+              )}
             </div>
           </SectionCard>
 
@@ -191,7 +218,7 @@ const PerfilUsuario = () => {
                 border="var(--stroke-base)"
                 arrowColor="var(--stroke-base)"
               />
-              <Button variant="solid" label="Salvar alterações" width="100%" />
+              <Button variant="solid" label="Salvar alterações" width="100%" onClick={handleSalvar} />
             </div>
           </SectionCard>
         </div>
@@ -205,6 +232,29 @@ const PerfilUsuario = () => {
         />
       </div>
       <Footer />
+
+      {generoModalOpen && (
+        <Modal
+          title="Gênero"
+          onClose={() => setGeneroModalOpen(false)}
+          primaryAction={{
+            label: "Selecionar",
+            onClick: handleConfirmGenero,
+          }}
+        >
+          <div className={styles.estiloOpcoes}>
+            {GENERO_OPTIONS.map((op) => (
+              <RadioButton
+                key={op.value}
+                label={op.label}
+                checked={pendingGenero === op.value}
+                onChange={() => setPendingGenero(op.value)}
+                iconVariant="none"
+              />
+            ))}
+          </div>
+        </Modal>
+      )}
 
       {estiloModalOpen && (
         <Modal

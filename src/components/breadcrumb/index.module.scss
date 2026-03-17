@@ -1,0 +1,44 @@
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  width: 100%;
+
+  @media only screen and (max-width: 768px) {
+    width: 90%;
+  }
+}
+
+.home {
+  display: flex;
+  align-items: center;
+  color: var(--icon-breadcrumb);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+}
+
+.link {
+  font-size: 0.875rem;
+  color: var(--text-breadcrumb);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.current {
+  font-size: 0.875rem;
+  color: var(--text-breadcrumb);
+  font-style: italic;
+  font-weight: bold;
+}

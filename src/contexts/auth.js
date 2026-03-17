@@ -689,6 +689,13 @@ function AuthProvider({ children }) {
     }
   };
 
+  const atualizarPerfil = async ({ nome, handle, genero, estilo }) => {
+    if (!user) return;
+    const userRef = doc(db, "users", user.uid);
+    await updateDoc(userRef, { nome, handle, genero, estilo });
+    setUser((prev) => ({ ...prev, nome, handle, genero, estilo }));
+  };
+
   const verificarPermissoesNoticias = async () => {
     if (!user) return false;
 
@@ -758,6 +765,7 @@ function AuthProvider({ children }) {
         darNota,
         removerNota,
         setUser,
+        atualizarPerfil,
         adicionarMeta,
         removerMeta,
         atualizarMeta,

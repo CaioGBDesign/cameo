@@ -1,0 +1,125 @@
+import { useState } from "react";
+import Modal from "@/components/modal";
+import TextInput from "@/components/inputs/text-input";
+import RadioButton from "@/components/inputs/radio-button";
+import { useAuth } from "@/contexts/auth";
+import styles from "./index.module.scss";
+
+const PERIODOS = [
+  { valor: "dia",    label: "Diário" },
+  { valor: "semana", label: "Semanal" },
+  { valor: "mes",    label: "Mensal" },
+  { valor: "ano",    label: "Anual" },
+];
+
+const TEMAS = [
+  "Todos", "Animação", "Aventura", "Ação", "Cinema TV", "Comédia",
+  "Crime", "Documentários", "Drama", "Família", "Fantasia", "Faroeste",
+  "Ficção Científica", "Guerra", "História", "Mistério", "Musical",
+  "Romance", "Terror", "Thriller",
+];
+
+const LOCAIS = ["Em casa", "No cinema"];
+
+export default function CriarMeta({ onClose }) {
+  const { adicionarMeta } = useAuth();
+  const [nome, setNome] = useState("");
+  const [periodo, setPeriodo] = useState("");
+  const [quantidade, setQuantidade] = useState("");
+  const [tema, setTema] = useState("Todos");
+  const [local, setLocal] = useState("");
+
+  const handleConfirmar = async () => {
+    await adicionarMeta({ nome, periodo, quantidade: Number(quantidade), tema, local });
+    onClose();
+  };
+
+  return (
+    <Modal
+      title="Criar meta"
+      onClose={onClose}
+      primaryAction={{ label: "Confirmar", onClick: handleConfirmar }}
+    >
+      <div className={styles.content}>
+
+        {/* Bloco 1 — nome, período e quantidade */}
+        <div className={styles.bloco}>
+          <TextInput
+            id="nome-meta"
+            label="Qual será o nome dessa meta"
+            placeholder="Ex: Maratonar clássicos"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+          />
+
+          <div className={styles.subBloco}>
+            <div className={styles.grupo}>
+              <span className={styles.grupoLabel}>Adicione um período</span>
+              <div className={styles.radios}>
+                {PERIODOS.map((p) => (
+                  <RadioButton
+                    key={p.valor}
+                    id={`periodo-${p.valor}`}
+                    name="periodo"
+                    label={p.label}
+                    checked={periodo === p.valor}
+                    onChange={() => setPeriodo(p.valor)}
+                    iconVariant="none"
+                  />
+                ))}
+              </div>
+            </div>
+
+            <TextInput
+              id="quantidade-meta"
+              label="Adicione a quantidade de filmes"
+              placeholder="Ex: 12"
+              type="number"
+              min={1}
+              value={quantidade}
+              onChange={(e) => setQuantidade(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {/* Bloco 2 — tema e local */}
+        <div className={styles.bloco}>
+          <div className={styles.grupo}>
+            <span className={styles.grupoLabel}>Quer focar em algum tema?</span>
+            <div className={styles.radios}>
+              {TEMAS.map((t) => (
+                <RadioButton
+                  key={t}
+                  id={`tema-${t}`}
+                  name="tema"
+                  label={t}
+                  checked={tema === t}
+                  onChange={() => setTema(t)}
+                  iconVariant="none"
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className={styles.grupo}>
+            <span className={styles.grupoLabel}>Onde pretende assistir</span>
+            <div className={styles.radios}>
+              {LOCAIS.map((l) => (
+                <RadioButton
+                  key={l}
+                  id={`local-${l}`}
+                  name="local"
+                  label={l}
+                  checked={local === l}
+                  onChange={() => setLocal(l)}
+                  iconVariant="none"
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </Modal>
+  );
+}

@@ -16,6 +16,7 @@ import Button from "@/components/button";
 import Modal from "@/components/modal";
 import CheckboxCard from "@/components/inputs/checkbox-card";
 import AddToListIcon from "@/components/icons/AddToListIcon";
+import SectionMetas from "@/components/section-metas";
 
 export default function FilmeHero({ filme, trailerLink, releaseDates }) {
   const { user, salvarFilme, removerFilme, assistirFilme, removerAssistir } =
@@ -163,6 +164,12 @@ export default function FilmeHero({ filme, trailerLink, releaseDates }) {
           </div>
         </div>
       </div>
+
+      {!isMobile && (
+        <div className={styles.metasDesktop}>
+          <SectionMetas />
+        </div>
+      )}
 
       {ratingOpen && (
         <ModalAvaliar

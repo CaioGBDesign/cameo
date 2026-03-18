@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./index.module.scss";
 import ChevronDownIcon from "@/components/icons/ChevronDownIcon";
-import Modal from "@/components/modal";
+import DetalheMeta from "@/components/modais/detalhe-meta";
 
 const PERIODO_LABEL = {
   dia: "Meta diária",
@@ -32,7 +32,12 @@ const CORES_CONCLUIDO = {
   ripado: "var(--primitive-verde-01)",
 };
 
+const NORMALIZAR_PERIODO = {
+  "Diário": "dia", "Semanal": "semana", "Mensal": "mes", "Anual": "ano",
+};
+
 const CardMeta = ({ meta, filmesVistos = 0 }) => {
+  const periodo = NORMALIZAR_PERIODO[meta.periodo] ?? meta.periodo;
   const [modalAberto, setModalAberto] = useState(false);
 
   const percentual = Math.min(
@@ -43,19 +48,19 @@ const CardMeta = ({ meta, filmesVistos = 0 }) => {
   const cores =
     percentual === 100
       ? CORES_CONCLUIDO
-      : (PERIODO_CORES[meta.periodo] ?? PERIODO_CORES.ano);
+      : (PERIODO_CORES[periodo] ?? PERIODO_CORES.ano);
 
   return (
     <>
-      <div className={styles.card}>
+      <div className={styles.card} onClick={() => setModalAberto(true)}>
         {/* Topo */}
-        <button className={styles.topo} onClick={() => setModalAberto(true)}>
+        <div className={styles.topo}>
           <div className={styles.topoInfo}>
             <span className={styles.titulo}>
-              {PERIODO_LABEL[meta.periodo] ?? "Meta"}
+              {PERIODO_LABEL[periodo] ?? "Meta"}
             </span>
             <span className={styles.quantidade}>
-              {meta.quantidade} {PERIODO_SUFFIX[meta.periodo]}
+              {meta.quantidade} {PERIODO_SUFFIX[periodo]}
             </span>
           </div>
           <span className={styles.chevron}>
@@ -65,7 +70,7 @@ const CardMeta = ({ meta, filmesVistos = 0 }) => {
               style={{ transform: "rotate(-90deg)" }}
             />
           </span>
-        </button>
+        </div>
 
         {/* Chart */}
         <div className={styles.chart}>
@@ -107,12 +112,10 @@ const CardMeta = ({ meta, filmesVistos = 0 }) => {
       </div>
 
       {modalAberto && (
-        <Modal
-          title={PERIODO_LABEL[meta.periodo]}
+        <DetalheMeta
+          meta={{ ...meta, filmesVistosPeriodo: filmesVistos }}
           onClose={() => setModalAberto(false)}
-        >
-          {/* detalhes da meta — a implementar */}
-        </Modal>
+        />
       )}
     </>
   );

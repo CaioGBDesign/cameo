@@ -96,6 +96,11 @@
   min-height: 0;
   padding: var(--space-2xl);
   padding-top: var(--space-nn);
+
+  @media only screen and (max-width: 600px) {
+    padding: var(--space-lg);
+    padding-top: var(--space-nn);
+  }
 }
 
 /* ── Mobile ── */

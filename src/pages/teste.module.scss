@@ -12,33 +12,8 @@
     width: 100%;
     margin-top: 30%;
   }
-}
 
-.titulo {
-  color: var(--text-base);
-  margin: 2rem 0 1rem;
-  font-size: 1.25rem;
-  font-weight: 600;
-  font-style: normal;
-}
-
-.secao {
-  margin-bottom: 2rem;
-}
-
-.secaoTitulo {
-  color: var(--text-base);
-  margin-bottom: 0.5rem;
-  font-size: 0.75rem;
-  font-style: normal;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  opacity: 0.5;
-}
-
-.secaoItens {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
+  .metas {
+    width: 90%;
+  }
 }

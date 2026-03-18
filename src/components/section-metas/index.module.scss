@@ -1,0 +1,18 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+
+  .metas {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .botoes {
+    display: flex;
+    gap: var(--space-sm);
+
+    width: 100%;
+  }
+}

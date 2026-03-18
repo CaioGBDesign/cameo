@@ -14,6 +14,44 @@
   }
 }
 
+.conteudoMetas {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  gap: var(--space-lg);
+
+  .scrollMetas {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+
+    width: 100%;
+
+    gap: var(--space-sm);
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .metasMobile {
+      display: flex;
+      flex-direction: row;
+      gap: var(--space-sm);
+
+      > * {
+        flex-shrink: 0;
+        width: 280px;
+      }
+    }
+  }
+}
+
 .listaFilmes {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));

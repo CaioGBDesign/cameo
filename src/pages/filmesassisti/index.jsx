@@ -9,8 +9,12 @@ import SectionCard from "@/components/section-card";
 import CardFilme from "@/components/card-filme";
 import FilterIcon from "@/components/icons/FilterIcon";
 import Breadcrumb from "@/components/breadcrumb";
+import CardMeta from "@/components/card-meta";
+import CriarMeta from "@/components/modais/criar-meta";
+import Button from "@/components/button";
 import { useAuth } from "@/contexts/auth";
 import { useIsMobile } from "@/components/DeviceProvider";
+import { contarFilmesPorPeriodo } from "@/utils/metas";
 
 const TMDB_KEY = "c95de8d6070dbf1b821185d759532f05";
 
@@ -24,12 +28,27 @@ export default function FilmesAssisti() {
   const [filmesVistos, setFilmesVistos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [modalMetaAberto, setModalMetaAberto] = useState(false);
   const ITEMS_PER_PAGE = 24;
+
+  const metas = (Array.isArray(user?.metas) ? user.metas : [])
+    .map((meta) => ({
+      ...meta,
+      filmesVistosPeriodo: contarFilmesPorPeriodo(
+        user?.visto || {},
+        meta.periodo,
+      ),
+    }))
+    .sort(
+      (a, b) =>
+        b.filmesVistosPeriodo / b.quantidade -
+        a.filmesVistosPeriodo / a.quantidade,
+    );
 
   const totalPages = Math.ceil(filmesVistos.length / ITEMS_PER_PAGE);
   const filmesPaginados = filmesVistos.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    currentPage * ITEMS_PER_PAGE,
   );
 
   useEffect(() => {
@@ -114,6 +133,40 @@ export default function FilmesAssisti() {
           />
         )}
 
+        {isMobile && (
+          <SectionCard
+            title="Metas"
+            count={`${(Array.isArray(user?.metas) ? user.metas : []).length} criadas`}
+          >
+            <div className={styles.conteudoMetas}>
+              <div className={styles.scrollMetas}>
+                <div className={styles.metasMobile}>
+                  {metas.map((meta) => (
+                    <CardMeta
+                      key={meta.id}
+                      meta={meta}
+                      filmesVistos={meta.filmesVistosPeriodo}
+                    />
+                  ))}
+                </div>
+              </div>
+              <Button
+                variant="outline"
+                label="Criar meta"
+                border="var(--stroke-solid)"
+                arrowColor="var(--stroke-solid)"
+                width="100%"
+                onClick={() => setModalMetaAberto(true)}
+              />
+            </div>
+          </SectionCard>
+        )}
+
+        {modalMetaAberto && (
+          <CriarMeta onClose={() => setModalMetaAberto(false)} />
+        )}
+
+
         <SectionCard
           title="Já assisti"
           count={filmesVistos.length}
@@ -124,7 +177,11 @@ export default function FilmesAssisti() {
               border: "var(--stroke-solid)",
             },
           ]}
-          pagination={{ page: currentPage, totalPages, onChange: setCurrentPage }}
+          pagination={{
+            page: currentPage,
+            totalPages,
+            onChange: setCurrentPage,
+          }}
         >
           <div className={styles.listaFilmes}>
             {filmesPaginados.map((f) => (

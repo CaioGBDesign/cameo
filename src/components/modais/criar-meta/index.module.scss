@@ -1,0 +1,53 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+
+  max-height: 490px;
+  overflow-y: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media only screen and (max-width: 768px) {
+    max-height: 490px;
+  }
+}
+
+.bloco {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4xl);
+
+  background: var(--bg-overlay);
+  border: solid 1px var(--stroke-base);
+  border-radius: var(--space-lg);
+
+  padding: var(--space-lg);
+}
+
+.subBloco {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4xl);
+}
+
+.grupo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.grupoLabel {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text-sub);
+}
+
+.radios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}

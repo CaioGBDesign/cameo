@@ -601,10 +601,13 @@ function AuthProvider({ children }) {
 
       // Atualiza ou cria a meta no Firestore, agora apenas adicionando a meta com ID ao array
       await updateDoc(userRef, {
-        metas: arrayUnion(metaComId), // Adiciona a meta com ID diretamente ao array
+        metas: arrayUnion(metaComId),
       });
 
-      console.log("Meta adicionada com sucesso no Firebase!");
+      setUserData((prev) => ({
+        ...prev,
+        metas: [...(Array.isArray(prev.metas) ? prev.metas : []), metaComId],
+      }));
     } catch (error) {
       console.error("Erro ao adicionar a meta no Firebase:", error);
     }
@@ -657,8 +660,17 @@ function AuthProvider({ children }) {
     }
   };
 
+  const limparMetas = async () => {
+    const userRef = doc(db, "users", user.uid);
+    try {
+      await updateDoc(userRef, { metas: [] });
+      setUserData((prev) => ({ ...prev, metas: [] }));
+    } catch (error) {
+      console.error("Erro ao limpar metas:", error);
+    }
+  };
+
   const atualizarMeta = async (metaAtualizada) => {
-    const user = auth.currentUser;
     if (!user) throw new Error("Usuário não autenticado");
 
     const userRef = doc(db, "users", user.uid);
@@ -668,20 +680,15 @@ function AuthProvider({ children }) {
       if (userSnapshot.exists()) {
         const metas = userSnapshot.data().metas || [];
 
-        // Filtrar a meta original a ser atualizada
         const novasMetas = metas.map((meta) =>
           meta.id === metaAtualizada.id
-            ? {
-                id: meta.id, // Preserva o ID
-                periodo: metaAtualizada.periodo,
-                quantidade: metaAtualizada.quantidade,
-              }
+            ? { ...meta, ...metaAtualizada }
             : meta
         );
 
-        // Atualiza o documento no Firestore
         await updateDoc(userRef, { metas: novasMetas });
-        console.log("Meta atualizada com sucesso!");
+
+        setUserData((prev) => ({ ...prev, metas: novasMetas }));
       }
     } catch (error) {
       console.error("Erro ao atualizar meta no Firebase:", error);
@@ -767,6 +774,7 @@ function AuthProvider({ children }) {
         setUser,
         atualizarPerfil,
         adicionarMeta,
+        limparMetas,
         removerMeta,
         atualizarMeta,
         verificarPermissoesNoticias,

@@ -1,0 +1,52 @@
+.conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  max-height: 490px;
+  overflow-y: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.infoTextos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+}
+
+.infoTexto {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-sub);
+  margin: 0;
+
+  strong {
+    color: var(--text-header);
+    font-weight: bold;
+  }
+}
+
+.grupo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.grupoLabel {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--text-sub);
+}
+
+.radios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}

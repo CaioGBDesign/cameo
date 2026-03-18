@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Button from "@/components/button";
 import CloseIcon from "@/components/icons/CloseIcon";
 import WandIcon from "@/components/icons/WandIcon";
@@ -45,7 +46,7 @@ export default function Modal({
     .filter(Boolean)
     .join(" ");
 
-  return (
+  return createPortal(
     <div className={styles.overlay} onClick={handleClose}>
       <div className={modalClass} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
@@ -102,6 +103,7 @@ export default function Modal({
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

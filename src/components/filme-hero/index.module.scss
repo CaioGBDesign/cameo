@@ -1,6 +1,7 @@
 .hero {
   position: relative;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: var(--space-xl);
 
@@ -190,6 +191,12 @@
       }
     }
   }
+}
+
+.metasDesktop {
+  width: 435px;
+
+  z-index: 1;
 }
 
 .modalOpcoes {

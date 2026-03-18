@@ -6,22 +6,17 @@
   padding: var(--space-lg);
   border-radius: var(--space-lg);
   border: 1px solid var(--stroke-base);
-  background: var(--bg-overlay);
+  background: var(--bg-base);
 
   width: 100%;
+  cursor: pointer;
 
   .topo {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-sm);
-
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
     width: 100%;
-    text-align: left;
 
     .topoInfo {
       display: flex;

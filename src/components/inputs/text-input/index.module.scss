@@ -1,11 +1,11 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
+  gap: var(--space-lg);
 }
 
 .label {
-  font-size: 0.75rem;
+  font-size: 14px;
   font-style: italic;
   color: var(--text-sub);
 }

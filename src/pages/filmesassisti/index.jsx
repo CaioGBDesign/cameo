@@ -15,6 +15,7 @@ import Button from "@/components/button";
 import { useAuth } from "@/contexts/auth";
 import { useIsMobile } from "@/components/DeviceProvider";
 import { contarFilmesPorPeriodo } from "@/utils/metas";
+import GraficosFilmes from "@/components/graficos-filmes";
 
 const TMDB_KEY = "c95de8d6070dbf1b821185d759532f05";
 
@@ -166,6 +167,9 @@ export default function FilmesAssisti() {
           <CriarMeta onClose={() => setModalMetaAberto(false)} />
         )}
 
+        {!loading && filmesVistos.length > 0 && (
+          <GraficosFilmes filmesVistos={filmesVistos} visto={user?.visto || {}} />
+        )}
 
         <SectionCard
           title="Já assisti"

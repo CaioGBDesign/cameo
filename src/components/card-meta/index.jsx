@@ -36,7 +36,7 @@ const NORMALIZAR_PERIODO = {
   "Diário": "dia", "Semanal": "semana", "Mensal": "mes", "Anual": "ano",
 };
 
-const CardMeta = ({ meta, filmesVistos = 0 }) => {
+const CardMeta = ({ meta, filmesVistos = 0, onSelect, isSelected = false }) => {
   const periodo = NORMALIZAR_PERIODO[meta.periodo] ?? meta.periodo;
   const [modalAberto, setModalAberto] = useState(false);
 
@@ -52,12 +52,16 @@ const CardMeta = ({ meta, filmesVistos = 0 }) => {
 
   return (
     <>
-      <div className={styles.card} onClick={() => setModalAberto(true)}>
+      <div
+        className={styles.card}
+        onClick={() => onSelect ? onSelect(meta) : setModalAberto(true)}
+        style={isSelected ? { border: "1px solid var(--stroke-submit)" } : undefined}
+      >
         {/* Topo */}
         <div className={styles.topo}>
           <div className={styles.topoInfo}>
             <span className={styles.titulo}>
-              {PERIODO_LABEL[periodo] ?? "Meta"}
+              {meta.nome || PERIODO_LABEL[periodo] || "Meta"}
             </span>
             <span className={styles.quantidade}>
               {meta.quantidade} {PERIODO_SUFFIX[periodo]}
@@ -111,7 +115,7 @@ const CardMeta = ({ meta, filmesVistos = 0 }) => {
         </div>
       </div>
 
-      {modalAberto && (
+      {!onSelect && modalAberto && (
         <DetalheMeta
           meta={{ ...meta, filmesVistosPeriodo: filmesVistos }}
           onClose={() => setModalAberto(false)}

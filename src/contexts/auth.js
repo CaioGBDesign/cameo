@@ -444,20 +444,14 @@ function AuthProvider({ children }) {
     }
   }
 
-  async function darNota(filmeId, nota, comentario) {
+  async function darNota(filmeId, nota, comentario, ondeAssistiu, contarNaMeta, dataAssistido) {
     if (!user) {
       console.error("Usuário não autenticado");
       return;
     }
 
-    if (
-      typeof filmeId !== "string" ||
-      typeof nota !== "number" ||
-      typeof comentario !== "string"
-    ) {
-      console.error(
-        "O ID do filme deve ser uma string e a nota deve ser um número.",
-      );
+    if (typeof filmeId !== "string" || typeof nota !== "number") {
+      console.error("ID do filme deve ser string e nota deve ser número.");
       return;
     }
 
@@ -467,48 +461,57 @@ function AuthProvider({ children }) {
     try {
       const docSnap = await getDoc(userRef);
       const userData = docSnap.data();
+      const filmeExistente = userData.visto?.[filmeId];
 
-      if (!userData.visto || !userData.visto[filmeId]) {
-        console.error("Filme não encontrado nos dados do usuário.");
-        return;
+      let generos = filmeExistente?.generos || [];
+      if (!filmeExistente) {
+        try {
+          const filmeRes = await fetch(
+            `https://api.themoviedb.org/3/movie/${filmeId}?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR`,
+          );
+          const filmeData = await filmeRes.json();
+          generos = filmeData.genres?.map((g) => g.name) || [];
+        } catch {}
       }
 
-      // Obtém o filme existente
-      const filmeExistente = userData.visto[filmeId];
+      const hoje = new Date();
+      const dataHoje = `${hoje.getDate()}/${hoje.getMonth() + 1}/${hoje.getFullYear()}`;
 
-      // Atualiza a nota e mantém os outros campos
+      const novoRegistro = {
+        ...(filmeExistente || {}),
+        nota,
+        comentario: comentario || "",
+        ondeAssistiu: ondeAssistiu || null,
+        contarNaMeta: contarNaMeta !== false,
+        generos,
+        data: dataAssistido || filmeExistente?.data || dataHoje,
+      };
+
       await updateDoc(userRef, {
-        [`visto.${filmeId}`]: {
-          ...filmeExistente,
-          nota: nota,
-          comentario: comentario,
-        },
+        [`visto.${filmeId}`]: novoRegistro,
       });
 
-      // Atualiza a avaliação no documento do filme (opcional)
-      await updateDoc(filmeRef, {
-        [`avaliacoes.${user.uid}`]: {
-          nota: nota,
-          comentario: comentario,
-          data: new Date().toISOString(), // Adiciona a data da avaliação
-        },
-      });
+      try {
+        await updateDoc(filmeRef, {
+          [`avaliacoes.${user.uid}`]: {
+            nota,
+            comentario: comentario || "",
+            data: new Date().toISOString(),
+          },
+        });
+      } catch {}
 
       setUser((prevUser) => ({
         ...prevUser,
         visto: {
           ...prevUser.visto,
-          [filmeId]: {
-            ...prevUser.visto[filmeId],
-            nota: nota,
-            comentario: comentario,
-          },
+          [filmeId]: novoRegistro,
         },
       }));
 
-      console.log("Nota do filme atualizada com sucesso no Firebase");
+      toast.success("Filme registrado com sucesso!", { duration: 3000 });
     } catch (error) {
-      console.error("Erro ao atualizar a nota do filme no Firebase:", error);
+      console.error("Erro ao registrar nota do filme no Firebase:", error);
     }
   }
 

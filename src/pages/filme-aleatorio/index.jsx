@@ -18,6 +18,9 @@ import styles from "./index.module.scss";
 
 const Header = dynamic(() => import("@/components/Header"));
 const Footer = dynamic(() => import("@/components/Footer"));
+const ModalAvaliar = dynamic(
+  () => import("@/components/modais/avaliar-filmes"),
+);
 const InfoFilme = dynamic(() => import("@/components/infoFilme"));
 import Cast from "@/components/detalhesfilmes/cast";
 import CardFilme from "@/components/card-filme";
@@ -120,7 +123,7 @@ export default function FilmeAleatorio() {
       );
       setTrailerLink(tr ? `https://www.youtube.com/watch?v=${tr.key}` : null);
       setReleaseDates(data.release_dates?.results || []);
-setRelated(data.similar?.results || []);
+      setRelated(data.similar?.results || []);
     } catch (err) {
       console.error("Erro ao buscar filme:", err);
     } finally {
@@ -327,6 +330,13 @@ setRelated(data.similar?.results || []);
                 </div>
               </Modal>
             )}
+            {modalType === "rating" && (
+              <ModalAvaliar
+                filmeId={filme.id}
+                nota={user?.visto?.[filme.id]}
+                onClose={closeModal}
+              />
+            )}
           </>
         )}
       </main>
@@ -334,7 +344,13 @@ setRelated(data.similar?.results || []);
 
       {modalListaAberto && (
         <Modal
-          title={<>Adicionar <span style={{ color: "var(--text-base)" }}>{filme.title}</span> à lista</>}
+          title={
+            <>
+              Adicionar{" "}
+              <span style={{ color: "var(--text-base)" }}>{filme.title}</span> à
+              lista
+            </>
+          }
           onClose={() => setModalListaAberto(false)}
           primaryAction={{ label: "Confirmar", onClick: confirmarLista }}
         >

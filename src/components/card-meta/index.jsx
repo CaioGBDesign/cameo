@@ -33,7 +33,10 @@ const CORES_CONCLUIDO = {
 };
 
 const NORMALIZAR_PERIODO = {
-  "Diário": "dia", "Semanal": "semana", "Mensal": "mes", "Anual": "ano",
+  Diário: "dia",
+  Semanal: "semana",
+  Mensal: "mes",
+  Anual: "ano",
 };
 
 const CardMeta = ({ meta, filmesVistos = 0, onSelect, isSelected = false }) => {
@@ -54,8 +57,10 @@ const CardMeta = ({ meta, filmesVistos = 0, onSelect, isSelected = false }) => {
     <>
       <div
         className={styles.card}
-        onClick={() => onSelect ? onSelect(meta) : setModalAberto(true)}
-        style={isSelected ? { border: "1px solid var(--stroke-submit)" } : undefined}
+        onClick={() => (onSelect ? onSelect(meta) : setModalAberto(true))}
+        style={
+          isSelected ? { border: "1px solid var(--stroke-submit)" } : undefined
+        }
       >
         {/* Topo */}
         <div className={styles.topo}>
@@ -78,11 +83,21 @@ const CardMeta = ({ meta, filmesVistos = 0, onSelect, isSelected = false }) => {
 
         {/* Chart */}
         <div className={styles.chart}>
-          <div
-            className={styles.percentualAtual}
-            style={{ background: cores.bg }}
-          >
-            <span>{percentual}%</span>
+          <div className={styles.percentuais}>
+            <div className={styles.percentualInicio}>
+              <span>0%</span>
+            </div>
+
+            <div
+              className={styles.percentualMax}
+              style={
+                percentual === 100
+                  ? { background: "var(--primitive-verde-02)" }
+                  : undefined
+              }
+            >
+              <span>100%</span>
+            </div>
           </div>
 
           <div className={styles.barra}>
@@ -93,18 +108,11 @@ const CardMeta = ({ meta, filmesVistos = 0, onSelect, isSelected = false }) => {
                 backgroundImage: `repeating-linear-gradient(-45deg, ${cores.ripado}, ${cores.ripado} 6px, ${cores.bg} 6px, ${cores.bg} 12px)`,
                 borderRadius: percentual === 100 ? "0px" : undefined,
               }}
-            />
-          </div>
-
-          <div
-            className={styles.percentualMax}
-            style={
-              percentual === 100
-                ? { background: "var(--primitive-verde-02)" }
-                : undefined
-            }
-          >
-            <span>100%</span>
+            >
+              <div className={styles.percentualAtual}>
+                <span>{percentual}%</span>
+              </div>
+            </div>
           </div>
         </div>
 

@@ -44,68 +44,71 @@
 
   .chart {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 0;
+    gap: var(--space-sm);
 
-    .percentualAtual {
-      background: var(--primitive-rosa-01);
-      border-radius: var(--space-5xl);
-
-      width: 45px;
-      height: 45px;
-
+    .percentuais {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
 
-      z-index: 1;
+      width: 100%;
 
-      span {
-        font-size: 14px;
+      .percentualInicio,
+      .percentualMax {
+        font-size: 12px;
         font-style: italic;
-        color: var(--text-base);
-        white-space: nowrap;
-        flex-shrink: 0;
-        padding: 0 var(--space-xs);
+        color: var(--text-sub);
       }
     }
 
     .barra {
-      flex: 1;
-      height: 15px;
-      background: var(--bg-quintenario);
-      overflow: hidden;
+      width: 100%;
+      height: 20px;
 
-      margin: 0px -2px;
+      background: var(--bg-quintenario);
+      border-radius: var(--space-lg);
+
+      overflow: hidden;
 
       .progresso {
         height: 100%;
-        border-radius: 0px 20px 20px 0px;
+        min-width: 8%;
+
+        border-radius: var(--space-lg);
         transition: width 0.4s ease;
+
+        position: relative;
+
+        @media only screen and (max-width: 768px) {
+          min-width: 10%;
+        }
+
+        .percentualAtual {
+          position: absolute;
+          top: 1px;
+          right: 1px;
+
+          background: var(--bg-overlay);
+          border-radius: var(--space-5xl);
+
+          height: 18px;
+
+          padding: var(--space-nn) var(--space-xs);
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          span {
+            font-size: 12px;
+            font-style: italic;
+            font-weight: bold;
+            color: var(--text-base);
+          }
+        }
       }
-    }
-  }
-
-  .percentualMax {
-    background: var(--bg-quintenario);
-    border-radius: var(--space-5xl);
-
-    width: 45px;
-    height: 45px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    z-index: 1;
-
-    span {
-      font-size: 14px;
-      font-style: italic;
-      color: var(--text-base);
-      white-space: nowrap;
-      flex-shrink: 0;
-      padding: 0 var(--space-xs);
     }
   }
 

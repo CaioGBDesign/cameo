@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import styles from "./index.module.scss";
 import CardMeta from "@/components/card-meta";
 import Button from "@/components/button";
+import BlankstateMetas from "@/components/blankslate-metas";
 import Modal from "@/components/modal";
 import RadioButton from "@/components/inputs/radio-button";
 import TextInput from "@/components/inputs/text-input";
@@ -232,7 +233,7 @@ export default function SectionMetas() {
     <>
       <div className={styles.section}>
         {todasMetas.length === 0 ? (
-          <div className={styles.blankslate}>teste blankslate</div>
+          <BlankstateMetas onCriar={() => setModalAberto(true)} />
         ) : (
           <div className={styles.metas}>
             {metas.map((meta) => (
@@ -245,28 +246,30 @@ export default function SectionMetas() {
           </div>
         )}
 
-        <div className={styles.botoes}>
-          {todasMetas.length >= 3 && (
+        {todasMetas.length >= 1 && (
+          <div className={styles.botoes}>
+            {todasMetas.length >= 3 && (
+              <Button
+                variant="outline"
+                label="Ver todas"
+                border="var(--stroke-submit)"
+                arrowColor="var(--stroke-submit)"
+                width="100%"
+                bg="none"
+                onClick={handleAbrirVerTodas}
+              />
+            )}
             <Button
               variant="outline"
-              label="Ver todas"
-              border="var(--stroke-submit)"
-              arrowColor="var(--stroke-submit)"
+              label="Criar meta"
+              border="var(--stroke-solid)"
+              arrowColor="var(--stroke-solid)"
               width="100%"
+              onClick={() => setModalAberto(true)}
               bg="none"
-              onClick={handleAbrirVerTodas}
             />
-          )}
-          <Button
-            variant="outline"
-            label="Criar meta"
-            border="var(--stroke-solid)"
-            arrowColor="var(--stroke-solid)"
-            width="100%"
-            onClick={() => setModalAberto(true)}
-            bg="none"
-          />
-        </div>
+          </div>
+        )}
       </div>
 
       {modalAberto && <CriarMeta onClose={() => setModalAberto(false)} />}

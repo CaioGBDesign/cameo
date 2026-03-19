@@ -44,8 +44,9 @@ export const contarFilmesPorPeriodo = (visto = {}, periodo) => {
   const hoje = new Date();
   const entries = Object.values(visto);
 
-  return entries.filter(({ data }) => {
+  return entries.filter(({ data, contarNaMeta }) => {
     if (!data) return false;
+    if (contarNaMeta === false) return false;
     const dataFilme = parseData(data);
 
     switch (periodo) {

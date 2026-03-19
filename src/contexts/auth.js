@@ -23,7 +23,7 @@ import {
 import { useRouter } from "next/router";
 import ModalConfirmacaoCadastro from "@/components/modais/confirmacao-cadastro";
 import { deleteField } from "firebase/firestore";
-import { toast } from "react-toastify";
+import { useToast } from "@/contexts/toast";
 import Loading from "@/components/loading";
 import { v4 as uuidv4 } from "uuid";
 
@@ -31,6 +31,7 @@ export const AuthContext = createContext({});
 export const useAuth = () => useContext(AuthContext);
 
 function AuthProvider({ children }) {
+  const { toast } = useToast();
   const [user, setUser] = useState(null);
   const [loadingAuth, setLoadingAuth] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -104,17 +105,11 @@ function AuthProvider({ children }) {
         await signOut(auth); // Deslogar o usuário
 
         toast.warn("Verifique seu e-mail antes de fazer login.", {
-          position: "top-right",
-          autoClose: 5000, // Duração do toast
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: "dark",
+          duration: 5000,
         });
 
         throw new Error(
-          "Por favor, verifique seu e-mail antes de fazer login."
+          "Por favor, verifique seu e-mail antes de fazer login.",
         );
       }
 
@@ -136,15 +131,7 @@ function AuthProvider({ children }) {
       storageUser(userData);
       router.push("/");
 
-      toast.success("Login realizado com sucesso!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "dark",
-      });
+      toast.success("Login realizado com sucesso!", { duration: 3000 });
     } catch (error) {
       setUser(null);
       localStorage.removeItem("@ticketsPro");
@@ -205,7 +192,7 @@ function AuthProvider({ children }) {
       await signOut(auth); // Desconectar o usuário
 
       setModalMessage(
-        "Cadastro realizado! Verifique seu e-mail para ativar sua conta."
+        "Cadastro realizado! Verifique seu e-mail para ativar sua conta.",
       );
       setModalVisible(true);
     } catch (error) {
@@ -249,7 +236,7 @@ function AuthProvider({ children }) {
       if (!userData.emailVerified && diffDays > 1) {
         await deleteDoc(doc(db, "users", userDoc.id));
         console.log(
-          `Usuário ${userDoc.id} deletado por não verificar o e-mail.`
+          `Usuário ${userDoc.id} deletado por não verificar o e-mail.`,
         );
       }
     });
@@ -274,7 +261,7 @@ function AuthProvider({ children }) {
         {
           favoritos: arrayUnion(filmeId),
         },
-        { merge: true }
+        { merge: true },
       );
 
       setUser((prevUser) => ({
@@ -284,15 +271,7 @@ function AuthProvider({ children }) {
 
       console.log("Filme salvo com sucesso no Firebase");
 
-      toast.success("Filme adicionado aos favoritos!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "dark", // Mude para "dark" se quiser o fundo escuro
-      });
+      toast.success("Filme adicionado aos favoritos!", { duration: 3000 });
     } catch (error) {
       console.error("Erro ao salvar filme no Firebase:", error);
     }
@@ -317,7 +296,7 @@ function AuthProvider({ children }) {
         {
           favoritos: arrayRemove(filmeId),
         },
-        { merge: true }
+        { merge: true },
       );
 
       setUser((prevUser) => ({
@@ -327,15 +306,7 @@ function AuthProvider({ children }) {
 
       console.log("Filme removido com sucesso do Firebase");
 
-      toast.success("Filme removido de favoritos!", {
-        position: "top-right",
-        autoClose: 5000, // Duração do toast
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "dark",
-      });
+      toast.success("Filme removido de favoritos!", { duration: 3000 });
     } catch (error) {
       console.error("Erro ao remover filme do Firebase:", error);
     }
@@ -360,7 +331,7 @@ function AuthProvider({ children }) {
         {
           assistir: arrayUnion(filmeId),
         },
-        { merge: true }
+        { merge: true },
       );
 
       setUser((prevUser) => ({
@@ -370,15 +341,7 @@ function AuthProvider({ children }) {
 
       console.log("Filme salvo com sucesso no Firebase");
 
-      toast.success("Filme adicionado a lista para ver!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "dark", // Mude para "dark" se quiser o fundo escuro
-      });
+      toast.success("Filme adicionado a lista para ver!", { duration: 3000 });
     } catch (error) {
       console.error("Erro ao salvar filme no Firebase:", error);
     }
@@ -403,7 +366,7 @@ function AuthProvider({ children }) {
         {
           assistir: arrayRemove(filmeId),
         },
-        { merge: true }
+        { merge: true },
       );
 
       setUser((prevUser) => ({
@@ -441,7 +404,7 @@ function AuthProvider({ children }) {
 
       // Buscando detalhes do filme para pegar os gêneros
       const filmeResponse = await fetch(
-        `https://api.themoviedb.org/3/movie/${filmeId}?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR`
+        `https://api.themoviedb.org/3/movie/${filmeId}?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR`,
       );
       const filmeData = await filmeResponse.json();
       const generos = filmeData.genres.map((g) => g.name);
@@ -464,7 +427,7 @@ function AuthProvider({ children }) {
             [filmeId]: vistoFilme,
           },
         },
-        { merge: true }
+        { merge: true },
       );
 
       setUser((prevUser) => ({
@@ -493,7 +456,7 @@ function AuthProvider({ children }) {
       typeof comentario !== "string"
     ) {
       console.error(
-        "O ID do filme deve ser uma string e a nota deve ser um número."
+        "O ID do filme deve ser uma string e a nota deve ser um número.",
       );
       return;
     }
@@ -554,7 +517,7 @@ function AuthProvider({ children }) {
       "ID recebido na função removerNota:",
       filmeId,
       "Tipo:",
-      typeof filmeId
+      typeof filmeId,
     ); // Adicione este log
     if (!user) {
       console.error("Usuário não autenticado");
@@ -604,10 +567,17 @@ function AuthProvider({ children }) {
         metas: arrayUnion(metaComId),
       });
 
-      setUserData((prev) => ({
+      setUser((prev) => ({
         ...prev,
         metas: [...(Array.isArray(prev.metas) ? prev.metas : []), metaComId],
       }));
+
+      toast.success("Meta criada com sucesso!", {
+        bg: "var(--primitive-verde-01)",
+        position: "bottom-center",
+        duration: 3000,
+        buttons: [{ label: "Fechar" }],
+      });
     } catch (error) {
       console.error("Erro ao adicionar a meta no Firebase:", error);
     }
@@ -641,19 +611,16 @@ function AuthProvider({ children }) {
       console.log(`Meta com ID ${metaId} removida com sucesso!`);
 
       // Atualiza o estado local
-      setUserData((prevData) => ({
+      setUser((prevData) => ({
         ...prevData,
         metas: novasMetas,
       }));
 
-      toast.success(`Meta removida com sucesso!`, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "dark",
+      toast.success("Meta removida com sucesso!", {
+        bg: "var(--primitive-verde-01)",
+        position: "bottom-center",
+        duration: 3000,
+        buttons: [{ label: "Fechar" }],
       });
     } catch (error) {
       console.error("Erro ao remover meta do Firebase:", error);
@@ -664,7 +631,7 @@ function AuthProvider({ children }) {
     const userRef = doc(db, "users", user.uid);
     try {
       await updateDoc(userRef, { metas: [] });
-      setUserData((prev) => ({ ...prev, metas: [] }));
+      setUser((prev) => ({ ...prev, metas: [] }));
     } catch (error) {
       console.error("Erro ao limpar metas:", error);
     }
@@ -681,14 +648,12 @@ function AuthProvider({ children }) {
         const metas = userSnapshot.data().metas || [];
 
         const novasMetas = metas.map((meta) =>
-          meta.id === metaAtualizada.id
-            ? { ...meta, ...metaAtualizada }
-            : meta
+          meta.id === metaAtualizada.id ? { ...meta, ...metaAtualizada } : meta,
         );
 
         await updateDoc(userRef, { metas: novasMetas });
 
-        setUserData((prev) => ({ ...prev, metas: novasMetas }));
+        setUser((prev) => ({ ...prev, metas: novasMetas }));
       }
     } catch (error) {
       console.error("Erro ao atualizar meta no Firebase:", error);

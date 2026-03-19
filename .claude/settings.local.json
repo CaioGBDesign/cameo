@@ -11,7 +11,10 @@
       "Bash(grep -r Menu02 'c:/Users/win11/OneDrive/Área de Trabalho/Cameo/node_modules/@hugeicons/react/dist' --include=*.js -l)",
       "Bash(python3 -c \":*)",
       "mcp__claude_ai_Figma__get_design_context",
-      "Bash(\"c:/Users/win11/OneDrive/Área de:*)"
+      "Bash(\"c:/Users/win11/OneDrive/Área de:*)",
+      "Bash(grep -r from.*components 'c:\\\\Users\\\\win11\\\\OneDrive\\\\Área de Trabalho\\\\Cameo\\\\src' --include=*.jsx --include=*.js --include=*.tsx --include=*.ts)",
+      "Bash(grep -rh from.*['']@/components 'c:\\\\Users\\\\win11\\\\OneDrive\\\\Área de Trabalho\\\\Cameo\\\\src' --include=*.jsx --include=*.js --include=*.tsx --include=*.ts)",
+      "Bash(grep -r \"botoes/notas\\\\|botoes/resenha\\\\|botoes/trailer\\\\|botoes/buscar\\\\|carrossel-criticas\\\\|fundotitulos\\\\|logo\" 'c:\\\\Users\\\\win11\\\\OneDrive\\\\Área de Trabalho\\\\Cameo\\\\src' --include=*.jsx --include=*.js --include=*.tsx --include=*.ts)"
     ]
   }
 }

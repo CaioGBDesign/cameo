@@ -6,20 +6,36 @@ import { useAuth } from "@/contexts/auth";
 import styles from "./index.module.scss";
 
 const PERIODOS = [
-  { valor: "dia",    label: "Diário" },
+  { valor: "dia", label: "Diário" },
   { valor: "semana", label: "Semanal" },
-  { valor: "mes",    label: "Mensal" },
-  { valor: "ano",    label: "Anual" },
+  { valor: "mes", label: "Mensal" },
+  { valor: "ano", label: "Anual" },
 ];
 
 const TEMAS = [
-  "Todos", "Animação", "Aventura", "Ação", "Cinema TV", "Comédia",
-  "Crime", "Documentários", "Drama", "Família", "Fantasia", "Faroeste",
-  "Ficção Científica", "Guerra", "História", "Mistério", "Musical",
-  "Romance", "Terror", "Thriller",
+  "Todos",
+  "Animação",
+  "Aventura",
+  "Ação",
+  "Cinema TV",
+  "Comédia",
+  "Crime",
+  "Documentários",
+  "Drama",
+  "Família",
+  "Fantasia",
+  "Faroeste",
+  "Ficção Científica",
+  "Guerra",
+  "História",
+  "Mistério",
+  "Musical",
+  "Romance",
+  "Terror",
+  "Thriller",
 ];
 
-const LOCAIS = ["Em casa", "No cinema"];
+const LOCAIS = ["Em casa", "No cinema", "Em todo canto"];
 
 export default function CriarMeta({ onClose }) {
   const { adicionarMeta } = useAuth();
@@ -30,7 +46,13 @@ export default function CriarMeta({ onClose }) {
   const [local, setLocal] = useState("");
 
   const handleConfirmar = async () => {
-    await adicionarMeta({ nome, periodo, quantidade: Number(quantidade), tema, local });
+    await adicionarMeta({
+      nome,
+      periodo,
+      quantidade: Number(quantidade),
+      tema,
+      local,
+    });
     onClose();
   };
 
@@ -41,7 +63,6 @@ export default function CriarMeta({ onClose }) {
       primaryAction={{ label: "Confirmar", onClick: handleConfirmar }}
     >
       <div className={styles.content}>
-
         {/* Bloco 1 — nome, período e quantidade */}
         <div className={styles.bloco}>
           <TextInput
@@ -118,7 +139,6 @@ export default function CriarMeta({ onClose }) {
             </div>
           </div>
         </div>
-
       </div>
     </Modal>
   );

@@ -1,0 +1,138 @@
+.container {
+  position: fixed;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  pointer-events: none;
+
+  @media only screen and (min-width: 768px) {
+    top: 0;
+    right: 0;
+    align-items: flex-end;
+    min-width: 390px;
+    max-width: 390px;
+    padding-top: var(--space-lg);
+  }
+
+  @media only screen and (max-width: 767px) {
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+    width: 100%;
+    padding-bottom: var(--space-lg);
+  }
+}
+
+.toast {
+  display: flex;
+  justify-content: space-between;
+
+  border-radius: var(--space-sm);
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+
+  pointer-events: all;
+
+  @media only screen and (min-width: 768px) {
+    min-width: 390px;
+    max-width: 390px;
+    animation: slideInTop 0.3s ease forwards;
+
+    &.exiting {
+      animation: slideOutTop 0.3s ease forwards;
+    }
+  }
+
+  @media only screen and (max-width: 767px) {
+    min-width: 90%;
+    max-width: 90%;
+    animation: slideInBottom 0.3s ease forwards;
+
+    &.exiting {
+      animation: slideOutBottom 0.3s ease forwards;
+    }
+  }
+}
+
+.corpo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-sm);
+
+  border-right: solid 1px var(--stroke-base);
+
+  padding-left: var(--space-lg);
+
+  width: 100%;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.message {
+  flex: 1;
+  font-size: 16px;
+  color: var(--text-solid);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.buttons {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: flex-end;
+}
+
+.btn {
+  padding: var(--space-xs) var(--space-md);
+  font-size: 0.75rem;
+  font-style: italic;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.btnPrimary {
+  background: var(--bg-submit);
+  color: var(--text-inverse);
+  border: none;
+}
+
+.btnSecondary {
+  background: transparent;
+  color: var(--text-solid);
+  border: none;
+
+  height: 40px;
+}
+
+@keyframes slideInBottom {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes slideOutBottom {
+  from { transform: translateY(0);    opacity: 1; }
+  to   { transform: translateY(100%); opacity: 0; }
+}
+
+@keyframes slideInTop {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+@keyframes slideOutTop {
+  from { transform: translateY(0);     opacity: 1; }
+  to   { transform: translateY(-100%); opacity: 0; }
+}

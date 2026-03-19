@@ -19,7 +19,7 @@ const MESES_PT = [
   "Dez",
 ];
 const BAR_MAX_HEIGHT = 170;
-const BAR_WIDTH = 80;
+const BAR_WIDTH = 60;
 
 function GraficoBarras({ dados, corBarra, corDestaque, mesAtual }) {
   const max = Math.max(...dados.map((d) => d.valor), 1);

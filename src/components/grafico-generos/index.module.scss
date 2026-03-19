@@ -1,0 +1,115 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+
+  padding: var(--space-lg);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-lg);
+  background: var(--bg-overlay);
+
+  width: 90%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.titulo {
+  font-size: 15px;
+  font-style: italic;
+  color: var(--text-base);
+}
+
+.chevronBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.chevron {
+  display: flex;
+  align-items: center;
+  transition: transform 200ms ease;
+}
+
+.barras {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.barra {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  gap: var(--space-md);
+  min-width: 0;
+}
+
+.textoTopo {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--space-xs);
+  text-align: center;
+  width: 100%;
+}
+
+.nomeGenero {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-base);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.quantidadeFilmes {
+  font-size: 15px;
+  color: var(--text-sub);
+  font-style: italic;
+}
+
+.separador {
+  flex-shrink: 0;
+  width: 1px;
+  align-self: stretch;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--stroke-base) 0px,
+    var(--stroke-base) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+}
+
+.barraContainer {
+  display: flex;
+  align-items: flex-end;
+  height: 170px;
+  width: 100%;
+}
+
+.barraVisual {
+  border-radius: var(--space-sm);
+  transition: height 0.3s ease;
+  width: 100%;
+}
+
+.percentual {
+  font-size: 12px;
+  color: var(--text-sub);
+  font-style: italic;
+  text-align: center;
+  white-space: nowrap;
+}

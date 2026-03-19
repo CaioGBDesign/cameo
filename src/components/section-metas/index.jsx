@@ -9,14 +9,24 @@ import TextInput from "@/components/inputs/text-input";
 import TrashIcon from "@/components/icons/TrashIcon";
 import CriarMeta from "@/components/modais/criar-meta";
 import { useAuth } from "@/contexts/auth";
-import { contarFilmesPorPeriodo, calcularDiasRestantes, formatarTempoRestante } from "@/utils/metas";
+import {
+  contarFilmesPorPeriodo,
+  calcularDiasRestantes,
+  formatarTempoRestante,
+} from "@/utils/metas";
 
 const NORMALIZAR = {
-  "Diário": "dia", "Semanal": "semana", "Mensal": "mes", "Anual": "ano",
+  Diário: "dia",
+  Semanal: "semana",
+  Mensal: "mes",
+  Anual: "ano",
 };
 
 const PERIODO_SUFFIX = {
-  dia: "por dia", semana: "por semana", mes: "por mês", ano: "por ano",
+  dia: "por dia",
+  semana: "por semana",
+  mes: "por mês",
+  ano: "por ano",
 };
 
 const PERIODOS = [
@@ -27,33 +37,71 @@ const PERIODOS = [
 ];
 
 const TEMAS = [
-  "Todos", "Animação", "Aventura", "Ação", "Cinema TV", "Comédia",
-  "Crime", "Documentários", "Drama", "Família", "Fantasia", "Faroeste",
-  "Ficção Científica", "Guerra", "História", "Mistério", "Musical",
-  "Romance", "Terror", "Thriller",
+  "Todos",
+  "Animação",
+  "Aventura",
+  "Ação",
+  "Cinema TV",
+  "Comédia",
+  "Crime",
+  "Documentários",
+  "Drama",
+  "Família",
+  "Fantasia",
+  "Faroeste",
+  "Ficção Científica",
+  "Guerra",
+  "História",
+  "Mistério",
+  "Musical",
+  "Romance",
+  "Terror",
+  "Thriller",
 ];
 
 const LOCAIS = ["Em casa", "No cinema"];
 
-function MetaPainel({ meta, periodo, setPeriodo, quantidade, setQuantidade, tema, setTema, local, setLocal }) {
+function MetaPainel({
+  meta,
+  periodo,
+  setPeriodo,
+  quantidade,
+  setQuantidade,
+  tema,
+  setTema,
+  local,
+  setLocal,
+}) {
   const filmesVistos = meta.filmesVistosPeriodo ?? 0;
   const diasRestantes = calcularDiasRestantes(periodo);
   const filmesFaltando = Math.max(0, Number(quantidade) - filmesVistos);
-  const filmesPorDia = diasRestantes > 0 ? Math.ceil(filmesFaltando / diasRestantes) : filmesFaltando;
+  const filmesPorDia =
+    diasRestantes > 0
+      ? Math.ceil(filmesFaltando / diasRestantes)
+      : filmesFaltando;
 
   return (
     <div className={styles.metaPainel}>
       <div className={styles.infoTextos}>
-        <p className={styles.infoTexto}>{quantidade} filmes {PERIODO_SUFFIX[periodo]}</p>
-        <p className={styles.infoTexto}>{formatarTempoRestante(diasRestantes)} para concluir a meta</p>
+        <p className={styles.infoTexto}>
+          {quantidade} filmes {PERIODO_SUFFIX[periodo]}
+        </p>
+        <p className={styles.infoTexto}>
+          {formatarTempoRestante(diasRestantes)} para concluir a meta
+        </p>
         {filmesFaltando > 0 && (
           <p className={styles.infoTexto}>
-            Você precisa assistir a <strong>{filmesFaltando} filmes</strong> para completar a meta com sucesso
+            Você precisa assistir a <strong>{filmesFaltando} filmes</strong>{" "}
+            para completar a meta com sucesso
           </p>
         )}
         {filmesFaltando > 0 && diasRestantes > 0 && Number(quantidade) > 1 && (
           <p className={styles.infoTexto}>
-            Se assistir a <strong>{filmesPorDia} filme{filmesPorDia !== 1 ? "s" : ""} por dia</strong> sua meta será concluída com sucesso
+            Se assistir a{" "}
+            <strong>
+              {filmesPorDia} filme{filmesPorDia !== 1 ? "s" : ""} por dia
+            </strong>{" "}
+            sua meta será concluída com sucesso
           </p>
         )}
       </div>
@@ -140,7 +188,11 @@ export default function SectionMetas() {
       ...meta,
       filmesVistosPeriodo: contarFilmesPorPeriodo(visto, meta.periodo),
     }))
-    .sort((a, b) => b.filmesVistosPeriodo / b.quantidade - a.filmesVistosPeriodo / a.quantidade);
+    .sort(
+      (a, b) =>
+        b.filmesVistosPeriodo / b.quantidade -
+        a.filmesVistosPeriodo / a.quantidade,
+    );
 
   const metas = todasMetas.slice(0, 2);
 
@@ -158,7 +210,13 @@ export default function SectionMetas() {
   };
 
   const handleSalvar = async () => {
-    await atualizarMeta({ ...metaSelecionada, periodo, quantidade: Number(quantidade), tema, local });
+    await atualizarMeta({
+      ...metaSelecionada,
+      periodo,
+      quantidade: Number(quantidade),
+      tema,
+      local,
+    });
     setModalTodasAberto(false);
   };
 
@@ -173,26 +231,32 @@ export default function SectionMetas() {
   return (
     <>
       <div className={styles.section}>
-        <div className={styles.metas}>
-          {metas.map((meta) => (
-            <CardMeta
-              key={meta.id}
-              meta={meta}
-              filmesVistos={meta.filmesVistosPeriodo}
-            />
-          ))}
-        </div>
+        {todasMetas.length === 0 ? (
+          <div className={styles.blankslate}>teste blankslate</div>
+        ) : (
+          <div className={styles.metas}>
+            {metas.map((meta) => (
+              <CardMeta
+                key={meta.id}
+                meta={meta}
+                filmesVistos={meta.filmesVistosPeriodo}
+              />
+            ))}
+          </div>
+        )}
 
         <div className={styles.botoes}>
-          <Button
-            variant="outline"
-            label="Ver todas"
-            border="var(--stroke-submit)"
-            arrowColor="var(--stroke-submit)"
-            width="100%"
-            bg="none"
-            onClick={handleAbrirVerTodas}
-          />
+          {todasMetas.length >= 3 && (
+            <Button
+              variant="outline"
+              label="Ver todas"
+              border="var(--stroke-submit)"
+              arrowColor="var(--stroke-submit)"
+              width="100%"
+              bg="none"
+              onClick={handleAbrirVerTodas}
+            />
+          )}
           <Button
             variant="outline"
             label="Criar meta"
@@ -207,74 +271,97 @@ export default function SectionMetas() {
 
       {modalAberto && <CriarMeta onClose={() => setModalAberto(false)} />}
 
-      {modalTodasAberto && (() => {
-        const metaAtiva = metaSelecionada ?? todasMetas[0] ?? null;
-        return (
-          <Modal
-            title="Metas"
-            onClose={() => setModalTodasAberto(false)}
-            primaryAction={{ label: "Salvar", onClick: handleSalvar }}
-            secondaryAction={metaAtiva ? {
-              variant: "ghost",
-              label: "Deletar meta",
-              icon: <TrashIcon size={16} color="var(--primitive-erro-01)" />,
-              color: "var(--primitive-erro-01)",
-              onClick: () => setPopoverAberto(true),
-            } : undefined}
+      {modalTodasAberto &&
+        (() => {
+          const metaAtiva = metaSelecionada ?? todasMetas[0] ?? null;
+          return (
+            <Modal
+              title="Metas"
+              onClose={() => setModalTodasAberto(false)}
+              primaryAction={{ label: "Salvar", onClick: handleSalvar }}
+              secondaryAction={
+                metaAtiva
+                  ? {
+                      variant: "ghost",
+                      label: "Deletar meta",
+                      icon: (
+                        <TrashIcon size={16} color="var(--primitive-erro-01)" />
+                      ),
+                      color: "var(--primitive-erro-01)",
+                      onClick: () => setPopoverAberto(true),
+                    }
+                  : undefined
+              }
+            >
+              <div className={styles.splitLayout}>
+                <div className={styles.listaColuna}>
+                  {todasMetas.map((meta) => (
+                    <CardMeta
+                      key={meta.id}
+                      meta={meta}
+                      filmesVistos={meta.filmesVistosPeriodo}
+                      onSelect={selecionarMeta}
+                      isSelected={metaAtiva?.id === meta.id}
+                    />
+                  ))}
+                </div>
+
+                <div className={styles.detalheColuna}>
+                  {metaAtiva && (
+                    <MetaPainel
+                      key={metaAtiva.id}
+                      meta={metaAtiva}
+                      periodo={periodo}
+                      setPeriodo={setPeriodo}
+                      quantidade={quantidade}
+                      setQuantidade={setQuantidade}
+                      tema={tema}
+                      setTema={setTema}
+                      local={local}
+                      setLocal={setLocal}
+                    />
+                  )}
+                </div>
+              </div>
+            </Modal>
+          );
+        })()}
+
+      {popoverAberto &&
+        createPortal(
+          <div
+            className={styles.popoverOverlay}
+            onClick={() => setPopoverAberto(false)}
           >
-            <div className={styles.splitLayout}>
-              <div className={styles.listaColuna}>
-                {todasMetas.map((meta) => (
-                  <CardMeta
-                    key={meta.id}
-                    meta={meta}
-                    filmesVistos={meta.filmesVistosPeriodo}
-                    onSelect={selecionarMeta}
-                    isSelected={metaAtiva?.id === meta.id}
-                  />
-                ))}
-              </div>
-
-              <div className={styles.detalheColuna}>
-                {metaAtiva && (
-                  <MetaPainel
-                    key={metaAtiva.id}
-                    meta={metaAtiva}
-                    periodo={periodo}
-                    setPeriodo={setPeriodo}
-                    quantidade={quantidade}
-                    setQuantidade={setQuantidade}
-                    tema={tema}
-                    setTema={setTema}
-                    local={local}
-                    setLocal={setLocal}
-                  />
-                )}
+            <div
+              className={styles.popover}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className={styles.popoverTexto}>
+                Tem certeza que deseja deletar esta meta? Esta ação não pode ser
+                desfeita.
+              </p>
+              <div className={styles.popoverAcoes}>
+                <button
+                  className={styles.popoverCancelar}
+                  onClick={() => setPopoverAberto(false)}
+                  type="button"
+                >
+                  Cancelar
+                </button>
+                <button
+                  className={styles.popoverConfirmar}
+                  onClick={handleDeletar}
+                  type="button"
+                >
+                  <TrashIcon size={14} color="currentColor" />
+                  Deletar
+                </button>
               </div>
             </div>
-          </Modal>
-        );
-      })()}
-
-      {popoverAberto && createPortal(
-        <div className={styles.popoverOverlay} onClick={() => setPopoverAberto(false)}>
-          <div className={styles.popover} onClick={(e) => e.stopPropagation()}>
-            <p className={styles.popoverTexto}>
-              Tem certeza que deseja deletar esta meta? Esta ação não pode ser desfeita.
-            </p>
-            <div className={styles.popoverAcoes}>
-              <button className={styles.popoverCancelar} onClick={() => setPopoverAberto(false)} type="button">
-                Cancelar
-              </button>
-              <button className={styles.popoverConfirmar} onClick={handleDeletar} type="button">
-                <TrashIcon size={14} color="currentColor" />
-                Deletar
-              </button>
-            </div>
-          </div>
-        </div>,
-        document.body
-      )}
+          </div>,
+          document.body,
+        )}
     </>
   );
 }

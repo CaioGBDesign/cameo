@@ -61,7 +61,7 @@ const TEMAS = [
   "Thriller",
 ];
 
-const LOCAIS = ["Em casa", "No cinema"];
+const LOCAIS = ["Em casa", "No cinema", "Em todo canto"];
 
 export default function DetalheMeta({ meta, onClose }) {
   const { atualizarMeta, removerMeta } = useAuth();
@@ -128,9 +128,8 @@ export default function DetalheMeta({ meta, onClose }) {
               </p>
               {filmesFaltando > 0 && (
                 <p className={styles.infoTexto}>
-                  Você precisa assistir a{" "}
-                  <strong>{filmesFaltando} filmes</strong> para completar a meta
-                  com sucesso
+                  • Faltam <strong>{filmesFaltando} filmes</strong> de{" "}
+                  {quantidade} para concluir a meta
                 </p>
               )}
               {filmesFaltando > 0 &&

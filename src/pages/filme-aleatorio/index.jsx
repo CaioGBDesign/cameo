@@ -18,20 +18,9 @@ import styles from "./index.module.scss";
 
 const Header = dynamic(() => import("@/components/Header"));
 const Footer = dynamic(() => import("@/components/Footer"));
-const FundoTitulosDesktop = dynamic(
-  () => import("@/components/fotoPrincipalDesktop"),
-);
-const ModalAvaliar = dynamic(
-  () => import("@/components/modais/avaliar-filmes"),
-);
-const ModalFiltros = dynamic(() => import("@/components/modais/filtros"));
-const Servicos = dynamic(() => import("@/components/detalhesfilmes/servicos"));
 const InfoFilme = dynamic(() => import("@/components/infoFilme"));
 import Cast from "@/components/detalhesfilmes/cast";
 import CardFilme from "@/components/card-filme";
-const ProducaoFilmes = dynamic(
-  () => import("@/components/detalhesfilmes/producaoFilme"),
-);
 
 export default function FilmeAleatorio() {
   const router = useRouter();
@@ -48,7 +37,7 @@ export default function FilmeAleatorio() {
   const [related, setRelated] = useState([]);
   const [trailerLink, setTrailerLink] = useState(null);
   const [releaseDates, setReleaseDates] = useState([]);
-  const [servicosDisponiveis, setServicosDisponiveis] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [modalType, setModalType] = useState(null);
   const [assistList, setAssistList] = useState(user?.assistir || []);
@@ -131,10 +120,7 @@ export default function FilmeAleatorio() {
       );
       setTrailerLink(tr ? `https://www.youtube.com/watch?v=${tr.key}` : null);
       setReleaseDates(data.release_dates?.results || []);
-      setServicosDisponiveis(
-        data["watch/providers"]?.results?.BR?.flatrate || [],
-      );
-      setRelated(data.similar?.results || []);
+setRelated(data.similar?.results || []);
     } catch (err) {
       console.error("Erro ao buscar filme:", err);
     } finally {
@@ -191,22 +177,13 @@ export default function FilmeAleatorio() {
 
         {!loading && filme && (
           <>
-            {isMobile ? (
+            {isMobile && (
               <BannerFilme
                 src={`https://image.tmdb.org/t/p/w780/${filme.poster_path}`}
                 alt={filme.title}
                 trailerLink={trailerLink}
                 showPlay
               />
-            ) : (
-              <div className={styles.fundoTitulos}>
-                <FundoTitulosDesktop
-                  capaAssistidos={`https://image.tmdb.org/t/p/w1280/${filme.backdrop_path}`}
-                  tituloAssistidos={filme.title}
-                  trailerLink={trailerLink}
-                  opacidade={1}
-                />
-              </div>
             )}
             <TitulosFilmesDesktop
               filme={filme}
@@ -282,13 +259,6 @@ export default function FilmeAleatorio() {
 
             <div className={styles.todasAsInformacoes}>
               <div className={styles.servicosDetalhes}>
-                {servicosDisponiveis.length > 0 && (
-                  <div className={styles.servicosStreaming}>
-                    <SectionCard title="Serviços">
-                      <Servicos servicos={servicosDisponiveis} />
-                    </SectionCard>
-                  </div>
-                )}
                 <SectionCard title="Detalhes">
                   <InfoFilme
                     release_date={filme.release_date}
@@ -306,9 +276,6 @@ export default function FilmeAleatorio() {
                   items={crew.filter((m) => m.job === "Director")}
                   showCharacter={false}
                 />
-              </SectionCard>
-              <SectionCard title="Produção">
-                <ProducaoFilmes companies={filme.production_companies} />
               </SectionCard>
               <SectionCard title="Recomendações" scrollRef={recomendacoesRef}>
                 <div
@@ -359,20 +326,6 @@ export default function FilmeAleatorio() {
                   </p>
                 </div>
               </Modal>
-            )}
-            {modalType === "rating" && (
-              <ModalAvaliar
-                filmeId={filme.id}
-                nota={user?.visto?.[filme.id]}
-                onClose={closeModal}
-              />
-            )}
-            {modalType === "filters" && (
-              <ModalFiltros
-                onClose={closeModal}
-                user={user}
-                onSelectMovie={(id) => fetchMovie(id)}
-              />
             )}
           </>
         )}

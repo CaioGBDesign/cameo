@@ -13,9 +13,6 @@ import { useAuth } from "@/contexts/auth";
 
 const Header = dynamic(() => import("@/components/Header"));
 const Footer = dynamic(() => import("@/components/Footer"));
-const FundoTitulosDesktop = dynamic(() =>
-  import("@/components/fotoPrincipalDesktop")
-);
 
 export default function FilmesAssisti() {
   const isMobile = useIsMobile();
@@ -168,13 +165,6 @@ export default function FilmesAssisti() {
               />
             )}
 
-            <div className={styles.fundoTitulos}>
-              <FundoTitulosDesktop
-                capaAssistidos={`https://image.tmdb.org/t/p/original/${filme.backdrop_path}`}
-                tituloAssistidos={filme.title}
-                opacidade={0.2}
-              />
-            </div>
           </div>
         </main>
       ) : (

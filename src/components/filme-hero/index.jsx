@@ -1,9 +1,4 @@
 import { useState } from "react";
-import dynamic from "next/dynamic";
-
-const ModalAvaliar = dynamic(
-  () => import("@/components/modais/avaliar-filmes"),
-);
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./index.module.scss";
@@ -22,7 +17,6 @@ export default function FilmeHero({ filme, trailerLink, releaseDates }) {
   const { user, salvarFilme, removerFilme, assistirFilme, removerAssistir } =
     useAuth();
   const isMobile = useIsMobile();
-  const [ratingOpen, setRatingOpen] = useState(false);
   const [modalListaAberto, setModalListaAberto] = useState(false);
   const [selecionarFavorito, setSelecionarFavorito] = useState(false);
   const [selecionarParaVer, setSelecionarParaVer] = useState(false);
@@ -131,7 +125,7 @@ export default function FilmeHero({ filme, trailerLink, releaseDates }) {
               <Button
                 variant={isMobile ? "ghost" : "outline"}
                 stars={user.visto[filme.id].nota}
-                onClick={() => setRatingOpen(true)}
+                onClick={() => {}}
                 {...(!isMobile && {
                   border: "var(--stroke-solid)",
                   arrowColor: "var(--stroke-solid)",
@@ -142,7 +136,7 @@ export default function FilmeHero({ filme, trailerLink, releaseDates }) {
               <Button
                 variant={isMobile ? "ghost" : "outline"}
                 label="Já assisti"
-                onClick={() => setRatingOpen(true)}
+                onClick={() => {}}
                 {...(!isMobile && {
                   border: "var(--stroke-solid)",
                   arrowColor: "var(--stroke-solid)",
@@ -169,14 +163,6 @@ export default function FilmeHero({ filme, trailerLink, releaseDates }) {
         <div className={styles.metasDesktop}>
           <SectionMetas />
         </div>
-      )}
-
-      {ratingOpen && (
-        <ModalAvaliar
-          filmeId={filme.id}
-          nota={user?.visto?.[filme.id]}
-          onClose={() => setRatingOpen(false)}
-        />
       )}
 
       {modalListaAberto && (

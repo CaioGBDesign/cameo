@@ -1,5 +1,5 @@
 .container {
-  margin-top: 10%;
+  margin-top: 8%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,8 +11,6 @@
   @media only screen and (max-width: 768px) {
     width: 100%;
     margin-top: 30%;
-
-    position: relative;
   }
 
   .TopoInfoPerfil {

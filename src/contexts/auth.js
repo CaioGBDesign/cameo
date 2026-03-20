@@ -668,7 +668,11 @@ function AuthProvider({ children }) {
     if (!user) return;
     const userRef = doc(db, "users", user.uid);
     await updateDoc(userRef, { nome, handle, genero, estilo });
-    setUser((prev) => ({ ...prev, nome, handle, genero, estilo }));
+    setUser((prev) => {
+      const updated = { ...prev, nome, handle, genero, estilo };
+      storageUser(updated);
+      return updated;
+    });
   };
 
   const verificarPermissoesNoticias = async () => {

@@ -6,11 +6,13 @@ import { AuthContext } from "@/contexts/auth";
 import styles from "./index.module.scss";
 import SearchIcon from "@/components/icons/SearchIcon";
 import HomeIcon from "@/components/icons/HomeIcon";
-import ListIcon from "@/components/icons/ListIcon";
+import AddToListIcon from "@/components/icons/AddToListIcon";
 import MicIcon from "@/components/icons/MicIcon";
 import NewsIcon from "@/components/icons/NewsIcon";
 import StarIcon from "@/components/icons/StarIcon";
 import ChevronDownIcon from "@/components/icons/ChevronDownIcon";
+import LogOutIcon from "@/components/icons/LogOutIcon";
+import PopoverConfirmar from "@/components/popover-confirmar";
 
 const LISTAS = [
   { value: "/filmesassisti", label: "Já assisti" },
@@ -25,9 +27,10 @@ const DUBLAGEM = [
 
 const MenuMobile = ({ open, onClose }) => {
   const router = useRouter();
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const [listasOpen, setListasOpen] = useState(false);
   const [dublagemOpen, setDublagemOpen] = useState(false);
+  const [confirmarSaida, setConfirmarSaida] = useState(false);
 
   const navegar = (path) => {
     router.push(path);
@@ -41,10 +44,25 @@ const MenuMobile = ({ open, onClose }) => {
       {open && <div className={styles.overlay} onClick={onClose} />}
       <nav className={`${styles.menu} ${open ? styles.open : ""}`}>
         <div className={styles.header}>
-          <span className={styles.titulo}>Menu</span>
-          <button className={styles.fechar} onClick={onClose}>
-            ✕
-          </button>
+          <Link href="/perfil" className={styles.perfilBtn} onClick={onClose}>
+            <div className={styles.avatarWrapper}>
+              {user?.avatarUrl ? (
+                <Image unoptimized
+                  src={user.avatarUrl}
+                  alt={user.nome ?? "Avatar"}
+                  fill
+                  objectFit="cover"
+                  quality={50}
+                />
+              ) : (
+                <div className={styles.avatarPlaceholder} />
+              )}
+            </div>
+            <div className={styles.perfilInfo}>
+              <span className={styles.perfilNome}>{user?.nome ?? "Visitante"}</span>
+              <span className={styles.perfilEmail}>{user?.email ?? "Faça login"}</span>
+            </div>
+          </Link>
         </div>
 
         <div className={styles.conteudo}>
@@ -72,7 +90,7 @@ const MenuMobile = ({ open, onClose }) => {
                 className={`${styles.item} ${styles.colapsavelBtn}`}
                 onClick={() => setListasOpen((prev) => !prev)}
               >
-                <ListIcon size={20} color="currentColor" />
+                <AddToListIcon size={20} color="currentColor" />
                 <span>Minhas listas</span>
                 <ChevronDownIcon
                   size={16}
@@ -145,27 +163,27 @@ const MenuMobile = ({ open, onClose }) => {
           </Link>
         </div>
 
-        <div className={styles.rodape}>
-          <Link href="/perfil" className={styles.perfilBtn} onClick={onClose}>
-            <div className={styles.avatarWrapper}>
-              {user?.avatarUrl ? (
-                <Image unoptimized
-                  src={user.avatarUrl}
-                  alt={user.nome ?? "Avatar"}
-                  fill
-                  objectFit="cover"
-                  quality={50}
-                />
-              ) : (
-                <div className={styles.avatarPlaceholder} />
-              )}
-            </div>
-            <div className={styles.perfilInfo}>
-              <span className={styles.perfilNome}>{user?.nome ?? "Visitante"}</span>
-              <span className={styles.perfilEmail}>{user?.email ?? "Faça login"}</span>
-            </div>
-          </Link>
-        </div>
+        {user && (
+          <div className={styles.rodape}>
+            <button
+              className={styles.item}
+              onClick={() => setConfirmarSaida(true)}
+            >
+              <LogOutIcon size={20} color="currentColor" />
+              <span>Sair</span>
+            </button>
+          </div>
+        )}
+
+        {confirmarSaida && (
+          <PopoverConfirmar
+            mensagem="Tem certeza que deseja sair?"
+            labelConfirmar="Sair"
+            onConfirmar={() => { logout(); onClose(); }}
+            onCancelar={() => setConfirmarSaida(false)}
+          />
+        )}
+
       </nav>
     </>
   );

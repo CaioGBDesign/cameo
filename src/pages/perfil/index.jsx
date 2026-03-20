@@ -18,9 +18,10 @@ import Select from "@/components/inputs/select";
 import Modal from "@/components/modal";
 import RadioButton from "@/components/inputs/radio-button";
 import { useAuth } from "@/contexts/auth";
+import PopoverConfirmar from "@/components/popover-confirmar";
 import Breadcrumb from "@/components/breadcrumb";
 import { useIsMobile } from "@/components/DeviceProvider";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const GENERO_OPTIONS = [
   { value: "masculino", label: "Masculino" },
@@ -44,19 +45,41 @@ const ESTILO_OPTIONS = [
   { value: "dcnautas", label: "DCnautas" },
 ];
 
+const normalizeGenero = (val) => {
+  if (!val) return "";
+  const exact = GENERO_OPTIONS.find((o) => o.value === val);
+  if (exact) return val;
+  const byLabel = GENERO_OPTIONS.find(
+    (o) => o.label.toLowerCase() === val.toLowerCase()
+  );
+  return byLabel?.value ?? "";
+};
+
 const PerfilUsuario = () => {
-  const { user, atualizarPerfil } = useAuth();
+  const { user, atualizarPerfil, logout } = useAuth();
   const isMobile = useIsMobile();
 
   const [nome, setNome] = useState(user?.nome ?? "");
   const [handle, setHandle] = useState(user?.handle ?? "");
   const [email, setEmail] = useState(user?.email ?? "");
-  const [genero, setGenero] = useState(user?.genero ?? "");
+  const [genero, setGenero] = useState(normalizeGenero(user?.genero));
   const [estilo, setEstilo] = useState(user?.estilo ?? "");
+
+  useEffect(() => {
+    if (!user) return;
+    setNome(user.nome ?? "");
+    setHandle(user.handle ?? "");
+    setEmail(user.email ?? "");
+    setGenero(normalizeGenero(user.genero));
+    setEstilo(user.estilo ?? "");
+    setPendingGenero(normalizeGenero(user.genero));
+    setPendingEstilo(user.estilo ?? "");
+  }, [user?.uid, user?.genero, user?.estilo, user?.nome, user?.handle]);
 
   const handleSalvar = () => atualizarPerfil({ nome, handle, genero, estilo });
 
   const [generoModalOpen, setGeneroModalOpen] = useState(false);
+  const [confirmarSaida, setConfirmarSaida] = useState(false);
   const [pendingGenero, setPendingGenero] = useState(genero);
   const generoLabel = GENERO_OPTIONS.find((o) => o.value === genero)?.label;
 
@@ -204,13 +227,16 @@ const PerfilUsuario = () => {
                   options={ESTILO_OPTIONS}
                 />
               )}
-              <Button
-                variant="soft"
-                label="Sair"
-                icon={<LogOutIcon size={16} color="currentColor" />}
-                width="100%"
-                bg="var(--bg-base)"
-              />
+              {!isMobile && (
+                <Button
+                  variant="soft"
+                  label="Sair"
+                  icon={<LogOutIcon size={16} color="currentColor" />}
+                  width="100%"
+                  bg="var(--bg-base)"
+                  onClick={() => setConfirmarSaida(true)}
+                />
+              )}
               <Button
                 variant="outline"
                 label="Alterar senha"
@@ -277,6 +303,14 @@ const PerfilUsuario = () => {
             ))}
           </div>
         </Modal>
+      )}
+      {confirmarSaida && (
+        <PopoverConfirmar
+          mensagem="Tem certeza que deseja sair?"
+          labelConfirmar="Sair"
+          onConfirmar={logout}
+          onCancelar={() => setConfirmarSaida(false)}
+        />
       )}
     </Private>
   );

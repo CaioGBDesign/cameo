@@ -23,178 +23,182 @@
   &.open {
     transform: translateX(0);
   }
-}
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-lg);
-}
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-lg);
 
-.titulo {
-  font-style: italic;
-  font-weight: 600;
-  font-size: 1rem;
-  color: var(--text-breadcrumb);
-}
+    .perfilBtn {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      text-decoration: none;
 
-.fechar {
-  background: none;
-  border: none;
-  color: var(--text-sub);
-  font-size: 1.25rem;
-  cursor: pointer;
-  padding: var(--space-xs);
-  line-height: 1;
-}
+      padding: var(--space-lg);
+      border-radius: var(--space-sm);
+      border: solid 1px var(--stroke-base);
 
-.conteudo {
-  display: flex;
-  flex-direction: column;
-  padding: var(--space-lg);
-  gap: var(--space-xs);
-  flex: 1;
-}
+      transition: background 0.2s;
 
-.item {
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-  padding: var(--space-md) var(--space-sm);
-  font-style: italic;
-  font-weight: 400;
-  font-size: 1rem;
-  font-family: inherit;
-  color: var(--text-sub);
-  text-decoration: none;
-  background: none;
-  border: none;
-  border-radius: var(--space-sm);
-  cursor: pointer;
-  width: 100%;
-  transition: background 0.2s;
+      width: 100%;
 
-  &:hover {
-    background: var(--bg-base);
+      &:hover {
+        background: var(--bg-base);
+      }
+
+      .avatarWrapper {
+        position: relative;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        overflow: hidden;
+        flex-shrink: 0;
+        background: var(--bg-base);
+
+        .avatarPlaceholder {
+          width: 100%;
+          height: 100%;
+          background: var(--stroke-base);
+        }
+      }
+
+      .perfilInfo {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        overflow: hidden;
+
+        .perfilNome {
+          font-style: italic;
+          font-weight: 600;
+          font-size: 0.9rem;
+          color: var(--text-base);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .perfilEmail {
+          font-style: italic;
+          font-weight: 400;
+          font-size: 0.75rem;
+          color: var(--text-sub);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
   }
 
-  &.active {
-    color: var(--text-header);
-  }
-}
-
-.colapsavel {
-  display: flex;
-  flex-direction: column;
-}
-
-.colapsavelBtn {
-  justify-content: flex-start;
-
-  .chevron {
-    margin-left: auto;
-    flex-shrink: 0;
-    transition: transform 0.2s ease;
+  .titulo {
+    font-style: italic;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text-breadcrumb);
   }
 
-  .chevronOpen {
-    transform: rotate(180deg);
+  .fechar {
+    background: none;
+    border: none;
+    color: var(--text-sub);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: var(--space-xs);
+    line-height: 1;
   }
-}
 
-.subMenu {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  padding-left: var(--space-lg);
+  .conteudo {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-lg);
+    gap: var(--space-xs);
+    flex: 1;
+  }
 
-  .BtnSubMenu {
+  .item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-sm);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1rem;
+    font-family: inherit;
+    color: var(--text-sub);
+    text-decoration: none;
+    background: none;
+    border: none;
+    border-radius: var(--space-sm);
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.2s;
+
+    &:hover {
+      background: var(--bg-base);
+    }
+
+    &.active {
+      color: var(--text-header);
+    }
+  }
+
+  .colapsavel {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .colapsavelBtn {
+    justify-content: flex-start;
+
+    .chevron {
+      margin-left: auto;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+
+    .chevronOpen {
+      transform: rotate(180deg);
+    }
+  }
+
+  .subMenu {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
     padding-left: var(--space-lg);
-    border-left: solid 1px var(--stroke-base);
+
+    .BtnSubMenu {
+      padding-left: var(--space-lg);
+      border-left: solid 1px var(--stroke-base);
+    }
   }
-}
 
-.rodape {
-  padding: var(--space-lg);
-  border-top: 1px solid var(--stroke-base);
-}
-
-.perfilBtn {
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-  text-decoration: none;
-  padding: var(--space-sm);
-  border-radius: var(--space-sm);
-  transition: background 0.2s;
-
-  &:hover {
-    background: var(--bg-base);
+  .rodape {
+    padding: var(--space-lg);
   }
-}
 
-.avatarWrapper {
-  position: relative;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  overflow: hidden;
-  flex-shrink: 0;
-  background: var(--bg-base);
-}
+  .subItem {
+    display: flex;
+    align-items: center;
+    padding: var(--space-sm) var(--space-sm);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: var(--text-sub);
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    border-radius: var(--space-sm);
+    transition: background 0.2s;
 
-.avatarPlaceholder {
-  width: 100%;
-  height: 100%;
-  background: var(--stroke-base);
-}
-
-.perfilInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  overflow: hidden;
-}
-
-.perfilNome {
-  font-style: italic;
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: var(--text-header);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.perfilEmail {
-  font-style: italic;
-  font-weight: 400;
-  font-size: 0.75rem;
-  color: var(--text-sub);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.subItem {
-  display: flex;
-  align-items: center;
-  padding: var(--space-sm) var(--space-sm);
-  font-style: italic;
-  font-weight: 400;
-  font-size: 0.9rem;
-  font-family: inherit;
-  color: var(--text-sub);
-  background: none;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  text-align: left;
-  border-radius: var(--space-sm);
-  transition: background 0.2s;
-
-  &:hover {
-    background: var(--bg-base);
+    &:hover {
+      background: var(--bg-base);
+    }
   }
 }

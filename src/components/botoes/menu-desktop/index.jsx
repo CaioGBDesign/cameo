@@ -35,24 +35,28 @@ const MenuDesktop = () => {
 
         {user && (
           <li>
-            <Select
-              placeholder="Minhas listas"
-              options={LISTAS}
-              value=""
-              onChange={navegar}
-              variant="ghost"
-            />
+            <div className={styles.menuSelect}>
+              <Select
+                placeholder="Minhas listas"
+                options={LISTAS}
+                value=""
+                onChange={navegar}
+                variant="ghost"
+              />
+            </div>
           </li>
         )}
 
         <li>
-          <Select
-            placeholder="Dublagem"
-            options={DUBLAGEM}
-            value=""
-            onChange={navegar}
-            variant="ghost"
-          />
+          <div className={styles.menuSelect}>
+            <Select
+              placeholder="Dublagem"
+              options={DUBLAGEM}
+              value=""
+              onChange={navegar}
+              variant="ghost"
+            />
+          </div>
         </li>
 
         <li>

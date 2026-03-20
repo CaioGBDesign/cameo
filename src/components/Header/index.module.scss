@@ -20,12 +20,14 @@
     justify-content: space-between;
     align-items: center;
     width: 90%;
-
-    border-radius: var(--space-6xl);
-    border: 1px solid var(--stroke-base);
-    background: rgba(22, 18, 22, 0.2);
-    backdrop-filter: blur(10px);
     padding: var(--space-lg);
+
+    @media only screen and (max-width: 768px) {
+      border-radius: var(--space-6xl);
+      border: 1px solid var(--stroke-base);
+      background: rgba(22, 18, 22, 0.2);
+      backdrop-filter: blur(10px);
+    }
 
     @media (min-width: 768px) {
       width: 80%;

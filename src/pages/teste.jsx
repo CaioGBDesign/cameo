@@ -1,13 +1,9 @@
 import Head from "next/head";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import SectionMetas from "@/components/section-metas";
-import { useAuth } from "@/contexts/auth";
 import styles from "./teste.module.scss";
 
 export default function Teste() {
-  const { limparMetas } = useAuth();
-
   return (
     <>
       <Head>
@@ -16,13 +12,16 @@ export default function Teste() {
 
       <Header />
       <main className={styles.page}>
-        <div className={styles.metas}>
-          <SectionMetas />
+        <div className={styles.novoHeader}>
+          <ul className={styles.novoMenu}>
+            <li className={styles.botão}>Home</li>
+            <li className={styles.botão}>Minhas listas</li>
+            <li className={styles.botão}>Dublagens</li>
+            <li className={styles.botão}>Notícias</li>
+            <li className={styles.botão}>Resenhas</li>
+            <li className={styles.botão}>Game</li>
+          </ul>
         </div>
-
-        <button onClick={limparMetas} style={{ marginTop: 40, cursor: "pointer" }}>
-          Deletar todas as metas
-        </button>
       </main>
       <Footer />
     </>

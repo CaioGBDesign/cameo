@@ -13,7 +13,40 @@
     margin-top: 30%;
   }
 
-  .metas {
+  .novoHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     width: 90%;
+
+    ul {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      background: #16121630;
+      border: solid 1px var(--stroke-base);
+      border-radius: var(--space-2xl);
+
+      li {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        height: 60px;
+
+        padding: var(--space-nn) var(--space-lg);
+
+        color: var(--text-sub);
+        font-size: 16px;
+
+        transition: all 300ms cubic-bezier(0.3, 1.5, 0.5, 1);
+
+        &:hover {
+          padding: var(--space-nn) var(--space-2xl);
+        }
+      }
+    }
   }
 }

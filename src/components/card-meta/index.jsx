@@ -88,14 +88,7 @@ const CardMeta = ({ meta, filmesVistos = 0, onSelect, isSelected = false }) => {
               <span>0%</span>
             </div>
 
-            <div
-              className={styles.percentualMax}
-              style={
-                percentual === 100
-                  ? { background: "var(--primitive-verde-02)" }
-                  : undefined
-              }
-            >
+            <div className={styles.percentualMax}>
               <span>100%</span>
             </div>
           </div>

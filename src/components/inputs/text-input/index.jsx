@@ -15,6 +15,7 @@ const TextInput = ({
   required = false,
   prefix,
   suffix,
+  inputMode,
 }) => {
   return (
     <div className={styles.wrapper} style={width ? { width } : undefined}>
@@ -36,6 +37,7 @@ const TextInput = ({
           max={max}
           disabled={disabled}
           required={required}
+          inputMode={inputMode}
           className={styles.field}
         />
         {suffix && <div className={styles.suffix}>{suffix}</div>}

@@ -20,7 +20,7 @@ export default function DetalhesDubladorPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const apiKey = "c95de8d6070dbf1b821185d759532f05";
+  const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
   useEffect(() => {
     if (!id) return;

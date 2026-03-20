@@ -1,53 +1,60 @@
-import { useEffect, useState, lazy, Suspense } from "react";
-import { useIsMobile } from "@/components/DeviceProvider";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter } from "next/router";
+import { useIsMobile } from "@/components/DeviceProvider";
 import Head from "next/head";
 import styles from "./index.module.scss";
 import Header from "@/components/Header";
-import Search from "@/components/busca";
+import TextInput from "@/components/inputs/text-input";
+import CardFilme from "@/components/card-filme";
 
-const Miniaturafilmes = lazy(() => import("@/components/miniaturafilmes"));
+const DEBOUNCE_MS = 400;
 
 const Busca = () => {
-  const router = useRouter(); // Inicialização do router
+  const router = useRouter();
+  const isMobile = useIsMobile();
   const [query, setQuery] = useState("");
   const [filmes, setFilmes] = useState([]);
+  const abortRef = useRef(null);
+  const timerRef = useRef(null);
 
-  // define se desktop ou mobile
-  const isMobile = useIsMobile(); // Chame o Hook aqui
+  const fetchFilmes = useCallback(async (searchQuery) => {
+    if (abortRef.current) abortRef.current.abort();
 
-  const fetchFilmes = async (searchQuery) => {
     if (!searchQuery) {
       setFilmes([]);
       return;
     }
 
+    const controller = new AbortController();
+    abortRef.current = controller;
+
     try {
       const response = await fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR&query=${searchQuery}`
+        `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=pt-BR&query=${searchQuery}`,
+        { signal: controller.signal },
       );
       const data = await response.json();
-      setFilmes(data.results);
+      setFilmes(data.results ?? []);
     } catch (error) {
-      console.error("Erro ao buscar filmes:", error);
-      setFilmes([]);
+      if (error.name !== "AbortError") {
+        console.error("Erro ao buscar filmes:", error);
+        setFilmes([]);
+      }
     }
-  };
+  }, []);
 
   useEffect(() => {
-    fetchFilmes(query);
-  }, [query]);
+    clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => fetchFilmes(query), DEBOUNCE_MS);
+    return () => clearTimeout(timerRef.current);
+  }, [query, fetchFilmes]);
 
   const handleFilmeClick = (filme) => {
-    const { id, title } = filme;
-    router.push({
-      pathname: "/filme-aleatorio",
-      query: { id: id },
-    });
+    router.push({ pathname: "/filme-aleatorio", query: { id: filme.id } });
   };
 
   return (
-    <main className={styles.mainSearch}>
+    <>
       <Head>
         <title>Cameo - Buscar filmes</title>
         <meta
@@ -55,29 +62,38 @@ const Busca = () => {
           content="Encontre o filme perfeito em segundos! Utilize nossa busca avançada para filtrar por gênero, ano, classificação indicativa e muito mais. O filme ideal está a um clique de distância!"
         />
       </Head>
+
       <Header showBuscar={false} />
-      <div className={styles.searchPage}>
-        <div className={styles.conteudo}>
-          <div className={styles.search}>
-            <Search placeholder={"Buscar filmes"} onSearch={setQuery} />
-          </div>
-          <div className={styles.resultado}>
-            <Suspense fallback={<div>Carregando...</div>}>
+
+      <main className={styles.page}>
+        <div className={styles.searchPage}>
+          <div className={styles.conteudo}>
+            <div className={styles.search}>
+              <TextInput
+                id="busca"
+                name="busca"
+                placeholder="Buscar filmes"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                width="100%"
+              />
+            </div>
+            <div className={styles.resultado}>
               {filmes.map((filme) => (
-                <div key={filme.id} className={styles.miniatura}>
-                  <Miniaturafilmes
-                    capaminiatura={`https://image.tmdb.org/t/p/w500${filme.poster_path}`}
-                    titulofilme={filme.title}
-                    mostrarEstrelas={false}
-                    onClick={() => handleFilmeClick(filme)}
-                  />
-                </div>
+                <CardFilme
+                  key={filme.id}
+                  movie={filme}
+                  variant={isMobile ? "mini" : "titulo"}
+                  onClick={() => handleFilmeClick(filme)}
+                  showFavorito={false}
+                  showStars={false}
+                />
               ))}
-            </Suspense>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 };
 

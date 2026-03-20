@@ -12,7 +12,6 @@ import Button from "@/components/button";
 import SectionCard from "@/components/section-card";
 import Modal from "@/components/modal";
 import CheckboxCard from "@/components/inputs/checkbox-card";
-import NewsIcon from "@/components/icons/NewsIcon";
 import { useAuth } from "@/contexts/auth";
 import styles from "./index.module.scss";
 
@@ -111,7 +110,7 @@ export default function FilmeAleatorio() {
         const ids = module.default.filmes;
         idToFetch = ids[Math.floor(Math.random() * ids.length)];
       }
-      const apiKey = "c95de8d6070dbf1b821185d759532f05";
+      const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
       const url = `https://api.themoviedb.org/3/movie/${idToFetch}?api_key=${apiKey}&language=pt-BR&append_to_response=videos,release_dates,watch/providers,credits,similar`;
       const res = await fetch(url);
       const data = await res.json();
@@ -208,17 +207,6 @@ export default function FilmeAleatorio() {
             )}
 
             <div className={styles.acoes}>
-              <div className={styles.btnResenhas}>
-                <Button
-                  variant="outline"
-                  label={isMobile ? undefined : "Ler resenhas"}
-                  icon={<NewsIcon size={16} color="currentColor" />}
-                  href={`/resenhas?filmeId=${filme.id}`}
-                  border="var(--stroke-base)"
-                  arrowColor="var(--stroke-base)"
-                  width="100%"
-                />
-              </div>
               <div className={styles.btnAvaliacao}>
                 {!user ? (
                   <Button

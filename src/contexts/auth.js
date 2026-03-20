@@ -404,7 +404,7 @@ function AuthProvider({ children }) {
 
       // Buscando detalhes do filme para pegar os gêneros
       const filmeResponse = await fetch(
-        `https://api.themoviedb.org/3/movie/${filmeId}?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR`,
+        `https://api.themoviedb.org/3/movie/${filmeId}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=pt-BR`,
       );
       const filmeData = await filmeResponse.json();
       const generos = filmeData.genres.map((g) => g.name);
@@ -467,7 +467,7 @@ function AuthProvider({ children }) {
       if (!filmeExistente) {
         try {
           const filmeRes = await fetch(
-            `https://api.themoviedb.org/3/movie/${filmeId}?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR`,
+            `https://api.themoviedb.org/3/movie/${filmeId}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=pt-BR`,
           );
           const filmeData = await filmeRes.json();
           generos = filmeData.genres?.map((g) => g.name) || [];

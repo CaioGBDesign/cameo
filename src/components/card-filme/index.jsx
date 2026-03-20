@@ -4,14 +4,14 @@ import BookmarkIcon from "@/components/icons/BookmarkIcon";
 import Estrelas from "@/components/estrelas";
 import styles from "./index.module.scss";
 
-const CardFilme = ({ movie, variant = "nota", onClick }) => {
+const CardFilme = ({ movie, variant = "nota", onClick, showFavorito = true, showStars = true }) => {
   const { user, salvarFilme, removerFilme } = useAuth();
 
   if (!movie) return null;
 
   const movieId = String(movie.id);
   const isFav = (user?.favoritos || []).includes(movieId);
-  const userRating = user?.visto?.[movieId]?.nota;
+  const userRating = user?.visto?.[movieId]?.nota > 0 ? user.visto[movieId].nota : null;
 
   const handleFav = (e) => {
     e.stopPropagation();
@@ -39,7 +39,7 @@ const CardFilme = ({ movie, variant = "nota", onClick }) => {
       )}
 
       <div className={styles.overlay}>
-        {variant !== "mini" && (
+        {variant !== "mini" && showFavorito && (
           <div className={styles.top}>
             <button className={styles.favoritos} onClick={handleFav}>
               <BookmarkIcon size={18} color="white" filled={isFav} />
@@ -54,7 +54,7 @@ const CardFilme = ({ movie, variant = "nota", onClick }) => {
           {variant === "titulo" && movie.title && (
             <p className={styles.movieTitle}>{movie.title}</p>
           )}
-          {variant !== "titulo" && (
+          {variant !== "titulo" && showStars && (
             <div className={styles.stars}>
               <Estrelas estrelas={userRating || 0} />
             </div>

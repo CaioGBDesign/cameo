@@ -18,7 +18,7 @@ import { contarFilmesPorPeriodo } from "@/utils/metas";
 import GraficoGeneros from "@/components/grafico-generos";
 import GraficoPeriodo from "@/components/grafico-periodo";
 
-const TMDB_KEY = "c95de8d6070dbf1b821185d759532f05";
+const TMDB_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
 export default function FilmesAssisti() {
   const { user } = useAuth();
@@ -142,7 +142,7 @@ export default function FilmesAssisti() {
           >
             <div className={styles.conteudoMetas}>
               <div className={styles.scrollMetas}>
-                <div className={styles.metasMobile}>
+                <div className={`${styles.metasMobile} ${metas.length === 1 ? styles.metaUnica : ""}`}>
                   {metas.map((meta) => (
                     <CardMeta
                       key={meta.id}

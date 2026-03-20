@@ -121,7 +121,7 @@ export default function FilmeHero({ filme, trailerLink, releaseDates }) {
           </div>
 
           <div className={styles.botoes}>
-            {user.visto?.[filme.id] ? (
+            {user.visto?.[filme.id]?.nota > 0 ? (
               <Button
                 variant={isMobile ? "ghost" : "outline"}
                 stars={user.visto[filme.id].nota}

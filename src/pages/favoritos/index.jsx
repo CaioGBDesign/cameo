@@ -17,7 +17,7 @@ const Footer = dynamic(() => import("@/components/Footer"));
 export default function FilmesAssisti() {
   const isMobile = useIsMobile();
   const { user, removerFilme } = useAuth();
-  const apiKey = "c95de8d6070dbf1b821185d759532f05";
+  const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
   const [filmesParaAssistir, setFilmesParaAssistir] = useState([]);
   const [loading, setLoading] = useState(true);

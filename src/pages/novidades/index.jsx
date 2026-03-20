@@ -26,7 +26,7 @@ const Novidades = () => {
 
   const fetchMovieDetails = async (movieId) => {
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}?api_key=c95de8d6070dbf1b821185d759532f05&language=pt-BR&append_to_response=release_dates`
+      `https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=pt-BR&append_to_response=release_dates`
     );
     if (!response.ok) {
       throw new Error("Error fetching movie data");

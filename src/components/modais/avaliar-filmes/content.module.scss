@@ -3,12 +3,27 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-4xl);
+
+  height: 490px;
+  overflow-y: scroll;
+
+  /* width */
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .descricao {
   height: 24px;
   display: flex;
   justify-content: center;
+
+  .semNota {
+    font-size: 14px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text-sub);
+  }
 
   span {
     font-size: 20px;
@@ -98,19 +113,6 @@
       gap: var(--space-sm);
     }
 
-    .inputData {
-      background: none;
-      border: 1px solid var(--stroke-base);
-      border-radius: var(--space-sm);
-      padding: var(--space-xs) var(--space-sm);
-      color: var(--text-base);
-      font-size: 14px;
-      cursor: pointer;
 
-      &::-webkit-calendar-picker-indicator {
-        filter: invert(0.5);
-        cursor: pointer;
-      }
-    }
   }
 }

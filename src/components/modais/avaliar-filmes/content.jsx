@@ -4,6 +4,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/services/firebaseConection";
 import StarRatingIcon from "@/components/icons/StarRatingIcon";
 import RadioButton from "@/components/inputs/radio-button";
+import TextInput from "@/components/inputs/text-input";
 import Switch from "@/components/inputs/switch";
 import styles from "./content.module.scss";
 
@@ -15,28 +16,25 @@ const estrelasDescricao = {
   5: "Foda",
 };
 
-const hojeISO = () => new Date().toISOString().slice(0, 10);
-
-// "19/3/2026" → "2026-03-19"
-const dataParaISO = (dataStr) => {
-  if (!dataStr) return hojeISO();
-  const [dia, mes, ano] = dataStr.split("/").map(Number);
-  return `${ano}-${String(mes).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
+const hojeFormatado = () => {
+  const d = new Date();
+  return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
 };
 
-// "2026-03-19" → "19/3/2026"
-const isoParaData = (iso) => {
-  const [ano, mes, dia] = iso.split("-").map(Number);
-  return `${dia}/${mes}/${ano}`;
+const mascararData = (valor) => {
+  const numeros = valor.replace(/\D/g, "").slice(0, 8);
+  if (numeros.length <= 2) return numeros;
+  if (numeros.length <= 4) return `${numeros.slice(0, 2)}/${numeros.slice(2)}`;
+  return `${numeros.slice(0, 2)}/${numeros.slice(2, 4)}/${numeros.slice(4)}`;
 };
 
 const AvaliarFilmeContent = forwardRef(({ filmeId, nota }, ref) => {
   const { user } = useAuth();
-  const [avaliacao, setAvaliacao] = useState(nota?.nota ?? null);
+  const [avaliacao, setAvaliacao] = useState(nota?.nota > 0 ? nota.nota : null);
   const [comentario, setComentario] = useState("");
   const [ondeAssistiu, setOndeAssistiu] = useState(null);
   const [quadroMetas, setQuadroMetas] = useState(true);
-  const [dataAssistido, setDataAssistido] = useState(hojeISO());
+  const [dataAssistido, setDataAssistido] = useState(hojeFormatado());
 
   useImperativeHandle(ref, () => ({
     getValues: () => ({
@@ -44,7 +42,7 @@ const AvaliarFilmeContent = forwardRef(({ filmeId, nota }, ref) => {
       comentario,
       ondeAssistiu,
       quadroMetas,
-      dataAssistido: isoParaData(dataAssistido),
+      dataAssistido,
     }),
   }));
 
@@ -57,7 +55,7 @@ const AvaliarFilmeContent = forwardRef(({ filmeId, nota }, ref) => {
         if (!visto) return;
         if (visto.comentario) setComentario(visto.comentario);
         if (visto.ondeAssistiu) setOndeAssistiu(visto.ondeAssistiu);
-        if (visto.data) setDataAssistido(dataParaISO(visto.data));
+        if (visto.data) setDataAssistido(visto.data);
       } catch {}
     };
     fetchDados();
@@ -70,7 +68,13 @@ const AvaliarFilmeContent = forwardRef(({ filmeId, nota }, ref) => {
   return (
     <div className={styles.content}>
       <div className={styles.descricao}>
-        {avaliacao && <span>{estrelasDescricao[avaliacao]}</span>}
+        {avaliacao ? (
+          <span>{estrelasDescricao[avaliacao]}</span>
+        ) : (
+          <span className={styles.semNota}>
+            Você ainda não deu uma nota minha lenda
+          </span>
+        )}
       </div>
 
       <div className={styles.estrelas}>
@@ -95,18 +99,22 @@ const AvaliarFilmeContent = forwardRef(({ filmeId, nota }, ref) => {
         />
 
         <div className={styles.secaoCard}>
-          <span className={styles.secaoCardTitulo}>Quando assistiu ao filme?</span>
-          <input
-            type="date"
+          <span className={styles.secaoCardTitulo}>
+            Quando assistiu ao filme?
+          </span>
+          <TextInput
             value={dataAssistido}
-            max={hojeISO()}
-            onChange={(e) => setDataAssistido(e.target.value)}
-            className={styles.inputData}
+            onChange={(e) => setDataAssistido(mascararData(e.target.value))}
+            placeholder="dd/mm/aaaa"
+            inputMode="numeric"
+            width="100%"
           />
         </div>
 
         <div className={styles.secaoCard}>
-          <span className={styles.secaoCardTitulo}>Onde assistiu ao filme?</span>
+          <span className={styles.secaoCardTitulo}>
+            Onde assistiu ao filme?
+          </span>
           <div className={styles.radioGroup}>
             <RadioButton
               id="em-casa"
@@ -128,7 +136,9 @@ const AvaliarFilmeContent = forwardRef(({ filmeId, nota }, ref) => {
         </div>
 
         <div className={styles.secaoCard}>
-          <span className={styles.secaoCardTitulo}>Adicionar filme ao quadro de metas?</span>
+          <span className={styles.secaoCardTitulo}>
+            Adicionar filme ao quadro de metas?
+          </span>
           <Switch
             id="quadro-metas"
             checked={quadroMetas}

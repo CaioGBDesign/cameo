@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import Head from "next/head";
 import Header from "@/components/Header";
@@ -11,6 +11,7 @@ import FilterIcon from "@/components/icons/FilterIcon";
 import Breadcrumb from "@/components/breadcrumb";
 import CardMeta from "@/components/card-meta";
 import CriarMeta from "@/components/modais/criar-meta";
+import ModalDetalhesFilme from "@/components/modais/modal-detalhes-filme";
 import Button from "@/components/button";
 import { useAuth } from "@/contexts/auth";
 import { useIsMobile } from "@/components/DeviceProvider";
@@ -24,13 +25,14 @@ export default function FilmesAssisti() {
   const { user } = useAuth();
   const isMobile = useIsMobile();
 
-  const [filme, setFilme] = useState(null);
+  const [filmeHero, setFilmeHero] = useState(null);
   const [trailerLink, setTrailerLink] = useState(null);
   const [releaseDates, setReleaseDates] = useState([]);
   const [filmesVistos, setFilmesVistos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [modalMetaAberto, setModalMetaAberto] = useState(false);
+  const [modalDetalhes, setModalDetalhes] = useState({ aberto: false, index: 0 });
   const ITEMS_PER_PAGE = 24;
 
   const metas = (Array.isArray(user?.metas) ? user.metas : [])
@@ -73,6 +75,11 @@ export default function FilmesAssisti() {
             genres: data.genres || [],
             poster_path: data.poster_path,
             backdrop_path: data.backdrop_path,
+            overview: data.overview,
+            runtime: data.runtime,
+            vote_average: data.vote_average,
+            release_date: data.release_date,
+            production_countries: data.production_countries || [],
             videos: data.videos?.results || [],
             release_dates: data.release_dates?.results || [],
           })),
@@ -80,37 +87,22 @@ export default function FilmesAssisti() {
     )
       .then((lista) => {
         setFilmesVistos(lista);
+
+        const rnd = lista[Math.floor(Math.random() * lista.length)];
+        setFilmeHero(rnd);
+
+        const trailer = rnd.videos.find(
+          (v) => v.type === "Trailer" && v.site === "YouTube",
+        );
+        setTrailerLink(
+          trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : null,
+        );
+        setReleaseDates(rnd.release_dates);
+
         setLoading(false);
       })
       .catch(() => setLoading(false));
   }, [user?.visto]);
-
-  const fetchMovie = useCallback(async (movieId) => {
-    try {
-      const res = await fetch(
-        `https://api.themoviedb.org/3/movie/${movieId}?api_key=${TMDB_KEY}&language=pt-BR&append_to_response=videos,release_dates`,
-      );
-      const data = await res.json();
-      setFilme(data);
-      const trailer = data.videos?.results.find(
-        (v) => v.type === "Trailer" && v.site === "YouTube",
-      );
-      setTrailerLink(
-        trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : null,
-      );
-      setReleaseDates(data.release_dates?.results || []);
-    } catch (err) {
-      console.error("Erro ao buscar filme:", err);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!loading && filmesVistos.length) {
-      const random =
-        filmesVistos[Math.floor(Math.random() * filmesVistos.length)];
-      fetchMovie(random.id);
-    }
-  }, [loading, filmesVistos, fetchMovie]);
 
   return (
     <Private>
@@ -127,9 +119,9 @@ export default function FilmesAssisti() {
       <main className={styles.page}>
         <Breadcrumb items={[{ label: "Já assisti" }]} />
 
-        {filme && (
+        {filmeHero && (
           <FilmeHero
-            filme={filme}
+            filme={filmeHero}
             trailerLink={trailerLink}
             releaseDates={releaseDates}
           />
@@ -192,15 +184,24 @@ export default function FilmesAssisti() {
           }}
         >
           <div className={styles.listaFilmes}>
-            {filmesPaginados.map((f) => (
+            {filmesPaginados.map((f, idx) => (
               <CardFilme
                 key={f.id}
                 movie={f}
                 variant={isMobile ? "mini" : "nota"}
+                onClick={() => setModalDetalhes({ aberto: true, index: idx })}
               />
             ))}
           </div>
         </SectionCard>
+
+        {modalDetalhes.aberto && (
+          <ModalDetalhesFilme
+            filmes={filmesPaginados}
+            indexInicial={modalDetalhes.index}
+            onClose={() => setModalDetalhes({ aberto: false, index: 0 })}
+          />
+        )}
       </main>
 
       <Footer />

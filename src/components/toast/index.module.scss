@@ -62,9 +62,7 @@
   align-items: center;
   gap: var(--space-sm);
 
-  border-right: solid 1px var(--stroke-base);
-
-  padding-left: var(--space-lg);
+  padding: var(--space-md) var(--space-lg);
 
   width: 100%;
 }
@@ -79,7 +77,7 @@
 .message {
   flex: 1;
   font-size: 16px;
-  color: var(--text-solid);
+  color: var(--static-dark);
   font-weight: 400;
   font-style: italic;
   line-height: 1.4;
@@ -88,7 +86,10 @@
 .buttons {
   display: flex;
   gap: var(--space-sm);
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
+
+  border-left: solid 1px var(--stroke-secondary);
 }
 
 .btn {
@@ -118,21 +119,45 @@
 }
 
 @keyframes slideInBottom {
-  from { transform: translateY(100%); opacity: 0; }
-  to   { transform: translateY(0);    opacity: 1; }
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes slideOutBottom {
-  from { transform: translateY(0);    opacity: 1; }
-  to   { transform: translateY(100%); opacity: 0; }
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
 }
 
 @keyframes slideInTop {
-  from { transform: translateY(-100%); opacity: 0; }
-  to   { transform: translateY(0);     opacity: 1; }
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes slideOutTop {
-  from { transform: translateY(0);     opacity: 1; }
-  to   { transform: translateY(-100%); opacity: 0; }
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
 }

@@ -4,9 +4,6 @@
   align-items: center;
   gap: var(--space-4xl);
 
-  height: 490px;
-  overflow-y: scroll;
-
   /* width */
   &::-webkit-scrollbar {
     display: none;
@@ -28,6 +25,7 @@
   span {
     font-size: 20px;
     font-weight: bold;
+    font-style: italic;
     color: var(--text-base);
   }
 }
@@ -78,6 +76,7 @@
 
     color: var(--text-base);
     font-size: 15px;
+    font-style: italic;
     resize: none;
 
     &::placeholder {
@@ -105,6 +104,7 @@
     .secaoCardTitulo {
       font-size: 15px;
       font-weight: 400;
+      font-style: italic;
       color: var(--text-base);
     }
 
@@ -113,6 +113,12 @@
       gap: var(--space-sm);
     }
 
+    .contentData {
+      width: 220px;
 
+      @media only screen and (max-width: 768px) {
+        width: 100%;
+      }
+    }
   }
 }

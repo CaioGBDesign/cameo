@@ -2,25 +2,22 @@
   position: fixed;
   inset: 0;
   z-index: 1000;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   background: rgba(0, 0, 0, 0.6);
 }
 
 .modal {
   width: 900px;
   max-width: calc(100vw - var(--space-2xl) * 2);
-
+  max-height: 90vh;
   background: var(--bg-base);
   border: 1px solid var(--stroke-base);
   border-radius: var(--space-2xl);
-
   display: flex;
   flex-direction: column;
-  gap: var(--space-nn);
+  overflow: hidden;
 }
 
 /* ── Header ── */
@@ -29,6 +26,8 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-2xl);
+  border-bottom: 1px solid var(--stroke-base);
+  flex-shrink: 0;
 }
 
 .headerLeft {
@@ -42,6 +41,13 @@
   font-style: italic;
   font-weight: bold;
   color: var(--text-breadcrumb);
+
+  @media only screen and (max-width: 600px) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 220px;
+  }
 }
 
 .backBtn {
@@ -53,17 +59,28 @@
   cursor: pointer;
   color: var(--text-base);
   padding: 0;
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  transition:
+    opacity 0.35s ease,
+    width 0.35s ease;
+}
+
+.backBtnVisible {
+  opacity: 1;
+  width: 20px;
 }
 
 .backBtnIcon {
   transform: rotate(90deg);
+  flex-shrink: 0;
 }
 
 .closeBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-
   background: transparent;
   border: none;
   cursor: pointer;
@@ -73,64 +90,79 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
     width: var(--space-8xl);
     height: var(--space-8xl);
-
     border-radius: var(--space-sm);
     border: solid 1px var(--stroke-quaternary);
 
     @media only screen and (max-width: 600px) {
       width: var(--space-2xl);
       height: var(--space-2xl);
-
       border-radius: var(--space-xs);
     }
   }
 }
 
-/* ── Content ── */
-.content {
-  width: 100%;
-  max-height: 450px;
-
+/* ── Slider ── */
+.slider {
+  display: flex;
   flex: 1;
   min-height: 0;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* ── Content ── */
+.content {
+  flex: 1;
+  overflow-y: auto;
   padding: var(--space-2xl);
-  padding-top: var(--space-nn);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  min-height: 0;
 
-  overflow: auto;
-
-  /* width */
   &::-webkit-scrollbar {
     display: none;
   }
 
+  scrollbar-width: none;
+
   @media only screen and (max-width: 600px) {
     padding: var(--space-lg);
-    padding-top: var(--space-nn);
-
-    max-height: 490px;
   }
 }
 
-/* ── Mobile ── */
+.contentNoScroll {
+  overflow-y: hidden;
+}
+
+/* ── Footer ── */
+.footer {
+  flex-shrink: 0;
+  border-top: 1px solid var(--stroke-base);
+  padding: var(--space-2xl);
+
+  @media only screen and (max-width: 600px) {
+    padding: var(--space-lg);
+  }
+}
+
+/* ── Mobile sheet ── */
 @keyframes slideUp {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
 }
 
 @keyframes slideDown {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(100%);
-  }
+  from { transform: translateY(0); }
+  to   { transform: translateY(100%); }
 }
 
 .modalMobile {
@@ -138,11 +170,9 @@
   bottom: 0;
   left: 0;
   right: 0;
-
   width: 100%;
   max-width: 100%;
   max-height: 90vh;
-
   border-radius: var(--space-2xl) var(--space-2xl) 0 0;
 }
 
@@ -152,45 +182,4 @@
 
 .slideDown {
   animation: slideDown 300ms ease-in forwards;
-}
-
-/* ── Footer ── */
-.erro {
-  font-size: 13px;
-  font-style: italic;
-  color: var(--feedback-error, #e05c5c);
-  flex: 1;
-
-  @media only screen and (max-width: 600px) {
-    text-align: center;
-    width: 100%;
-    flex: unset;
-  }
-}
-
-.footer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: var(--space-sm);
-  padding: var(--space-2xl);
-  border-top: solid 1px var(--stroke-base);
-
-  a,
-  button {
-    width: 220px;
-  }
-
-  @media only screen and (max-width: 600px) {
-    a,
-    button {
-      width: 64px;
-    }
-
-    a:last-child,
-    button:last-child {
-      flex: 1;
-      width: auto;
-    }
-  }
 }

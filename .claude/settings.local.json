@@ -15,7 +15,8 @@
       "Bash(grep -r from.*components 'c:\\\\Users\\\\win11\\\\OneDrive\\\\Área de Trabalho\\\\Cameo\\\\src' --include=*.jsx --include=*.js --include=*.tsx --include=*.ts)",
       "Bash(grep -rh from.*['']@/components 'c:\\\\Users\\\\win11\\\\OneDrive\\\\Área de Trabalho\\\\Cameo\\\\src' --include=*.jsx --include=*.js --include=*.tsx --include=*.ts)",
       "Bash(grep -r \"botoes/notas\\\\|botoes/resenha\\\\|botoes/trailer\\\\|botoes/buscar\\\\|carrossel-criticas\\\\|fundotitulos\\\\|logo\" 'c:\\\\Users\\\\win11\\\\OneDrive\\\\Área de Trabalho\\\\Cameo\\\\src' --include=*.jsx --include=*.js --include=*.tsx --include=*.ts)",
-      "Bash(xargs sed:*)"
+      "Bash(xargs sed:*)",
+      "mcp__figma__get_metadata"
     ]
   }
 }

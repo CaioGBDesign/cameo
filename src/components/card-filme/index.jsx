@@ -42,7 +42,7 @@ const CardFilme = ({ movie, variant = "nota", onClick, showFavorito = true, show
         {variant !== "mini" && showFavorito && (
           <div className={styles.top}>
             <button className={styles.favoritos} onClick={handleFav}>
-              <BookmarkIcon size={18} color="white" filled={isFav} />
+              <BookmarkIcon size={18} color={isFav ? "var(--primitive-amarelo-02)" : "white"} filled={isFav} />
             </button>
           </div>
         )}

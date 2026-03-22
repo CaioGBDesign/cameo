@@ -16,6 +16,7 @@ export default function Modal({
   children,
   primaryAction,
   secondaryAction,
+  erro,
 }) {
   const isMobile = useIsMobile();
   const hasFooter = !!primaryAction;
@@ -77,6 +78,7 @@ export default function Modal({
 
         {hasFooter && (
           <div className={styles.footer}>
+            {erro && <span className={styles.erro}>{erro}</span>}
             {secondaryAction && (
               <Button
                 variant={

@@ -1,52 +1,65 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./index.module.scss";
-import dynamic from "next/dynamic";
-import { useIsMobile } from "@/components/DeviceProvider";
 import Head from "next/head";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import Private from "@/components/Private";
-import TitulosFilmesDesktop from "@/components/titulosFilmesDesktop";
-import Titulolistagem from "@/components/titulolistagem";
-import BlankSlate from "@/components/blank-slate";
-import ListaPageFilmes from "@/components/detalhesfilmes/listaPageFilmes";
-import FilmesCarousel from "@/components/modais/filmes-carousel";
+import FilmeHero from "@/components/filme-hero";
+import SectionCard from "@/components/section-card";
+import CardFilme from "@/components/card-filme";
+import FilterIcon from "@/components/icons/FilterIcon";
+import Breadcrumb from "@/components/breadcrumb";
+import ModalDetalhesFilme from "@/components/modais/modal-detalhes-filme";
+import RadioButton from "@/components/inputs/radio-button";
+import ArrowButton from "@/components/arrow-button";
 import { useAuth } from "@/contexts/auth";
+import { useIsMobile } from "@/components/DeviceProvider";
 
-const Header = dynamic(() => import("@/components/Header"));
-const Footer = dynamic(() => import("@/components/Footer"));
+const TMDB_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+const ITEMS_PER_PAGE = 24;
 
-export default function FilmesAssisti() {
+export default function Favoritos() {
+  const { user } = useAuth();
   const isMobile = useIsMobile();
-  const { user, removerFilme } = useAuth();
-  const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
-  const [filmesParaAssistir, setFilmesParaAssistir] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [filme, setFilme] = useState(null);
+  const [filmes, setFilmes] = useState([]);
+  const [filmeHero, setFilmeHero] = useState(null);
   const [trailerLink, setTrailerLink] = useState(null);
   const [releaseDates, setReleaseDates] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedFilm, setSelectedFilm] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [generoSelecionado, setGeneroSelecionado] = useState("");
+  const generosRef = useRef(null);
+  const [modalDetalhes, setModalDetalhes] = useState({ aberto: false, index: 0 });
+
+  const generos = Array.from(
+    new Map(
+      filmes.flatMap((f) => f.genres).map((g) => [g.id, g])
+    ).values()
+  ).sort((a, b) => a.name.localeCompare(b.name));
+
+  const filmesFiltrados = generoSelecionado
+    ? filmes.filter((f) => f.genres.some((g) => String(g.id) === generoSelecionado))
+    : filmes;
+
+  const totalPages = Math.ceil(filmesFiltrados.length / ITEMS_PER_PAGE);
+  const filmesPaginados = filmesFiltrados.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE,
+  );
 
   useEffect(() => {
-    let ids = [];
+    const ids = Array.isArray(user?.favoritos)
+      ? user.favoritos
+      : user?.favoritos && typeof user.favoritos === "object"
+        ? Object.keys(user.favoritos)
+        : [];
 
-    if (Array.isArray(user?.favoritos)) {
-      // “para favoritos” salvo como array de strings
-      ids = user.favoritos;
-    } else if (user?.favoritos && typeof user.favoritos === "object") {
-      // caso fosse objeto, pegaria as chaves
-      ids = Object.keys(user.favoritos);
-    }
-
-    if (!ids.length) {
-      setLoading(false);
-      return;
-    }
+    if (!ids.length) return;
 
     Promise.all(
       ids.map((id) =>
         fetch(
-          `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=pt-BR`
+          `https://api.themoviedb.org/3/movie/${id}?api_key=${TMDB_KEY}&language=pt-BR&append_to_response=videos,release_dates`,
         )
           .then((res) => {
             if (!res.ok) throw new Error(`TMDB retornou status ${res.status}`);
@@ -55,68 +68,42 @@ export default function FilmesAssisti() {
           .then((data) => ({
             id: data.id,
             title: data.title,
+            genres: data.genres || [],
             poster_path: data.poster_path,
-            avaliacao: {
-              nota: Array.isArray(user.favoritos) ? null : user.favoritos[id],
-            },
-          }))
-      )
+            backdrop_path: data.backdrop_path,
+            overview: data.overview,
+            runtime: data.runtime,
+            vote_average: data.vote_average,
+            release_date: data.release_date,
+            production_countries: data.production_countries || [],
+            videos: data.videos?.results || [],
+            release_dates: data.release_dates?.results || [],
+            avaliacao: { nota: null },
+          })),
+      ),
     )
       .then((lista) => {
-        setFilmesParaAssistir(lista);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-      });
-  }, [user?.favoritos, apiKey]);
+        setFilmes(lista);
 
-  const fetchMovie = useCallback(
-    async (movieId) => {
-      try {
-        const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=pt-BR&append_to_response=videos,release_dates`;
-        const res = await fetch(url);
-        if (!res.ok) throw new Error(`Status ${res.status}`);
-        const data = await res.json();
-        setFilme(data);
-        const trailer = data.videos?.results.find(
-          (v) => v.type === "Trailer" && v.site === "YouTube"
+        const rnd = lista[Math.floor(Math.random() * lista.length)];
+        setFilmeHero(rnd);
+
+        const trailer = rnd.videos.find(
+          (v) => v.type === "Trailer" && v.site === "YouTube",
         );
         setTrailerLink(
-          trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : null
+          trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : null,
         );
-        setReleaseDates(data.release_dates?.results || []);
-      } catch (err) {
-        console.error("Erro ao buscar filme de topo:", err);
-      }
-    },
-    [apiKey]
-  );
+        setReleaseDates(rnd.release_dates);
 
-  useEffect(() => {
-    if (!loading && filmesParaAssistir.length) {
-      const rnd =
-        filmesParaAssistir[
-          Math.floor(Math.random() * filmesParaAssistir.length)
-        ];
-      fetchMovie(rnd.id);
-    }
-  }, [loading, filmesParaAssistir, fetchMovie]);
-
-  const handleExcluirFilme = (id) => {
-    removerFilme(id);
-    setFilmesParaAssistir((prev) => prev.filter((f) => f.id !== Number(id)));
-  };
-
-  const openModal = (film) => {
-    setSelectedFilm(film);
-    setModalOpen(true);
-  };
+      })
+      .catch(() => {});
+  }, [user?.favoritos]);
 
   return (
     <Private>
       <Head>
-        <title>Cameo - favoritos</title>
+        <title>Cameo - Favoritos</title>
         <meta
           name="description"
           content="Encontre seus filmes favoritos em um só lugar! Salve os títulos que você mais ama e tenha sempre à mão suas melhores recomendações."
@@ -125,51 +112,85 @@ export default function FilmesAssisti() {
 
       <Header />
 
-      {filme ? (
-        <main className={styles.filmesAssisti}>
-          <div className={styles.assistiPage}>
-            <div className={styles.contAssisti}>
-              <div className={styles.tituloEListas}>
-                <TitulosFilmesDesktop
-                  filme={filme}
-                  trailerLink={trailerLink}
-                  releaseDates={releaseDates}
-                />
+      <main className={styles.page}>
+        <Breadcrumb items={[{ label: "Favoritos" }]} />
 
-                <Titulolistagem
-                  quantidadeFilmes={filmesParaAssistir.length}
-                  titulolistagem={"Meus favoritos"}
-                />
+        {filmeHero && (
+          <FilmeHero
+            filme={filmeHero}
+            trailerLink={trailerLink}
+            releaseDates={releaseDates}
+            showMetas={false}
+          />
+        )}
 
-                <ListaPageFilmes
-                  listagemDeFilmes={filmesParaAssistir}
-                  loading={loading}
-                  mostrarBotaoFechar
-                  handleExcluirFilme={handleExcluirFilme}
-                  openModal={openModal}
+        {generos.length > 0 && (
+          <SectionCard title="Gêneros">
+            <div className={styles.generosWrapper}>
+              <div className={styles.generos} ref={generosRef}>
+                <RadioButton
+                  id="genero-todos"
+                  name="genero"
+                  label="Todos"
+                  checked={generoSelecionado === ""}
+                  onChange={() => { setGeneroSelecionado(""); setCurrentPage(1); }}
+                  iconVariant="none"
                 />
+                {generos.map((g) => (
+                  <RadioButton
+                    key={g.id}
+                    id={`genero-${g.id}`}
+                    name="genero"
+                    label={g.name}
+                    checked={generoSelecionado === String(g.id)}
+                    onChange={() => { setGeneroSelecionado(String(g.id)); setCurrentPage(1); }}
+                    iconVariant="none"
+                  />
+                ))}
               </div>
+              <ArrowButton scrollRef={generosRef} scrollAmount={200} />
             </div>
+          </SectionCard>
+        )}
 
-            <Footer />
-
-            {modalOpen && (
-              <FilmesCarousel
-                filmes={filmesParaAssistir}
-                selectedFilm={selectedFilm} // Mantenha esta linha
-                onClose={() => setModalOpen(false)}
-                excluirFilme={() => {
-                  removerFilme(String(selectedFilm.id));
-                  setModalOpen(false);
-                }}
+        <SectionCard
+          title="Favoritos"
+          count={filmes.length}
+          actions={[
+            {
+              label: isMobile ? undefined : "Filtros",
+              icon: <FilterIcon size={20} color="currentColor" />,
+              border: "var(--stroke-solid)",
+            },
+          ]}
+          pagination={{
+            page: currentPage,
+            totalPages,
+            onChange: setCurrentPage,
+          }}
+        >
+          <div className={styles.listaFilmes}>
+            {filmesPaginados.map((f, idx) => (
+              <CardFilme
+                key={f.id}
+                movie={f}
+                variant={isMobile ? "mini" : "nota"}
+                onClick={() => setModalDetalhes({ aberto: true, index: idx })}
               />
-            )}
-
+            ))}
           </div>
-        </main>
-      ) : (
-        <BlankSlate />
-      )}
+        </SectionCard>
+
+        {modalDetalhes.aberto && (
+          <ModalDetalhesFilme
+            filmes={filmesPaginados}
+            indexInicial={modalDetalhes.index}
+            onClose={() => setModalDetalhes({ aberto: false, index: 0 })}
+          />
+        )}
+      </main>
+
+      <Footer />
     </Private>
   );
 }

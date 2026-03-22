@@ -131,7 +131,11 @@ function AuthProvider({ children }) {
       storageUser(userData);
       router.push("/");
 
-      toast.success("Login realizado com sucesso!", { duration: 3000 });
+      toast.success("Login realizado com sucesso!", {
+        duration: 3000,
+        buttons: [{ label: "Fechar" }],
+        bg: "var(--primitive-verde-01)",
+      });
     } catch (error) {
       setUser(null);
       localStorage.removeItem("@ticketsPro");
@@ -271,7 +275,11 @@ function AuthProvider({ children }) {
 
       console.log("Filme salvo com sucesso no Firebase");
 
-      toast.success("Filme adicionado aos favoritos!", { duration: 3000 });
+      toast.success("Filme adicionado aos favoritos!", {
+        duration: 3000,
+        buttons: [{ label: "Fechar" }],
+        bg: "var(--primitive-verde-01)",
+      });
     } catch (error) {
       console.error("Erro ao salvar filme no Firebase:", error);
     }
@@ -306,7 +314,11 @@ function AuthProvider({ children }) {
 
       console.log("Filme removido com sucesso do Firebase");
 
-      toast.success("Filme removido de favoritos!", { duration: 3000 });
+      toast.success("Filme removido de favoritos!", {
+        duration: 3000,
+        buttons: [{ label: "Fechar" }],
+        bg: "var(--primitive-verde-01)",
+      });
     } catch (error) {
       console.error("Erro ao remover filme do Firebase:", error);
     }
@@ -341,7 +353,11 @@ function AuthProvider({ children }) {
 
       console.log("Filme salvo com sucesso no Firebase");
 
-      toast.success("Filme adicionado a lista para ver!", { duration: 3000 });
+      toast.success("Filme adicionado a lista para ver!", {
+        duration: 3000,
+        buttons: [{ label: "Fechar" }],
+        bg: "var(--primitive-verde-01)",
+      });
     } catch (error) {
       console.error("Erro ao salvar filme no Firebase:", error);
     }
@@ -444,7 +460,14 @@ function AuthProvider({ children }) {
     }
   }
 
-  async function darNota(filmeId, nota, comentario, ondeAssistiu, contarNaMeta, dataAssistido) {
+  async function darNota(
+    filmeId,
+    nota,
+    comentario,
+    ondeAssistiu,
+    contarNaMeta,
+    dataAssistido,
+  ) {
     if (!user) {
       console.error("Usuário não autenticado");
       return;
@@ -509,7 +532,11 @@ function AuthProvider({ children }) {
         },
       }));
 
-      toast.success("Filme registrado com sucesso!", { duration: 3000 });
+      toast.success("Filme registrado com sucesso!", {
+        duration: 3000,
+        buttons: [{ label: "Fechar" }],
+        bg: "var(--primitive-verde-01)",
+      });
     } catch (error) {
       console.error("Erro ao registrar nota do filme no Firebase:", error);
     }
@@ -576,10 +603,9 @@ function AuthProvider({ children }) {
       }));
 
       toast.success("Meta criada com sucesso!", {
-        bg: "var(--primitive-verde-01)",
-        position: "bottom-center",
-        duration: 3000,
+        duration: 300000,
         buttons: [{ label: "Fechar" }],
+        bg: "var(--primitive-verde-01)",
       });
     } catch (error) {
       console.error("Erro ao adicionar a meta no Firebase:", error);
@@ -620,10 +646,9 @@ function AuthProvider({ children }) {
       }));
 
       toast.success("Meta removida com sucesso!", {
-        bg: "var(--primitive-verde-01)",
-        position: "bottom-center",
-        duration: 3000,
+        duration: 300000,
         buttons: [{ label: "Fechar" }],
+        bg: "var(--primitive-verde-01)",
       });
     } catch (error) {
       console.error("Erro ao remover meta do Firebase:", error);

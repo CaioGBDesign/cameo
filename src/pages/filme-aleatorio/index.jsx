@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useIsMobile } from "@/components/DeviceProvider";
 import TitulosFilmesDesktop from "@/components/titulosFilmesDesktop";
+import FilmeBg from "@/components/filme-bg";
 import BannerFilme from "@/components/banner-filme";
 import Sinopse from "@/components/detalhesfilmes/sinopse";
 import FilterIcon from "@/components/icons/FilterIcon";
@@ -23,6 +24,8 @@ const ModalAvaliar = dynamic(
 const InfoFilme = dynamic(() => import("@/components/infoFilme"));
 import Cast from "@/components/detalhesfilmes/cast";
 import CardFilme from "@/components/card-filme";
+import ModalDetalhesFilme from "@/components/modais/modal-detalhes-filme";
+import ModalFiltros from "@/components/modais/filtros";
 
 export default function FilmeAleatorio() {
   const router = useRouter();
@@ -46,6 +49,7 @@ export default function FilmeAleatorio() {
   const [favoritosList, setFavoritosList] = useState(user?.favoritos || []);
 
   const [modalListaAberto, setModalListaAberto] = useState(false);
+  const [modalDetalhes, setModalDetalhes] = useState({ aberto: false, index: 0 });
   const [selecionarFavorito, setSelecionarFavorito] = useState(false);
   const [selecionarParaVer, setSelecionarParaVer] = useState(false);
 
@@ -179,6 +183,12 @@ export default function FilmeAleatorio() {
 
         {!loading && filme && (
           <>
+            {!isMobile && filme.backdrop_path && (
+              <FilmeBg
+                src={`https://image.tmdb.org/t/p/w1280/${filme.backdrop_path}`}
+                alt={filme.title}
+              />
+            )}
             {isMobile && (
               <BannerFilme
                 src={`https://image.tmdb.org/t/p/w780/${filme.poster_path}`}
@@ -279,17 +289,12 @@ export default function FilmeAleatorio() {
                     scrollbarWidth: "none",
                   }}
                 >
-                  {related.map((movie) => (
+                  {related.map((movie, idx) => (
                     <CardFilme
                       key={movie.id}
                       movie={movie}
                       variant="titulo"
-                      onClick={() =>
-                        router.push({
-                          pathname: router.pathname,
-                          query: { id: movie.id },
-                        })
-                      }
+                      onClick={() => setModalDetalhes({ aberto: true, index: idx })}
                     />
                   ))}
                 </div>
@@ -329,6 +334,22 @@ export default function FilmeAleatorio() {
         )}
       </main>
       <Footer />
+
+      {modalType === "filters" && (
+        <ModalFiltros
+          user={user}
+          onClose={closeModal}
+          onSelectMovie={(id) => fetchMovie(id)}
+        />
+      )}
+
+      {modalDetalhes.aberto && related.length > 0 && (
+        <ModalDetalhesFilme
+          filmes={related}
+          indexInicial={modalDetalhes.index}
+          onClose={() => setModalDetalhes({ aberto: false, index: 0 })}
+        />
+      )}
 
       {modalListaAberto && (
         <Modal

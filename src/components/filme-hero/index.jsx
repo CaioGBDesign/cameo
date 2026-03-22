@@ -13,7 +13,7 @@ import CheckboxCard from "@/components/inputs/checkbox-card";
 import AddToListIcon from "@/components/icons/AddToListIcon";
 import SectionMetas from "@/components/section-metas";
 
-export default function FilmeHero({ filme, trailerLink, releaseDates }) {
+export default function FilmeHero({ filme, trailerLink, releaseDates, showMetas = true }) {
   const { user, salvarFilme, removerFilme, assistirFilme, removerAssistir } =
     useAuth();
   const isMobile = useIsMobile();
@@ -159,7 +159,7 @@ export default function FilmeHero({ filme, trailerLink, releaseDates }) {
         </div>
       </div>
 
-      {!isMobile && (
+      {!isMobile && showMetas && (
         <div className={styles.metasDesktop}>
           <SectionMetas />
         </div>

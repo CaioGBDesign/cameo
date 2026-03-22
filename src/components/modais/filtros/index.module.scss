@@ -1,0 +1,101 @@
+.contFiltros {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  width: 100%;
+}
+
+.seletores {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-lg);
+  width: 100%;
+
+  @media only screen and (max-width: 600px) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.boxFiltros {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4xl);
+  padding: var(--space-lg);
+  background: var(--bg-overlay);
+  border: solid 1px var(--stroke-base);
+  border-radius: var(--space-lg);
+  width: 100%;
+
+  .filtrosGrupo {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: var(--space-lg);
+    width: 100%;
+
+    h3 {
+      font-size: 14px;
+      font-style: italic;
+      color: var(--text-sub);
+    }
+
+    .seletor,
+    .streaming {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+  }
+}
+
+.noResults {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text-sub);
+}
+
+/* ── Country button (mobile) ── */
+.countryBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs);
+  width: 100%;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: inherit;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text-sub);
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: var(--stroke-submit);
+  }
+}
+
+.countryBtnChevron {
+  flex-shrink: 0;
+  transform: rotate(-90deg);
+}
+
+/* ── Footer ── */
+.footerBotoes {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+
+  @media only screen and (max-width: 600px) {
+    button:last-child,
+    a:last-child {
+      flex: 1;
+    }
+  }
+}

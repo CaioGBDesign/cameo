@@ -13,6 +13,8 @@ import Button from "@/components/button";
 import SectionCard from "@/components/section-card";
 import Modal from "@/components/modal";
 import CheckboxCard from "@/components/inputs/checkbox-card";
+import BookmarkIcon from "@/components/icons/BookmarkIcon";
+import ListIcon from "@/components/icons/ListIcon";
 import { useAuth } from "@/contexts/auth";
 import styles from "./index.module.scss";
 
@@ -22,6 +24,7 @@ const ModalAvaliar = dynamic(
   () => import("@/components/modais/avaliar-filmes"),
 );
 const InfoFilme = dynamic(() => import("@/components/infoFilme"));
+const Servicos = dynamic(() => import("@/components/detalhesfilmes/servicos"));
 import Cast from "@/components/detalhesfilmes/cast";
 import CardFilme from "@/components/card-filme";
 import ModalDetalhesFilme from "@/components/modais/modal-detalhes-filme";
@@ -42,6 +45,7 @@ export default function FilmeAleatorio() {
   const [related, setRelated] = useState([]);
   const [trailerLink, setTrailerLink] = useState(null);
   const [releaseDates, setReleaseDates] = useState([]);
+  const [servicosDisponiveis, setServicosDisponiveis] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [modalType, setModalType] = useState(null);
@@ -49,7 +53,10 @@ export default function FilmeAleatorio() {
   const [favoritosList, setFavoritosList] = useState(user?.favoritos || []);
 
   const [modalListaAberto, setModalListaAberto] = useState(false);
-  const [modalDetalhes, setModalDetalhes] = useState({ aberto: false, index: 0 });
+  const [modalDetalhes, setModalDetalhes] = useState({
+    aberto: false,
+    index: 0,
+  });
   const [selecionarFavorito, setSelecionarFavorito] = useState(false);
   const [selecionarParaVer, setSelecionarParaVer] = useState(false);
 
@@ -126,6 +133,9 @@ export default function FilmeAleatorio() {
       );
       setTrailerLink(tr ? `https://www.youtube.com/watch?v=${tr.key}` : null);
       setReleaseDates(data.release_dates?.results || []);
+      setServicosDisponiveis(
+        data["watch/providers"]?.results?.BR?.flatrate || [],
+      );
       setRelated(data.similar?.results || []);
     } catch (err) {
       console.error("Erro ao buscar filme:", err);
@@ -260,6 +270,13 @@ export default function FilmeAleatorio() {
 
             <div className={styles.todasAsInformacoes}>
               <div className={styles.servicosDetalhes}>
+                <div className={styles.servicosStreaming}>
+                  {servicosDisponiveis.length > 0 && (
+                    <SectionCard title="Serviços">
+                      <Servicos servicos={servicosDisponiveis} />
+                    </SectionCard>
+                  )}
+                </div>
                 <SectionCard title="Detalhes">
                   <InfoFilme
                     release_date={filme.release_date}
@@ -294,7 +311,9 @@ export default function FilmeAleatorio() {
                       key={movie.id}
                       movie={movie}
                       variant="titulo"
-                      onClick={() => setModalDetalhes({ aberto: true, index: idx })}
+                      onClick={() =>
+                        setModalDetalhes({ aberto: true, index: idx })
+                      }
                     />
                   ))}
                 </div>
@@ -376,12 +395,14 @@ export default function FilmeAleatorio() {
               label="Adicionar aos favoritos"
               checked={selecionarFavorito}
               onChange={(e) => setSelecionarFavorito(e.target.checked)}
+              icon={<BookmarkIcon size={18} color="currentColor" />}
             />
             <CheckboxCard
               id="modal-para-ver"
               variant="card"
               label="Quero assistir"
               checked={selecionarParaVer}
+              icon={<ListIcon size={18} color="currentColor" />}
               onChange={(e) => setSelecionarParaVer(e.target.checked)}
             />
           </div>

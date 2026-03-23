@@ -8,6 +8,7 @@ const CheckboxCard = ({
   checked = false,
   onChange,
   id,
+  icon,
 }) => {
   const cardClass = [
     styles.wrapper,
@@ -19,11 +20,12 @@ const CheckboxCard = ({
 
   return (
     <label className={cardClass} htmlFor={id}>
-      <Checkbox id={id} checked={checked} onChange={onChange} />
+      {icon && <span className={styles.icon}>{icon}</span>}
       <div className={styles.text}>
         <span className={styles.label}>{label}</span>
         {sublabel && <span className={styles.sublabel}>{sublabel}</span>}
       </div>
+      <Checkbox id={id} checked={checked} onChange={onChange} />
     </label>
   );
 };

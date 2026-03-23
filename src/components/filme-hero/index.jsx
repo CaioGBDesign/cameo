@@ -11,6 +11,8 @@ import Button from "@/components/button";
 import Modal from "@/components/modal";
 import CheckboxCard from "@/components/inputs/checkbox-card";
 import AddToListIcon from "@/components/icons/AddToListIcon";
+import BookmarkIcon from "@/components/icons/BookmarkIcon";
+import ListIcon from "@/components/icons/ListIcon";
 import SectionMetas from "@/components/section-metas";
 
 export default function FilmeHero({ filme, trailerLink, releaseDates, showMetas = true }) {
@@ -184,6 +186,7 @@ export default function FilmeHero({ filme, trailerLink, releaseDates, showMetas 
               label="Adicionar aos favoritos"
               checked={selecionarFavorito}
               onChange={(e) => setSelecionarFavorito(e.target.checked)}
+              icon={<BookmarkIcon size={18} color="currentColor" />}
             />
             <CheckboxCard
               id="hero-para-ver"
@@ -191,6 +194,7 @@ export default function FilmeHero({ filme, trailerLink, releaseDates, showMetas 
               label="Quero assistir"
               checked={selecionarParaVer}
               onChange={(e) => setSelecionarParaVer(e.target.checked)}
+              icon={<ListIcon size={18} color="currentColor" />}
             />
           </div>
         </Modal>

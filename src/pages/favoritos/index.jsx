@@ -19,7 +19,7 @@ const TMDB_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 const ITEMS_PER_PAGE = 24;
 
 export default function Favoritos() {
-  const { user } = useAuth();
+  const { user, removerFilme } = useAuth();
   const isMobile = useIsMobile();
 
   const [filmes, setFilmes] = useState([]);
@@ -186,6 +186,11 @@ export default function Favoritos() {
             filmes={filmesPaginados}
             indexInicial={modalDetalhes.index}
             onClose={() => setModalDetalhes({ aberto: false, index: 0 })}
+            lista="favoritos"
+            onRemover={(id) => {
+              removerFilme(String(id));
+              setFilmes((prev) => prev.filter((f) => f.id !== id));
+            }}
           />
         )}
       </main>

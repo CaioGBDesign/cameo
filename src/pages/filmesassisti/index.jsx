@@ -22,7 +22,7 @@ import GraficoPeriodo from "@/components/grafico-periodo";
 const TMDB_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
 export default function FilmesAssisti() {
-  const { user } = useAuth();
+  const { user, removerNota } = useAuth();
   const isMobile = useIsMobile();
 
   const [filmeHero, setFilmeHero] = useState(null);
@@ -200,6 +200,11 @@ export default function FilmesAssisti() {
             filmes={filmesPaginados}
             indexInicial={modalDetalhes.index}
             onClose={() => setModalDetalhes({ aberto: false, index: 0 })}
+            lista="vistos"
+            onRemover={(id) => {
+              removerNota(String(id));
+              setFilmesVistos((prev) => prev.filter((f) => f.id !== id));
+            }}
           />
         )}
       </main>

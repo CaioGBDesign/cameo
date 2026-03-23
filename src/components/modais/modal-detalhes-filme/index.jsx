@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/auth";
@@ -10,6 +11,7 @@ import Classificacao from "@/components/detalhesfilmes/classificacao";
 import Button from "@/components/button";
 import ChevronDownIcon from "@/components/icons/ChevronDownIcon";
 import StarRatingIcon from "@/components/icons/StarRatingIcon";
+import TrashIcon from "@/components/icons/TrashIcon";
 import styles from "./index.module.scss";
 
 const TMDB_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
@@ -18,6 +20,8 @@ export default function ModalDetalhesFilme({
   filmes,
   indexInicial = 0,
   onClose,
+  lista,
+  onRemover,
 }) {
   const { user, darNota } = useAuth();
   const router = useRouter();
@@ -29,6 +33,7 @@ export default function ModalDetalhesFilme({
   const [loadingDetalhes, setLoadingDetalhes] = useState(true);
   const [step, setStep] = useState(0); // 0 = detalhes, 1 = avaliação
   const [erroNota, setErroNota] = useState(false);
+  const [popoverRemover, setPopoverRemover] = useState(false);
 
   const filmeAtual = filmes[filmeIndex];
 
@@ -69,6 +74,16 @@ export default function ModalDetalhesFilme({
       dataAssistido,
     );
     onClose();
+  };
+
+  const handleConfirmarRemocao = () => {
+    onRemover?.(filmeAtual.id);
+    setPopoverRemover(false);
+    const temProximo = filmeIndex < filmes.length - 1;
+    const temAnterior = filmeIndex > 0;
+    if (temProximo) setFilmeIndex((i) => i + 1);
+    else if (temAnterior) setFilmeIndex((i) => i - 1);
+    else onClose();
   };
 
   const navAnterior = () => {
@@ -185,8 +200,47 @@ export default function ModalDetalhesFilme({
     </div>
   );
 
+  const listaNome =
+    lista === "favoritos" ? "seus favoritos" : "seus filmes vistos";
+
   const detalhesFooter = (
     <>
+      {popoverRemover &&
+        createPortal(
+          <div
+            className={styles.popoverOverlay}
+            onClick={() => setPopoverRemover(false)}
+          >
+            <div
+              className={styles.popover}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className={styles.popoverTexto}>
+                Deseja mesmo remover o filme{" "}
+                <strong>{filmeAtual?.title}</strong> de {listaNome}?
+              </p>
+              <div className={styles.popoverAcoes}>
+                <button
+                  className={styles.popoverCancelar}
+                  onClick={() => setPopoverRemover(false)}
+                  type="button"
+                >
+                  Cancelar
+                </button>
+                <button
+                  className={styles.popoverConfirmar}
+                  onClick={handleConfirmarRemocao}
+                  type="button"
+                >
+                  <TrashIcon size={14} color="currentColor" />
+                  Remover
+                </button>
+              </div>
+            </div>
+          </div>,
+          document.body,
+        )}
+
       {isMobile && nota?.nota > 0 && (
         <button
           className={styles.estrelasMobileBtn}
@@ -215,29 +269,43 @@ export default function ModalDetalhesFilme({
           </button>
         )}
 
-        {!(nota?.nota > 0) && (
-          <Button
-            variant="outline"
-            label={isMobile ? undefined : "Já assisti"}
-            icon={
-              isMobile ? <StarRatingIcon size={20} color="white" /> : undefined
-            }
-            onClick={handleAvaliar}
-            border="var(--stroke-solid)"
-            arrowColor="var(--stroke-solid)"
-            width={isMobile ? "64px" : "220px"}
-          />
-        )}
+        <div className={styles.footerAcoes}>
+          {lista && (
+            <Button
+              variant="soft"
+              icon={<TrashIcon size={18} color="var(--color-error)" />}
+              onClick={() => setPopoverRemover(true)}
+              width="64px"
+              bg="var(--bg-base)"
+            />
+          )}
 
-        <Button
-          variant="solid"
-          label="Ver detalhes"
-          onClick={() => {
-            router.push(`/filme-aleatorio?id=${filmeAtual.id}`);
-            onClose();
-          }}
-          width={isMobile ? "100%" : "220px"}
-        />
+          {!(nota?.nota > 0) && (
+            <Button
+              variant="outline"
+              label={isMobile ? undefined : "Já assisti"}
+              icon={
+                isMobile ? (
+                  <StarRatingIcon size={20} color="white" />
+                ) : undefined
+              }
+              onClick={handleAvaliar}
+              border="var(--stroke-solid)"
+              arrowColor="var(--stroke-solid)"
+              width={isMobile ? "64px" : "220px"}
+            />
+          )}
+
+          <Button
+            variant="solid"
+            label="Ver detalhes"
+            onClick={() => {
+              router.push(`/filme-aleatorio?id=${filmeAtual.id}`);
+              onClose();
+            }}
+            width={isMobile ? "100%" : "220px"}
+          />
+        </div>
       </div>
     </>
   );

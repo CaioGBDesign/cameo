@@ -26,11 +26,19 @@
   border: none;
 }
 
+.icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--text-sub);
+}
+
 /* ── Texto ── */
 .text {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  flex: 1;
 }
 
 .label {

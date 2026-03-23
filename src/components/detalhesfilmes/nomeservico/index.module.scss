@@ -1,0 +1,19 @@
+.nomeServico {
+  .contServicos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 40px;
+    height: 40px;
+
+    background: #00000030;
+    border-radius: var(--space-sm);
+
+    overflow: hidden;
+
+    img {
+      width: 100%;
+    }
+  }
+}

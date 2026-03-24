@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/router";
 import styles from "./index.module.scss";
 import Head from "next/head";
 import Header from "@/components/Header";
@@ -8,9 +9,12 @@ import FilmeHero from "@/components/filme-hero";
 import SectionCard from "@/components/section-card";
 import CardFilme from "@/components/card-filme";
 import FilterIcon from "@/components/icons/FilterIcon";
+import SearchIcon from "@/components/icons/SearchIcon";
+import TextInput from "@/components/inputs/text-input";
 import Breadcrumb from "@/components/breadcrumb";
 import CardMeta from "@/components/card-meta";
 import CriarMeta from "@/components/modais/criar-meta";
+import DetalheMeta from "@/components/modais/detalhe-meta";
 import ModalDetalhesFilme from "@/components/modais/modal-detalhes-filme";
 import Button from "@/components/button";
 import { useAuth } from "@/contexts/auth";
@@ -24,6 +28,8 @@ const TMDB_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 export default function FilmesAssisti() {
   const { user, removerNota } = useAuth();
   const isMobile = useIsMobile();
+  const router = useRouter();
+  const queryHandledRef = useRef(false);
 
   const [filmeHero, setFilmeHero] = useState(null);
   const [trailerLink, setTrailerLink] = useState(null);
@@ -31,9 +37,34 @@ export default function FilmesAssisti() {
   const [filmesVistos, setFilmesVistos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [busca, setBusca] = useState("");
   const [modalMetaAberto, setModalMetaAberto] = useState(false);
   const [modalDetalhes, setModalDetalhes] = useState({ aberto: false, index: 0 });
+  const [metaParaAbrir, setMetaParaAbrir] = useState(null);
   const ITEMS_PER_PAGE = 24;
+
+  useEffect(() => {
+    if (!router.isReady || queryHandledRef.current || !user) return;
+    queryHandledRef.current = true;
+
+    const { meta: metaId, criarMeta } = router.query;
+
+    if (criarMeta === "true") {
+      setModalMetaAberto(true);
+      router.replace("/filmesassisti", undefined, { shallow: true });
+      return;
+    }
+
+    if (metaId) {
+      const metasUsuario = Array.isArray(user.metas) ? user.metas : [];
+      const encontrada = metasUsuario.find((m) => m.id === metaId);
+      if (encontrada) {
+        const filmesVistosPeriodo = contarFilmesPorPeriodo(user.visto || {}, encontrada.periodo);
+        setMetaParaAbrir({ ...encontrada, filmesVistosPeriodo });
+      }
+      router.replace("/filmesassisti", undefined, { shallow: true });
+    }
+  }, [router.isReady, router.query, user]);
 
   const metas = (Array.isArray(user?.metas) ? user.metas : [])
     .map((meta) => ({
@@ -49,8 +80,15 @@ export default function FilmesAssisti() {
         a.filmesVistosPeriodo / a.quantidade,
     );
 
-  const totalPages = Math.ceil(filmesVistos.length / ITEMS_PER_PAGE);
-  const filmesPaginados = filmesVistos.slice(
+  const normalizar = (str) =>
+    str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+  const filmesFiltrados = busca.trim()
+    ? filmesVistos.filter((f) => normalizar(f.title).includes(normalizar(busca.trim())))
+    : filmesVistos;
+
+  const totalPages = Math.ceil(filmesFiltrados.length / ITEMS_PER_PAGE);
+  const filmesPaginados = filmesFiltrados.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE,
   );
@@ -160,6 +198,13 @@ export default function FilmesAssisti() {
           <CriarMeta onClose={() => setModalMetaAberto(false)} />
         )}
 
+        {metaParaAbrir && (
+          <DetalheMeta
+            meta={metaParaAbrir}
+            onClose={() => setMetaParaAbrir(null)}
+          />
+        )}
+
         {!loading && filmesVistos.length > 0 && (
           <div className={styles.graficos}>
             <GraficoGeneros filmesVistos={filmesVistos} />
@@ -170,6 +215,14 @@ export default function FilmesAssisti() {
         <SectionCard
           title="Já assisti"
           count={filmesVistos.length}
+          search={
+            <TextInput
+              placeholder="Buscar filme..."
+              value={busca}
+              onChange={(e) => { setBusca(e.target.value); setCurrentPage(1); }}
+              prefix={<SearchIcon size={20} color="var(--text-sub)" />}
+            />
+          }
           actions={[
             {
               label: isMobile ? undefined : "Filtros",

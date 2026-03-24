@@ -1,3 +1,32 @@
+export const metaExpirou = (criadaEm, periodo) => {
+  if (!criadaEm) return false;
+  const criacao = new Date(criadaEm);
+  const agora = new Date();
+  let fim;
+
+  switch (periodo) {
+    case "dia":
+      fim = new Date(criacao.getFullYear(), criacao.getMonth(), criacao.getDate(), 23, 59, 59);
+      break;
+    case "semana": {
+      const diaSemana = criacao.getDay();
+      const diasAteDomingo = diaSemana === 0 ? 0 : 7 - diaSemana;
+      fim = new Date(criacao.getFullYear(), criacao.getMonth(), criacao.getDate() + diasAteDomingo, 23, 59, 59);
+      break;
+    }
+    case "mes":
+      fim = new Date(criacao.getFullYear(), criacao.getMonth() + 1, 0, 23, 59, 59);
+      break;
+    case "ano":
+      fim = new Date(criacao.getFullYear(), 11, 31, 23, 59, 59);
+      break;
+    default:
+      return false;
+  }
+
+  return agora > fim;
+};
+
 export const calcularDiasRestantes = (periodo) => {
   const hoje = new Date();
   let fim;

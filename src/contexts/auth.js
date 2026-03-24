@@ -26,6 +26,7 @@ import { deleteField } from "firebase/firestore";
 import { useToast } from "@/contexts/toast";
 import Loading from "@/components/loading";
 import { v4 as uuidv4 } from "uuid";
+import { metaExpirou } from "@/utils/metas";
 
 export const AuthContext = createContext({});
 export const useAuth = () => useContext(AuthContext);
@@ -70,6 +71,43 @@ function AuthProvider({ children }) {
               dia: [],
             },
           };
+
+          // Auto-delete metas expiradas com deletarAoExpirar = true
+          const metasArray = Array.isArray(userData.metas)
+            ? userData.metas
+            : [];
+          const metasExpiradas = metasArray.filter(
+            (m) => m.deletarAoExpirar && metaExpirou(m.criadaEm, m.periodo),
+          );
+          if (metasExpiradas.length > 0) {
+            const novasMetas = metasArray.filter(
+              (m) =>
+                !(m.deletarAoExpirar && metaExpirou(m.criadaEm, m.periodo)),
+            );
+            await updateDoc(docRef, { metas: novasMetas });
+            userData.metas = novasMetas;
+
+            // Armazena metas deletadas para exibir alert
+            try {
+              const { contarFilmesPorPeriodo: contar } =
+                await import("@/utils/metas");
+              const alertasExistentes = JSON.parse(
+                localStorage.getItem("cameo_alertas_deletadas") || "[]",
+              );
+              metasExpiradas.forEach((m) => {
+                const filmesVistos = contar(userData.visto || {}, m.periodo);
+                const progresso =
+                  m.quantidade > 0
+                    ? Math.round((filmesVistos / m.quantidade) * 100)
+                    : 0;
+                alertasExistentes.push({ meta: m, progresso });
+              });
+              localStorage.setItem(
+                "cameo_alertas_deletadas",
+                JSON.stringify(alertasExistentes),
+              );
+            } catch {}
+          }
 
           setUser(userData);
           storageUser(userData);
@@ -311,6 +349,12 @@ function AuthProvider({ children }) {
         ...prevUser,
         favoritos: prevUser.favoritos.filter((id) => id !== filmeId),
       }));
+
+      toast.success("Filme removido dos favoritos!", {
+        duration: 3000,
+        buttons: [{ label: "Fechar" }],
+        bg: "var(--primitive-verde-01)",
+      });
 
       console.log("Filme removido com sucesso do Firebase");
 
@@ -576,6 +620,12 @@ function AuthProvider({ children }) {
           ...prevUser,
           visto: updatedVisto,
         };
+      });
+
+      toast.success("Filme removido dos vistos!", {
+        duration: 3000,
+        buttons: [{ label: "Fechar" }],
+        bg: "var(--primitive-verde-01)",
       });
 
       console.log("Nota do filme removida com sucesso do Firebase");

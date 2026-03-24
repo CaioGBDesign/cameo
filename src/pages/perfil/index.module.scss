@@ -155,11 +155,31 @@
     .conteudoSectionCard {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      align-items: start;
       gap: var(--space-lg);
 
       width: 100%;
+
+      @media only screen and (max-width: 768px) {
+        align-items: center;
+      }
+
+      .gridInputs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-lg);
+        align-items: start;
+        width: 100%;
+
+        @media only screen and (max-width: 768px) {
+          display: flex;
+          flex-direction: column;
+          grid-template-columns: 1fr;
+          gap: var(--space-lg);
+          align-items: center;
+          width: 100%;
+        }
+      }
 
       .selectBtn {
         height: 60px;

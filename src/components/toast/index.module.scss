@@ -16,12 +16,12 @@
   }
 
   @media only screen and (max-width: 767px) {
-    bottom: 0;
+    top: 0;
     left: 50%;
     transform: translateX(-50%);
     align-items: center;
     width: 100%;
-    padding-bottom: var(--space-lg);
+    padding-top: var(--space-lg);
   }
 }
 
@@ -48,10 +48,10 @@
   @media only screen and (max-width: 767px) {
     min-width: 90%;
     max-width: 90%;
-    animation: slideInBottom 0.3s ease forwards;
+    animation: slideInTop 0.3s ease forwards;
 
     &.exiting {
-      animation: slideOutBottom 0.3s ease forwards;
+      animation: slideOutTop 0.3s ease forwards;
     }
   }
 }

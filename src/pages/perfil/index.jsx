@@ -50,7 +50,7 @@ const normalizeGenero = (val) => {
   const exact = GENERO_OPTIONS.find((o) => o.value === val);
   if (exact) return val;
   const byLabel = GENERO_OPTIONS.find(
-    (o) => o.label.toLowerCase() === val.toLowerCase()
+    (o) => o.label.toLowerCase() === val.toLowerCase(),
   );
   return byLabel?.value ?? "";
 };
@@ -159,84 +159,64 @@ const PerfilUsuario = () => {
         <div className={styles.sectionsCards}>
           <SectionCard title="Dados pessoais">
             <div className={styles.conteudoSectionCard}>
-              <TextInput
-                id="nome"
-                name="nome"
-                placeholder="Seu nome"
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
-                width="100%"
-              />
-              <TextInput
-                id="handle"
-                name="handle"
-                placeholder="seuhandle"
-                value={handle}
-                onChange={(e) => setHandle(e.target.value)}
-                width="100%"
-              />
-              <TextInput
-                id="email"
-                name="email"
-                placeholder="seu@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                type="email"
-                width="100%"
-              />
-              {isMobile ? (
-                <button
-                  className={styles.selectBtn}
-                  onClick={handleOpenGeneroModal}
-                >
-                  <span>{generoLabel || "Selecione o gênero"}</span>
-                  <ChevronDownIcon size={16} color="currentColor" />
-                </button>
-              ) : (
-                <Select
-                  placeholder={generoLabel || "Selecione o gênero"}
-                  value={genero}
-                  onChange={setGenero}
+              <div className={styles.gridInputs}>
+                <TextInput
+                  id="nome"
+                  name="nome"
+                  placeholder="Seu nome"
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
                   width="100%"
-                  options={GENERO_OPTIONS}
                 />
-              )}
+                <TextInput
+                  id="handle"
+                  name="handle"
+                  placeholder="seuhandle"
+                  value={handle}
+                  onChange={(e) => setHandle(e.target.value)}
+                  width="100%"
+                />
+                <TextInput
+                  id="email"
+                  name="email"
+                  placeholder="seu@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  type="email"
+                  width="100%"
+                />
+                {isMobile ? (
+                  <button
+                    className={styles.selectBtn}
+                    onClick={handleOpenEstiloModal}
+                  >
+                    <span>{estiloLabel || "Estilo cinéfilo"}</span>
+                    <ChevronDownIcon size={16} color="currentColor" />
+                  </button>
+                ) : (
+                  <Select
+                    placeholder={estiloLabel || "Estilo cinéfilo"}
+                    value={estilo}
+                    onChange={setEstilo}
+                    width="100%"
+                    options={ESTILO_OPTIONS}
+                  />
+                )}
+
+                <Button
+                  variant="soft"
+                  label="Sair"
+                  icon={<LogOutIcon size={16} color="currentColor" />}
+                  bg="var(--bg-base)"
+                  onClick={() => setConfirmarSaida(true)}
+                  width="100%"
+                />
+              </div>
             </div>
           </SectionCard>
 
           <SectionCard title="Configurações">
             <div className={styles.conteudoSectionCard}>
-              {isMobile ? (
-                <button
-                  className={styles.selectBtn}
-                  onClick={handleOpenEstiloModal}
-                >
-                  <span>{estiloLabel || "Estilo cinéfilo"}</span>
-                  <ChevronDownIcon
-                    size={16}
-                    color="currentColor"
-                    className={styles.selectBtnChevron}
-                  />
-                </button>
-              ) : (
-                <Select
-                  placeholder={estiloLabel || "Estilo cinéfilo"}
-                  value={estilo}
-                  onChange={setEstilo}
-                  width="100%"
-                  options={ESTILO_OPTIONS}
-                />
-              )}
-              {!isMobile && (
-                <Button
-                  variant="soft"
-                  label="Sair"
-                  icon={<LogOutIcon size={16} color="currentColor" />}
-                  width="100%"
-                  bg="var(--bg-base)"
-                  onClick={() => setConfirmarSaida(true)}
-                />
-              )}
               <Button
                 variant="outline"
                 label="Alterar senha"
@@ -244,7 +224,12 @@ const PerfilUsuario = () => {
                 border="var(--stroke-base)"
                 arrowColor="var(--stroke-base)"
               />
-              <Button variant="solid" label="Salvar alterações" width="100%" onClick={handleSalvar} />
+              <Button
+                variant="solid"
+                label="Salvar alterações"
+                width="100%"
+                onClick={handleSalvar}
+              />
             </div>
           </SectionCard>
         </div>

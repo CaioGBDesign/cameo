@@ -49,4 +49,28 @@
       }
     }
   }
+
+  .testeAlertas {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    width: 100%;
+    padding: var(--space-lg);
+    background: var(--bg-overlay);
+    border: 1px solid var(--stroke-base);
+    border-radius: var(--space-lg);
+  }
+
+  .testeTitle {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--text-sub);
+    margin: 0;
+  }
+
+  .testeBotoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
 }

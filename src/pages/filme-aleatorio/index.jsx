@@ -270,13 +270,13 @@ export default function FilmeAleatorio() {
 
             <div className={styles.todasAsInformacoes}>
               <div className={styles.servicosDetalhes}>
-                <div className={styles.servicosStreaming}>
-                  {servicosDisponiveis.length > 0 && (
+                {servicosDisponiveis.length > 0 && (
+                  <div className={styles.servicosStreaming}>
                     <SectionCard title="Serviços">
                       <Servicos servicos={servicosDisponiveis} />
                     </SectionCard>
-                  )}
-                </div>
+                  </div>
+                )}
                 <SectionCard title="Detalhes">
                   <InfoFilme
                     release_date={filme.release_date}

@@ -17,10 +17,11 @@ export default function SectionCard({
   verTodos,
   scrollRef,
   pagination,
+  search,
   children,
 }) {
   const hasHeader =
-    title || showListIcon || count || avatars || actions || verTodos || scrollRef;
+    title || showListIcon || count || avatars || actions || verTodos || scrollRef || search;
 
   return (
     <div className={styles.sectionCard}>
@@ -49,6 +50,10 @@ export default function SectionCard({
 
             {avatars && <div className={styles.avatars}>{avatars}</div>}
           </div>
+
+          {search && (
+            <div className={styles.searchWrapper}>{search}</div>
+          )}
 
           {(actions || verTodos || scrollRef) && (
             <div className={styles.buttons}>

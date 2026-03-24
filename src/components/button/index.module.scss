@@ -110,7 +110,9 @@
 
 /* ── Botões simples — padding vertical + horizontal ── */
 .default,
-.active {
+.active,
+.simple-primary,
+.simple-secondary {
   padding: var(--space-sm) var(--space-lg);
 }
 
@@ -125,4 +127,16 @@
   background: var(--bg-submit);
   color: var(--text-base);
   font-weight: 400;
+}
+
+.simple-primary {
+  background: var(--bg-submit);
+  border: 1px solid var(--stroke-submit);
+  color: var(--text-base);
+}
+
+.simple-secondary {
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  color: var(--text-base);
 }

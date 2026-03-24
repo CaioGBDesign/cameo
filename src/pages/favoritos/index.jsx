@@ -8,6 +8,8 @@ import FilmeHero from "@/components/filme-hero";
 import SectionCard from "@/components/section-card";
 import CardFilme from "@/components/card-filme";
 import FilterIcon from "@/components/icons/FilterIcon";
+import SearchIcon from "@/components/icons/SearchIcon";
+import TextInput from "@/components/inputs/text-input";
 import Breadcrumb from "@/components/breadcrumb";
 import ModalDetalhesFilme from "@/components/modais/modal-detalhes-filme";
 import RadioButton from "@/components/inputs/radio-button";
@@ -27,6 +29,7 @@ export default function Favoritos() {
   const [trailerLink, setTrailerLink] = useState(null);
   const [releaseDates, setReleaseDates] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [busca, setBusca] = useState("");
   const [generoSelecionado, setGeneroSelecionado] = useState("");
   const generosRef = useRef(null);
   const [modalDetalhes, setModalDetalhes] = useState({ aberto: false, index: 0 });
@@ -37,9 +40,12 @@ export default function Favoritos() {
     ).values()
   ).sort((a, b) => a.name.localeCompare(b.name));
 
-  const filmesFiltrados = generoSelecionado
-    ? filmes.filter((f) => f.genres.some((g) => String(g.id) === generoSelecionado))
-    : filmes;
+  const normalizar = (str) =>
+    str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+  const filmesFiltrados = filmes
+    .filter((f) => !generoSelecionado || f.genres.some((g) => String(g.id) === generoSelecionado))
+    .filter((f) => !busca.trim() || normalizar(f.title).includes(normalizar(busca.trim())));
 
   const totalPages = Math.ceil(filmesFiltrados.length / ITEMS_PER_PAGE);
   const filmesPaginados = filmesFiltrados.slice(
@@ -156,6 +162,14 @@ export default function Favoritos() {
         <SectionCard
           title="Favoritos"
           count={filmes.length}
+          search={
+            <TextInput
+              placeholder="Buscar filme..."
+              value={busca}
+              onChange={(e) => { setBusca(e.target.value); setCurrentPage(1); }}
+              prefix={<SearchIcon size={20} color="var(--text-sub)" />}
+            />
+          }
           actions={[
             {
               label: isMobile ? undefined : "Filtros",

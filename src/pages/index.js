@@ -107,10 +107,8 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (user) {
-      router.replace("/filme-aleatorio");
-    }
-  }, [user]);
+    router.replace("/filme-aleatorio");
+  }, []);
 
   return (
     <main>

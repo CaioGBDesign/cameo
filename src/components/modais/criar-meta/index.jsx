@@ -2,6 +2,7 @@ import { useState } from "react";
 import Modal from "@/components/modal";
 import TextInput from "@/components/inputs/text-input";
 import RadioButton from "@/components/inputs/radio-button";
+import Switch from "@/components/inputs/switch";
 import { useAuth } from "@/contexts/auth";
 import styles from "./index.module.scss";
 
@@ -44,6 +45,7 @@ export default function CriarMeta({ onClose }) {
   const [quantidade, setQuantidade] = useState("");
   const [tema, setTema] = useState("Todos");
   const [local, setLocal] = useState("");
+  const [deletarAoExpirar, setDeletarAoExpirar] = useState(false);
 
   const handleConfirmar = async () => {
     await adicionarMeta({
@@ -52,6 +54,8 @@ export default function CriarMeta({ onClose }) {
       quantidade: Number(quantidade),
       tema,
       local,
+      deletarAoExpirar,
+      criadaEm: new Date().toISOString(),
     });
     onClose();
   };
@@ -63,7 +67,6 @@ export default function CriarMeta({ onClose }) {
       primaryAction={{ label: "Confirmar", onClick: handleConfirmar }}
     >
       <div className={styles.content}>
-        {/* Bloco 1 — nome, período e quantidade */}
         <div className={styles.bloco}>
           <TextInput
             id="nome-meta"
@@ -73,37 +76,47 @@ export default function CriarMeta({ onClose }) {
             onChange={(e) => setNome(e.target.value)}
           />
 
-          <div className={styles.subBloco}>
-            <div className={styles.grupo}>
-              <span className={styles.grupoLabel}>Adicione um período</span>
-              <div className={styles.radios}>
-                {PERIODOS.map((p) => (
-                  <RadioButton
-                    key={p.valor}
-                    id={`periodo-${p.valor}`}
-                    name="periodo"
-                    label={p.label}
-                    checked={periodo === p.valor}
-                    onChange={() => setPeriodo(p.valor)}
-                    iconVariant="none"
-                  />
-                ))}
-              </div>
+          <div className={styles.grupo}>
+            <span className={styles.grupoLabel}>Adicione um período.<span className={styles.obrigatorio}>*</span></span>
+            <div className={styles.radios}>
+              {PERIODOS.map((p) => (
+                <RadioButton
+                  key={p.valor}
+                  id={`periodo-${p.valor}`}
+                  name="periodo"
+                  label={p.label}
+                  checked={periodo === p.valor}
+                  onChange={() => setPeriodo(p.valor)}
+                  iconVariant="none"
+                />
+              ))}
             </div>
+          </div>
 
-            <TextInput
-              id="quantidade-meta"
-              label="Adicione a quantidade de filmes"
-              placeholder="Ex: 12"
-              type="number"
-              min={1}
-              value={quantidade}
-              onChange={(e) => setQuantidade(e.target.value)}
+          <div className={styles.deletarCard}>
+            <div className={styles.deletarTexto}>
+              <span>Deletar meta concluída</span>
+              <p>Essa ação deleta a meta concluída, mesmo sem atingir a quantidade de filmes definida.</p>
+            </div>
+            <Switch
+              id="deletar-ao-expirar"
+              checked={deletarAoExpirar}
+              onChange={(e) => setDeletarAoExpirar(e.target.checked)}
             />
           </div>
+
+          <TextInput
+            id="quantidade-meta"
+            label="Adicione a quantidade de filmes.*"
+            placeholder="0"
+            type="number"
+            min={1}
+            value={quantidade}
+            onChange={(e) => setQuantidade(e.target.value)}
+          />
+
         </div>
 
-        {/* Bloco 2 — tema e local */}
         <div className={styles.bloco}>
           <div className={styles.grupo}>
             <span className={styles.grupoLabel}>Quer focar em algum tema?</span>

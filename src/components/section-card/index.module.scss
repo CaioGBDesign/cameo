@@ -12,7 +12,7 @@
   .header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    flex-wrap: wrap;
     gap: var(--space-lg);
 
     padding: var(--space-2xl);
@@ -22,6 +22,8 @@
       display: flex;
       align-items: center;
       gap: var(--space-sm);
+      order: 1;
+      flex: 1;
 
       .titleGroup {
         display: flex;
@@ -46,10 +48,29 @@
       }
     }
 
+    .searchWrapper {
+      order: 2;
+      flex: 1;
+      min-width: 200px;
+
+      @media only screen and (max-width: 768px) {
+        order: 3;
+        flex: none;
+        width: 100%;
+        min-width: 0;
+      }
+    }
+
     .buttons {
       display: flex;
       align-items: center;
       gap: var(--space-sm);
+      order: 3;
+      flex-shrink: 0;
+
+      @media only screen and (max-width: 768px) {
+        order: 2;
+      }
     }
   }
 

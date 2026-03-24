@@ -4,6 +4,7 @@ import styles from "./index.module.scss";
 import Modal from "@/components/modal";
 import Button from "@/components/button";
 import RadioButton from "@/components/inputs/radio-button";
+import Switch from "@/components/inputs/switch";
 import TextInput from "@/components/inputs/text-input";
 import TrashIcon from "@/components/icons/TrashIcon";
 import { useAuth } from "@/contexts/auth";
@@ -73,6 +74,7 @@ export default function DetalheMeta({ meta, onClose }) {
   const [quantidade, setQuantidade] = useState(String(meta.quantidade));
   const [tema, setTema] = useState(meta.tema ?? "Todos");
   const [local, setLocal] = useState(meta.local ?? "");
+  const [deletarAoExpirar, setDeletarAoExpirar] = useState(meta.deletarAoExpirar ?? false);
   const [popoverAberto, setPopoverAberto] = useState(false);
 
   const filmesVistos = meta.filmesVistosPeriodo ?? 0;
@@ -90,6 +92,7 @@ export default function DetalheMeta({ meta, onClose }) {
       quantidade: Number(quantidade),
       tema,
       local,
+      deletarAoExpirar,
     });
     onClose();
   };
@@ -163,6 +166,18 @@ export default function DetalheMeta({ meta, onClose }) {
                   />
                 ))}
               </div>
+            </div>
+
+            <div className={styles.deletarCard}>
+              <div className={styles.deletarTexto}>
+                <span>Deletar meta concluída</span>
+                <p>Essa ação deleta a meta concluída, mesmo sem atingir a quantidade de filmes definida.</p>
+              </div>
+              <Switch
+                id="det-deletar-ao-expirar"
+                checked={deletarAoExpirar}
+                onChange={(e) => setDeletarAoExpirar(e.target.checked)}
+              />
             </div>
 
             <TextInput

@@ -3,14 +3,6 @@
   flex-direction: column;
   gap: var(--space-lg);
 
-  max-height: 490px;
-  overflow-y: auto;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
   .conteudoDetalhes {
     display: flex;
     flex-direction: column;
@@ -68,6 +60,38 @@
 
   .btnDeletar {
     width: 100%;
+  }
+
+  .deletarCard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    width: 100%;
+    padding: var(--space-md) var(--space-lg);
+    background: var(--bg-base);
+    border: 1px solid var(--stroke-base);
+    border-radius: var(--space-sm);
+
+    .deletarTexto {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+
+      span {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--text-base);
+        font-style: italic;
+      }
+
+      p {
+        font-size: 0.75rem;
+        color: var(--text-sub);
+        font-style: italic;
+        line-height: 1.4;
+      }
+    }
   }
 }
 

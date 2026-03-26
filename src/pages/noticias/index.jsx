@@ -1,7 +1,7 @@
 import styles from "./index.module.scss";
 import { useState, useEffect, useRef } from "react";
 import { db } from "@/services/firebaseConection";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, query, orderBy, where } from "firebase/firestore";
 import { useAuth } from "@/contexts/auth";
 import Loading from "@/components/loading";
 import { useRouter } from "next/router";
@@ -110,6 +110,7 @@ const Noticias = ({}) => {
       try {
         const q = query(
           collection(db, "noticias"),
+          where("status", "==", "publicado"),
           orderBy("dataPublicacao", "desc")
         );
         const querySnapshot = await getDocs(q);

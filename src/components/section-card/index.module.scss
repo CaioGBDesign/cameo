@@ -76,6 +76,7 @@
 
   .content {
     display: flex;
+    width: 100%;
     padding: var(--space-2xl);
 
     @media only screen and (max-width: 768px) {

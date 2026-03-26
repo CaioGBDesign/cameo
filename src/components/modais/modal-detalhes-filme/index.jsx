@@ -201,7 +201,9 @@ export default function ModalDetalhesFilme({
   );
 
   const listaNome =
-    lista === "favoritos" ? "seus favoritos" : "seus filmes vistos";
+    lista === "favoritos" ? "seus favoritos"
+    : lista === "assistir" ? "sua lista para ver"
+    : "seus filmes vistos";
 
   const detalhesFooter = (
     <>

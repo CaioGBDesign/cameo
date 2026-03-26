@@ -25,7 +25,10 @@ const Header = ({
             <>
               <div className={styles.col}>
                 {showMenu && (
-                  <button className={styles.menuBtn} onClick={() => setMenuOpen(true)}>
+                  <button
+                    className={styles.menuBtn}
+                    onClick={() => setMenuOpen(true)}
+                  >
                     <Menu02Icon size={24} color="currentColor" />
                   </button>
                 )}

@@ -1,0 +1,62 @@
+.page {
+  min-height: 100vh;
+  background: var(--bg-base);
+  color: var(--text-base);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2xl);
+  border-bottom: 1px solid var(--stroke-base);
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: bold;
+  font-style: italic;
+  color: var(--text-header);
+}
+
+.usuario {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-sub);
+}
+
+.cards {
+  display: flex;
+  gap: var(--space-lg);
+  padding: var(--space-2xl);
+  flex-wrap: wrap;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-2xl);
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-lg);
+  text-decoration: none;
+  min-width: 200px;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: var(--stroke-submit);
+  }
+}
+
+.cardTitle {
+  font-size: 1.125rem;
+  font-style: italic;
+  color: var(--text-base);
+}
+
+.cardDesc {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-sub);
+}

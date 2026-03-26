@@ -1,0 +1,107 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.label {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text-sub);
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs);
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: inherit;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text-sub);
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  padding: 0 var(--space-md);
+  height: 60px;
+  width: 100%;
+  text-align: left;
+  transition: border-color 0.2s;
+
+  &:hover,
+  &.open {
+    border-color: var(--stroke-submit);
+  }
+}
+
+.triggerLabel {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.placeholder {
+  opacity: 0.5;
+}
+
+.chevron {
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.chevronUp {
+  transform: rotate(0deg);
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + var(--space-xs));
+  left: 0;
+  min-width: 100%;
+  max-height: 220px;
+  overflow-y: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  z-index: 100;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-xs);
+
+  &.dropdownUp {
+    top: auto;
+    bottom: calc(100% + var(--space-xs));
+  }
+}
+
+.option {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--space-xs);
+  transition: background 0.2s;
+
+  &:hover {
+    background: var(--bg-quintenario);
+  }
+
+  // faz o label do Checkbox ocupar toda a largura
+  label {
+    width: 100%;
+    cursor: pointer;
+  }
+}

@@ -9,24 +9,57 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 10px;
+      gap: var(--space-lg);
+
+      .uploadIcon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        padding: var(--space-sm);
+        border: solid 1px var(--stroke-base);
+        border-radius: var(--space-sm);
+      }
 
       .textos {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 10px;
+        gap: var(--space-lg);
 
-        .textoLabel {
+        .btnAdicionar {
+          position: relative;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: var(--space-sm);
+          height: var(--space-8xl);
+          padding: 0 var(--space-lg);
+          background: var(--bg-overlay);
+          border: 1px solid var(--stroke-solid);
+          border-radius: var(--space-sm);
+          font-size: 15px;
           font-weight: bold;
-          font-size: 20px;
+          font-style: italic;
+          color: var(--text-base);
+          white-space: nowrap;
+
+          svg:last-child {
+            transform: rotate(180deg);
+          }
         }
 
         .subTextoLabel {
-          font-size: 14px;
-          font-weight: 200;
+          font-size: 16px;
+          font-style: italic;
+          color: var(--text-sub);
+
+          text-align: center;
+
+          width: 280px;
         }
+
       }
     }
 

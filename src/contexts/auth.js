@@ -70,7 +70,18 @@ function AuthProvider({ children }) {
               semana: [],
               dia: [],
             },
+            listasQueroVer: docSnap.data().listasQueroVer || null,
+            isAdmin: (await userAuth.getIdTokenResult()).claims.adm || false,
           };
+
+          // Seed listas padrão se ainda não existem
+          if (!userData.listasQueroVer) {
+            const listasPadrao = [
+              { id: uuidv4(), nome: "Sessão pipoca", filmes: [] },
+            ];
+            await updateDoc(docRef, { listasQueroVer: listasPadrao });
+            userData.listasQueroVer = listasPadrao;
+          }
 
           // Auto-delete metas expiradas com deletarAoExpirar = true
           const metasArray = Array.isArray(userData.metas)
@@ -165,9 +176,12 @@ function AuthProvider({ children }) {
         ...docSnap.data(),
       };
 
-      setUser(userData);
+      const tokenResult = await value.user.getIdTokenResult();
+      const isAdmin = tokenResult.claims.adm || false;
+
+      setUser({ ...userData, isAdmin });
       storageUser(userData);
-      router.push("/");
+      router.push(isAdmin ? "/adm" : "/");
 
       toast.success("Login realizado com sucesso!", {
         duration: 3000,
@@ -351,14 +365,6 @@ function AuthProvider({ children }) {
       }));
 
       toast.success("Filme removido dos favoritos!", {
-        duration: 3000,
-        buttons: [{ label: "Fechar" }],
-        bg: "var(--primitive-verde-01)",
-      });
-
-      console.log("Filme removido com sucesso do Firebase");
-
-      toast.success("Filme removido de favoritos!", {
         duration: 3000,
         buttons: [{ label: "Fechar" }],
         bg: "var(--primitive-verde-01)",
@@ -786,6 +792,56 @@ function AuthProvider({ children }) {
     }
   };
 
+  const LISTAS_LIMITE = 5;
+
+  const removerListasExtras = async () => {
+    if (!user) return;
+    const listas = user.listasQueroVer || [];
+    const sessaoPipoca = listas.find((l) => l.nome === "Sessão pipoca");
+    const novasListas = sessaoPipoca
+      ? [sessaoPipoca]
+      : [{ id: uuidv4(), nome: "Sessão pipoca", filmes: [] }];
+    await updateDoc(doc(db, "users", user.uid), { listasQueroVer: novasListas });
+    setUser((prev) => ({ ...prev, listasQueroVer: novasListas }));
+  };
+
+  const criarLista = async (nome) => {
+    if (!user) return;
+    const listas = user.listasQueroVer || [];
+    if (listas.length >= LISTAS_LIMITE) return;
+    const novaLista = { id: uuidv4(), nome, filmes: [] };
+    const novasListas = [...listas, novaLista];
+    await updateDoc(doc(db, "users", user.uid), { listasQueroVer: novasListas });
+    setUser((prev) => ({ ...prev, listasQueroVer: novasListas }));
+  };
+
+  const renomearLista = async (listaId, novoNome) => {
+    if (!user) return;
+    const novasListas = (user.listasQueroVer || []).map((l) =>
+      l.id === listaId ? { ...l, nome: novoNome } : l
+    );
+    await updateDoc(doc(db, "users", user.uid), { listasQueroVer: novasListas });
+    setUser((prev) => ({ ...prev, listasQueroVer: novasListas }));
+  };
+
+  const deletarLista = async (listaId) => {
+    if (!user) return;
+    const novasListas = (user.listasQueroVer || []).filter((l) => l.id !== listaId);
+    await updateDoc(doc(db, "users", user.uid), { listasQueroVer: novasListas });
+    setUser((prev) => ({ ...prev, listasQueroVer: novasListas }));
+  };
+
+  const toggleFilmeNaLista = async (listaId, filmeId) => {
+    if (!user) return;
+    const novasListas = (user.listasQueroVer || []).map((l) => {
+      if (l.id !== listaId) return l;
+      const jaEsta = l.filmes.includes(filmeId);
+      return { ...l, filmes: jaEsta ? l.filmes.filter((id) => id !== filmeId) : [...l.filmes, filmeId] };
+    });
+    await updateDoc(doc(db, "users", user.uid), { listasQueroVer: novasListas });
+    setUser((prev) => ({ ...prev, listasQueroVer: novasListas }));
+  };
+
   const verificarPermissaoFilmes = async () => {
     if (!user) return false;
 
@@ -828,6 +884,12 @@ function AuthProvider({ children }) {
         verificarPermissoesCriticas,
         verificarPermissaoDubladores,
         verificarPermissaoFilmes,
+        criarLista,
+        renomearLista,
+        deletarLista,
+        toggleFilmeNaLista,
+        removerListasExtras,
+        LISTAS_LIMITE,
       }}
     >
       {children}

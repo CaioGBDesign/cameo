@@ -1,0 +1,74 @@
+.listaItens {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: var(--space-sm);
+
+  .listaItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border: 1px solid var(--stroke-base);
+    border-radius: var(--space-sm);
+
+    .tituloLista {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-lg);
+
+      width: 90%;
+      height: 60px;
+
+      .listaItemNome {
+        font-size: 1rem;
+        font-style: italic;
+        color: var(--text-base);
+      }
+    }
+
+    .contentBtn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 60px;
+      height: 60px;
+
+      border-left: solid 1px var(--stroke-base);
+
+      .editBtn {
+        background: transparent;
+        border: none;
+        color: var(--text-sub);
+        cursor: pointer;
+        transition: color 0.2s;
+
+        &:hover {
+          color: var(--text-base);
+        }
+      }
+    }
+  }
+}
+
+.editarFooter {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
+}
+
+.editContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  width: 100%;
+}
+
+.editLabel {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--text-sub);
+}

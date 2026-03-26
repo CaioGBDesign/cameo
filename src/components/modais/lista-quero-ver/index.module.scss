@@ -1,0 +1,14 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  width: 100%;
+}
+
+.aviso {
+  font-size: 0.9rem;
+  color: var(--text-sub);
+  font-style: italic;
+  text-align: center;
+  padding: var(--space-lg) 0;
+}

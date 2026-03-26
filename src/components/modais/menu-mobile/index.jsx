@@ -14,7 +14,7 @@ import ChevronDownIcon from "@/components/icons/ChevronDownIcon";
 import LogOutIcon from "@/components/icons/LogOutIcon";
 import PopoverConfirmar from "@/components/popover-confirmar";
 
-const LISTAS = [
+const LISTAS_BASE = [
   { value: "/filmesassisti", label: "Já assisti" },
   { value: "/filmesparaver", label: "Quero ver" },
   { value: "/favoritos", label: "Favoritos" },
@@ -29,6 +29,14 @@ const MenuMobile = ({ open, onClose }) => {
   const router = useRouter();
   const { user, logout } = useContext(AuthContext);
   const [listasOpen, setListasOpen] = useState(false);
+
+  const listas = [
+    ...LISTAS_BASE,
+    ...(user?.listasQueroVer ?? []).map((l) => ({
+      value: `/filmesparaver?lista=${l.id}`,
+      label: l.nome,
+    })),
+  ];
   const [dublagemOpen, setDublagemOpen] = useState(false);
   const [confirmarSaida, setConfirmarSaida] = useState(false);
 
@@ -47,7 +55,8 @@ const MenuMobile = ({ open, onClose }) => {
           <Link href="/perfil" className={styles.perfilBtn} onClick={onClose}>
             <div className={styles.avatarWrapper}>
               {user?.avatarUrl ? (
-                <Image unoptimized
+                <Image
+                  unoptimized
                   src={user.avatarUrl}
                   alt={user.nome ?? "Avatar"}
                   fill
@@ -59,8 +68,12 @@ const MenuMobile = ({ open, onClose }) => {
               )}
             </div>
             <div className={styles.perfilInfo}>
-              <span className={styles.perfilNome}>{user?.nome ?? "Visitante"}</span>
-              <span className={styles.perfilEmail}>{user?.email ?? "Faça login"}</span>
+              <span className={styles.perfilNome}>
+                {user?.nome ?? "Visitante"}
+              </span>
+              <span className={styles.perfilEmail}>
+                {user?.email ?? "Faça login"}
+              </span>
             </div>
           </Link>
         </div>
@@ -100,7 +113,7 @@ const MenuMobile = ({ open, onClose }) => {
               </button>
               {listasOpen && (
                 <ul className={styles.subMenu}>
-                  {LISTAS.map((item) => (
+                  {listas.map((item) => (
                     <li key={item.value} className={styles.BtnSubMenu}>
                       <button
                         className={styles.subItem}
@@ -179,11 +192,13 @@ const MenuMobile = ({ open, onClose }) => {
           <PopoverConfirmar
             mensagem="Tem certeza que deseja sair?"
             labelConfirmar="Sair"
-            onConfirmar={() => { logout(); onClose(); }}
+            onConfirmar={() => {
+              logout();
+              onClose();
+            }}
             onCancelar={() => setConfirmarSaida(false)}
           />
         )}
-
       </nav>
     </>
   );

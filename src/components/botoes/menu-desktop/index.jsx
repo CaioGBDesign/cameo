@@ -5,7 +5,7 @@ import styles from "./index.module.scss";
 import Link from "next/link";
 import Select from "@/components/inputs/select";
 
-const LISTAS = [
+const LISTAS_BASE = [
   { value: "/filmesassisti", label: "Já assisti" },
   { value: "/filmesparaver", label: "Quero ver" },
   { value: "/favoritos", label: "Favoritos" },
@@ -20,17 +20,30 @@ const MenuDesktop = () => {
   const router = useRouter();
   const { user } = useContext(AuthContext);
 
-  const isActive = (path) => router.pathname === path ? styles.active : "";
+  const isActive = (path) => (router.pathname === path ? styles.active : "");
 
   const navegar = (e) => {
     if (e.target.value) router.push(e.target.value);
   };
 
+  const listas = [
+    ...LISTAS_BASE,
+    ...(user?.listasQueroVer ?? []).map((l) => ({
+      value: `/filmesparaver?lista=${l.id}`,
+      label: l.nome,
+    })),
+  ];
+
   return (
     <nav className={styles.menuBotoes}>
       <ul>
         <li>
-          <Link href="/filme-aleatorio" className={isActive("/filme-aleatorio")}>Home</Link>
+          <Link
+            href="/filme-aleatorio"
+            className={isActive("/filme-aleatorio")}
+          >
+            Home
+          </Link>
         </li>
 
         {user && (
@@ -38,7 +51,7 @@ const MenuDesktop = () => {
             <div className={styles.menuSelect}>
               <Select
                 placeholder="Minhas listas"
-                options={LISTAS}
+                options={listas}
                 value=""
                 onChange={navegar}
                 variant="ghost"
@@ -60,13 +73,19 @@ const MenuDesktop = () => {
         </li>
 
         <li>
-          <Link href="/noticias" className={isActive("/noticias")}>Notícias</Link>
+          <Link href="/noticias" className={isActive("/noticias")}>
+            Notícias
+          </Link>
         </li>
         <li>
-          <Link href="/resenhas" className={isActive("/resenhas")}>Resenhas</Link>
+          <Link href="/resenhas" className={isActive("/resenhas")}>
+            Resenhas
+          </Link>
         </li>
         <li>
-          <Link href="/game" className={isActive("/game")}>Game</Link>
+          <Link href="/game" className={isActive("/game")}>
+            Game
+          </Link>
         </li>
       </ul>
     </nav>

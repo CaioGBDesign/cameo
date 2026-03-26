@@ -1,4 +1,17 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
+
+const LISTA_CORES = [
+  "--primitive-roxo-02",
+  "--primitive-azul-01",
+  "--primitive-rosa-01",
+  "--primitive-verde-01",
+  "--primitive-amarelo-01",
+  "--primitive-azul-02",
+  "--primitive-rosa-02",
+  "--primitive-amarelo-02",
+  "--primitive-verde-02",
+  "--primitive-azul-03",
+];
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
@@ -36,8 +49,14 @@ export default function FilmeAleatorio() {
   const { id: queryId } = router.query;
   const isReady = router.isReady;
   const isMobile = useIsMobile();
-  const { user, assistirFilme, removerAssistir, salvarFilme, removerFilme } =
-    useAuth();
+  const {
+    user,
+    assistirFilme,
+    removerAssistir,
+    salvarFilme,
+    removerFilme,
+    toggleFilmeNaLista,
+  } = useAuth();
 
   const [filme, setFilme] = useState(null);
   const [cast, setCast] = useState([]);
@@ -59,6 +78,9 @@ export default function FilmeAleatorio() {
   });
   const [selecionarFavorito, setSelecionarFavorito] = useState(false);
   const [selecionarParaVer, setSelecionarParaVer] = useState(false);
+  const [selecaoListas, setSelecaoListas] = useState({});
+
+  const listasCustom = user?.listasQueroVer || [];
 
   const elencoRef = useRef(null);
   const recomendacoesRef = useRef(null);
@@ -83,10 +105,15 @@ export default function FilmeAleatorio() {
     const sid = String(filme.id);
     setSelecionarFavorito(favoritosList.includes(sid));
     setSelecionarParaVer(assistList.includes(sid));
+    const selecao = {};
+    listasCustom.forEach((l) => {
+      selecao[l.id] = l.filmes?.includes(sid) ?? false;
+    });
+    setSelecaoListas(selecao);
     setModalListaAberto(true);
   };
 
-  const confirmarLista = () => {
+  const confirmarLista = async () => {
     if (!filme) return;
     const sid = String(filme.id);
 
@@ -106,6 +133,12 @@ export default function FilmeAleatorio() {
     } else if (!selecionarParaVer && jaParaVer) {
       removerAssistir(sid);
       setAssistList((prev) => prev.filter((f) => f !== sid));
+    }
+
+    for (const lista of listasCustom) {
+      const estavaNA = lista.filmes?.includes(sid) ?? false;
+      const deveEstar = selecaoListas[lista.id] ?? false;
+      if (estavaNA !== deveEstar) await toggleFilmeNaLista(lista.id, sid);
     }
 
     setModalListaAberto(false);
@@ -405,6 +438,41 @@ export default function FilmeAleatorio() {
               icon={<ListIcon size={18} color="currentColor" />}
               onChange={(e) => setSelecionarParaVer(e.target.checked)}
             />
+            {listasCustom.map((lista, idx) => (
+              <CheckboxCard
+                key={lista.id}
+                id={`modal-lista-${lista.id}`}
+                variant="card"
+                label={lista.nome}
+                checked={selecaoListas[lista.id] ?? false}
+                onChange={(e) =>
+                  setSelecaoListas((prev) => ({
+                    ...prev,
+                    [lista.id]: e.target.checked,
+                  }))
+                }
+                icon={
+                  <div
+                    style={{
+                      width: 18,
+                      height: 18,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 7,
+                        height: 7,
+                        borderRadius: 10,
+                        background: `var(${LISTA_CORES[idx % LISTA_CORES.length]})`,
+                      }}
+                    />
+                  </div>
+                }
+              />
+            ))}
           </div>
         </Modal>
       )}

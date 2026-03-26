@@ -1,0 +1,39 @@
+.page {
+  min-height: 100vh;
+  background: var(--bg-base);
+  color: var(--text-base);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-2xl);
+  border-bottom: 1px solid var(--stroke-base);
+}
+
+.back {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-sub);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--text-base);
+  }
+}
+
+.titulo {
+  font-size: 1.25rem;
+  font-style: italic;
+  color: var(--text-base);
+}
+
+.content {
+  padding: var(--space-2xl);
+}
+
+.placeholder {
+  font-style: italic;
+  color: var(--text-sub);
+}

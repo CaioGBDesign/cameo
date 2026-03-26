@@ -1,4 +1,36 @@
 import * as z from "zod";
+import * as admin from "firebase-admin";
+import {onCall, HttpsError} from "firebase-functions/v2/https";
+
+admin.initializeApp();
+
+export const setAdminClaim = onCall(async (request) => {
+  if (!request.auth?.token?.adm) {
+    throw new HttpsError("permission-denied", "Apenas admins podem promover outros usuários.");
+  }
+
+  const uid = request.data?.uid;
+  if (!uid || typeof uid !== "string") {
+    throw new HttpsError("invalid-argument", "UID inválido.");
+  }
+
+  await admin.auth().setCustomUserClaims(uid, { adm: true });
+  return { success: true };
+});
+
+export const revokeAdminClaim = onCall(async (request) => {
+  if (!request.auth?.token?.adm) {
+    throw new HttpsError("permission-denied", "Apenas admins podem revogar outros usuários.");
+  }
+
+  const uid = request.data?.uid;
+  if (!uid || typeof uid !== "string") {
+    throw new HttpsError("invalid-argument", "UID inválido.");
+  }
+
+  await admin.auth().setCustomUserClaims(uid, { adm: false });
+  return { success: true };
+});
 
 // Import the Genkit core libraries and plugins.
 import {generate} from "@genkit-ai/ai";

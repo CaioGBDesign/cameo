@@ -15,16 +15,31 @@ import BookmarkIcon from "@/components/icons/BookmarkIcon";
 import ListIcon from "@/components/icons/ListIcon";
 import SectionMetas from "@/components/section-metas";
 
-export default function FilmeHero({ filme, trailerLink, releaseDates, showMetas = true }) {
-  const { user, salvarFilme, removerFilme, assistirFilme, removerAssistir } =
+const LISTA_CORES = [
+  "--primitive-roxo-02",
+  "--primitive-azul-01",
+  "--primitive-rosa-01",
+  "--primitive-verde-01",
+  "--primitive-amarelo-01",
+  "--primitive-azul-02",
+  "--primitive-rosa-02",
+  "--primitive-amarelo-02",
+  "--primitive-verde-02",
+  "--primitive-azul-03",
+];
+
+export default function FilmeHero({ filme, trailerLink, releaseDates, showMetas = true, showNotas = true }) {
+  const { user, salvarFilme, removerFilme, assistirFilme, removerAssistir, toggleFilmeNaLista } =
     useAuth();
   const isMobile = useIsMobile();
   const [modalListaAberto, setModalListaAberto] = useState(false);
   const [selecionarFavorito, setSelecionarFavorito] = useState(false);
   const [selecionarParaVer, setSelecionarParaVer] = useState(false);
+  const [selecaoListas, setSelecaoListas] = useState({});
 
   const favoritosList = user?.favoritos || [];
   const assistList = user?.assistir || [];
+  const listasCustom = user?.listasQueroVer || [];
 
   const abrirModalLista = () => {
     if (!user) {
@@ -34,10 +49,15 @@ export default function FilmeHero({ filme, trailerLink, releaseDates, showMetas 
     const sid = String(filme.id);
     setSelecionarFavorito(favoritosList.includes(sid));
     setSelecionarParaVer(assistList.includes(sid));
+    const selecao = {};
+    listasCustom.forEach((l) => {
+      selecao[l.id] = l.filmes?.includes(sid) ?? false;
+    });
+    setSelecaoListas(selecao);
     setModalListaAberto(true);
   };
 
-  const confirmarLista = () => {
+  const confirmarLista = async () => {
     if (!filme) return;
     const sid = String(filme.id);
 
@@ -48,6 +68,12 @@ export default function FilmeHero({ filme, trailerLink, releaseDates, showMetas 
     const jaParaVer = assistList.includes(sid);
     if (selecionarParaVer && !jaParaVer) assistirFilme(sid);
     else if (!selecionarParaVer && jaParaVer) removerAssistir(sid);
+
+    for (const lista of listasCustom) {
+      const estavaNA = lista.filmes?.includes(sid) ?? false;
+      const deveEstar = selecaoListas[lista.id] ?? false;
+      if (estavaNA !== deveEstar) await toggleFilmeNaLista(lista.id, sid);
+    }
 
     setModalListaAberto(false);
   };
@@ -123,28 +149,30 @@ export default function FilmeHero({ filme, trailerLink, releaseDates, showMetas 
           </div>
 
           <div className={styles.botoes}>
-            {user.visto?.[filme.id]?.nota > 0 ? (
-              <Button
-                variant={isMobile ? "ghost" : "outline"}
-                stars={user.visto[filme.id].nota}
-                onClick={() => {}}
-                {...(!isMobile && {
-                  border: "var(--stroke-solid)",
-                  arrowColor: "var(--stroke-solid)",
-                  bg: "none",
-                })}
-              />
-            ) : (
-              <Button
-                variant={isMobile ? "ghost" : "outline"}
-                label="Já assisti"
-                onClick={() => {}}
-                {...(!isMobile && {
-                  border: "var(--stroke-solid)",
-                  arrowColor: "var(--stroke-solid)",
-                  bg: "none",
-                })}
-              />
+            {(!isMobile || showNotas) && (
+              user.visto?.[filme.id]?.nota > 0 ? (
+                <Button
+                  variant={isMobile ? "ghost" : "outline"}
+                  stars={user.visto[filme.id].nota}
+                  onClick={() => {}}
+                  {...(!isMobile && {
+                    border: "var(--stroke-solid)",
+                    arrowColor: "var(--stroke-solid)",
+                    bg: "none",
+                  })}
+                />
+              ) : (
+                <Button
+                  variant={isMobile ? "ghost" : "outline"}
+                  label="Já assisti"
+                  onClick={() => {}}
+                  {...(!isMobile && {
+                    border: "var(--stroke-solid)",
+                    arrowColor: "var(--stroke-solid)",
+                    bg: "none",
+                  })}
+                />
+              )
             )}
 
             {!isMobile && (
@@ -196,6 +224,41 @@ export default function FilmeHero({ filme, trailerLink, releaseDates, showMetas 
               onChange={(e) => setSelecionarParaVer(e.target.checked)}
               icon={<ListIcon size={18} color="currentColor" />}
             />
+            {listasCustom.map((lista, idx) => (
+              <CheckboxCard
+                key={lista.id}
+                id={`hero-lista-${lista.id}`}
+                variant="card"
+                label={lista.nome}
+                checked={selecaoListas[lista.id] ?? false}
+                onChange={(e) =>
+                  setSelecaoListas((prev) => ({
+                    ...prev,
+                    [lista.id]: e.target.checked,
+                  }))
+                }
+                icon={
+                  <div
+                    style={{
+                      width: 18,
+                      height: 18,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 7,
+                        height: 7,
+                        borderRadius: 10,
+                        background: `var(${LISTA_CORES[idx % LISTA_CORES.length]})`,
+                      }}
+                    />
+                  </div>
+                }
+              />
+            ))}
           </div>
         </Modal>
       )}

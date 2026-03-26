@@ -8,6 +8,7 @@ export default function RadioButton({
   label,
   checked = false,
   onChange,
+  onClick,
   iconVariant = "radio",
 }) {
   return (
@@ -16,6 +17,7 @@ export default function RadioButton({
       className={[styles.wrapper, checked ? styles.checked : ""]
         .filter(Boolean)
         .join(" ")}
+      onClick={onClick}
     >
       <input
         type="radio"

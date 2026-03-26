@@ -1,0 +1,151 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-lg);
+  background: var(--bg-overlay);
+  position: relative;
+
+  width: 100%;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-2xl);
+  border-bottom: 1px solid var(--stroke-base);
+  flex-wrap: wrap;
+
+  .botoesTopo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+}
+
+.toolbarBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--space-sm);
+  border: solid 1px var(--stroke-base);
+  background: transparent;
+  color: var(--text-sub);
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition:
+    background 0.15s,
+    color 0.15s;
+
+  &:hover {
+    background: var(--bg-base);
+    color: var(--text-base);
+  }
+
+  &.active {
+    background: var(--bg-submit);
+    color: var(--text-base);
+  }
+}
+
+.divider {
+  width: 1px;
+  height: 40px;
+  background: var(--stroke-base);
+  margin: 0 var(--space-xs);
+}
+
+.blockWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  border-radius: var(--space-sm);
+  transition: background 0.15s;
+
+  padding: var(--space-lg);
+
+  &:hover {
+    background: var(--bg-base);
+
+    .dragHandle {
+      opacity: 1;
+    }
+  }
+}
+
+.dragHandle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 24px;
+  color: var(--text-sub);
+  cursor: grab;
+  border-radius: 4px;
+  opacity: 0;
+  transition:
+    opacity 0.15s,
+    background 0.15s,
+    color 0.15s;
+
+  &:hover {
+    color: var(--text-base);
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.editorContent {
+  padding: var(--space-sm);
+  min-height: 90px;
+  color: var(--text-sub);
+  font-size: 1rem;
+  font-style: italic;
+  line-height: normal;
+  outline: none;
+
+  p {
+    flex: 1;
+    margin: 0;
+  }
+
+  ul,
+  ol {
+    padding-left: var(--space-2xl);
+    margin: 0;
+
+    li {
+      padding: var(--space-xs) 0;
+    }
+  }
+
+  blockquote {
+    border-left: 3px solid var(--stroke-submit);
+    margin: 0;
+    padding: var(--space-lg);
+    color: var(--text-sub);
+    font-style: italic;
+    border-radius: var(--space-sm);
+
+    &:hover {
+      background: var(--bg-base);
+    }
+  }
+
+  a {
+    color: var(--text-link, var(--stroke-submit));
+    text-decoration: underline;
+  }
+
+  strong {
+    font-weight: bold;
+    color: var(--text-base);
+  }
+}

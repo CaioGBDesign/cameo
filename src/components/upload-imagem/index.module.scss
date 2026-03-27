@@ -45,8 +45,20 @@
           color: var(--text-base);
           white-space: nowrap;
 
+          svg {
+            position: absolute;
+          }
+
+          svg:first-child {
+            left: 3px;
+            top: 3px;
+          }
+
           svg:last-child {
             transform: rotate(180deg);
+
+            right: 3px;
+            bottom: 3px;
           }
         }
 
@@ -59,7 +71,6 @@
 
           width: 280px;
         }
-
       }
     }
 

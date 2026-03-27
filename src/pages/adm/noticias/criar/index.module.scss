@@ -48,21 +48,113 @@
   }
 }
 
+.agendarOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+}
+
+.agendarModal {
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-lg);
+  padding: var(--space-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+  min-width: 320px;
+}
+
+.agendarTitulo {
+  font-size: 1rem;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--text-base);
+  margin: 0;
+}
+
+.agendarCampos {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+.agendarLabel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-sub);
+  flex: 1;
+}
+
+.agendarInput {
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  color: var(--text-base);
+  font-size: 0.875rem;
+  outline: none;
+
+  &:focus {
+    border-color: var(--stroke-submit);
+  }
+}
+
+.agendarAcoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-md);
+}
+
 .menuWrapper {
   position: relative;
   margin-right: auto;
 
+  .menuItemIcon {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .menuItemDanger {
+    color: var(--color-error, #e53935);
+
+    .menuItemIcon {
+      color: var(--color-error, #e53935);
+    }
+  }
+
   .menuDropdown {
     position: fixed;
+
     background: var(--bg-overlay);
     border: 1px solid var(--stroke-base);
-    border-radius: var(--space-sm);
+    border-radius: var(--space-lg);
     overflow: hidden;
+
+    padding: var(--space-sm);
+
     min-width: 160px;
     z-index: 200;
 
     .menuItem {
-      display: block;
+      display: flex;
+
+      justify-content: start;
+      align-items: center;
+      gap: var(--space-sm);
+
       width: 100%;
       padding: var(--space-sm) var(--space-lg);
       background: transparent;

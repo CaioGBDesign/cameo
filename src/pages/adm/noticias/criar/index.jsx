@@ -16,6 +16,13 @@ import AdmEditor from "@/components/adm/editor";
 import TagInput from "@/components/adm/tag-input";
 import styles from "./index.module.scss";
 
+const IcoVisualizar = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+    <path d="M14.3627 7.36325C14.5654 7.64745 14.6667 7.78959 14.6667 7.99992C14.6667 8.21025 14.5654 8.35238 14.3627 8.63658C13.452 9.91365 11.1262 12.6666 8.00004 12.6666C4.87389 12.6666 2.54811 9.91365 1.6374 8.63658C1.43471 8.35238 1.33337 8.21025 1.33337 7.99992C1.33337 7.78959 1.43471 7.64745 1.6374 7.36325C2.54811 6.08621 4.87389 3.33325 8.00004 3.33325C11.1262 3.33325 13.452 6.08621 14.3627 7.36325Z" stroke="currentColor"/>
+    <path d="M10 8C10 6.8954 9.1046 6 8 6C6.8954 6 6 6.8954 6 8C6 9.1046 6.8954 10 8 10C9.1046 10 10 9.1046 10 8Z" stroke="currentColor"/>
+  </svg>
+);
+
 const generoOptions = generosList.map((g) => ({
   value: g.name,
   label: g.name,
@@ -180,16 +187,14 @@ export default function AdmCriarNoticia() {
             <button
               type="button"
               className={styles.menuItem}
-              onClick={() => setMenuAberto(false)}
+              onClick={() => {
+                const slug = gerarSlug(titulo);
+                window.open(`/noticias/detalhes/${slug}?preview=true`, "_blank");
+                setMenuAberto(false);
+              }}
             >
-              Opção 1
-            </button>
-            <button
-              type="button"
-              className={styles.menuItem}
-              onClick={() => setMenuAberto(false)}
-            >
-              Opção 2
+              <span className={styles.menuItemIcon}><IcoVisualizar /></span>
+              Visualizar
             </button>
           </div>
         )}

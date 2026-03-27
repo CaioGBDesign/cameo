@@ -30,7 +30,7 @@ const PATH_LABELS = {
 // Segmentos que devem ser pulados quando há um filho na rota
 const SKIP_WITH_CHILD = new Set(["noticias", "resenhas", "dubladores", "dublagens", "estudios", "perguntas", "patentes"]);
 
-export default function AdmHeader({ actions, collapsed }) {
+export default function AdmHeader({ actions, collapsed, breadcrumb }) {
   const router = useRouter();
 
   // ["", "adm", "noticias", ...]
@@ -45,7 +45,7 @@ export default function AdmHeader({ actions, collapsed }) {
     ? segments.slice(1).filter((seg) => !SKIP_WITH_CHILD.has(seg))
     : segments.slice(1);
 
-  const items = relevantSegments.map((seg, i) => {
+  const autoItems = relevantSegments.map((seg, i) => {
     const href = "/" + segments.slice(0, segments.indexOf(seg) + 1).join("/");
     const label = isCreating && seg === "criar"
       ? (PATH_LABELS[fullPath] ?? "Criar")
@@ -53,6 +53,8 @@ export default function AdmHeader({ actions, collapsed }) {
     const isLast = i === relevantSegments.length - 1;
     return { href: isLast ? null : href, label };
   });
+
+  const items = breadcrumb ?? autoItems;
 
   return (
     <header className={`${styles.header} ${collapsed ? styles.headerCollapsed : ""}`}>

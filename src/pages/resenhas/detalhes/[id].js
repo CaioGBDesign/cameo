@@ -10,7 +10,7 @@ import Header from "@/components/Header";
 import { useIsMobile } from "@/components/DeviceProvider";
 import DOMPurify from "isomorphic-dompurify";
 import Link from "next/link";
-import Image from "next/image";
+import BannerMateria from "@/components/banner-materia";
 
 const CriticaDetalhe = () => {
   const router = useRouter();
@@ -156,21 +156,11 @@ const CriticaDetalhe = () => {
 
           {/* Imagem principal */}
           {critica.elementos?.find((el) => el.tipo === "imagem") && (
-            <div className={styles.imagemCritica}>
-              <div className={styles.tagCritica}>
-                <span>Resenha</span>
-              </div>
-              <Image
-                src={
-                  critica.elementos.find((el) => el.tipo === "imagem").conteudo
-                }
-                alt={critica.titulo}
-                width={1200}
-                height={628}
-                layout="responsive"
-                priority
-              />
-            </div>
+            <BannerMateria
+              src={critica.elementos.find((el) => el.tipo === "imagem").conteudo}
+              tipo="critica"
+              alt={critica.titulo}
+            />
           )}
 
           {/* Tags de gêneros e empresas */}

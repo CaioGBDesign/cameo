@@ -1,8 +1,28 @@
 .page {
   padding: var(--space-2xl);
+  padding-top: var(--space-nn);
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
+}
+
+// ─── Page Header ─────────────────────────────────────────
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+  height: 50px;
+}
+
+.pageTitulo {
+  font-size: 1rem;
+  font-weight: normal;
+  font-style: italic;
+  color: var(--text-base);
+  margin: 0;
 }
 
 .loading,
@@ -17,6 +37,12 @@
 .tableWrapper {
   width: 100%;
   overflow-x: auto;
+
+  background: var(--bg-overlay);
+  border: solid 1px var(--stroke-base);
+  border-radius: var(--space-lg);
+
+  padding: var(--space-2xl);
 }
 
 .table {
@@ -60,6 +86,14 @@
     }
   }
 
+  tbody tr.trClicavel {
+    cursor: pointer;
+
+    &:hover {
+      background: var(--bg-base);
+    }
+  }
+
   td {
     padding: 20px;
     vertical-align: middle;
@@ -80,6 +114,15 @@
 .colTitulo {
   width: 40%;
   min-width: 240px;
+  max-width: 360px;
+
+  .titulo {
+    display: block;
+    max-width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 .colAcoes {
@@ -108,27 +151,34 @@
   font-style: italic;
   white-space: nowrap;
   min-width: 120px;
+  height: 25px;
   justify-content: center;
 }
 
+.badgeIcon {
+  display: flex;
+  align-items: center;
+  color: var(--icon-primary);
+}
+
+.badgeText {
+  color: var(--text-solid);
+}
+
 .statusPublicado {
-  background: #f218c0;
-  color: #fff;
+  background: var(--primitive-rosa-02);
 }
 
 .statusRascunho {
-  background: #1af5eb;
-  color: #161216;
+  background: var(--primitive-azul-01);
 }
 
 .statusAgendado {
-  background: #ffd600;
-  color: #161216;
+  background: var(--primitive-amarelo-02);
 }
 
-.statusEmRevisao {
-  background: #7c4dff;
-  color: #fff;
+.statusArquivado {
+  background: var(--primitive-roxo-07);
 }
 
 // ─── Avatar ─────────────────────────────────────────────
@@ -190,18 +240,36 @@
   border-radius: 4px;
   background: var(--stroke-base);
 
-  &:nth-child(1) { height: 4px; }
-  &:nth-child(2) { height: 6px; }
-  &:nth-child(3) { height: 8px; }
-  &:nth-child(4) { height: 10px; }
-  &:nth-child(5) { height: 12px; }
-  &:nth-child(6) { height: 14px; }
+  &:nth-child(1) {
+    height: 4px;
+  }
+  &:nth-child(2) {
+    height: 6px;
+  }
+  &:nth-child(3) {
+    height: 8px;
+  }
+  &:nth-child(4) {
+    height: 10px;
+  }
+  &:nth-child(5) {
+    height: 12px;
+  }
+  &:nth-child(6) {
+    height: 14px;
+  }
 }
 
 // Cores por nível (aplicadas via data-nivel no pai .bars)
-[data-nivel="1"] .barAtivo { background: #1af5eb; }
-[data-nivel="2"] .barAtivo { background: #ffd600; }
-[data-nivel="3"] .barAtivo { background: #f218c0; }
+[data-nivel="1"] .barAtivo {
+  background: #1af5eb;
+}
+[data-nivel="2"] .barAtivo {
+  background: #ffd600;
+}
+[data-nivel="3"] .barAtivo {
+  background: #f218c0;
+}
 
 // ─── Paginação ──────────────────────────────────────────
 
@@ -243,7 +311,10 @@
   color: var(--text-sub);
   font-size: 0.875rem;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
 
   &:hover:not(:disabled) {
     background: var(--bg-overlay);
@@ -263,6 +334,264 @@
   font-weight: bold;
 }
 
+// ─── Popover Deletar ────────────────────────────────────
+
+.popoverOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.popover {
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-lg);
+  padding: var(--space-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  width: 320px;
+  max-width: calc(100vw - var(--space-2xl) * 2);
+}
+
+.popoverTexto {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-sub);
+  margin: 0;
+  line-height: 1.5;
+
+  strong {
+    color: var(--text-base);
+    font-style: normal;
+  }
+}
+
+.popoverAcoes {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: flex-end;
+}
+
+.popoverCancelar {
+  background: transparent;
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--text-base);
+}
+
+.popoverConfirmar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  background: var(--error, #c44545);
+  border: none;
+  border-radius: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: white;
+}
+
+// ─── Menu Dropdown ──────────────────────────────────────
+
+.menuDropdown {
+  position: fixed;
+  z-index: 300;
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-lg);
+  min-width: 220px;
+  transform: translateX(-100%);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.menuGrupo {
+  overflow: hidden;
+  padding: var(--space-sm);
+
+  & + & {
+    border-top: 1px solid var(--stroke-base);
+    padding-top: var(--space-sm);
+  }
+}
+
+.menuItemIcon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-right: var(--space-sm);
+  color: var(--icon-secondary);
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  padding: var(--space-sm);
+
+  background: transparent;
+  border: none;
+  border-radius: var(--space-xs);
+
+  color: var(--text-base);
+  font-size: 0.875rem;
+  font-style: italic;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: var(--bg-overlay);
+  }
+}
+
+.menuItemDanger {
+  color: var(--color-error, #e53935);
+
+  .menuItemIcon {
+    color: var(--color-error, #e53935);
+  }
+}
+
+// ─── Th Button ──────────────────────────────────────────
+
+.thBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  font-style: italic;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--text-base);
+  }
+}
+
+.thBtnAtivo {
+  color: var(--text-base);
+}
+
+// ─── Limpar Filtros ──────────────────────────────────────
+
+.btnLimparFiltros {
+  background: none;
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  color: var(--text-sub);
+  font-size: 0.875rem;
+  font-style: italic;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+
+  &:hover {
+    background: var(--bg-overlay);
+    color: var(--text-base);
+  }
+}
+
+// ─── Col Dropdown ────────────────────────────────────────
+
+.colDropdown {
+  position: fixed;
+  z-index: 300;
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-lg);
+  min-width: 200px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.colDropdownGrupo {
+  padding: var(--space-sm);
+
+  & + & {
+    border-top: 1px solid var(--stroke-base);
+    padding-top: var(--space-sm);
+  }
+}
+
+.colDropdownSearch {
+  width: 100%;
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  padding: var(--space-sm) var(--space-md, 12px);
+  color: var(--text-base);
+  font-size: 0.875rem;
+  font-style: italic;
+  outline: none;
+
+  &::placeholder {
+    color: var(--text-sub);
+  }
+
+  &:focus {
+    border-color: var(--stroke-solid);
+  }
+}
+
+.colDropdownItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
+  padding: var(--space-sm);
+  background: transparent;
+  border: none;
+  border-radius: var(--space-xs);
+  color: var(--text-sub);
+  font-size: 0.875rem;
+  font-style: italic;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+
+  &:hover {
+    background: var(--bg-overlay);
+    color: var(--text-base);
+  }
+}
+
+.colDropdownItemAtivo {
+  color: var(--text-base);
+  background: var(--bg-overlay);
+}
+
 // ─── Ações ──────────────────────────────────────────────
 
 .btnAcoes {
@@ -274,7 +603,9 @@
   border-radius: var(--space-sm);
   font-size: 1rem;
   letter-spacing: 2px;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 
   &:hover {
     background: var(--bg-base);

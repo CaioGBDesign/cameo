@@ -34,7 +34,7 @@ function ListaNoticias({ noticias, renderElemento }) {
               <article className={styles.noticiaResumo} title={noticia.titulo}>
                 <div className={styles.boxConteudo}>
                   <div className={styles.conteudo}>
-                    {noticia.elementos.map((el, i) => renderElemento(el, i))}
+                    {noticia.elementos?.map((el, i) => renderElemento(el, i))}
                   </div>
                   <div className={styles.informacoes}>
                     <div className={styles.tagNoticia}>

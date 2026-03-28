@@ -54,25 +54,22 @@ export async function getServerSideProps() {
       ),
     ]);
 
-    console.log("[SSR] noticias docs encontrados:", noticiasSnap.docs.length);
-    console.log("[SSR] criticas docs encontrados:", criticasSnap.docs.length);
-
-    const noticias = noticiasSnap.docs.map((docSnap) => {
-      const data = docSnap.data();
-      console.log("[SSR] noticia:", docSnap.id, "status:", data.status, "imagem:", data.imagem, "elementos:", data.elementos?.length ?? 0);
-      return serializarFirestore({
-        id: docSnap.id,
-        ...data,
-        empresas: converterCampo(data, "empresas"),
-        generos: converterCampo(data, "generos"),
-      });
-    });
+    const noticias = noticiasSnap.docs
+      .map((docSnap) => {
+        const data = docSnap.data();
+        return serializarFirestore({
+          id: docSnap.id,
+          ...data,
+          empresas: converterCampo(data, "empresas"),
+          generos: converterCampo(data, "generos"),
+        });
+      })
+      .filter((n) => !n.status || n.status === "publicado");
 
     const criticas = criticasSnap.docs.map((docSnap) =>
       serializarFirestore({ id: docSnap.id, ...docSnap.data() }),
     );
 
-    console.log("[SSR] props enviados → noticias:", noticias.length, "criticas:", criticas.length);
     return { props: { noticias, criticas } };
   } catch (error) {
     console.error("Erro ao buscar dados:", error);

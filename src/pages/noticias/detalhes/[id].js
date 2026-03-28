@@ -1,6 +1,14 @@
 import { useEffect } from "react";
 import { db } from "@/services/firebaseConection";
-import { doc, getDoc, collection, getDocs, query, orderBy, limit } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  limit,
+} from "firebase/firestore";
 import styles from "./index.module.scss";
 import Footer from "@/components/Footer";
 import Head from "next/head";
@@ -32,7 +40,13 @@ export async function getServerSideProps({ params, query: qs }) {
   try {
     const [noticiaSnap, criticasSnap] = await Promise.all([
       getDoc(doc(db, "noticias", id)),
-      getDocs(query(collection(db, "criticas"), orderBy("dataPublicacao", "desc"), limit(4))),
+      getDocs(
+        query(
+          collection(db, "criticas"),
+          orderBy("dataPublicacao", "desc"),
+          limit(4),
+        ),
+      ),
     ]);
 
     if (!noticiaSnap.exists()) {
@@ -47,7 +61,7 @@ export async function getServerSideProps({ params, query: qs }) {
     }
 
     const resenhas = criticasSnap.docs.map((d) =>
-      serializarFirestore({ ...d.data(), id: d.id })
+      serializarFirestore({ ...d.data(), id: d.id }),
     );
 
     return { props: { noticia, id, isPreview, resenhas } };
@@ -63,7 +77,12 @@ const STATUS_LABEL = {
   arquivado: "Arquivado",
 };
 
-export default function NoticiaDetalhe({ noticia, id, isPreview, resenhas = [] }) {
+export default function NoticiaDetalhe({
+  noticia,
+  id,
+  isPreview,
+  resenhas = [],
+}) {
   const imagemSrc =
     process.env.NODE_ENV === "development"
       ? materiapadrao
@@ -185,30 +204,34 @@ export default function NoticiaDetalhe({ noticia, id, isPreview, resenhas = [] }
             ]}
           />
 
-          {imagemSrc && (
-            <BannerMateria
-              src={imagemSrc}
-              tipo="noticia"
-              alt={noticia.titulo}
-            />
-          )}
+          <div className={styles.bannerInfo}>
+            {imagemSrc && (
+              <BannerMateria
+                src={imagemSrc}
+                tipo="noticia"
+                alt={noticia.titulo}
+              />
+            )}
 
-          <div className={styles.bloco}>
-            <div className={styles.contTags}>
-              <div className={styles.tags}>
-                {noticia.generos?.map((g) => (
-                  <Badge key={g} label={g} variant="soft" bg="--bg-base" />
-                ))}
-                {noticia.empresas?.map((e) => (
-                  <Badge key={e} label={e} variant="soft" bg="--bg-base" />
-                ))}
+            <div className={styles.paddingBloco}>
+              <div className={styles.bloco}>
+                <div className={styles.contTags}>
+                  <div className={styles.tags}>
+                    {noticia.generos?.map((g) => (
+                      <Badge key={g} label={g} variant="soft" bg="--bg-base" />
+                    ))}
+                    {noticia.empresas?.map((e) => (
+                      <Badge key={e} label={e} variant="soft" bg="--bg-base" />
+                    ))}
+                  </div>
+                </div>
+
+                <h1 className={styles.titulo}>{noticia.titulo}</h1>
+                {noticia.subtitulo && (
+                  <h2 className={styles.subtitulo}>{noticia.subtitulo}</h2>
+                )}
               </div>
             </div>
-
-            <h1 className={styles.titulo}>{noticia.titulo}</h1>
-            {noticia.subtitulo && (
-              <h2 className={styles.subtitulo}>{noticia.subtitulo}</h2>
-            )}
           </div>
 
           <div className={styles.cabecalhoInfo}>
@@ -281,8 +304,26 @@ export default function NoticiaDetalhe({ noticia, id, isPreview, resenhas = [] }
                   className={styles.paragrafo}
                   dangerouslySetInnerHTML={{
                     __html: DOMPurify.sanitize(noticia.conteudo, {
-                      ALLOWED_TAGS: ["p", "strong", "em", "u", "a", "ul", "ol", "li", "blockquote", "br", "h1", "h2", "h3"],
-                      ALLOWED_ATTR: ["href", "target", "rel"],
+                      ALLOWED_TAGS: [
+                        "p",
+                        "strong",
+                        "em",
+                        "u",
+                        "a",
+                        "ul",
+                        "ol",
+                        "li",
+                        "blockquote",
+                        "br",
+                        "h1",
+                        "h2",
+                        "h3",
+                        "h4",
+                        "mark",
+                        "div",
+                        "img",
+                      ],
+                      ALLOWED_ATTR: ["href", "target", "rel", "data-type", "src", "alt"],
                     }),
                   }}
                 />
@@ -311,7 +352,9 @@ export default function NoticiaDetalhe({ noticia, id, isPreview, resenhas = [] }
                           data-instgrm-permalink={elemento.conteudo}
                           data-instgrm-version="14"
                         >
-                          <a href={elemento.conteudo}>Ver publicação no Instagram</a>
+                          <a href={elemento.conteudo}>
+                            Ver publicação no Instagram
+                          </a>
                         </blockquote>
                       </div>
                     );
@@ -326,14 +369,40 @@ export default function NoticiaDetalhe({ noticia, id, isPreview, resenhas = [] }
             <aside className={styles.sidebar}>
               <div className={styles.sidebarTopo}>
                 <span className={styles.sidebarTitulo}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M10 5L20 5" stroke="#1AF5EB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M4 12L20 12" stroke="#1AF5EB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M4 19L14 19" stroke="#1AF5EB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M10 5L20 5"
+                      stroke="#1AF5EB"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M4 12L20 12"
+                      stroke="#1AF5EB"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M4 19L14 19"
+                      stroke="#1AF5EB"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                   últimas resenhas
                 </span>
-                <a href="/resenhas" className={styles.sidebarVerTodas}>Ver todas</a>
+                <a href="/resenhas" className={styles.sidebarVerTodas}>
+                  Ver todas
+                </a>
               </div>
 
               <div className={styles.sidebarCards}>

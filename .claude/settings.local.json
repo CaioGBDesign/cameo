@@ -26,7 +26,21 @@
       "Bash(node -e \"console.log\\(Object.keys\\(require\\(''c:/Users/win11/OneDrive/Área de Trabalho/Cameo/node_modules/@tiptap/extension-drag-handle-react''\\)\\)\\)\")",
       "Bash(node -e \"const p = require\\(''c:/Users/win11/OneDrive/Área de Trabalho/Cameo/node_modules/@tiptap/extension-drag-handle-react/package.json''\\); console.log\\(p.version\\)\")",
       "Skill(update-config)",
-      "Skill(update-config:*)"
+      "Skill(update-config:*)",
+      "Bash(node -e \"const r = require\\(''@tiptap/react''\\); console.log\\(Object.keys\\(r\\).join\\(''\\\\n''\\)\\)\")",
+      "Bash(node -e \"const r = require\\(''@tiptap/extension-bubble-menu''\\); console.log\\(Object.keys\\(r\\).join\\(''\\\\n''\\)\\)\")",
+      "Bash(node -e \"const r = require\\(''@tiptap/extension-bubble-menu''\\); console.log\\(typeof r.BubbleMenu, r.BubbleMenu?.toString?.\\(\\).slice\\(0,200\\)\\)\")",
+      "Read(//c/Users/win11/OneDrive/Area de Trabalho/**)",
+      "Bash(node -e \"try{require\\(''@tiptap/extension-placeholder''\\);console.log\\(''placeholder ok''\\)}catch\\(e\\){console.log\\(''falta placeholder''\\)}; try{require\\(''@tiptap/suggestion''\\);console.log\\(''suggestion ok''\\)}catch\\(e\\){console.log\\(''falta suggestion''\\)}\")",
+      "Bash(node -e \"try{require\\(''@tiptap/extension-image''\\);console.log\\(''image ok''\\)}catch\\(e\\){console.log\\(''falta image''\\)}\")",
+      "Bash(node -e \"try{require\\(''@tiptap/extension-image''\\);console.log\\(''ok''\\)}catch\\(e\\){console.log\\(''erro:'',e.message\\)}\")",
+      "Bash(node -e \"const fs=require\\(''fs''\\); const code=fs.readFileSync\\(''src/pages/adm/noticias/editar/[slug]/index.jsx'',''utf8''\\); console.log\\(''lines:'', code.split\\(''\\\\n''\\).length\\)\")",
+      "Bash(node -e \"require\\(''@tiptap/extension-highlight''\\); console.log\\(''ok''\\)\")",
+      "Bash(node -e \"const p = require\\(''./node_modules/@tiptap/extension-highlight/package.json''\\); console.log\\(p.version\\)\")",
+      "Bash(node -e \"const p = require\\(''./node_modules/@tiptap/react/package.json''\\); console.log\\(p.version\\)\")",
+      "Bash(node -e \"const H = require\\(''@tiptap/extension-highlight''\\); console.log\\(Object.keys\\(H\\)\\)\")",
+      "Bash(node -e \":*)",
+      "Bash(node -e \"const c = require\\(''@tiptap/core''\\); console.log\\(typeof c.Mark\\)\")"
     ]
   }
 }

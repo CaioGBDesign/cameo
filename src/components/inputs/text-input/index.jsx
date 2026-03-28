@@ -1,9 +1,11 @@
+import InfoIcon from "@/components/icons/InfoIcon";
 import styles from "./index.module.scss";
 
 const TextInput = ({
   id,
   name,
   label,
+  tooltip,
   placeholder,
   value,
   onChange,
@@ -22,6 +24,12 @@ const TextInput = ({
       {label && (
         <label htmlFor={id} className={styles.label}>
           {label}
+          {tooltip && (
+            <span className={styles.tooltipWrapper}>
+              <InfoIcon size={13} />
+              <span className={styles.tooltip}>{tooltip}</span>
+            </span>
+          )}
         </label>
       )}
       <div className={styles.inputRow}>

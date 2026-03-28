@@ -42,17 +42,17 @@
 
   @media only screen and (max-width: 900px) {
     width: 600px;
-    height: 200px;
+    height: 220px;
   }
 
   @media only screen and (max-width: 650px) {
     width: 500px;
-    height: 167px;
+    height: 220px;
   }
 
   @media only screen and (max-width: 600px) {
     width: 100%;
-    height: initial;
+    height: 220px;
 
     img {
       width: 100%;
@@ -65,10 +65,11 @@
   justify-content: center;
   align-items: center;
   padding: var(--space-md) var(--space-2xl);
-  border-radius: 0px 30px 0px 0px;
+  border-radius: var(--space-2xl);
+
   position: absolute;
-  bottom: 0px;
-  left: 0px;
+  top: var(--space-lg);
+  right: var(--space-lg);
 
   z-index: 1;
 

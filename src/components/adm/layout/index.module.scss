@@ -9,6 +9,7 @@
   flex-direction: column;
   flex: 1;
   margin-left: 260px;
+  margin-right: var(--right-sidebar-width, 0px);
   transition: margin-left 0.2s ease;
 }
 
@@ -19,5 +20,27 @@
 .content {
   margin-top: 85px;
   padding: var(--space-2xl);
+  height: calc(100vh - 85px);
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primitive-roxo-07) transparent;
+}
+
+.rightSidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: var(--right-sidebar-width, 30vw);
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding: var(--space-2xl);
+  background: var(--bg-overlay);
+  border-left: 1px solid var(--stroke-base);
+  z-index: 98;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--stroke-base) transparent;
 }

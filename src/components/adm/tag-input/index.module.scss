@@ -7,25 +7,21 @@
 
 .labelRow {
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
   gap: var(--space-sm);
-}
 
-.label {
-  font-size: 14px;
-  font-style: italic;
-  color: var(--text-sub);
-}
+  .label {
+    font-size: 14px;
+    font-style: italic;
+    color: var(--text-sub);
+  }
 
-.counter {
-  font-size: 12px;
-  font-style: normal;
-  color: var(--text-sub);
-
-  border: 1px solid var(--stroke-base);
-  border-radius: var(--space-sm);
-  padding: var(--space-sm);
+  .counter {
+    font-size: 12px;
+    font-style: italic;
+    color: var(--text-base);
+  }
 }
 
 .field {
@@ -99,20 +95,21 @@
 
 .dropdown {
   position: absolute;
-  top: calc(100% + var(--space-xs));
+  bottom: calc(100% + -20px);
   left: 0;
   min-width: 100%;
   max-height: 220px;
   overflow-y: auto;
   scrollbar-width: none;
   list-style: none;
-  padding: var(--space-xs);
+  padding: var(--space-md);
   background: var(--bg-base);
   border: 1px solid var(--stroke-base);
   border-radius: var(--space-sm);
   z-index: 100;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
 
   &::-webkit-scrollbar {
     display: none;
@@ -120,19 +117,25 @@
 }
 
 .option {
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--space-xs);
-  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px var(--space-sm);
+  background: var(--bg-quintenario);
+  border: 1px solid var(--stroke-base);
+  border-radius: 100px;
+  font-size: 13px;
   color: var(--text-base);
   cursor: pointer;
-  transition: background 0.2s;
+  transition: border-color 0.15s;
+  white-space: nowrap;
 
   &:hover {
-    background: var(--bg-quintenario);
+    border-color: var(--stroke-submit);
   }
 }
 
 .criar {
   color: var(--text-sub);
   font-style: italic;
+  border-style: dashed;
 }

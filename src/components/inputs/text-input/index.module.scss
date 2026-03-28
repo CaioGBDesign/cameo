@@ -8,6 +8,53 @@
   font-size: 14px;
   font-style: italic;
   color: var(--text-sub);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tooltipWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: var(--text-sub);
+  opacity: 0.6;
+  cursor: default;
+
+  &:hover {
+    opacity: 1;
+
+    .tooltip {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+  }
+}
+
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  left: auto;
+  transform: translateY(4px);
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--text-base);
+  white-space: normal;
+  width: 220px;
+  line-height: 1.4;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.15s,
+    transform 0.15s;
+  z-index: 100;
 }
 
 .inputRow {
@@ -31,6 +78,9 @@
   align-items: center;
   padding-left: var(--space-sm);
   flex-shrink: 0;
+
+  color: var(--text-sub);
+  font-style: italic;
 }
 
 .suffix {
@@ -46,7 +96,7 @@
   font-family: inherit;
   font-style: italic;
   font-weight: 400;
-  color: var(--text-sub);
+  color: var(--text-base);
   background: var(--bg-overlay);
   border: none;
   border-radius: var(--space-sm);

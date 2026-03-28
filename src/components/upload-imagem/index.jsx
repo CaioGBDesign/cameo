@@ -46,11 +46,6 @@ const UploadImagem = ({ imagem, onImagemChange, dimensoes }) => {
             </div>
             <div className={styles.textos}>
               <span className={styles.subTextoLabel}>{dimensoes}</span>
-              <span className={styles.btnAdicionar}>
-                <CornerArrowIcon size={13} color="currentColor" />
-                <span>Adicionar imagem</span>
-                <CornerArrowIcon size={13} color="currentColor" className={styles.arrowRight} />
-              </span>
             </div>
           </span>
         )}

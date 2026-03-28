@@ -28,40 +28,6 @@
         align-items: center;
         gap: var(--space-lg);
 
-        .btnAdicionar {
-          position: relative;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: var(--space-sm);
-          height: var(--space-8xl);
-          padding: 0 var(--space-lg);
-          background: var(--bg-overlay);
-          border: 1px solid var(--stroke-solid);
-          border-radius: var(--space-sm);
-          font-size: 15px;
-          font-weight: bold;
-          font-style: italic;
-          color: var(--text-base);
-          white-space: nowrap;
-
-          svg {
-            position: absolute;
-          }
-
-          svg:first-child {
-            left: 3px;
-            top: 3px;
-          }
-
-          svg:last-child {
-            transform: rotate(180deg);
-
-            right: 3px;
-            bottom: 3px;
-          }
-        }
-
         .subTextoLabel {
           font-size: 16px;
           font-style: italic;
@@ -133,7 +99,7 @@
     align-items: center;
 
     width: 90%;
-    height: 270px;
+    height: 200px;
     background: none;
     border: dashed #ffffff20 2px;
     border-radius: 10px;

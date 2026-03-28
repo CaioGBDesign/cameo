@@ -24,6 +24,7 @@ import Button from "@/components/button";
 import TextInput from "@/components/inputs/text-input";
 import AdmEditor from "@/components/adm/editor";
 import TagInput from "@/components/adm/tag-input";
+import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
 import styles from "../../criar/index.module.scss";
 
 const IcoVisualizar = () => (
@@ -177,7 +178,7 @@ const empresaOptions = empresasList.map((e) => ({
 }));
 
 export default function AdmEditarNoticia() {
-  const { user } = useAuth();
+  useAuth();
   const { toast } = useToast();
   const router = useRouter();
   const { slug } = router.query;
@@ -190,6 +191,7 @@ export default function AdmEditarNoticia() {
   const [empresas, setEmpresas] = useState([]);
   const [generos, setGeneros] = useState([]);
   const [tags, setTags] = useState([]);
+  const [slugValue, setSlugValue] = useState("");
   const [statusAtual, setStatusAtual] = useState("rascunho");
   const [loading, setLoading] = useState(false);
   const [loadingRascunho, setLoadingRascunho] = useState(false);
@@ -200,12 +202,17 @@ export default function AdmEditarNoticia() {
   const menuRef = useRef(null);
   const menuBtnRef = useRef(null);
 
+  const [hasChanges, setHasChanges] = useState(false);
+  const loadedRef = useRef(false);
+  useUnsavedChanges(hasChanges);
+
   const [agendarAberto, setAgendarAberto] = useState(false);
   const [dataAgendado, setDataAgendado] = useState("");
   const [horaAgendado, setHoraAgendado] = useState("");
 
   useEffect(() => {
     if (!slug) return;
+    setSlugValue(slug);
 
     const carregar = async () => {
       try {
@@ -246,11 +253,17 @@ export default function AdmEditarNoticia() {
         console.error("Erro ao carregar notícia:", err);
       } finally {
         setLoadingDados(false);
+        loadedRef.current = true;
       }
     };
 
     carregar();
   }, [slug]);
+
+  useEffect(() => {
+    if (!loadedRef.current) return;
+    setHasChanges(true);
+  }, [titulo, subtitulo, numero, conteudo, imagemElemento, empresas, generos, tags, slugValue]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -268,6 +281,11 @@ export default function AdmEditarNoticia() {
       setMenuPos({ top: rect.bottom + 8, left: rect.left });
     }
     setMenuAberto((prev) => !prev);
+  };
+
+  const contarPalavras = (html) => {
+    const texto = html.replace(/<[^>]*>/g, " ").trim();
+    return texto ? texto.split(/\s+/).filter(Boolean).length : 0;
   };
 
   const handleImagemChange = (file) => {
@@ -302,6 +320,25 @@ export default function AdmEditarNoticia() {
     };
   };
 
+  const salvarComSlug = async (campos) => {
+    const novoSlug = slugValue.trim();
+    if (!novoSlug) throw new Error("Slug não pode ser vazio");
+    if (novoSlug === slug) {
+      await updateDoc(doc(db, "noticias", slug), campos);
+      return slug;
+    }
+    const novoDocRef = doc(db, "noticias", novoSlug);
+    const novoSnap = await getDoc(novoDocRef);
+    if (novoSnap.exists()) {
+      throw new Error(`Já existe uma notícia com o slug "${novoSlug}"`);
+    }
+    const atualSnap = await getDoc(doc(db, "noticias", slug));
+    const atualData = atualSnap.data();
+    await setDoc(novoDocRef, { ...atualData, ...campos });
+    await deleteDoc(doc(db, "noticias", slug));
+    return novoSlug;
+  };
+
   const salvarRascunho = async () => {
     if (!titulo.trim()) {
       toast.warn("Adicione um título antes de salvar", {
@@ -314,11 +351,16 @@ export default function AdmEditarNoticia() {
     setLoadingRascunho(true);
     try {
       const campos = await getCamposBase();
-      await setDoc(
-        doc(db, "noticias", slug),
-        { ...campos, status: "rascunho", dataRascunho: serverTimestamp() },
-        { merge: true },
-      );
+      const novoSlug = await salvarComSlug({
+        ...campos,
+        status: "rascunho",
+        dataRascunho: serverTimestamp(),
+      });
+      if (novoSlug !== slug) {
+        router.replace(`/adm/noticias/editar/${novoSlug}`);
+        return;
+      }
+      setHasChanges(false);
       toast.success("Rascunho salvo com sucesso", {
         duration: 3000,
         buttons: [{ label: "Fechar" }],
@@ -349,11 +391,11 @@ export default function AdmEditarNoticia() {
     setLoading(true);
     try {
       const campos = await getCamposBase();
-      await setDoc(
-        doc(db, "noticias", slug),
-        { ...campos, status: "publicado", dataPublicacao: serverTimestamp() },
-        { merge: true },
-      );
+      await salvarComSlug({
+        ...campos,
+        status: "publicado",
+        dataPublicacao: serverTimestamp(),
+      });
       router.push("/adm/noticias");
     } catch (err) {
       console.error("Erro ao publicar:", err);
@@ -375,10 +417,15 @@ export default function AdmEditarNoticia() {
     setLoadingAlteracoes(true);
     try {
       const campos = await getCamposBase();
-      await updateDoc(doc(db, "noticias", slug), {
+      const novoSlug = await salvarComSlug({
         ...campos,
         dataEditado: serverTimestamp(),
       });
+      if (novoSlug !== slug) {
+        router.replace(`/adm/noticias/editar/${novoSlug}`);
+        return;
+      }
+      setHasChanges(false);
       toast.success("Alterações salvas com sucesso", {
         duration: 3000,
         buttons: [{ label: "Fechar" }],
@@ -675,127 +722,144 @@ export default function AdmEditarNoticia() {
     { href: null, label: titulo || slug },
   ];
 
+  const sidebar = (
+    <>
+      <UploadImagem
+        imagem={imagemElemento}
+        onImagemChange={handleImagemChange}
+        dimensoes="Dimensões recomendadas 1440x480. Arquivos aceitos, JPG e PNG"
+      />
+      <TextInput
+        label="Título"
+        placeholder="Título da notícia"
+        value={titulo}
+        onChange={(e) => setTitulo(e.target.value)}
+        maxLength={120}
+        required
+        width="100%"
+      />
+      <TextInput
+        label="Subtítulo"
+        placeholder="Subtítulo da notícia"
+        value={subtitulo}
+        onChange={(e) => setSubtitulo(e.target.value)}
+        maxLength={200}
+        width="100%"
+      />
+      <div className={styles.row}>
+        <TextInput
+          label="Slug (URL)"
+          placeholder="url-da-noticia"
+          value={slugValue}
+          onChange={(e) => {
+            const sanitized = e.target.value
+              .toLowerCase()
+              .replace(/[^a-z0-9-]/g, "");
+            setSlugValue(sanitized);
+          }}
+          width="100%"
+        />
+        <TextInput
+          label="Tempo de leitura (min)"
+          tooltip="O tempo de leitura pode ser definido manualmente ou de forma automática com base na quantidade de palavras"
+          placeholder="Ex: 5"
+          value={numero}
+          onChange={(e) => setNumero(e.target.value)}
+          type="number"
+          required
+          width="100%"
+        />
+      </div>
+      <div className={styles.row}>
+        <MultiSelect
+          options={generoOptions}
+          selected={generos}
+          onChange={setGeneros}
+          placeholder="Selecione gêneros…"
+          width="100%"
+        />
+        <MultiSelect
+          options={empresaOptions}
+          selected={empresas}
+          onChange={setEmpresas}
+          placeholder="Selecione empresas…"
+          width="100%"
+        />
+      </div>
+      <div className={styles.row}>
+        <TagInput
+          label="Tags"
+          selected={tags}
+          onChange={setTags}
+          width="100%"
+        />
+      </div>
+    </>
+  );
+
   return (
-    <AdmLayout headerActions={headerActions} breadcrumb={breadcrumb}>
+    <AdmLayout
+      headerActions={headerActions}
+      breadcrumb={breadcrumb}
+      rightSidebar={sidebar}
+    >
       <Head>
         <title>Cameo ADM — Editar notícia</title>
       </Head>
-      <div className={styles.page}>
-        <form
-          id="form-noticia-editar"
-          className={styles.form}
-        >
-          <div className={styles.fields}>
-            <div className={styles.bloco}>
-              <UploadImagem
-                imagem={imagemElemento}
-                onImagemChange={handleImagemChange}
-                dimensoes="Dimensões recomendadas 1440x480. Arquivos aceitos, JPG e PNG"
-              />
+      <form id="form-noticia-editar" className={styles.form}>
+        <AdmEditor
+          value={conteudo}
+          onChange={(v) => {
+            setConteudo(v);
+            const mins = Math.max(1, Math.ceil(contarPalavras(v) / 200));
+            setNumero(String(mins));
+          }}
+        />
+      </form>
+
+      {agendarAberto && (
+        <div className={styles.agendarOverlay}>
+          <div className={styles.agendarModal}>
+            <h3 className={styles.agendarTitulo}>Agendar publicação</h3>
+            <div className={styles.agendarCampos}>
+              <label className={styles.agendarLabel}>
+                Data
+                <input
+                  type="date"
+                  className={styles.agendarInput}
+                  value={dataAgendado}
+                  onChange={(e) => setDataAgendado(e.target.value)}
+                />
+              </label>
+              <label className={styles.agendarLabel}>
+                Hora
+                <input
+                  type="time"
+                  className={styles.agendarInput}
+                  value={horaAgendado}
+                  onChange={(e) => setHoraAgendado(e.target.value)}
+                />
+              </label>
             </div>
-
-            <div className={styles.bloco}>
-              <TextInput
-                label="Título"
-                placeholder="Título da notícia"
-                value={titulo}
-                onChange={(e) => setTitulo(e.target.value)}
-                maxLength={120}
-                required
-                width="100%"
+            <div className={styles.agendarAcoes}>
+              <Button
+                variant="ghost"
+                label="Cancelar"
+                type="button"
+                onClick={() => setAgendarAberto(false)}
+                border="var(--stroke-base)"
               />
-
-              <TextInput
-                label="Subtítulo"
-                placeholder="Subtítulo da notícia"
-                value={subtitulo}
-                onChange={(e) => setSubtitulo(e.target.value)}
-                maxLength={200}
-                width="100%"
-              />
-
-              <div className={styles.row}>
-                <TextInput
-                  label="Tempo de leitura (min)"
-                  placeholder="Ex: 5"
-                  value={numero}
-                  onChange={(e) => setNumero(e.target.value)}
-                  type="number"
-                  required
-                  width="100%"
-                />
-                <MultiSelect
-                  options={generoOptions}
-                  selected={generos}
-                  onChange={setGeneros}
-                  placeholder="Selecione gêneros…"
-                  width="100%"
-                />
-                <MultiSelect
-                  options={empresaOptions}
-                  selected={empresas}
-                  onChange={setEmpresas}
-                  placeholder="Selecione empresas…"
-                  width="100%"
-                />
-              </div>
-
-              <AdmEditor value={conteudo} onChange={setConteudo} />
-
-              <TagInput
-                label="Tags"
-                selected={tags}
-                onChange={setTags}
-                width="100%"
+              <Button
+                variant="ghost"
+                label="Confirmar"
+                type="button"
+                onClick={confirmarAgendamento}
+                border="var(--stroke-base)"
               />
             </div>
           </div>
-        </form>
-
-        {agendarAberto && (
-          <div className={styles.agendarOverlay}>
-            <div className={styles.agendarModal}>
-              <h3 className={styles.agendarTitulo}>Agendar publicação</h3>
-              <div className={styles.agendarCampos}>
-                <label className={styles.agendarLabel}>
-                  Data
-                  <input
-                    type="date"
-                    className={styles.agendarInput}
-                    value={dataAgendado}
-                    onChange={(e) => setDataAgendado(e.target.value)}
-                  />
-                </label>
-                <label className={styles.agendarLabel}>
-                  Hora
-                  <input
-                    type="time"
-                    className={styles.agendarInput}
-                    value={horaAgendado}
-                    onChange={(e) => setHoraAgendado(e.target.value)}
-                  />
-                </label>
-              </div>
-              <div className={styles.agendarAcoes}>
-                <Button
-                  variant="ghost"
-                  label="Cancelar"
-                  type="button"
-                  onClick={() => setAgendarAberto(false)}
-                  border="var(--stroke-base)"
-                />
-                <Button
-                  variant="ghost"
-                  label="Confirmar"
-                  type="button"
-                  onClick={confirmarAgendamento}
-                  border="var(--stroke-base)"
-                />
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </AdmLayout>
   );
 }

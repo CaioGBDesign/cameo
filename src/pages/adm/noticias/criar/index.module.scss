@@ -2,50 +2,64 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+}
 
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2xl);
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+}
 
-    .fields {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-lg);
+.layout {
+  display: flex;
+  gap: var(--space-lg);
+  align-items: flex-start;
+  width: 100%;
+}
 
-      .bloco {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: var(--space-4xl);
+.editorArea {
+  flex: 1;
+  min-width: 0;
+}
 
-        padding: var(--space-2xl);
+.sidebar {
+  width: 35%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  position: sticky;
+  top: 85px;
+  height: calc(100vh - 85px);
+  overflow-y: auto;
 
-        background: var(--bg-overlay);
-        border: solid 1px var(--stroke-base);
-        border-radius: var(--space-lg);
+  margin-top: calc(-1 * var(--space-2xl));
+  margin-right: calc(-1 * var(--space-2xl));
+  padding: var(--space-2xl) var(--space-2xl) var(--space-2xl) var(--space-lg);
 
-        .row {
-          display: flex;
-          gap: var(--space-lg);
-          align-items: flex-end;
+  background: var(--bg-overlay);
+  border-left: solid 1px var(--stroke-base);
 
-          width: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: var(--stroke-base) transparent;
+}
 
-          > * {
-            flex: 1;
-          }
-        }
-      }
-    }
+.row {
+  display: flex;
+  gap: var(--space-lg);
+  align-items: flex-end;
+  width: 100%;
 
-    .error {
-      font-size: 0.875rem;
-      color: var(--color-error);
-      font-style: italic;
-    }
+  > * {
+    flex: 1;
+    min-width: 0;
   }
+}
+
+.error {
+  font-size: 0.875rem;
+  color: var(--color-error);
+  font-style: italic;
 }
 
 .agendarOverlay {
@@ -140,7 +154,7 @@
 
     background: var(--bg-overlay);
     border: 1px solid var(--stroke-base);
-    border-radius: var(--space-lg);
+    border-radius: var(--space-sm);
     overflow: hidden;
 
     padding: var(--space-sm);

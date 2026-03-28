@@ -40,7 +40,9 @@
       "Bash(node -e \"const p = require\\(''./node_modules/@tiptap/react/package.json''\\); console.log\\(p.version\\)\")",
       "Bash(node -e \"const H = require\\(''@tiptap/extension-highlight''\\); console.log\\(Object.keys\\(H\\)\\)\")",
       "Bash(node -e \":*)",
-      "Bash(node -e \"const c = require\\(''@tiptap/core''\\); console.log\\(typeof c.Mark\\)\")"
+      "Bash(node -e \"const c = require\\(''@tiptap/core''\\); console.log\\(typeof c.Mark\\)\")",
+      "Bash(find '/c/Users/win11/OneDrive/Área de Trabalho/Cameo' -type f -name *ListaNoticias*)",
+      "Bash(find '/c/Users/win11/OneDrive/Área de Trabalho/Cameo' -type f -name *ListaResenhas*)"
     ]
   }
 }

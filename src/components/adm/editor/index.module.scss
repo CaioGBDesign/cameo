@@ -288,7 +288,9 @@
     padding-left: var(--space-2xl);
     margin: 0;
 
-    li { padding: var(--space-xs) 0; }
+    li {
+      padding: var(--space-xs) 0;
+    }
   }
 
   ol {
@@ -296,7 +298,9 @@
     padding-left: var(--space-2xl);
     margin: 0;
 
-    li { padding: var(--space-xs) 0; }
+    li {
+      padding: var(--space-xs) 0;
+    }
   }
 
   blockquote {
@@ -318,8 +322,8 @@
   }
 
   mark {
-    background: color-mix(in srgb, var(--primitive-azul-02) 35%, transparent);
-    color: inherit;
+    background: var(--primitive-rosa-02);
+    color: var(--text-base);
     border-radius: 2px;
     padding: 0 2px;
   }

@@ -16,7 +16,8 @@ const CarrosselNoticias = ({ noticias, tipo }) => {
 
   const encontrarImagem = (noticia) => {
     return (
-      noticia.elementos.find((el) => el.tipo === "imagem")?.conteudo ||
+      noticia.imagem ||
+      noticia.elementos?.find((el) => el.tipo === "imagem")?.conteudo ||
       "/background/placeholder.jpg"
     );
   };

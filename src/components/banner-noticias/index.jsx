@@ -16,7 +16,8 @@ const BannerNoticias = ({ noticias, tipo }) => {
 
   const encontrarImagem = (noticia) => {
     return (
-      noticia.elementos.find((el) => el.tipo === "imagem")?.conteudo ||
+      noticia.imagem ||
+      noticia.elementos?.find((el) => el.tipo === "imagem")?.conteudo ||
       "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/background%2Fplaceholder.jpg?alt=media&token=1b8dfa35-bcaa-487c-8ddc-8dec7482cfe5"
     );
   };

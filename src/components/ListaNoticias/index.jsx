@@ -55,9 +55,18 @@ function ListaNoticias({ noticias, renderElemento, BannerComponent }) {
                 <article className={styles.noticia} title={noticia.titulo}>
                   <div className={styles.boxConteudo}>
                     <div className={styles.conteudo}>
-                      {noticia.elementos.map((el, i) =>
-                        renderElemento(el, i, noticia)
-                      )}
+                      {(() => {
+                        const src =
+                          noticia.imagem ||
+                          noticia.elementos?.find((el) => el.tipo === "imagem")
+                            ?.conteudo;
+                        if (!src) return null;
+                        return renderElemento(
+                          { tipo: "imagem", conteudo: src },
+                          0,
+                          noticia
+                        );
+                      })()}
                     </div>
 
                     <div className={styles.informacoes}>

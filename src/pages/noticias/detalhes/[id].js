@@ -20,6 +20,8 @@ import BannerMateria from "@/components/banner-materia";
 import Badge from "@/components/badge";
 import CardMateria from "@/components/card-materia";
 import materiapadrao from "@/components/background/materia-padrao.jpg";
+import ClockIcon from "@/components/icons/ClockIcon";
+import ListaMateriaIcon from "@/components/icons/ListaMateriaIcon";
 
 // Converte recursivamente qualquer Timestamp do Firestore para ISO string
 function serializarFirestore(valor) {
@@ -268,30 +270,7 @@ export default function NoticiaDetalhe({
 
             <div className={styles.metaInfo}>
               <div className={styles.tempoLeitura}>
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 18 18"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M6.28172 2.25C6.12129 2.30995 5.96351 2.37534 5.80861 2.44595M15.5382 12.2258C15.6148 12.0599 15.6855 11.8907 15.7499 11.7184M13.874 14.5235C14.0028 14.4033 14.1273 14.2786 14.2471 14.1495M11.4516 16.0292C11.5972 15.9743 11.7405 15.915 11.8815 15.8513M9.11692 16.4954C8.94374 16.5014 8.76937 16.5014 8.59612 16.4954M5.8404 15.8553C5.976 15.9163 6.11379 15.9733 6.25361 16.0262M3.50433 14.1906C3.60685 14.2993 3.71263 14.4048 3.82154 14.5071M1.97444 11.7484C2.0306 11.8967 2.09142 12.0427 2.15671 12.1862M1.50365 9.37897C1.49878 9.2229 1.49879 9.06585 1.50365 8.90955M1.969 6.55285C2.02417 6.40624 2.0839 6.26185 2.14799 6.11985M3.49193 4.10942C3.60043 3.99385 3.7126 3.8818 3.82829 3.77343"
-                    stroke="var(--primitive-roxo-02)"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M10.125 9C10.125 9.6213 9.6213 10.125 9 10.125C8.3787 10.125 7.875 9.6213 7.875 9C7.875 8.3787 8.3787 7.875 9 7.875M10.125 9C10.125 8.3787 9.6213 7.875 9 7.875M10.125 9H12M9 7.875V4.5"
-                    stroke="var(--primitive-roxo-02)"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M16.5 9C16.5 4.85786 13.1421 1.5 9 1.5"
-                    stroke="var(--primitive-roxo-02)"
-                    strokeLinecap="round"
-                  />
-                </svg>
+                <ClockIcon size={18} color="var(--primitive-roxo-02)" />
                 <span>{noticia.numero} min de leitura</span>
               </div>
             </div>
@@ -369,35 +348,7 @@ export default function NoticiaDetalhe({
             <aside className={styles.sidebar}>
               <div className={styles.sidebarTopo}>
                 <span className={styles.sidebarTitulo}>
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M10 5L20 5"
-                      stroke="#1AF5EB"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M4 12L20 12"
-                      stroke="#1AF5EB"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M4 19L14 19"
-                      stroke="#1AF5EB"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                  <ListaMateriaIcon size={24} color="var(--primitive-azul-01)" />
                   últimas resenhas
                 </span>
                 <a href="/resenhas" className={styles.sidebarVerTodas}>

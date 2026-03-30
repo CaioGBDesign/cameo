@@ -1,0 +1,161 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4xl);
+  width: 100%;
+}
+
+.titulo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+
+  h2 {
+    font-size: 18px;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--text-base);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  display: flex;
+  gap: var(--space-lg);
+
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-md);
+
+  overflow: hidden;
+  padding: var(--space-sm);
+
+  text-decoration: none;
+  transition: border-color 0.2s;
+
+  &:hover {
+    background: var(--bg-base);
+  }
+}
+
+.imagem {
+  flex-shrink: 0;
+  overflow: hidden;
+
+  width: 260px;
+  height: auto;
+
+  border-radius: 10px;
+
+  @media (max-width: 768px) {
+    width: 120px;
+    height: 100px;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.conteudo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-md) var(--space-md) 0;
+  flex: 1;
+  min-width: 0;
+  gap: var(--space-lg);
+}
+
+.topo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.cardTitulo {
+  font-size: 15px;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--text-base);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+}
+
+.leitura {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 13px;
+  font-style: italic;
+  color: var(--primitive-roxo-02);
+  margin: 0;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.separador {
+  width: 100%;
+  height: 1px;
+
+  background: var(--stroke-base);
+}
+
+.rodape {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+
+  .por {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-sm);
+
+    .dotRodape {
+      width: 5px;
+      height: 5px;
+
+      background: var(--primitive-roxo-03);
+      border-radius: 10px;
+    }
+
+    .autor {
+      color: var(--text-base);
+      font-size: 16px;
+      font-style: italic;
+
+      strong {
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.data {
+  color: var(--text-base);
+  font-size: 14px;
+  font-style: italic;
+}

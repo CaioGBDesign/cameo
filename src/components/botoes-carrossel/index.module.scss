@@ -1,125 +1,87 @@
-.contBotoes {
+.container {
   width: 100%;
-
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-md);
+  padding: var(--space-lg);
+}
+
+.pills {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  overflow: hidden;
+  scroll-behavior: smooth;
+  flex: 1;
+  min-width: 0;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.pill {
+  flex-shrink: 0;
+  padding: var(--space-sm);
+  border-radius: var(--space-sm);
+  border: 1px solid var(--stroke-quaternary);
+  background: none;
+  color: var(--text-base);
+  font-size: 16px;
+  font-style: italic;
+  font-family: var(--font-family-base);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+
+  &.ativo {
+    background: var(--bg-submit);
+    border-color: var(--stroke-submit);
+  }
+}
+
+.arrows {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-shrink: 0;
+}
+
+.arrow {
+  display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: end;
-  gap: 20px;
+  border-radius: var(--space-md);
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
 
-  @media only screen and (max-width: 1000px) {
-    width: 100%;
+  &.arrowInativo {
+    width: 40px;
+    height: 40px;
+    background: var(--bg-quintenario);
+    border: 1px solid var(--stroke-quaternary);
   }
 
-  .botoes {
-    width: 100%;
-
-    display: flex;
-    justify-content: start;
-    align-items: end;
-    gap: 20px;
-
-    overflow: hidden;
-
-    scroll-behavior: smooth;
-    transition: scroll-left 0.3s ease-in-out;
-
-    @media only screen and (max-width: 600px) {
-      overflow-y: scroll;
-      overflow: auto;
-    }
-
-    /* width */
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
-    .grupoFiltro {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: start;
-      gap: 10px;
-
-      span {
-        color: #3b2544;
-      }
-
-      .grupoBotoes {
-        display: flex;
-        gap: 10px;
-        overflow-x: auto;
-        scroll-behavior: smooth;
-        padding-bottom: 10px;
-        margin-bottom: -10px;
-
-        button {
-          display: flex;
-
-          background: none;
-          border: solid 1px #3b2544;
-          border-radius: 10px;
-
-          padding: 20px;
-
-          width: max-content;
-
-          font-size: 20px;
-          font-weight: 100;
-          color: #ffffff;
-
-          cursor: pointer;
-
-          gap: 10px;
-
-          flex-shrink: 0;
-        }
-
-        .ativo {
-          background: #6a0dad;
-          border: none;
-        }
-      }
-
-      .controlesCarrossel {
-        display: flex;
-        gap: 12px;
-        justify-content: flex-end;
-        margin-top: 10px;
-
-        button {
-          background: none;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-          padding: 6px;
-          cursor: pointer;
-          transition: all 0.2s;
-
-          &:hover {
-            background-color: #f5f5f5;
-          }
-        }
-      }
-    }
+  &.arrowAtivo {
+    width: 50px;
+    height: 50px;
+    background: var(--bg-submit);
+    border: 1px solid var(--stroke-submit);
   }
+}
 
-  .navBotoes {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+.chevronEsquerda {
+  transform: rotate(90deg);
+}
 
-    button {
-      background: hsla(0, 0%, 100%, 0.063);
-      border: none;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 50px;
-      height: 50px;
-      padding: 5px;
-      border-radius: 50px;
-      cursor: pointer;
-    }
-  }
+.chevronDireita {
+  transform: rotate(-90deg);
 }

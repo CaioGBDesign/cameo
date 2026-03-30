@@ -1,25 +1,16 @@
 import styles from "./index.module.scss";
-import { useState, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
 import { db } from "@/services/firebaseConection";
-import {
-  collection,
-  getDocs,
-  query,
-  orderBy,
-} from "firebase/firestore";
-import { useIsMobile } from "@/components/DeviceProvider";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import Head from "next/head";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BannerNoticias from "@/components/banner-noticias";
-import CarrosselNticias from "@/components/carrossel-noticias";
-import empresas from "@/components/listas/tags/empresas.json";
-import generos from "@/components/listas/tags/generos.json";
 import BotoesCarrossel from "@/components/botoes-carrossel";
-import ListaNoticias from "@/components/ListaNoticias";
-import ListaResenhas from "@/components/ListaResenhas-resumo";
-import BannerInformacao from "@/components/banner-informacao";
-import Image from "next/image";
+import ListaNoticiasGrid from "@/components/lista-noticias-grid";
+import ListaNoticiasResumo from "@/components/lista-noticias-resumo";
+import SectionCard from "@/components/section-card";
+import CardFilme from "@/components/card-filme";
 
 function serializarFirestore(valor) {
   if (valor === null || valor === undefined) return valor ?? null;
@@ -44,10 +35,7 @@ export async function getServerSideProps() {
   try {
     const [noticiasSnap, criticasSnap] = await Promise.all([
       getDocs(
-        query(
-          collection(db, "noticias"),
-          orderBy("dataPublicacao", "desc"),
-        ),
+        query(collection(db, "noticias"), orderBy("dataPublicacao", "desc")),
       ),
       getDocs(
         query(collection(db, "criticas"), orderBy("dataPublicacao", "desc")),
@@ -78,69 +66,32 @@ export async function getServerSideProps() {
 }
 
 const opcoesBotoes = [
-  {
-    label: "Empresas",
-    options: empresas
-      .filter((empresa) => empresa.Exibir === "Sim")
-      .map((empresa) => ({
-        value: `empresa:${empresa.name}`,
-        label: empresa.name,
-      })),
-  },
-  {
-    label: "Gêneros",
-    options: generos
-      .filter((genero) => genero.Exibir === "Sim")
-      .map((genero) => ({
-        value: `genero:${genero.name}`,
-        label: genero.name,
-      })),
-  },
-];
+  "Marvel",
+  "DC Comics",
+  "HBO Max",
+  "Disney",
+  "Netflix",
+  "Prime Vídeo",
+  "Paramount",
+  "Universal",
+  "A24",
+  "Lionsgate",
+].map((nome) => ({ value: nome, label: nome }));
 
 const Noticias = ({ noticias, criticas }) => {
-  const isMobile = useIsMobile();
   const [filtroSelecionado, setFiltroSelecionado] = useState(null);
+  const [recomendacoes, setRecomendacoes] = useState([]);
+  const recomendacoesRef = useRef(null);
+  const noticiasDestaque = noticias.slice(0, 5);
+  const noticiaDestaque = noticias[0];
 
-  const ultimasNoticias = noticias.slice(0, 4);
-  const ultimasCriticas = criticas.slice(0, 4);
-  const noticiaDestaque = ultimasNoticias[0];
-
-  const filteredNoticias = useMemo(() => {
-    if (!filtroSelecionado) return noticias;
-    const [tipo, valor] = filtroSelecionado.value.split(":");
-    return noticias.filter((noticia) => {
-      if (tipo === "empresa") {
-        return noticia.empresas?.some(
-          (empresa) =>
-            empresa.trim().toLowerCase() === valor.trim().toLowerCase(),
-        );
-      }
-      if (tipo === "genero") {
-        return noticia.generos?.some(
-          (genero) =>
-            genero.trim().toLowerCase() === valor.trim().toLowerCase(),
-        );
-      }
-      return false;
-    });
-  }, [filtroSelecionado, noticias]);
-
-  const renderElemento = (elemento, index, noticia = {}) => {
-    if (!elemento || elemento.tipo !== "imagem") return null;
-    const src = elemento.conteudo || noticia.imagem;
-    if (!src) return null;
-    return (
-      <div key={index} className={styles.imagemContainer}>
-        <Image
-          src={src}
-          alt={noticia.titulo || "Imagem da notícia"}
-          fill
-          style={{ objectFit: "cover" }}
-        />
-      </div>
-    );
-  };
+  useEffect(() => {
+    const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+    fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&page=1`)
+      .then((r) => r.json())
+      .then((data) => setRecomendacoes(data.results || []))
+      .catch(() => {});
+  }, []);
 
   return (
     <>
@@ -179,57 +130,45 @@ const Noticias = ({ noticias, criticas }) => {
         />
       </Head>
 
-      <main className={styles.ContNoticias}>
-        {!isMobile && (
-          <section className={styles.bannerNoticias}>
-            <BannerNoticias
-              noticias={ultimasNoticias}
-              tipo="noticias"
-              className={styles.customWidth}
-            />
-          </section>
-        )}
+      <main className={styles.pageMateria}>
+        <section className={styles.bannerNoticias}>
+          <BannerNoticias noticias={noticiasDestaque} />
+        </section>
 
-        {isMobile && (
-          <section className={styles.ultimasNoticiasECriticas}>
-            <div className={styles.ultimasNoticias}>
-              <CarrosselNticias
-                noticias={ultimasNoticias}
-                tipo="noticias"
-                className={styles.customWidth}
-              />
-            </div>
-          </section>
-        )}
+        <article className={styles.page}>
+          <BotoesCarrossel
+            opcoesBotoes={opcoesBotoes}
+            onFilterChange={setFiltroSelecionado}
+          />
 
-        {!isMobile && (
-          <div className={styles.tituloPagina}>
-            <BotoesCarrossel
-              opcoesBotoes={opcoesBotoes}
-              onFilterChange={setFiltroSelecionado}
-            />
-          </div>
-        )}
+          <ListaNoticiasGrid noticias={noticias} />
 
-        {!isMobile && <div className={styles.divisor} />}
+          <ListaNoticiasResumo
+            noticias={criticas.slice(0, 6)}
+            titulo="últimas resenhas"
+            verTodas="/resenhas"
+            basePath="/resenhas/detalhes"
+          />
 
-        <div className={styles.criticasNoticias}>
-          <div className={styles.colunaNoticias}>
-            <ListaNoticias
-              noticias={filteredNoticias}
-              renderElemento={renderElemento}
-              BannerComponent={BannerInformacao}
-            />
-          </div>
-
-          {isMobile && <div className={styles.divisor} />}
-
-          <div className={styles.colunaCriticas}>
-            <ListaResenhas criticas={ultimasCriticas} />
-          </div>
-
-          <div className={styles.containerGoogle} />
-        </div>
+          {recomendacoes.length > 0 && (
+            <SectionCard title="Recomendações" scrollRef={recomendacoesRef}>
+              <div
+                ref={recomendacoesRef}
+                style={{
+                  display: "flex",
+                  gap: "var(--space-sm)",
+                  overflowX: "auto",
+                  overflowY: "hidden",
+                  scrollbarWidth: "none",
+                }}
+              >
+                {recomendacoes.map((movie) => (
+                  <CardFilme key={movie.id} movie={movie} variant="titulo" />
+                ))}
+              </div>
+            </SectionCard>
+          )}
+        </article>
       </main>
 
       <Footer />

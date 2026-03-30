@@ -1,0 +1,124 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  width: 100%;
+
+  background: var(--bg-overlay);
+  border: solid 1px var(--stroke-base);
+  border-radius: var(--space-2xl);
+
+  padding: var(--space-lg);
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: var(--space-2xl) var(--space-md) var(--space-2xl) var(--space-lg);
+
+    .titulo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      font-size: 18px;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--text-base);
+      margin: 0;
+    }
+
+    .verTodas {
+      font-size: 14px;
+      font-style: italic;
+      color: var(--primitive-azul-01);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+
+    .card {
+      display: flex;
+      gap: var(--space-sm);
+      text-decoration: none;
+      align-items: center;
+
+      padding: var(--space-lg);
+
+      text-decoration: none;
+
+      background: var(--bg-base);
+      border-radius: var(--space-sm);
+
+      &:hover {
+        background: var(--bg-overlay);
+      }
+
+      .imagem {
+        flex-shrink: 0;
+        width: 150px;
+        align-self: stretch;
+        border-radius: var(--space-xs);
+        overflow: hidden;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+      }
+
+      .conteudo {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-lg);
+        flex: 1;
+        min-width: 0;
+
+        p {
+          overflow: hidden;
+          color: var(--text-base);
+
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+
+          font-family: var(--font-family-base);
+          font-size: 14px;
+          font-style: italic;
+          font-weight: 700;
+          line-height: 1.4;
+          margin: 0;
+        }
+
+        .separador {
+          width: 100%;
+          height: 1px;
+
+          background: var(--stroke-base);
+        }
+
+        span {
+          font-size: 12px;
+          font-style: italic;
+          color: var(--text-base);
+        }
+      }
+    }
+  }
+}

@@ -1,92 +1,78 @@
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import ChevronDownIcon from "@/components/icons/ChevronDownIcon";
+import ClockIcon from "@/components/icons/ClockIcon";
+import materiaPadrao from "@/components/background/materia-padrao.jpg";
 import styles from "./index.module.scss";
-import { useRouter } from "next/router";
 
-const BannerNoticias = ({ noticias, tipo }) => {
-  const router = useRouter();
-  const [activeSlide, setActiveSlide] = useState(0);
+const BannerNoticias = ({ noticias }) => {
+  const [ativo, setAtivo] = useState(0);
+  const total = noticias.length;
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % noticias.length);
+      setAtivo((prev) => (prev + 1) % total);
     }, 5000);
-
     return () => clearInterval(interval);
-  }, [noticias.length]);
+  }, [total]);
 
-  const encontrarImagem = (noticia) => {
-    return (
-      noticia.imagem ||
-      noticia.elementos?.find((el) => el.tipo === "imagem")?.conteudo ||
-      "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/background%2Fplaceholder.jpg?alt=media&token=1b8dfa35-bcaa-487c-8ddc-8dec7482cfe5"
-    );
-  };
+  const anterior = () => setAtivo((prev) => (prev - 1 + total) % total);
+  const proximo = () => setAtivo((prev) => (prev + 1) % total);
+
+  const encontrarImagem = (noticia) =>
+    noticia.imagem ||
+    noticia.elementos?.find((el) => el.tipo === "imagem")?.conteudo ||
+    materiaPadrao.src;
 
   return (
-    <article
-      className={`${styles.bannerNoticiasECriticas} ${
-        tipo === "noticias" ? styles.larguraNoticias : styles.larguraPadrao
-      }`}
-    >
-      <div className={styles.ultimasNoticias}>
-        <div className={styles.dotsCarrossel}>
-          {noticias.map((_, index) => (
-            <button
-              key={index}
-              className={`${styles.dots} ${
-                index === activeSlide ? styles.dotsAtivo : ""
-              }`}
-              onClick={() => setActiveSlide(index)}
-            />
-          ))}
-        </div>
-
-        <div className={styles.carrossel}>
-          <div
-            className={styles.slidesContainer}
-            style={{ transform: `translateX(-${activeSlide * 100}%)` }}
+    <div className={styles.banner}>
+      <div className={styles.slides}>
+        {noticias.map((noticia, index) => (
+          <Link
+            key={noticia.id}
+            href={`/noticias/detalhes/${noticia.id}`}
+            className={`${styles.slide} ${index === ativo ? styles.ativo : ""}`}
           >
-            {noticias.map((noticia) => (
-              <div
-                key={noticia.id}
-                className={styles.resumoNoticia}
-                onClick={() => router.push(`/noticias/detalhes/${noticia.id}`)}
-              >
-                <div className={styles.informacoesNoticia}>
-                  <div className={styles.tagNoticia}>
-                    <span>Notícia</span>
-                  </div>
+            <img
+              src={encontrarImagem(noticia)}
+              alt={noticia.titulo}
+              className={styles.imagem}
+              onError={(e) => { e.target.src = materiaPadrao.src; }}
+            />
+            <div className={styles.gradiente} />
 
-                  <h1>{noticia.titulo}</h1>
-                  <div className={styles.numeroNoticia}>
-                    <img
-                      src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Frelogio.svg?alt=media&token=5ca19f7c-5421-408d-ae41-15b351db2c38"
-                      alt="Tempo de leitura"
-                    />
-                    {noticia.numero} min de leitura
-                  </div>
-                </div>
-
-                <div className={styles.imagemNoticia}>
-                  <div className={styles.fundoA}></div>
-                  <div className={styles.fundoB}></div>
-                  <div className={styles.fundoC}></div>
-                  <div className={styles.fundoD}></div>
-                  <img
-                    src={encontrarImagem(noticia)}
-                    alt="Capa Noticia"
-                    onError={(e) => {
-                      e.target.src =
-                        "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/background%2Fplaceholder.jpg?alt=media&token=1b8dfa35-bcaa-487c-8ddc-8dec7482cfe5";
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+            <div className={styles.info}>
+              <span className={styles.tag}>Notícia</span>
+              <h2 className={styles.titulo}>{noticia.titulo}</h2>
+              {noticia.numero && (
+                <p className={styles.leitura}>
+                  <ClockIcon size={16} color="var(--primitive-roxo-02)" />
+                  {noticia.numero} minutos de leitura
+                </p>
+              )}
+            </div>
+          </Link>
+        ))}
       </div>
-    </article>
+
+      <button className={`${styles.arrow} ${styles.arrowLeft}`} onClick={anterior} aria-label="Anterior">
+        <ChevronDownIcon size={18} color="var(--icon-base)" className={styles.chevronEsquerda} />
+      </button>
+      <button className={`${styles.arrow} ${styles.arrowRight}`} onClick={proximo} aria-label="Próximo">
+        <ChevronDownIcon size={18} color="var(--icon-base)" className={styles.chevronDireita} />
+      </button>
+
+      <div className={styles.dots}>
+        {noticias.map((_, index) => (
+          <button
+            key={index}
+            className={`${styles.dot} ${index === ativo ? styles.dotAtivo : ""}`}
+            onClick={() => setAtivo(index)}
+            aria-label={`Slide ${index + 1}`}
+          />
+        ))}
+      </div>
+    </div>
   );
 };
 

@@ -166,7 +166,7 @@ const CriticaDetalhe = () => {
           {/* Tags de gêneros e empresas */}
           <div className={styles.contTags}>
             <div className={styles.tags}>
-              {critica.generos.map((g) => (
+              {critica.generos?.map((g) => (
                 <span key={`gen-${g}`} className={styles.tag}>
                   {g}
                 </span>

@@ -1,19 +1,18 @@
 import { useState, useRef } from "react";
+import ChevronDownIcon from "@/components/icons/ChevronDownIcon";
 import styles from "./index.module.scss";
-import { useIsMobile } from "@/components/DeviceProvider";
 
-function GrupoBotoesFiltro({ opcoesBotoes, onFilterChange }) {
-  const isMobile = useIsMobile();
+function BotoesCarrossel({ opcoesBotoes, onFilterChange }) {
   const [filtroSelecionado, setFiltroSelecionado] = useState(null);
-  const botoesRef = useRef(null);
+  const scrollRef = useRef(null);
+
+  const todasOpcoes = Array.isArray(opcoesBotoes[0]?.options)
+    ? opcoesBotoes.flatMap((grupo) => grupo.options)
+    : opcoesBotoes;
 
   const handleScroll = (direction) => {
-    if (botoesRef.current) {
-      const scrollAmount = 300;
-      const current = botoesRef.current.scrollLeft;
-      botoesRef.current.scrollLeft =
-        direction === "next" ? current + scrollAmount : current - scrollAmount;
-    }
+    if (!scrollRef.current) return;
+    scrollRef.current.scrollLeft += direction === "next" ? 300 : -300;
   };
 
   const toggleFilter = (opcao) => {
@@ -22,54 +21,50 @@ function GrupoBotoesFiltro({ opcoesBotoes, onFilterChange }) {
     onFilterChange(novo);
   };
 
+  const limparFiltro = () => {
+    setFiltroSelecionado(null);
+    onFilterChange(null);
+  };
+
   return (
-    <div
-      className={`${styles.contBotoes} ${
-        isMobile ? styles.mobile : styles.desktop
-      }`}
-    >
-      <div className={styles.botoes} ref={botoesRef}>
-        {opcoesBotoes.map((grupo) => (
-          <div key={grupo.label} className={styles.grupoFiltro}>
-            <span className={styles.grupoLabel}>{grupo.label}:</span>
-            <div className={styles.grupoBotoes}>
-              {grupo.options.map((opcao) => (
-                <button
-                  key={opcao.value}
-                  onClick={() => toggleFilter(opcao)}
-                  className={`${styles.botaoFiltro} ${
-                    filtroSelecionado?.value === opcao.value ? styles.ativo : ""
-                  }`}
-                >
-                  {opcao.label}
-                  {filtroSelecionado?.value === opcao.value && (
-                    <span className={styles.iconeFechar}>×</span>
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
+    <div className={styles.container}>
+      <div className={styles.pills} ref={scrollRef}>
+        <button
+          className={`${styles.pill} ${!filtroSelecionado ? styles.ativo : ""}`}
+          onClick={limparFiltro}
+        >
+          Todos
+        </button>
+
+        {todasOpcoes.map((opcao) => (
+          <button
+            key={opcao.value}
+            className={`${styles.pill} ${filtroSelecionado?.value === opcao.value ? styles.ativo : ""}`}
+            onClick={() => toggleFilter(opcao)}
+          >
+            {opcao.label}
+          </button>
         ))}
       </div>
 
-      {!isMobile && (
-        <div className={styles.navBotoes}>
-          <button onClick={() => handleScroll("next")}>
-            <img
-              src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fproximo.svg?alt=media&token=dc8fe2b3-ead3-49b4-aa1e-926b16f4a3fc"
-              alt="Próximo"
-            />
-          </button>
-          <button onClick={() => handleScroll("prev")}>
-            <img
-              src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fanterior.svg?alt=media&token=9564b079-3d4f-4b07-922d-1275ef619523"
-              alt="Anterior"
-            />
-          </button>
-        </div>
-      )}
+      <div className={styles.arrows}>
+        <button
+          className={`${styles.arrow} ${styles.arrowInativo}`}
+          onClick={() => handleScroll("prev")}
+          aria-label="Anterior"
+        >
+          <ChevronDownIcon size={18} color="var(--icon-base)" className={styles.chevronEsquerda} />
+        </button>
+        <button
+          className={`${styles.arrow} ${styles.arrowAtivo}`}
+          onClick={() => handleScroll("next")}
+          aria-label="Próximo"
+        >
+          <ChevronDownIcon size={18} color="var(--icon-base)" className={styles.chevronDireita} />
+        </button>
+      </div>
     </div>
   );
 }
 
-export default GrupoBotoesFiltro;
+export default BotoesCarrossel;

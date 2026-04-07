@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { AuthContext } from "@/contexts/auth";
+import { useConfiguracoes } from "@/contexts/configuracoes";
 import styles from "./index.module.scss";
 import SearchIcon from "@/components/icons/SearchIcon";
 import HomeIcon from "@/components/icons/HomeIcon";
@@ -28,6 +29,7 @@ const DUBLAGEM = [
 const MenuMobile = ({ open, onClose }) => {
   const router = useRouter();
   const { user, logout } = useContext(AuthContext);
+  const { noticiasHabilitado, resenhasHabilitado, dubladoresHabilitado, estudiosHabilitado } = useConfiguracoes();
   const [listasOpen, setListasOpen] = useState(false);
 
   const listas = [
@@ -128,52 +130,68 @@ const MenuMobile = ({ open, onClose }) => {
             </div>
           )}
 
-          <div className={styles.colapsavel}>
-            <button
-              className={`${styles.item} ${styles.colapsavelBtn}`}
-              onClick={() => setDublagemOpen((prev) => !prev)}
+          {(dubladoresHabilitado || estudiosHabilitado) && (
+            <div className={styles.colapsavel}>
+              <button
+                className={`${styles.item} ${styles.colapsavelBtn}`}
+                onClick={() => setDublagemOpen((prev) => !prev)}
+              >
+                <MicIcon size={20} color="currentColor" />
+                <span>Dublagem</span>
+                <ChevronDownIcon
+                  size={16}
+                  color="currentColor"
+                  className={`${styles.chevron} ${dublagemOpen ? styles.chevronOpen : ""}`}
+                />
+              </button>
+              {dublagemOpen && (
+                <ul className={styles.subMenu}>
+                  {dubladoresHabilitado && (
+                    <li className={styles.BtnSubMenu}>
+                      <button
+                        className={styles.subItem}
+                        onClick={() => navegar("/dubladores")}
+                      >
+                        Dubladores
+                      </button>
+                    </li>
+                  )}
+                  {estudiosHabilitado && (
+                    <li className={styles.BtnSubMenu}>
+                      <button
+                        className={styles.subItem}
+                        onClick={() => navegar("/estudios")}
+                      >
+                        Estúdios
+                      </button>
+                    </li>
+                  )}
+                </ul>
+              )}
+            </div>
+          )}
+
+          {noticiasHabilitado && (
+            <Link
+              href="/noticias"
+              className={`${styles.item} ${isActive("/noticias")}`}
+              onClick={onClose}
             >
-              <MicIcon size={20} color="currentColor" />
-              <span>Dublagem</span>
-              <ChevronDownIcon
-                size={16}
-                color="currentColor"
-                className={`${styles.chevron} ${dublagemOpen ? styles.chevronOpen : ""}`}
-              />
-            </button>
-            {dublagemOpen && (
-              <ul className={styles.subMenu}>
-                {DUBLAGEM.map((item) => (
-                  <li key={item.value} className={styles.BtnSubMenu}>
-                    <button
-                      className={styles.subItem}
-                      onClick={() => navegar(item.value)}
-                    >
-                      {item.label}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+              <NewsIcon size={20} color="currentColor" />
+              <span>Notícias</span>
+            </Link>
+          )}
 
-          <Link
-            href="/noticias"
-            className={`${styles.item} ${isActive("/noticias")}`}
-            onClick={onClose}
-          >
-            <NewsIcon size={20} color="currentColor" />
-            <span>Notícias</span>
-          </Link>
-
-          <Link
-            href="/resenhas"
-            className={`${styles.item} ${isActive("/resenhas")}`}
-            onClick={onClose}
-          >
-            <StarIcon size={20} color="currentColor" />
-            <span>Resenhas</span>
-          </Link>
+          {resenhasHabilitado && (
+            <Link
+              href="/resenhas"
+              className={`${styles.item} ${isActive("/resenhas")}`}
+              onClick={onClose}
+            >
+              <StarIcon size={20} color="currentColor" />
+              <span>Resenhas</span>
+            </Link>
+          )}
         </div>
 
         {user && (

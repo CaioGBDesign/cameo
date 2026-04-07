@@ -2,12 +2,19 @@ import styles from "./index.module.scss";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { db } from "@/services/firebaseConection";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { useIsMobile } from "@/components/DeviceProvider";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 
 const Header = dynamic(() => import("@/components/Header"));
+
+export async function getServerSideProps() {
+  const configSnap = await getDoc(doc(db, "configuracoes", "site"));
+  const config = configSnap.exists() ? configSnap.data() : {};
+  if (config.dubladoresHabilitado === false) return { notFound: true };
+  return { props: {} };
+}
 
 export default function DubladoresPage() {
   const isMobile = useIsMobile();

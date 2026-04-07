@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/auth";
 import LogOutIcon from "@/components/icons/LogOutIcon";
+import SettingsIcon from "@/components/icons/SettingsIcon";
 import ChevronDownIcon from "@/components/icons/ChevronDownIcon";
 import SidebarToggleIcon from "@/components/icons/SidebarToggleIcon";
 import DashboardIcon from "@/components/icons/DashboardIcon";
@@ -253,6 +254,14 @@ export default function AdmSidebar({ collapsed, onCollapse }) {
                 <span className={styles.userEmail}>{user?.email}</span>
               </div>
             </div>
+            <Link
+              href="/adm/configuracoes"
+              className={styles.popoverBotao}
+              onClick={() => setUserMenuOpen(false)}
+            >
+              <SettingsIcon size={16} color="currentColor" />
+              <span>Configurações</span>
+            </Link>
             <button
               className={styles.popoverSair}
               onClick={() => {

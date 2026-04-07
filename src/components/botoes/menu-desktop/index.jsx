@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { useRouter } from "next/router";
 import { AuthContext } from "@/contexts/auth";
+import { useConfiguracoes } from "@/contexts/configuracoes";
 import styles from "./index.module.scss";
 import Link from "next/link";
 import Select from "@/components/inputs/select";
@@ -11,14 +12,15 @@ const LISTAS_BASE = [
   { value: "/favoritos", label: "Favoritos" },
 ];
 
-const DUBLAGEM = [
-  { value: "/dubladores", label: "Dubladores" },
-  { value: "/estudios", label: "Estúdios" },
+const DUBLAGEM_BASE = [
+  { value: "/dubladores", label: "Dubladores", key: "dubladoresHabilitado" },
+  { value: "/estudios", label: "Estúdios", key: "estudiosHabilitado" },
 ];
 
 const MenuDesktop = () => {
   const router = useRouter();
   const { user } = useContext(AuthContext);
+  const { noticiasHabilitado, resenhasHabilitado, dubladoresHabilitado, estudiosHabilitado } = useConfiguracoes();
 
   const isActive = (path) => (router.pathname === path ? styles.active : "");
 
@@ -33,6 +35,12 @@ const MenuDesktop = () => {
       label: l.nome,
     })),
   ];
+
+  const dublagem = DUBLAGEM_BASE.filter((item) => {
+    if (item.key === "dubladoresHabilitado") return dubladoresHabilitado;
+    if (item.key === "estudiosHabilitado") return estudiosHabilitado;
+    return true;
+  });
 
   return (
     <nav className={styles.menuBotoes}>
@@ -60,28 +68,34 @@ const MenuDesktop = () => {
           </li>
         )}
 
-        <li>
-          <div className={styles.menuSelect}>
-            <Select
-              placeholder="Dublagem"
-              options={DUBLAGEM}
-              value=""
-              onChange={navegar}
-              variant="ghost"
-            />
-          </div>
-        </li>
+        {dublagem.length > 0 && (
+          <li>
+            <div className={styles.menuSelect}>
+              <Select
+                placeholder="Dublagem"
+                options={dublagem}
+                value=""
+                onChange={navegar}
+                variant="ghost"
+              />
+            </div>
+          </li>
+        )}
 
-        <li>
-          <Link href="/noticias" className={isActive("/noticias")}>
-            Notícias
-          </Link>
-        </li>
-        <li>
-          <Link href="/resenhas" className={isActive("/resenhas")}>
-            Resenhas
-          </Link>
-        </li>
+        {noticiasHabilitado && (
+          <li>
+            <Link href="/noticias" className={isActive("/noticias")}>
+              Notícias
+            </Link>
+          </li>
+        )}
+        {resenhasHabilitado && (
+          <li>
+            <Link href="/resenhas" className={isActive("/resenhas")}>
+              Resenhas
+            </Link>
+          </li>
+        )}
         <li>
           <Link href="/game" className={isActive("/game")}>
             Game

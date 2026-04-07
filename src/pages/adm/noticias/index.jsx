@@ -195,6 +195,7 @@ const STATUS_CONFIG = {
 };
 
 const calcularPrioridade = (noticia) => {
+  if (!noticia.status || noticia.status.toLowerCase() === "publicado") return { label: "S/P", nivel: 0 };
   const ref = noticia.dataRascunho || noticia.dataPublicacao;
   if (!ref) return { label: "S/P", nivel: 0 };
   const dias = Math.floor(

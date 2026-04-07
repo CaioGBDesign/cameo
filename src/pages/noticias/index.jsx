@@ -1,7 +1,7 @@
 import styles from "./index.module.scss";
 import { useState, useEffect, useRef } from "react";
 import { db } from "@/services/firebaseConection";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, query, orderBy, doc, getDoc } from "firebase/firestore";
 import Head from "next/head";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -33,6 +33,10 @@ const converterCampo = (data, campo) => {
 
 export async function getServerSideProps() {
   try {
+    const configSnap = await getDoc(doc(db, "configuracoes", "site"));
+    const config = configSnap.exists() ? configSnap.data() : {};
+    if (config.noticiasHabilitado === false) return { notFound: true };
+
     const [noticiasSnap, criticasSnap] = await Promise.all([
       getDocs(
         query(collection(db, "noticias"), orderBy("dataPublicacao", "desc")),

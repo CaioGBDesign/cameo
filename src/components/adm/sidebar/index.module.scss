@@ -242,6 +242,29 @@
   border-bottom: 1px solid var(--stroke-base);
 }
 
+.popoverBotao {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
+  padding: var(--space-lg);
+  background: transparent;
+  border: none;
+  color: var(--text-sub);
+  font-size: 0.875rem;
+  font-style: italic;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+
+  &:hover {
+    background: var(--bg-base);
+    color: var(--text-base);
+  }
+}
+
 .popoverSair {
   display: flex;
   align-items: center;

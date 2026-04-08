@@ -1,0 +1,55 @@
+.tiposList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tipoItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: 9px 12px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition:
+    background 0.12s,
+    border-color 0.12s;
+
+  &:not(.tipoItemDisabled):hover {
+    background: var(--bg-overlay);
+    border-color: var(--stroke-base);
+  }
+
+  &.tipoItemSelected {
+    background: var(--bg-overlay);
+    border-color: var(--stroke-base);
+  }
+
+  &.tipoItemDisabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+
+.tipoNum {
+  font-size: 0.75rem;
+  color: var(--text-sub);
+  font-family: monospace;
+  min-width: 22px;
+  flex-shrink: 0;
+}
+
+.tipoLabel {
+  font-size: 0.9rem;
+  color: var(--text-base);
+}
+
+.modalFooter {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: flex-end;
+}

@@ -15,7 +15,9 @@ import DublagensIcon from "@/components/icons/DublagensIcon";
 import EstudioIcon from "@/components/icons/EstudioIcon";
 import PerguntasIcon from "@/components/icons/PerguntasIcon";
 import PatentesIcon from "@/components/icons/PatentesIcon";
+import EventosIcon from "@/components/icons/EventosIcon";
 import PermissoesIcon from "@/components/icons/PermissoesIcon";
+import ModalCriarPergunta from "@/components/modais/modal-criar-pergunta";
 import styles from "./index.module.scss";
 
 const NAV = [
@@ -78,14 +80,14 @@ const NAV = [
     ],
   },
   {
-    group: "Cameo Game",
+    group: "Cameo Desafio",
     items: [
       {
         label: "Perguntas",
         icon: PerguntasIcon,
         base: "/adm/perguntas",
         children: [
-          { href: "/adm/perguntas/criar", label: "Criar pergunta" },
+          { label: "Criar pergunta", modal: "criar-pergunta" },
           { href: "/adm/perguntas", label: "Todas as perguntas" },
         ],
       },
@@ -96,6 +98,15 @@ const NAV = [
         children: [
           { href: "/adm/patentes/criar", label: "Criar patente" },
           { href: "/adm/patentes", label: "Todas as patentes" },
+        ],
+      },
+      {
+        label: "Eventos",
+        icon: EventosIcon,
+        base: "/adm/eventos",
+        children: [
+          { href: "/adm/eventos/criar", label: "Criar evento" },
+          { href: "/adm/eventos", label: "Todos os eventos" },
         ],
       },
     ],
@@ -114,6 +125,9 @@ export default function AdmSidebar({ collapsed, onCollapse }) {
   const [openItems, setOpenItems] = useState({});
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
+
+  // ── Modal criar pergunta ───────────────────────────────────────────────────
+  const [modalCriarPergunta, setModalCriarPergunta] = useState(false);
 
   const toggleItem = (label) =>
     setOpenItems((prev) => ({ ...prev, [label]: !prev[label] }));
@@ -197,15 +211,35 @@ export default function AdmSidebar({ collapsed, onCollapse }) {
                     </button>
                     {isOpen && !collapsed && (
                       <div className={styles.subItems}>
-                        {item.children.map((child) => (
-                          <Link
-                            key={child.href}
-                            href={child.href}
-                            className={`${styles.subItem} ${router.pathname === child.href ? styles.subItemActive : ""}`}
-                          >
-                            <div className={styles.subBotao}>{child.label}</div>
-                          </Link>
-                        ))}
+                        {item.children.map((child) => {
+                          if (child.modal === "criar-pergunta") {
+                            return (
+                              <button
+                                key="criar-pergunta"
+                                type="button"
+                                className={styles.subItem}
+                                onClick={() => {
+                                  setModalCriarPergunta(true);
+                                }}
+                              >
+                                <div className={styles.subBotao}>
+                                  {child.label}
+                                </div>
+                              </button>
+                            );
+                          }
+                          return (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              className={`${styles.subItem} ${router.pathname === child.href ? styles.subItemActive : ""}`}
+                            >
+                              <div className={styles.subBotao}>
+                                {child.label}
+                              </div>
+                            </Link>
+                          );
+                        })}
                       </div>
                     )}
                   </div>
@@ -308,6 +342,10 @@ export default function AdmSidebar({ collapsed, onCollapse }) {
           )}
         </div>
       </div>
+      {/* Modal — selecionar tipo de pergunta */}
+      {modalCriarPergunta && (
+        <ModalCriarPergunta onClose={() => setModalCriarPergunta(false)} />
+      )}
     </aside>
   );
 }

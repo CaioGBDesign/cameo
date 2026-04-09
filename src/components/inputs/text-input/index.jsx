@@ -18,6 +18,7 @@ const TextInput = ({
   prefix,
   suffix,
   inputMode,
+  error = false,
 }) => {
   return (
     <div className={styles.wrapper} style={width ? { width } : undefined}>
@@ -32,7 +33,7 @@ const TextInput = ({
           )}
         </label>
       )}
-      <div className={styles.inputRow}>
+      <div className={`${styles.inputRow} ${error ? styles.inputRowError : ""}`}>
         {prefix && <div className={styles.prefix}>{prefix}</div>}
         <input
           id={id}

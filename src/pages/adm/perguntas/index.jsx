@@ -159,6 +159,17 @@ const aplicarSort = (lista, col, dir) =>
     }
   });
 
+const TIPO_BADGE_CLASS = {
+  2: "tipoBadgeTipo2",
+  3: "tipoBadgeTipo3",
+  4: "tipoBadgeTipo4",
+  5: "tipoBadgeTipo5",
+  6: "tipoBadgeTipo6",
+  9: "tipoBadgeTipo9",
+  10: "tipoBadgeTipo10",
+  11: "tipoBadgeTipo11",
+};
+
 export default function AdmPerguntas() {
   const router = useRouter();
   const [perguntas, setPerguntas] = useState([]);
@@ -716,12 +727,14 @@ export default function AdmPerguntas() {
                           </span>
                         </td>
                         <td className={styles.colTitulo}>
-                          <span className={styles.titulo}>
+                          <span className={styles.idFilme}>
                             {pergunta.id || "—"}
                           </span>
                         </td>
                         <td>
-                          <span className={styles.tipoBadge}>
+                          <span
+                            className={`${styles.tipoBadge} ${styles[TIPO_BADGE_CLASS[pergunta.tipo]] ?? ""}`}
+                          >
                             {String(pergunta.tipo ?? "—").padStart(2, "0")}
                           </span>
                         </td>

@@ -73,6 +73,10 @@
   }
 }
 
+.inputRowError {
+  border-color: var(--primitive-erro-01, #e53935) !important;
+}
+
 .prefix {
   display: flex;
   align-items: center;

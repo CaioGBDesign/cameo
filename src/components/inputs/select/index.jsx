@@ -4,7 +4,7 @@ import ChevronDownIcon from "@/components/icons/ChevronDownIcon";
 
 const DROPDOWN_HEIGHT_ESTIMATE = 220;
 
-const Select = ({ label, options = [], value, onChange, placeholder, variant = "default", width, forceUpward = false }) => {
+const Select = ({ label, options = [], value, onChange, placeholder, variant = "default", width, forceUpward = false, error = false }) => {
   const [open, setOpen] = useState(false);
   const [openUpward, setOpenUpward] = useState(false);
   const ref = useRef(null);
@@ -45,7 +45,7 @@ const Select = ({ label, options = [], value, onChange, placeholder, variant = "
       <button
         ref={triggerRef}
         type="button"
-        className={`${styles.trigger} ${styles[variant]} ${open ? styles.open : ""}`}
+        className={`${styles.trigger} ${styles[variant]} ${open ? styles.open : ""} ${error ? styles.triggerError : ""}`}
         onClick={handleToggle}
       >
         <span>{selected?.label ?? placeholder}</span>

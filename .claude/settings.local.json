@@ -42,7 +42,8 @@
       "Bash(node -e \":*)",
       "Bash(node -e \"const c = require\\(''@tiptap/core''\\); console.log\\(typeof c.Mark\\)\")",
       "Bash(find '/c/Users/win11/OneDrive/Área de Trabalho/Cameo' -type f -name *ListaNoticias*)",
-      "Bash(find '/c/Users/win11/OneDrive/Área de Trabalho/Cameo' -type f -name *ListaResenhas*)"
+      "Bash(find '/c/Users/win11/OneDrive/Área de Trabalho/Cameo' -type f -name *ListaResenhas*)",
+      "Bash(node -e ':*)"
     ]
   }
 }

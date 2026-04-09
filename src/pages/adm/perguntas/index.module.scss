@@ -134,6 +134,18 @@
   font-style: italic;
   color: var(--text-base);
   font-size: 1rem;
+
+  display: -webkit-box;
+  width: 291px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.idFilme {
+  color: var(--text-sub) !important;
+  font-style: italic;
+  white-space: nowrap;
+  font-size: 1rem;
 }
 
 // ─── Tipo Badge ──────────────────────────────────────────
@@ -142,14 +154,77 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
+  width: 50px;
   height: 32px;
-  background: var(--bg-base);
-  border: 1px solid var(--stroke-base);
-  border-radius: var(--space-xs);
+  //background: var(--bg-base);
+  //border: 1px solid var(--stroke-base);
+  //border-radius: var(--space-xs);
   font-style: italic;
   font-size: 1rem;
   color: var(--text-base);
+
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 12px;
+    left: 0px;
+
+    width: 5px;
+    height: 5px;
+
+    background: var(--primitive-roxo-01);
+    border-radius: 5px;
+  }
+}
+
+.tipoBadgeTipo2 {
+  &::after {
+    background: var(--primitive-rosa-01);
+  }
+}
+
+.tipoBadgeTipo3 {
+  &::after {
+    background: var(--primitive-azul-01);
+  }
+}
+
+.tipoBadgeTipo4 {
+  &::after {
+    background: var(--primitive-amarelo-01);
+  }
+}
+
+.tipoBadgeTipo5 {
+  &::after {
+    background: var(--primitive-verde-01);
+  }
+}
+
+.tipoBadgeTipo6 {
+  &::after {
+    background: var(--primitive-roxo-02);
+  }
+}
+
+.tipoBadgeTipo9 {
+  &::after {
+    background: var(--primitive-amarelo-02);
+  }
+}
+
+.tipoBadgeTipo10 {
+  &::after {
+    background: var(--primitive-verde-02);
+  }
+}
+
+.tipoBadgeTipo11 {
+  &::after {
+    background: var(--primitive-roxo-03);
+  }
 }
 
 // ─── Status Badge ────────────────────────────────────────

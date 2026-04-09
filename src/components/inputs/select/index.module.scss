@@ -32,7 +32,6 @@
     background: var(--bg-overlay);
     border: 1px solid var(--stroke-base);
     padding: var(--space-nn) var(--space-md);
-
     height: 60px;
 
     &:hover,
@@ -53,6 +52,10 @@
       background: var(--bg-overlay);
     }
   }
+}
+
+.triggerError {
+  border-color: var(--primitive-erro-01, #e53935) !important;
 }
 
 .chevron {

@@ -1,0 +1,124 @@
+// ─── Sidebar ─────────────────────────────────────────────
+
+.sidebarContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding: var(--space-xl);
+  overflow-y: auto;
+  height: 100%;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// ─── Central ─────────────────────────────────────────────
+
+.central {
+  padding: var(--space-2xl);
+  padding-top: var(--space-nn);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+// ─── Card ────────────────────────────────────────────────
+
+.card {
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-lg);
+  padding: var(--space-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.cardTitulo {
+  font-size: 0.875rem;
+  font-weight: normal;
+  font-style: italic;
+  color: var(--text-sub);
+  margin: 0;
+}
+
+// ─── Elenco header ───────────────────────────────────────
+
+.elencoHeader {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 36px;
+  gap: var(--space-sm);
+  padding: 0 2px;
+}
+
+.colLabel {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--text-sub);
+}
+
+// ─── Elenco row ──────────────────────────────────────────
+
+.elencoRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 36px;
+  gap: var(--space-sm);
+  align-items: flex-start;
+}
+
+.elencoField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  min-width: 0;
+}
+
+.nomeDublador {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--text-sub);
+  padding-left: var(--space-sm);
+}
+
+.nomeDubladorErro {
+  color: var(--color-error, #e53935);
+}
+
+// ─── Botão remover ───────────────────────────────────────
+
+.btnRemover {
+  background: none;
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  color: var(--text-sub);
+  width: 36px;
+  height: 44px;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+
+  &:hover:not(:disabled) {
+    background: var(--bg-base);
+    color: var(--color-error, #e53935);
+    border-color: var(--color-error, #e53935);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+}
+
+// ─── Botão adicionar ─────────────────────────────────────
+
+.btnAdicionarWrapper {
+  display: flex;
+  justify-content: flex-start;
+  padding-top: var(--space-sm);
+}

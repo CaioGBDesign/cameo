@@ -1,0 +1,222 @@
+// ─── Sidebar content ──────────────────────────────────────
+
+.sidebarContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding: var(--space-xl);
+  overflow-y: auto;
+  height: 100%;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// ─── Row ──────────────────────────────────────────────────
+
+.row {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: flex-end;
+  width: 100%;
+
+  > * {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+// ─── Field wrapper ────────────────────────────────────────
+
+.fieldWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  width: 100%;
+}
+
+.fieldLabel {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-sub);
+}
+
+// ─── Listas dinâmicas ────────────────────────────────────
+
+.listaWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.listaRow {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+  width: 100%;
+}
+
+.listaInput {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  padding: 0 var(--space-lg);
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  color: var(--text-base);
+  font-size: 0.875rem;
+  font-style: italic;
+  outline: none;
+  transition: border-color 0.15s;
+
+  &::placeholder {
+    color: var(--text-sub);
+  }
+
+  &:focus {
+    border-color: var(--stroke-solid);
+  }
+}
+
+.listaRemover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  background: none;
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  color: var(--text-sub);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+
+  &:hover {
+    background: var(--bg-base);
+    color: var(--color-error, #e53935);
+    border-color: var(--color-error, #e53935);
+  }
+}
+
+// ─── Toggle ───────────────────────────────────────────────
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+}
+
+// ─── Central ─────────────────────────────────────────────
+
+.central {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  padding: var(--space-2xl);
+  padding-top: var(--space-nn);
+  width: 100%;
+}
+
+// ─── Preview card ─────────────────────────────────────────
+
+.previewCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-lg);
+}
+
+.previewImagem {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: var(--space-lg);
+  object-fit: cover;
+}
+
+.previewImagemPlaceholder {
+  width: 50%;
+  aspect-ratio: 1;
+  border-radius: var(--space-lg);
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  font-style: italic;
+  color: var(--text-sub);
+}
+
+// ─── Preview info grid ────────────────────────────────────
+
+.previewInfoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--space-md);
+}
+
+.previewInfoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.previewInfoLabel {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--text-sub);
+}
+
+.previewInfoValue {
+  font-size: 0.875rem;
+  color: var(--text-base);
+}
+
+// ─── Preview sections ─────────────────────────────────────
+
+.previewSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.previewSectionTitle {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-sub);
+  font-weight: 600;
+}
+
+.previewPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.previewPill {
+  padding: 2px var(--space-sm);
+  border-radius: var(--space-xs);
+  border: 1px solid var(--stroke-base);
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--text-sub);
+  background: var(--bg-base);
+}
+
+.previewBio {
+  font-size: 0.875rem;
+  color: var(--text-sub);
+  line-height: 1.6;
+  margin: 0;
+  white-space: pre-wrap;
+}

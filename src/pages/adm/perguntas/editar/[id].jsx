@@ -13,6 +13,10 @@ import Tipo6 from "../_tipos/Tipo6";
 import Tipo9 from "../_tipos/Tipo9";
 import Tipo10 from "../_tipos/Tipo10";
 import Tipo11 from "../_tipos/Tipo11";
+import Tipo12 from "../_tipos/Tipo12";
+import Tipo14 from "../_tipos/Tipo14";
+import Tipo15 from "../_tipos/Tipo15";
+import Tipo16 from "../_tipos/Tipo16";
 
 export default function EditarPergunta() {
   const router = useRouter();
@@ -56,6 +60,10 @@ export default function EditarPergunta() {
   if (tipo === 9) return <Tipo9 id={id} initialData={initialData} />;
   if (tipo === 10) return <Tipo10 id={id} initialData={initialData} />;
   if (tipo === 11) return <Tipo11 id={id} initialData={initialData} />;
+  if (tipo === 12) return <Tipo12 id={id} initialData={initialData} />;
+  if (tipo === 14) return <Tipo14 id={id} initialData={initialData} />;
+  if (tipo === 15) return <Tipo15 id={id} initialData={initialData} />;
+  if (tipo === 16) return <Tipo16 id={id} initialData={initialData} />;
 
   return (
     <>

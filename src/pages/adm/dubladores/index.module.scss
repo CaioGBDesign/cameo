@@ -24,6 +24,28 @@
   margin: 0;
 }
 
+.buscaInput {
+  height: 36px;
+  padding: 0 var(--space-lg);
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  color: var(--text-base);
+  font-size: 0.875rem;
+  font-style: italic;
+  width: 240px;
+  outline: none;
+  transition: border-color 0.15s;
+
+  &::placeholder {
+    color: var(--text-sub);
+  }
+
+  &:focus {
+    border-color: var(--stroke-solid);
+  }
+}
+
 .loading,
 .empty {
   font-style: italic;
@@ -464,6 +486,21 @@
     border-top: 1px solid var(--stroke-base);
     padding-top: var(--space-sm);
   }
+}
+
+.colDropdownBusca {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  color: var(--text-base);
+  font-size: 0.875rem;
+  font-style: italic;
+  outline: none;
+
+  &::placeholder { color: var(--text-sub); }
+  &:focus { border-color: var(--stroke-solid); }
 }
 
 .colDropdownItem {

@@ -39,7 +39,7 @@ const Select = ({ label, options = [], value, onChange, placeholder, variant = "
   };
 
   return (
-    <div className={styles.wrapper} ref={ref} style={width ? { width } : undefined}>
+    <div className={styles.wrapper} ref={ref} style={width ? { width, flexShrink: 0 } : undefined}>
       {label && <label className={styles.label}>{label}</label>}
 
       <button

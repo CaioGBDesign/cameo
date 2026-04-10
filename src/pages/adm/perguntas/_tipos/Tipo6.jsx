@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { db } from "@/services/firebaseConection";
+import { db, storage } from "@/services/firebaseConection";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
   collection,
   getDocs,
@@ -12,6 +13,7 @@ import {
 } from "firebase/firestore";
 import { useAuth } from "@/contexts/auth";
 import AdmLayout from "@/components/adm/layout";
+import UploadImagem from "@/components/upload-imagem";
 import Button from "@/components/button";
 import TextInput from "@/components/inputs/text-input";
 import Select from "@/components/inputs/select";
@@ -59,6 +61,7 @@ export default function Tipo6({ id = null, initialData = null }) {
   const [idFilme, setIdFilme] = useState(initialData?.idFilme ? String(initialData.idFilme) : "");
   const [tagFilme, setTagFilme] = useState(initialData?.tagFilme ?? "filme");
   const [nomeFilme, setNomeFilme] = useState(initialData?.nomeFilme ?? "");
+  const [imagem, setImagem] = useState(null);
   const [imagemUrl, setImagemUrl] = useState(initialData?.imagemUrl ?? "");
   const [opcoes, setOpcoes] = useState(initialData?.opcoes ?? { a: "", b: "", c: "", d: "" });
   const [respostaCorreta, setRespostaCorreta] = useState(initialData?.respostaCorreta ?? null);
@@ -99,6 +102,13 @@ export default function Tipo6({ id = null, initialData = null }) {
     return "";
   };
 
+  const uploadImagem = async (id) => {
+    if (!imagem?.file) return imagemUrl || null;
+    const storageRef = ref(storage, `perguntas/tipo6/${id}_${imagem.file.name}`);
+    await uploadBytes(storageRef, imagem.file);
+    return getDownloadURL(storageRef);
+  };
+
   const gerarId = async () => {
     const snap = await getDocs(collection(db, "perguntas"));
     const ids = snap.docs.map((d) => {
@@ -128,6 +138,8 @@ export default function Tipo6({ id = null, initialData = null }) {
     if (!validar()) return;
     setLoading(true);
     try {
+      const newId = isEdit ? id : await gerarId();
+      const uploadedUrl = await uploadImagem(newId);
       const dados = {
         tipo: 6,
         titulo, subtitulo, dificuldade, genero,
@@ -136,7 +148,7 @@ export default function Tipo6({ id = null, initialData = null }) {
         cronometroTempo: cronometroRegressivoAtivo ? cronometroTempo : null,
         ativo, visibilidade, status,
         idFilme: idFilme ? parseInt(idFilme) : null,
-        tagFilme, nomeFilme, imagemUrl,
+        tagFilme, nomeFilme, imagemUrl: uploadedUrl,
         opcoes, respostaCorreta,
         ...(status === "publicado" ? { dataPublicacao: serverTimestamp() } : {}),
       };
@@ -147,7 +159,6 @@ export default function Tipo6({ id = null, initialData = null }) {
         dados.autorId = user?.uid ?? null;
         dados.autorNome = user?.nome ?? null;
         dados.dataCadastro = serverTimestamp();
-        const newId = await gerarId();
         await setDoc(doc(db, "perguntas", newId), dados);
       }
       router.push("/adm/perguntas");
@@ -195,11 +206,14 @@ export default function Tipo6({ id = null, initialData = null }) {
         />
       </div>
 
-      <TextInput
-        label="Link da imagem"
-        placeholder="Ex: /Imagens Desafio/tipo-06/imagem.jpg"
-        value={imagemUrl}
-        onChange={(e) => { setImagemUrl(e.target.value); setErros((p) => ({ ...p, imagemUrl: false })); }}
+      <UploadImagem
+        label="Imagem da pergunta"
+        imagem={imagem || (imagemUrl ? { preview: imagemUrl } : null)}
+        onImagemChange={(file) => {
+          setImagem(file ? { file, preview: URL.createObjectURL(file) } : null);
+          setErros((p) => ({ ...p, imagemUrl: false }));
+        }}
+        dimensoes="Dimensões recomendadas 1920x1080. JPG e PNG"
         error={!!erros.imagemUrl}
       />
 
@@ -262,9 +276,7 @@ export default function Tipo6({ id = null, initialData = null }) {
     </div>
   );
 
-  const imagemSrc = imagemUrl.trim()
-    ? imagemUrl.trim().startsWith("/") ? imagemUrl.trim() : `/${imagemUrl.trim()}`
-    : "";
+  const imagemSrc = imagem?.preview ?? imagemUrl ?? "";
 
   // ── Preview ────────────────────────────────────────────────────────────────
   const preview = (

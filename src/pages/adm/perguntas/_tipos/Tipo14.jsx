@@ -17,9 +17,6 @@ import UploadImagem from "@/components/upload-imagem";
 import Button from "@/components/button";
 import TextInput from "@/components/inputs/text-input";
 import Select from "@/components/inputs/select";
-import PlusIcon from "@/components/icons/PlusIcon";
-import TrashIcon from "@/components/icons/TrashIcon";
-import WarningIcon from "@/components/icons/WarningIcon";
 import PreviewHeader from "./shared/PreviewHeader";
 import SidebarCronometros from "./shared/SidebarCronometros";
 import SidebarStatusVisibilidade from "./shared/SidebarStatusVisibilidade";
@@ -55,8 +52,10 @@ const TMDB_GENEROS = {
 };
 
 const TAGS_FILME = [{ value: "filme", label: "Filme" }];
+const OPCOES_LETRAS = ["a", "b", "c", "d"];
+const OPCOES_LABELS = ["Opção A", "Opção B", "Opção C", "Opção D"];
 
-export default function Tipo5({ id = null, initialData = null }) {
+export default function Tipo14({ id = null, initialData = null }) {
   const router = useRouter();
   const { user } = useAuth();
   const isEdit = !!id;
@@ -92,13 +91,18 @@ export default function Tipo5({ id = null, initialData = null }) {
   const [tagFilme, setTagFilme] = useState(initialData?.tagFilme ?? "filme");
   const [nomeFilme, setNomeFilme] = useState(initialData?.nomeFilme ?? "");
   const [imagem, setImagem] = useState(null);
-  const [imagemUrl, setImagemUrl] = useState(initialData?.imagemUrl ?? "");
-  const [respostasAceitas, setRespostasAceitas] = useState(
-    initialData?.respostasAceitas?.length ? initialData.respostasAceitas : [""],
+  const imagemUrl = initialData?.imagemUrl ?? "";
+  const [imagemResposta, setImagemResposta] = useState(null);
+  const imagemRespostaUrl = initialData?.imagemRespostaUrl ?? "";
+  const [opcoes, setOpcoes] = useState(
+    initialData?.opcoes ?? { a: "", b: "", c: "", d: "" },
+  );
+  const [respostaCorreta, setRespostaCorreta] = useState(
+    initialData?.respostaCorreta ?? null,
   );
 
-  const [previewResposta, setPreviewResposta] = useState("");
-  const [previewStatus, setPreviewStatus] = useState(null);
+  const [previewSelected, setPreviewSelected] = useState(null);
+  const [previewConfirmed, setPreviewConfirmed] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [erros, setErros] = useState({});
@@ -126,9 +130,32 @@ export default function Tipo5({ id = null, initialData = null }) {
 
   const uploadImagem = async (id) => {
     if (!imagem?.file) return imagemUrl || null;
-    const storageRef = ref(storage, `perguntas/tipo5/${id}_${imagem.file.name}`);
+    const storageRef = ref(storage, `perguntas/tipo14/${id}_desafio_${imagem.file.name}`);
     await uploadBytes(storageRef, imagem.file);
     return getDownloadURL(storageRef);
+  };
+
+  const uploadImagemResposta = async (id) => {
+    if (!imagemResposta?.file) return imagemRespostaUrl || null;
+    const storageRef = ref(storage, `perguntas/tipo14/${id}_resposta_${imagemResposta.file.name}`);
+    await uploadBytes(storageRef, imagemResposta.file);
+    return getDownloadURL(storageRef);
+  };
+
+  const handleOpcao = (letra, valor) =>
+    setOpcoes((prev) => ({ ...prev, [letra]: valor }));
+
+  const handlePreviewSelect = (letra) => {
+    setPreviewSelected(letra);
+    setPreviewConfirmed(false);
+  };
+
+  const getPreviewOptionClass = (letra) => {
+    if (!previewConfirmed)
+      return previewSelected === letra ? styles.previewOptionSelected : "";
+    if (letra === respostaCorreta) return styles.previewOptionCorreta;
+    if (letra === previewSelected) return styles.previewOptionErro;
+    return "";
   };
 
   const gerarId = async () => {
@@ -146,8 +173,12 @@ export default function Tipo5({ id = null, initialData = null }) {
     if (!subtitulo.trim()) e.subtitulo = true;
     if (!dificuldade) e.dificuldade = true;
     if (!idFilme) e.idFilme = true;
-    if (!imagemUrl.trim()) e.imagemUrl = true;
-    if (!respostasAceitas.some((r) => r.trim())) e.respostasAceitas = true;
+    if (!imagem?.file && !imagemUrl) e.imagemUrl = true;
+    if (!opcoes.a.trim()) e.opcaoA = true;
+    if (!opcoes.b.trim()) e.opcaoB = true;
+    if (!opcoes.c.trim()) e.opcaoC = true;
+    if (!opcoes.d.trim()) e.opcaoD = true;
+    if (!respostaCorreta) e.respostaCorreta = true;
     setErros(e);
     return Object.keys(e).length === 0;
   };
@@ -158,8 +189,9 @@ export default function Tipo5({ id = null, initialData = null }) {
     try {
       const newId = isEdit ? id : await gerarId();
       const uploadedUrl = await uploadImagem(newId);
+      const uploadedRespostaUrl = await uploadImagemResposta(newId);
       const dados = {
-        tipo: 5,
+        tipo: 14,
         titulo,
         subtitulo,
         dificuldade,
@@ -176,7 +208,9 @@ export default function Tipo5({ id = null, initialData = null }) {
         tagFilme,
         nomeFilme,
         imagemUrl: uploadedUrl,
-        respostasAceitas: respostasAceitas.filter((r) => r.trim()),
+        imagemRespostaUrl: uploadedRespostaUrl,
+        opcoes,
+        respostaCorreta,
         ...(status === "publicado"
           ? { dataPublicacao: serverTimestamp() }
           : {}),
@@ -196,22 +230,12 @@ export default function Tipo5({ id = null, initialData = null }) {
     }
   };
 
-  const handleConfirmar = () => {
-    const digitado = previewResposta.trim().toLowerCase();
-    const acertou = respostasAceitas.some(
-      (r) => r.trim().toLowerCase() === digitado,
-    );
-    setPreviewStatus(acertou ? "correta" : "errada");
-  };
-
-  const imagemSrc = imagem?.preview ?? imagemUrl ?? "";
-
   // ── Sidebar ────────────────────────────────────────────────────────────────
   const sidebar = (
     <div className={styles.sidebarContent}>
       <TextInput
         label="Título da pergunta"
-        placeholder='Ex: "De qual filme é essa cena?"'
+        placeholder='Ex: "Qual é o filme?"'
         value={titulo}
         onChange={(e) => {
           setTitulo(e.target.value);
@@ -222,7 +246,7 @@ export default function Tipo5({ id = null, initialData = null }) {
 
       <TextInput
         label="Subtítulo"
-        placeholder='Ex: "Você reconhece?"'
+        placeholder='Ex: "Você reconhece essa cena?"'
         value={subtitulo}
         onChange={(e) => {
           setSubtitulo(e.target.value);
@@ -259,60 +283,63 @@ export default function Tipo5({ id = null, initialData = null }) {
         />
       </div>
 
-      <UploadImagem
-        label="Imagem da pergunta"
-        imagem={imagem || (imagemUrl ? { preview: imagemUrl } : null)}
-        onImagemChange={(file) => {
-          setImagem(file ? { file, preview: URL.createObjectURL(file) } : null);
-          setErros((p) => ({ ...p, imagemUrl: false }));
-        }}
-        dimensoes="Dimensões recomendadas 1920x1080. JPG e PNG"
-        error={!!erros.imagemUrl}
-      />
+      <div className={styles.row}>
+        <UploadImagem
+          label="Imagem do desafio"
+          imagem={imagem || (imagemUrl ? { preview: imagemUrl } : null)}
+          onImagemChange={(file) => {
+            setImagem(file ? { file, preview: URL.createObjectURL(file) } : null);
+            setErros((p) => ({ ...p, imagemUrl: false }));
+          }}
+          dimensoes="1920x1080. JPG e PNG"
+          error={!!erros.imagemUrl}
+        />
 
-      <div className={styles.respostasWrapper}>
-        <label className={styles.fieldLabel}>Respostas aceitas</label>
-        {respostasAceitas.map((r, i) => (
-          <div key={i} className={styles.respostaRow}>
-            <input
-              type="text"
-              className={`${styles.respostaInput} ${erros.respostasAceitas && !r.trim() ? styles.respostaInputErro : ""}`}
-              placeholder={`Resposta ${i + 1}`}
-              value={r}
-              onChange={(e) => {
-                const nova = [...respostasAceitas];
-                nova[i] = e.target.value;
-                setRespostasAceitas(nova);
-                setErros((p) => ({ ...p, respostasAceitas: false }));
-              }}
-            />
-            {respostasAceitas.length > 1 && (
-              <button
-                type="button"
-                className={styles.respostaRemover}
-                onClick={() =>
-                  setRespostasAceitas((prev) =>
-                    prev.filter((_, idx) => idx !== i),
-                  )
-                }
-              >
-                <TrashIcon size={16} color="currentColor" />
-              </button>
-            )}
+        <UploadImagem
+          label="Imagem da resposta (opcional)"
+          imagem={imagemResposta || (imagemRespostaUrl ? { preview: imagemRespostaUrl } : null)}
+          onImagemChange={(file) => {
+            setImagemResposta(file ? { file, preview: URL.createObjectURL(file) } : null);
+          }}
+          dimensoes="1920x1080. JPG e PNG"
+        />
+      </div>
+
+      <div className={styles.optionsGrid}>
+        {OPCOES_LETRAS.map((letra, i) => (
+          <div key={letra} className={styles.fieldWrapper}>
+            <label className={styles.fieldLabel}>{OPCOES_LABELS[i]}</label>
+            <div
+              className={`${styles.optionRow} ${respostaCorreta === letra ? styles.optionCorrect : ""} ${erros[`opcao${letra.toUpperCase()}`] ? styles.optionRowErro : ""}`}
+            >
+              <input
+                type="text"
+                className={styles.optionInput}
+                placeholder="Digite"
+                value={opcoes[letra]}
+                onChange={(e) => {
+                  handleOpcao(letra, e.target.value);
+                  setErros((p) => ({
+                    ...p,
+                    [`opcao${letra.toUpperCase()}`]: false,
+                  }));
+                }}
+              />
+              <input
+                type="radio"
+                name="respostaCorreta"
+                className={styles.optionRadio}
+                checked={respostaCorreta === letra}
+                onChange={() => {
+                  setRespostaCorreta(letra);
+                  setErros((p) => ({ ...p, respostaCorreta: false }));
+                }}
+              />
+            </div>
           </div>
         ))}
-        <Button
-          variant="ghost"
-          label="Adicionar resposta"
-          icon={<PlusIcon size={16} color="currentColor" />}
-          type="button"
-          width="220px"
-          onClick={() => setRespostasAceitas((prev) => [...prev, ""])}
-        />
-        {erros.respostasAceitas && (
-          <p className={styles.erroMsg}>
-            Adicione ao menos uma resposta aceita
-          </p>
+        {erros.respostaCorreta && (
+          <p className={styles.erroMsg}>Selecione a opção correta</p>
         )}
       </div>
 
@@ -337,7 +364,7 @@ export default function Tipo5({ id = null, initialData = null }) {
       </div>
 
       <SidebarCronometros
-        idSuffix="-t5"
+        idSuffix="-t14"
         cronometroAtivo={cronometroAtivo}
         setCronometroAtivo={setCronometroAtivo}
         cronometroVisivel={cronometroVisivel}
@@ -351,7 +378,7 @@ export default function Tipo5({ id = null, initialData = null }) {
       />
 
       <SidebarStatusVisibilidade
-        idSuffix="-t5"
+        idSuffix="-t14"
         ativo={ativo}
         setAtivo={setAtivo}
         visibilidade={visibilidade}
@@ -359,6 +386,11 @@ export default function Tipo5({ id = null, initialData = null }) {
       />
     </div>
   );
+
+  const imagemSrc = imagem?.preview ?? imagemUrl ?? "";
+  const imagemRespostaSrc = imagemResposta?.preview ?? imagemRespostaUrl ?? "";
+  const imagemAtual =
+    previewConfirmed && imagemRespostaSrc ? imagemRespostaSrc : imagemSrc;
 
   // ── Preview ────────────────────────────────────────────────────────────────
   const preview = (
@@ -372,38 +404,42 @@ export default function Tipo5({ id = null, initialData = null }) {
           cronometroTempo={cronometroTempo}
         />
 
-        <div className={styles.previewImageWrapper}>
-          {imagemSrc ? (
-            <img src={imagemSrc} alt="Imagem da pergunta" className={styles.previewImage} unoptimized />
+        <div className={styles.previewImageWrapper14}>
+          {imagemAtual ? (
+            <img
+              src={imagemAtual}
+              alt="Imagem da pergunta"
+              className={styles.previewImage14}
+              unoptimized
+            />
           ) : (
             <div className={styles.previewImagePlaceholder} />
           )}
+
+          {(tagFilme || nomeFilme) && (
+            <div className={styles.previewImageLabel}>
+              <span className={styles.previewImageTag}>
+                {TAGS_FILME.find((t) => t.value === tagFilme)?.label}
+              </span>{" "}
+              <span className={styles.previewImageNome}>{nomeFilme}</span>
+            </div>
+          )}
         </div>
 
-        <div className={styles.previewInputWrapper}>
-          <input
-            type="text"
-            className={`${styles.previewTextInput} ${
-              previewStatus === "correta"
-                ? styles.previewTextInputCorreta
-                : previewStatus === "errada"
-                  ? styles.previewTextInputErrada
-                  : ""
-            }`}
-            placeholder="Digite o que está faltando"
-            value={previewResposta}
-            onChange={(e) => {
-              setPreviewResposta(e.target.value);
-              setPreviewStatus(null);
-            }}
-            disabled={previewStatus === "correta"}
-          />
-          {previewResposta.trim().includes(" ") && (
-            <p className={styles.warningMsg}>
-              <WarningIcon size={14} color="var(--primitive-amarelo-02)" />
-              Digite apenas uma palavra
-            </p>
-          )}
+        <div className={styles.previewOptions}>
+          {OPCOES_LETRAS.map((letra, i) => (
+            <div
+              key={letra}
+              className={`${styles.previewOption} ${getPreviewOptionClass(letra)}`}
+              onClick={() => handlePreviewSelect(letra)}
+            >
+              {opcoes[letra] || (
+                <span className={styles.previewOptionEmpty}>
+                  {OPCOES_LABELS[i]}
+                </span>
+              )}
+            </div>
+          ))}
         </div>
 
         <div className={styles.previewFooter}>
@@ -413,8 +449,8 @@ export default function Tipo5({ id = null, initialData = null }) {
           <button
             className={styles.previewConfirm}
             type="button"
-            disabled={!previewResposta.trim() || previewStatus === "correta"}
-            onClick={handleConfirmar}
+            disabled={!previewSelected || previewConfirmed}
+            onClick={() => setPreviewConfirmed(true)}
           >
             CONFIRMAR
           </button>

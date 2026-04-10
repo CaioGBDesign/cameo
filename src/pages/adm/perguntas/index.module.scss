@@ -179,19 +179,22 @@
   }
 }
 
-.tipoBadgeTipo2 {
+.tipoBadgeTipo2,
+.tipoBadgeTipo15 {
   &::after {
     background: var(--primitive-rosa-01);
   }
 }
 
-.tipoBadgeTipo3 {
+.tipoBadgeTipo3,
+.tipoBadgeTipo16 {
   &::after {
     background: var(--primitive-azul-01);
   }
 }
 
-.tipoBadgeTipo4 {
+.tipoBadgeTipo4,
+.tipoBadgeTipo17 {
   &::after {
     background: var(--primitive-amarelo-01);
   }
@@ -224,6 +227,12 @@
 .tipoBadgeTipo11 {
   &::after {
     background: var(--primitive-roxo-03);
+  }
+}
+
+.tipoBadgeTipo18 {
+  &::after {
+    background: var(--primitive-azul-04);
   }
 }
 

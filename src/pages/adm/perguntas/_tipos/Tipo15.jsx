@@ -39,7 +39,7 @@ const TAGS_FILME = [{ value: "filme", label: "Filme" }];
 const OPCOES_LETRAS = ["a", "b", "c", "d"];
 const OPCOES_LABELS = ["Opção A", "Opção B", "Opção C", "Opção D"];
 
-export default function Tipo9({ id = null, initialData = null }) {
+export default function Tipo15({ id = null, initialData = null }) {
   const router = useRouter();
   const { user } = useAuth();
   const isEdit = !!id;
@@ -132,7 +132,7 @@ export default function Tipo9({ id = null, initialData = null }) {
     setLoading(true);
     try {
       const dados = {
-        tipo: 9,
+        tipo: 15,
         titulo, subtitulo, dificuldade, genero,
         cronometroAtivo, cronometroVisivel,
         cronometroRegressivoAtivo, cronometroRegressivoVisivel,
@@ -245,7 +245,7 @@ export default function Tipo9({ id = null, initialData = null }) {
       </div>
 
       <SidebarCronometros
-        idSuffix="-t9"
+        idSuffix="-t15"
         cronometroAtivo={cronometroAtivo} setCronometroAtivo={setCronometroAtivo}
         cronometroVisivel={cronometroVisivel} setCronometroVisivel={setCronometroVisivel}
         cronometroRegressivoAtivo={cronometroRegressivoAtivo} setCronometroRegressivoAtivo={setCronometroRegressivoAtivo}
@@ -254,7 +254,7 @@ export default function Tipo9({ id = null, initialData = null }) {
       />
 
       <SidebarStatusVisibilidade
-        idSuffix="-t9"
+        idSuffix="-t15"
         ativo={ativo} setAtivo={setAtivo}
         visibilidade={visibilidade} setVisibilidade={setVisibilidade}
       />

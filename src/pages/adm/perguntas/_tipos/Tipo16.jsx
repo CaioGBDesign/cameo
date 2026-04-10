@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { db } from "@/services/firebaseConection";
@@ -15,6 +15,7 @@ import AdmLayout from "@/components/adm/layout";
 import Button from "@/components/button";
 import TextInput from "@/components/inputs/text-input";
 import Select from "@/components/inputs/select";
+import BoldIcon from "@/components/icons/BoldIcon";
 import PreviewHeader from "./shared/PreviewHeader";
 import SidebarCronometros from "./shared/SidebarCronometros";
 import SidebarStatusVisibilidade from "./shared/SidebarStatusVisibilidade";
@@ -28,18 +29,18 @@ const DIFICULDADES = [
 ];
 
 const TMDB_GENEROS = {
-  28: "Ação", 12: "Aventura", 16: "Animação", 35: "Comédia",
-  80: "Crime", 99: "Documentário", 18: "Drama", 10751: "Família",
-  14: "Fantasia", 36: "História", 27: "Terror", 10402: "Musical",
-  9648: "Mistério", 10749: "Romance", 878: "Ficção Científica",
-  10770: "Cinema TV", 53: "Suspense", 10752: "Guerra", 37: "Faroeste",
+  28: "Ação", 12: "Aventura", 16: "Animação", 35: "Comédia", 80: "Crime",
+  99: "Documentário", 18: "Drama", 10751: "Família", 14: "Fantasia",
+  36: "História", 27: "Terror", 10402: "Musical", 9648: "Mistério",
+  10749: "Romance", 878: "Ficção Científica", 10770: "Cinema TV",
+  53: "Suspense", 10752: "Guerra", 37: "Faroeste",
 };
 
 const TAGS_FILME = [{ value: "filme", label: "Filme" }];
 const OPCOES_LETRAS = ["a", "b", "c", "d"];
 const OPCOES_LABELS = ["Opção A", "Opção B", "Opção C", "Opção D"];
 
-export default function Tipo9({ id = null, initialData = null }) {
+export default function Tipo16({ id = null, initialData = null }) {
   const router = useRouter();
   const { user } = useAuth();
   const isEdit = !!id;
@@ -57,9 +58,9 @@ export default function Tipo9({ id = null, initialData = null }) {
   const [visibilidade, setVisibilidade] = useState(initialData?.visibilidade ?? "quiz");
 
   const [idFilme, setIdFilme] = useState(initialData?.idFilme ? String(initialData.idFilme) : "");
-  const [imagem, setImagem] = useState(initialData?.imagem ?? "");
   const [tagFilme, setTagFilme] = useState(initialData?.tagFilme ?? "filme");
   const [nomeFilme, setNomeFilme] = useState(initialData?.nomeFilme ?? "");
+  const [texto, setTexto] = useState(initialData?.texto ?? "");
   const [opcoes, setOpcoes] = useState(initialData?.opcoes ?? { a: "", b: "", c: "", d: "" });
   const [respostaCorreta, setRespostaCorreta] = useState(initialData?.respostaCorreta ?? null);
 
@@ -67,33 +68,38 @@ export default function Tipo9({ id = null, initialData = null }) {
   const [previewConfirmed, setPreviewConfirmed] = useState(false);
 
   const [loading, setLoading] = useState(false);
-  const [loadingFilme, setLoadingFilme] = useState(false);
   const [erros, setErros] = useState({});
+  const textareaRef = useRef(null);
 
   // TMDB auto-fetch
   useEffect(() => {
     if (!idFilme) return;
     const timer = setTimeout(async () => {
-      setLoadingFilme(true);
       try {
         const res = await fetch(
           `https://api.themoviedb.org/3/movie/${idFilme}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=pt-BR`
         );
         if (!res.ok) return;
         const data = await res.json();
-        if (data.backdrop_path) setImagem(data.backdrop_path);
         if (data.title && !nomeFilme) setNomeFilme(data.title);
-        if (data.genres?.length) {
+        if (data.genres?.length)
           setGenero(data.genres.map((g) => TMDB_GENEROS[g.id] || g.name).join(", "));
-        }
       } catch {}
-      finally { setLoadingFilme(false); }
     }, 600);
     return () => clearTimeout(timer);
   }, [idFilme]);
 
-  const handleOpcao = (letra, valor) => setOpcoes((prev) => ({ ...prev, [letra]: valor }));
+  const handleBold = () => {
+    const el = textareaRef.current;
+    if (!el) return;
+    document.execCommand("bold");
+    setTexto(el.innerHTML ?? "");
+  };
 
+  const renderTextoHtml = (t) =>
+    t.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>").replace(/\n/g, "<br/>");
+
+  const handleOpcao = (letra, valor) => setOpcoes((prev) => ({ ...prev, [letra]: valor }));
   const handlePreviewSelect = (letra) => { setPreviewSelected(letra); setPreviewConfirmed(false); };
 
   const getPreviewOptionClass = (letra) => {
@@ -118,6 +124,7 @@ export default function Tipo9({ id = null, initialData = null }) {
     if (!subtitulo.trim()) e.subtitulo = true;
     if (!dificuldade) e.dificuldade = true;
     if (!idFilme) e.idFilme = true;
+    if (!texto.trim()) e.texto = true;
     if (!opcoes.a.trim()) e.opcaoA = true;
     if (!opcoes.b.trim()) e.opcaoB = true;
     if (!opcoes.c.trim()) e.opcaoC = true;
@@ -132,15 +139,15 @@ export default function Tipo9({ id = null, initialData = null }) {
     setLoading(true);
     try {
       const dados = {
-        tipo: 9,
+        tipo: 16,
         titulo, subtitulo, dificuldade, genero,
         cronometroAtivo, cronometroVisivel,
         cronometroRegressivoAtivo, cronometroRegressivoVisivel,
         cronometroTempo: cronometroRegressivoAtivo ? cronometroTempo : null,
         ativo, visibilidade, status,
         idFilme: idFilme ? parseInt(idFilme) : null,
-        imagem, tagFilme, nomeFilme,
-        opcoes, respostaCorreta,
+        tagFilme, nomeFilme,
+        texto, opcoes, respostaCorreta,
         ...(status === "publicado" ? { dataPublicacao: serverTimestamp() } : {}),
       };
 
@@ -159,10 +166,6 @@ export default function Tipo9({ id = null, initialData = null }) {
     }
   };
 
-  const backdropUrl = imagem
-    ? `https://image.tmdb.org/t/p/w1280${imagem.startsWith("/") ? imagem : `/${imagem}`}`
-    : null;
-
   // ── Sidebar ────────────────────────────────────────────────────────────────
   const sidebar = (
     <div className={styles.sidebarContent}>
@@ -176,7 +179,7 @@ export default function Tipo9({ id = null, initialData = null }) {
 
       <TextInput
         label="Subtítulo"
-        placeholder='Ex: "Você sabe a resposta?"'
+        placeholder='Ex: "Leia o texto e responda"'
         value={subtitulo}
         onChange={(e) => { setSubtitulo(e.target.value); setErros((p) => ({ ...p, subtitulo: false })); }}
         error={!!erros.subtitulo}
@@ -200,6 +203,37 @@ export default function Tipo9({ id = null, initialData = null }) {
           value={nomeFilme}
           onChange={(e) => setNomeFilme(e.target.value)}
         />
+      </div>
+
+      <div className={styles.lacunaWrapper}>
+        <div className={styles.lacunaHeader}>
+          <button
+            type="button"
+            className={styles.lacunaBtn}
+            onMouseDown={(e) => { e.preventDefault(); handleBold(); }}
+            title="Negrito"
+          >
+            <BoldIcon size={16} color="var(--text-base)" />
+          </button>
+        </div>
+        <div className={styles.textareaContent}>
+          <div
+            ref={textareaRef}
+            contentEditable
+            suppressContentEditableWarning
+            className={`${styles.lacunaContentEditable} ${erros.texto ? styles.lacunaTextareaErro : ""}`}
+            data-placeholder="Digite o texto da pergunta"
+            onPaste={(e) => {
+              e.preventDefault();
+              const text = e.clipboardData.getData("text/plain");
+              document.execCommand("insertText", false, text);
+            }}
+            onInput={() => {
+              setTexto(textareaRef.current?.innerHTML ?? "");
+              setErros((p) => ({ ...p, texto: false }));
+            }}
+          />
+        </div>
       </div>
 
       <div className={styles.optionsGrid}>
@@ -245,7 +279,7 @@ export default function Tipo9({ id = null, initialData = null }) {
       </div>
 
       <SidebarCronometros
-        idSuffix="-t9"
+        idSuffix="-t16"
         cronometroAtivo={cronometroAtivo} setCronometroAtivo={setCronometroAtivo}
         cronometroVisivel={cronometroVisivel} setCronometroVisivel={setCronometroVisivel}
         cronometroRegressivoAtivo={cronometroRegressivoAtivo} setCronometroRegressivoAtivo={setCronometroRegressivoAtivo}
@@ -254,7 +288,7 @@ export default function Tipo9({ id = null, initialData = null }) {
       />
 
       <SidebarStatusVisibilidade
-        idSuffix="-t9"
+        idSuffix="-t16"
         ativo={ativo} setAtivo={setAtivo}
         visibilidade={visibilidade} setVisibilidade={setVisibilidade}
       />
@@ -273,20 +307,15 @@ export default function Tipo9({ id = null, initialData = null }) {
           cronometroTempo={cronometroTempo}
         />
 
-        <div className={styles.previewImageWrapper}>
-          {loadingFilme ? (
-            <div className={styles.previewImageLoading}><span className={styles.previewImageLoadingSpinner} /></div>
-          ) : backdropUrl ? (
-            <img src={backdropUrl} alt={nomeFilme} className={styles.previewImage} unoptimized />
-          ) : (
-            <div className={styles.previewImagePlaceholder} />
-          )}
-          {(tagFilme || nomeFilme) && (
-            <div className={styles.previewImageLabel}>
-              <span className={styles.previewImageTag}>{TAGS_FILME.find((t) => t.value === tagFilme)?.label}</span>{" "}
-              <span className={styles.previewImageNome}>{nomeFilme}</span>
-            </div>
-          )}
+        <div className={styles.previewTrueFalse}>
+          <span
+            className={styles.previewPhraseTrueFalse}
+            dangerouslySetInnerHTML={{
+              __html: texto.trim()
+                ? renderTextoHtml(texto)
+                : '<span style="opacity:0.4">O texto aparecerá aqui...</span>',
+            }}
+          />
         </div>
 
         <div className={styles.previewOptions}>

@@ -42,6 +42,7 @@ const TextInput = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          onWheel={type === "number" ? (e) => e.target.blur() : undefined}
           min={min}
           max={max}
           disabled={disabled}

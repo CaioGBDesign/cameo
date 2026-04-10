@@ -11,17 +11,61 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { useAuth } from "@/contexts/auth";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import AdmLayout from "@/components/adm/layout";
 import Button from "@/components/button";
 import TextInput from "@/components/inputs/text-input";
 import Select from "@/components/inputs/select";
 import PlusIcon from "@/components/icons/PlusIcon";
 import TrashIcon from "@/components/icons/TrashIcon";
+import DragHandleIcon from "@/components/icons/DragHandleIcon";
 import PreviewHeader from "./shared/PreviewHeader";
 import SidebarCronometros from "./shared/SidebarCronometros";
 import SidebarStatusVisibilidade from "./shared/SidebarStatusVisibilidade";
 import Joias from "./shared/Joias";
 import styles from "../criar/index.module.scss";
+
+function SortableFilmCard({ idStr, index, nome, backdropUrl, cardClass, previewConfirmed }) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: idStr });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.4 : 1,
+    zIndex: isDragging ? 10 : "auto",
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`${styles.filmCard} ${cardClass}`}
+    >
+      <div className={styles.filmCardDrag} {...attributes} {...listeners}>
+        <DragHandleIcon size={20} color="var(--text-sub)" />
+      </div>
+      <span className={styles.filmCardNome}>{nome || `Filme ${index + 1}`}</span>
+      {backdropUrl ? (
+        <img src={backdropUrl} alt={nome} className={styles.filmCardBackdrop} unoptimized />
+      ) : (
+        <div className={styles.filmCardBackdropPlaceholder} />
+      )}
+    </div>
+  );
+}
 
 const DIFICULDADES = [
   { value: "1", label: "★ Fácil" },
@@ -30,10 +74,16 @@ const DIFICULDADES = [
 ];
 
 const TAGS_FILME = [{ value: "filme", label: "Filme" }];
-const OPCOES_LETRAS = ["a", "b", "c", "d"];
-const OPCOES_LABELS = ["Opção A", "Opção B", "Opção C", "Opção D"];
 
-export default function Tipo10({ id = null, initialData = null }) {
+const TMDB_GENEROS = {
+  28: "Ação", 12: "Aventura", 16: "Animação", 35: "Comédia", 80: "Crime",
+  99: "Documentário", 18: "Drama", 10751: "Família", 14: "Fantasia",
+  36: "História", 27: "Terror", 10402: "Musical", 9648: "Mistério",
+  10749: "Romance", 878: "Ficção Científica", 10770: "Cinema TV",
+  53: "Suspense", 10752: "Guerra", 37: "Faroeste",
+};
+
+export default function Tipo12({ id = null, initialData = null }) {
   const router = useRouter();
   const { user } = useAuth();
   const isEdit = !!id;
@@ -55,23 +105,25 @@ export default function Tipo10({ id = null, initialData = null }) {
   );
   const [tagFilme, setTagFilme] = useState(initialData?.tagFilme ?? "filme");
   const [nomeFilme, setNomeFilme] = useState(initialData?.nomeFilme ?? "");
-  const [opcoes, setOpcoes] = useState(initialData?.opcoes ?? { a: "", b: "", c: "", d: "" });
-  const [respostaCorreta, setRespostaCorreta] = useState(initialData?.respostaCorreta ?? null);
 
-  // poster_path e título por ID: { "123": "/abc.jpg" }
-  const [posteres, setPosteres] = useState({});
+  // Dados TMDB por ID
   const [titulos, setTitulos] = useState({});
+  const [backdrops, setBackdrops] = useState({});
   const [generosPorId, setGenerosPorId] = useState({});
+  const [releaseDates, setReleaseDates] = useState({});
 
-  const [previewSelected, setPreviewSelected] = useState(null);
+  // Preview
+  const [ordemUsuario, setOrdemUsuario] = useState([]);
   const [previewConfirmed, setPreviewConfirmed] = useState(false);
+
+  const sensors = useSensors(useSensor(PointerSensor));
 
   const [loading, setLoading] = useState(false);
   const [erros, setErros] = useState({});
 
-  // Busca poster_path para cada ID único e válido
+  // Busca dados TMDB para cada ID novo
   useEffect(() => {
-    const ids = idFilmes.filter((v) => v.trim() && !posteres[v.trim()]);
+    const ids = idFilmes.filter((v) => v.trim() && !backdrops[v.trim()] && !releaseDates[v.trim()]);
     if (!ids.length) return;
 
     ids.forEach((idStr) => {
@@ -82,25 +134,24 @@ export default function Tipo10({ id = null, initialData = null }) {
           );
           if (!res.ok) return;
           const data = await res.json();
-          if (data.poster_path) {
-            setPosteres((prev) => ({ ...prev, [idStr]: data.poster_path }));
-          }
-          if (data.title) {
+          if (data.title)
             setTitulos((prev) => ({ ...prev, [idStr]: data.title }));
-          }
-          if (data.genres?.length) {
+          if (data.backdrop_path)
+            setBackdrops((prev) => ({ ...prev, [idStr]: data.backdrop_path }));
+          if (data.release_date)
+            setReleaseDates((prev) => ({ ...prev, [idStr]: data.release_date }));
+          if (data.genres?.length)
             setGenerosPorId((prev) => ({
               ...prev,
-              [idStr]: data.genres.map((g) => g.name).join(", "),
+              [idStr]: data.genres.map((g) => TMDB_GENEROS[g.id] || g.name).join(", "),
             }));
-          }
         } catch {}
       }, 600);
       return () => clearTimeout(timer);
     });
   }, [idFilmes]);
 
-  // Sincroniza nomeFilme com os títulos na ordem dos IDs
+  // Agrega nomeFilme com todos os títulos
   useEffect(() => {
     const agrupado = idFilmes
       .filter((v) => v.trim() && titulos[v.trim()])
@@ -109,7 +160,7 @@ export default function Tipo10({ id = null, initialData = null }) {
     if (agrupado) setNomeFilme(agrupado);
   }, [titulos, idFilmes]);
 
-  // Sincroniza genero agregando gêneros únicos de todos os IDs
+  // Agrega gêneros únicos
   useEffect(() => {
     const todos = idFilmes
       .filter((v) => v.trim() && generosPorId[v.trim()])
@@ -118,15 +169,26 @@ export default function Tipo10({ id = null, initialData = null }) {
     if (unicos.length) setGenero(unicos.join(", "));
   }, [generosPorId, idFilmes]);
 
-  const handleOpcao = (letra, valor) => setOpcoes((prev) => ({ ...prev, [letra]: valor }));
+  // Sincroniza ordemUsuario com idFilmes (ordem do admin)
+  useEffect(() => {
+    const validos = idFilmes.filter((v) => v.trim());
+    setOrdemUsuario(validos);
+    setPreviewConfirmed(false);
+  }, [idFilmes]);
 
-  const handlePreviewSelect = (letra) => { setPreviewSelected(letra); setPreviewConfirmed(false); };
+  // Ordem correta = do mais antigo ao mais recente
+  const ordemCorreta = [...idFilmes.filter((v) => v.trim())].sort((a, b) => {
+    const da = releaseDates[a] ?? "";
+    const db = releaseDates[b] ?? "";
+    return da.localeCompare(db);
+  });
 
-  const getPreviewOptionClass = (letra) => {
-    if (!previewConfirmed) return previewSelected === letra ? styles.previewOptionSelected : "";
-    if (letra === respostaCorreta) return styles.previewOptionCorreta;
-    if (letra === previewSelected) return styles.previewOptionErro;
-    return "";
+  const handleDragEnd = ({ active, over }) => {
+    if (!over || active.id === over.id) return;
+    const oldIndex = ordemUsuario.indexOf(active.id);
+    const newIndex = ordemUsuario.indexOf(over.id);
+    setOrdemUsuario(arrayMove(ordemUsuario, oldIndex, newIndex));
+    setPreviewConfirmed(false);
   };
 
   const gerarId = async () => {
@@ -144,11 +206,6 @@ export default function Tipo10({ id = null, initialData = null }) {
     if (!subtitulo.trim()) e.subtitulo = true;
     if (!dificuldade) e.dificuldade = true;
     if (!idFilmes.some((v) => v.trim())) e.idFilmes = true;
-    if (!opcoes.a.trim()) e.opcaoA = true;
-    if (!opcoes.b.trim()) e.opcaoB = true;
-    if (!opcoes.c.trim()) e.opcaoC = true;
-    if (!opcoes.d.trim()) e.opcaoD = true;
-    if (!respostaCorreta) e.respostaCorreta = true;
     setErros(e);
     return Object.keys(e).length === 0;
   };
@@ -158,7 +215,7 @@ export default function Tipo10({ id = null, initialData = null }) {
     setLoading(true);
     try {
       const dados = {
-        tipo: 10,
+        tipo: 12,
         titulo, subtitulo, dificuldade, genero,
         cronometroAtivo, cronometroVisivel,
         cronometroRegressivoAtivo, cronometroRegressivoVisivel,
@@ -166,7 +223,6 @@ export default function Tipo10({ id = null, initialData = null }) {
         ativo, visibilidade, status,
         idFilmes: idFilmes.filter((v) => v.trim()).map((v) => parseInt(v)),
         tagFilme, nomeFilme,
-        opcoes, respostaCorreta,
         ...(status === "publicado" ? { dataPublicacao: serverTimestamp() } : {}),
       };
 
@@ -190,7 +246,7 @@ export default function Tipo10({ id = null, initialData = null }) {
     <div className={styles.sidebarContent}>
       <TextInput
         label="Título da pergunta"
-        placeholder='Ex: "Qual é o ator em comum?"'
+        placeholder='Ex: "Ordene por lançamento"'
         value={titulo}
         onChange={(e) => { setTitulo(e.target.value); setErros((p) => ({ ...p, titulo: false })); }}
         error={!!erros.titulo}
@@ -198,7 +254,7 @@ export default function Tipo10({ id = null, initialData = null }) {
 
       <TextInput
         label="Subtítulo"
-        placeholder='Ex: "Ele aparece em todos esses filmes"'
+        placeholder='Ex: "Do mais antigo ao mais recente"'
         value={subtitulo}
         onChange={(e) => { setSubtitulo(e.target.value); setErros((p) => ({ ...p, subtitulo: false })); }}
         error={!!erros.subtitulo}
@@ -256,31 +312,6 @@ export default function Tipo10({ id = null, initialData = null }) {
         />
       </div>
 
-      <div className={styles.optionsGrid}>
-        {OPCOES_LETRAS.map((letra, i) => (
-          <div key={letra} className={styles.fieldWrapper}>
-            <label className={styles.fieldLabel}>{OPCOES_LABELS[i]}</label>
-            <div className={`${styles.optionRow} ${respostaCorreta === letra ? styles.optionCorrect : ""} ${erros[`opcao${letra.toUpperCase()}`] ? styles.optionRowErro : ""}`}>
-              <input
-                type="text"
-                className={styles.optionInput}
-                placeholder="Digite"
-                value={opcoes[letra]}
-                onChange={(e) => { handleOpcao(letra, e.target.value); setErros((p) => ({ ...p, [`opcao${letra.toUpperCase()}`]: false })); }}
-              />
-              <input
-                type="radio"
-                name="respostaCorreta"
-                className={styles.optionRadio}
-                checked={respostaCorreta === letra}
-                onChange={() => { setRespostaCorreta(letra); setErros((p) => ({ ...p, respostaCorreta: false })); }}
-              />
-            </div>
-          </div>
-        ))}
-        {erros.respostaCorreta && <p className={styles.erroMsg}>Selecione a opção correta</p>}
-      </div>
-
       <div className={styles.row}>
         <Select
           label="Dificuldade"
@@ -299,7 +330,7 @@ export default function Tipo10({ id = null, initialData = null }) {
       </div>
 
       <SidebarCronometros
-        idSuffix="-t10"
+        idSuffix="-t12"
         cronometroAtivo={cronometroAtivo} setCronometroAtivo={setCronometroAtivo}
         cronometroVisivel={cronometroVisivel} setCronometroVisivel={setCronometroVisivel}
         cronometroRegressivoAtivo={cronometroRegressivoAtivo} setCronometroRegressivoAtivo={setCronometroRegressivoAtivo}
@@ -308,7 +339,7 @@ export default function Tipo10({ id = null, initialData = null }) {
       />
 
       <SidebarStatusVisibilidade
-        idSuffix="-t10"
+        idSuffix="-t12"
         ativo={ativo} setAtivo={setAtivo}
         visibilidade={visibilidade} setVisibilidade={setVisibilidade}
       />
@@ -316,10 +347,6 @@ export default function Tipo10({ id = null, initialData = null }) {
   );
 
   // ── Preview ────────────────────────────────────────────────────────────────
-  const posteresList = idFilmes
-    .filter((v) => v.trim() && posteres[v.trim()])
-    .map((v) => `https://image.tmdb.org/t/p/w342${posteres[v.trim()]}`);
-
   const preview = (
     <div className={styles.previewWrapper}>
       <div className={styles.previewCard}>
@@ -331,44 +358,43 @@ export default function Tipo10({ id = null, initialData = null }) {
           cronometroTempo={cronometroTempo}
         />
 
-        {posteresList.length > 0 && (
-          <div className={styles.previewPostersGrid}>
-            {posteresList.map((url, i) => (
-              <div key={i} className={styles.previewPosterItem}>
-                <img src={url} alt={`Filme ${i + 1}`} className={styles.previewPosterImg} unoptimized />
-              </div>
-            ))}
-          </div>
-        )}
-
-        {posteresList.length === 0 && idFilmes.some((v) => v.trim()) && (
-          <div className={styles.previewPostersGrid}>
-            {idFilmes.filter((v) => v.trim()).map((_, i) => (
-              <div key={i} className={styles.previewPosterItem}>
-                <div className={styles.previewImagePlaceholder} />
-              </div>
-            ))}
-          </div>
-        )}
-
-        <div className={styles.previewOptions}>
-          {OPCOES_LETRAS.map((letra, i) => (
-            <div
-              key={letra}
-              className={`${styles.previewOption} ${getPreviewOptionClass(letra)}`}
-              onClick={() => handlePreviewSelect(letra)}
-            >
-              {opcoes[letra] || <span className={styles.previewOptionEmpty}>{OPCOES_LABELS[i]}</span>}
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext items={ordemUsuario} strategy={verticalListSortingStrategy}>
+            <div className={styles.filmCardList}>
+              {ordemUsuario.map((idStr, i) => {
+                const backdropPath = backdrops[idStr];
+                const backdropUrl = backdropPath
+                  ? `https://image.tmdb.org/t/p/w780${backdropPath}`
+                  : null;
+                const isCorrect = previewConfirmed && ordemUsuario[i] === ordemCorreta[i];
+                const isWrong = previewConfirmed && ordemUsuario[i] !== ordemCorreta[i];
+                return (
+                  <SortableFilmCard
+                    key={idStr}
+                    idStr={idStr}
+                    index={i}
+                    nome={titulos[idStr]}
+                    backdropUrl={backdropUrl}
+                    cardClass={isCorrect ? styles.filmCardCorreta : isWrong ? styles.filmCardErro : ""}
+                    previewConfirmed={previewConfirmed}
+                  />
+                );
+              })}
+              {ordemUsuario.length === 0 && (
+                <p style={{ opacity: 0.4, fontSize: 14, textAlign: "center" }}>
+                  Adicione IDs de filmes no painel
+                </p>
+              )}
             </div>
-          ))}
-        </div>
+          </SortableContext>
+        </DndContext>
 
         <div className={styles.previewFooter}>
           <div className={styles.previewJoias}><Joias dificuldade={dificuldade} /></div>
           <button
             className={styles.previewConfirm}
             type="button"
-            disabled={!previewSelected || previewConfirmed}
+            disabled={ordemUsuario.length === 0 || previewConfirmed}
             onClick={() => setPreviewConfirmed(true)}
           >
             CONFIRMAR

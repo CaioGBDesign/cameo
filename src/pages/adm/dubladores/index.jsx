@@ -86,6 +86,7 @@ export default function AdmDubladores() {
 
   // ─── Filtros ──────────────────────────────────────────────
   const [filtroStatus, setFiltroStatus] = useState(null);
+  const [busca, setBusca] = useState("");
 
   // ─── Paginação ────────────────────────────────────────────
   const [pagina, setPagina] = useState(1);
@@ -151,6 +152,11 @@ export default function AdmDubladores() {
       (d.statusPublicacao?.toLowerCase() ?? "publicado") !== filtroStatus
     )
       return false;
+    if (busca.trim()) {
+      const termo = busca.trim().toLowerCase();
+      const nome = (d.nomeArtistico ?? d.nomeCompleto ?? "").toLowerCase();
+      if (!nome.includes(termo)) return false;
+    }
     return true;
   });
 
@@ -270,8 +276,8 @@ export default function AdmDubladores() {
                   <th className={styles.colNome}>
                     <button
                       type="button"
-                      className={`${styles.thBtn} ${sortCol === "nomeArtistico" ? styles.thBtnAtivo : ""}`}
-                      onClick={() => toggleSort("nomeArtistico")}
+                      className={`${styles.thBtn} ${colDropdown === "nomeArtistico" ? styles.thBtnAtivo : ""}`}
+                      onClick={(e) => abrirColDropdown("nomeArtistico", e)}
                     >
                       Nome artístico{" "}
                       <SortIcon
@@ -280,6 +286,7 @@ export default function AdmDubladores() {
                       />
                     </button>
                   </th>
+                  <th style={{ width: 110 }}>Código</th>
                   <th style={{ width: 150 }}>
                     <button
                       type="button"
@@ -324,7 +331,7 @@ export default function AdmDubladores() {
                 {dubladoresPagina.length === 0 ? (
                   <tr>
                     <td
-                      colSpan={7}
+                      colSpan={8}
                       style={{ textAlign: "center" }}
                       className={styles.empty}
                     >
@@ -352,6 +359,7 @@ export default function AdmDubladores() {
                               src={dublador.imagemUrl}
                               alt={dublador.nomeArtistico}
                               className={styles.fotoDublador}
+                              unoptimized
                             />
                           ) : (
                             <span className={styles.fotoDubladorFallback}>
@@ -364,6 +372,7 @@ export default function AdmDubladores() {
                             {dublador.nomeArtistico}
                           </span>
                         </td>
+                        <td className={styles.tempo}>{dublador.id}</td>
                         <td>
                           <StatusBadge status={dublador.statusPublicacao} />
                         </td>
@@ -533,6 +542,46 @@ export default function AdmDubladores() {
           document.body,
         )}
 
+      {/* ─── Col dropdown nome artístico ────────────────────── */}
+      {colDropdown === "nomeArtistico" &&
+        createPortal(
+          <div
+            ref={colDropdownRef}
+            className={styles.colDropdown}
+            style={{ top: colDropdownPos.top, left: colDropdownPos.left }}
+          >
+            <div className={styles.colDropdownGrupo}>
+              <input
+                autoFocus
+                type="text"
+                className={styles.colDropdownBusca}
+                placeholder="Buscar dublador..."
+                value={busca}
+                onChange={(e) => { setBusca(e.target.value); setPagina(1); }}
+              />
+            </div>
+            <div className={styles.colDropdownGrupo}>
+              <button
+                type="button"
+                className={`${styles.colDropdownItem} ${sortCol === "nomeArtistico" && sortDir === "asc" ? styles.colDropdownItemAtivo : ""}`}
+                onClick={() => setSort("nomeArtistico", "asc")}
+              >
+                <SortIcon active={sortCol === "nomeArtistico" && sortDir === "asc"} dir="asc" />{" "}
+                Crescente
+              </button>
+              <button
+                type="button"
+                className={`${styles.colDropdownItem} ${sortCol === "nomeArtistico" && sortDir === "desc" ? styles.colDropdownItemAtivo : ""}`}
+                onClick={() => setSort("nomeArtistico", "desc")}
+              >
+                <SortIcon active={sortCol === "nomeArtistico" && sortDir === "desc"} dir="desc" />{" "}
+                Decrescente
+              </button>
+            </div>
+          </div>,
+          document.body,
+        )}
+
       {/* ─── Col dropdown status ─────────────────────────────── */}
       {colDropdown === "statusPublicacao" &&
         createPortal(
@@ -571,7 +620,7 @@ export default function AdmDubladores() {
                 { label: "Rascunho", valor: "rascunho" },
                 { label: "Agendado", valor: "agendado" },
                 { label: "Arquivado", valor: "arquivado" },
-              ].map(({ label, valor }) => (
+              ].map(({ valor }) => (
                 <button
                   key={valor}
                   type="button"

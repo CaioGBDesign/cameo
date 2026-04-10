@@ -29,6 +29,9 @@ import CheckboxCard from "@/components/inputs/checkbox-card";
 import BookmarkIcon from "@/components/icons/BookmarkIcon";
 import ListIcon from "@/components/icons/ListIcon";
 import { useAuth } from "@/contexts/auth";
+import { db } from "@/services/firebaseConection";
+import { collection, getDocs, query as fsQuery, where, doc, getDoc } from "firebase/firestore";
+import ElencoDobragem from "@/components/detalhesfilmes/elenco-dublagem";
 import styles from "./index.module.scss";
 
 const Header = dynamic(() => import("@/components/Header"));
@@ -65,6 +68,9 @@ export default function FilmeAleatorio() {
   const [trailerLink, setTrailerLink] = useState(null);
   const [releaseDates, setReleaseDates] = useState([]);
   const [servicosDisponiveis, setServicosDisponiveis] = useState([]);
+
+  const [elencoDublagem, setElencoDublagem] = useState([]);
+  const elencoDoblagemRef = useRef(null);
 
   const [loading, setLoading] = useState(true);
   const [modalType, setModalType] = useState(null);
@@ -159,6 +165,42 @@ export default function FilmeAleatorio() {
       const res = await fetch(url);
       const data = await res.json();
       setFilme(data);
+      setElencoDublagem([]);
+
+      // Busca elenco de dublagem no Firestore
+      const fetchDublagem = async (tmdbId) => {
+        const tmdbIdNum = parseInt(tmdbId);
+        try {
+          const q = fsQuery(collection(db, "filmes"), where("idFilme", "==", tmdbIdNum));
+          const snap = await getDocs(q);
+
+          let dubladores = [];
+          if (!snap.empty) {
+            dubladores = snap.docs[0].data().dubladores || [];
+          } else {
+            const oldSnap = await getDoc(doc(db, "filmes", String(tmdbId)));
+            if (oldSnap.exists()) dubladores = oldSnap.data().dubladores || [];
+          }
+
+          if (!dubladores.length) return;
+
+          const comInfo = await Promise.all(
+            dubladores.map(async (e) => {
+              if (!e.idDublador) return e;
+              const dSnap = await getDoc(doc(db, "dubladores", e.idDublador));
+              return {
+                ...e,
+                nomeArtistico: dSnap.exists() ? (dSnap.data().nomeArtistico ?? "") : e.idDublador,
+                imagemUrl: dSnap.exists() ? (dSnap.data().imagemUrl ?? null) : null,
+              };
+            }),
+          );
+
+          setElencoDublagem(comInfo);
+        } catch {}
+      };
+
+      await fetchDublagem(idToFetch);
       setCast(data.credits?.cast || []);
       setCrew(data.credits?.crew || []);
       const tr = data.videos?.results.find(
@@ -319,6 +361,11 @@ export default function FilmeAleatorio() {
                   />
                 </SectionCard>
               </div>
+              {elencoDublagem.length > 0 && (
+                <SectionCard title="Elenco de dublagem" scrollRef={elencoDoblagemRef}>
+                  <ElencoDobragem ref={elencoDoblagemRef} items={elencoDublagem} />
+                </SectionCard>
+              )}
               <SectionCard title="Elenco" scrollRef={elencoRef}>
                 <Cast ref={elencoRef} items={cast} />
               </SectionCard>

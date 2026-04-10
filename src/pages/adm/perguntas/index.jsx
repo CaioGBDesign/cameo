@@ -168,6 +168,10 @@ const TIPO_BADGE_CLASS = {
   9: "tipoBadgeTipo9",
   10: "tipoBadgeTipo10",
   11: "tipoBadgeTipo11",
+  12: "tipoBadgeTipo12",
+  14: "tipoBadgeTipo14",
+  15: "tipoBadgeTipo15",
+  16: "tipoBadgeTipo16",
 };
 
 export default function AdmPerguntas() {

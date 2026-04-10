@@ -23,7 +23,7 @@
 
 .row {
   display: flex;
-  gap: var(--space-lg);
+  gap: var(--space-sm);
   align-items: flex-end;
   width: 100%;
 
@@ -113,18 +113,19 @@
 .listaSection {
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
+  gap: var(--space-sm);
 }
 
 .listaRow {
   display: flex;
-  gap: var(--space-lg);
+  gap: var(--space-sm);
   align-items: flex-end;
   width: 100%;
 
   > * {
     min-width: 0;
   }
+
 }
 
 .btnRemover {
@@ -141,7 +142,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
   margin-bottom: 1px;
 
   &:hover {
@@ -169,6 +172,236 @@
   &:hover {
     color: var(--text-base);
   }
+}
+
+// ─── Sidebar content ──────────────────────────────────────
+
+.sidebarContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding: var(--space-xl);
+  overflow-y: auto;
+  height: 100%;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// ─── Central: editor + preview ────────────────────────────
+
+.centralWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  padding: var(--space-2xl);
+  padding-top: var(--space-nn);
+  width: 100%;
+}
+
+// ─── Preview card ─────────────────────────────────────────
+
+.previewCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-lg);
+  padding: var(--space-2xl);
+}
+
+.previewAvatarRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
+}
+
+.previewAvatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.previewAvatarPlaceholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  span {
+    font-size: 2rem;
+    font-style: italic;
+    color: var(--text-sub);
+  }
+}
+
+.previewNameBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.previewNomeArtistico {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-base);
+  margin: 0;
+}
+
+.previewNomeCompleto {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-sub);
+  margin: 0;
+}
+
+.previewPlaceholder {
+  opacity: 0.35;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.previewBadge {
+  display: inline-block;
+  padding: 2px var(--space-sm);
+  border-radius: var(--space-xs);
+  font-size: 0.75rem;
+  font-style: italic;
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  color: var(--text-sub);
+}
+
+.badgeAtivo {
+  border-color: #4caf50;
+  color: #4caf50;
+}
+
+.badgeInativo {
+  border-color: var(--stroke-base);
+  color: var(--text-sub);
+}
+
+.badgeFalecido {
+  border-color: var(--primitive-erro-01, #e53935);
+  color: var(--primitive-erro-01, #e53935);
+}
+
+.previewInfoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--space-md);
+}
+
+.previewInfoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.previewInfoLabel {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text-sub);
+}
+
+.previewInfoValue {
+  font-size: 0.875rem;
+  color: var(--text-base);
+}
+
+.previewOcupacoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.previewOcupacaoPill {
+  padding: 2px var(--space-sm);
+  border-radius: var(--space-xs);
+  border: 1px solid var(--stroke-base);
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--text-sub);
+  background: var(--bg-base);
+}
+
+.previewBio {
+  font-size: 0.9rem;
+  color: var(--text-sub);
+  line-height: 1.6;
+
+  p {
+    margin: 0 0 var(--space-sm);
+  }
+  strong {
+    font-weight: 700;
+    color: var(--text-base);
+  }
+  em {
+    font-style: italic;
+  }
+  ul,
+  ol {
+    padding-left: var(--space-xl);
+  }
+}
+
+.previewSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.previewSectionTitle {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-sub);
+  margin: 0;
+  font-weight: 600;
+}
+
+.previewFamiliarItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.previewFamiliarNome {
+  font-size: 0.875rem;
+  color: var(--text-base);
+}
+
+.previewFamiliarParentesco {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text-sub);
+}
+
+.previewLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.previewLinkPill {
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--space-xs);
+  border: 1px solid var(--stroke-base);
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--text-sub);
+  background: var(--bg-base);
 }
 
 // ─── Erro ─────────────────────────────────────────────────

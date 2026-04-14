@@ -79,6 +79,22 @@
     }
   }
 
+  .producoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .producaoItem {
+    background: var(--bg-overlay);
+    border: 1px solid var(--stroke-base);
+    border-radius: var(--space-sm);
+    padding: var(--space-sm) var(--space-lg);
+    font-size: 0.875rem;
+    font-style: italic;
+    color: var(--text-base);
+  }
+
   .todasAsInformacoes {
     display: flex;
     justify-content: center;

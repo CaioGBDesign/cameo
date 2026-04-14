@@ -2,12 +2,20 @@ import { useState, useEffect, useRef } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { db } from "@/services/firebaseConection";
-import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  deleteDoc,
+  setDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { createPortal } from "react-dom";
 import AdmLayout from "@/components/adm/layout";
 import Button from "@/components/button";
 import EditIcon from "@/components/icons/EditIcon";
 import DeletarIcon from "@/components/icons/DeletarIcon";
+import DuplicarIcon from "@/components/icons/DuplicarIcon";
 import TrashIcon from "@/components/icons/TrashIcon";
 import styles from "./index.module.scss";
 
@@ -133,6 +141,27 @@ export default function AdmDublagens() {
       setDeletandoId(filme.id);
       setDeletandoNome(filme.nomeFilme || filme.id);
     }
+  };
+
+  const handleDuplicar = async (filme) => {
+    setMenuAberto(null);
+    const snap = await getDocs(collection(db, "filmes"));
+    const ids = snap.docs.map((d) => {
+      const m = d.id.match(/^DU(\d+)$/);
+      return m ? parseInt(m[1]) : 0;
+    });
+    const novoId = `DU${String(Math.max(0, ...ids) + 1).padStart(4, "0")}`;
+    const { id: _, dataCadastro: __, dataEdicao: ___, ...dados } = filme;
+    await setDoc(doc(db, "filmes", novoId), {
+      ...dados,
+      nomeFilme: `${filme.nomeFilme} (cópia)`,
+      dataCadastro: serverTimestamp(),
+      dataEdicao: serverTimestamp(),
+    });
+    setFilmes((prev) => [
+      ...prev,
+      { id: novoId, ...dados, nomeFilme: `${filme.nomeFilme} (cópia)` },
+    ]);
   };
 
   const confirmarDelete = async () => {
@@ -374,9 +403,21 @@ export default function AdmDublagens() {
                 }
               >
                 <span className={styles.menuItemIcon}>
-                  <EditIcon size={16} color="currentColor" />
+                  <EditIcon size={24} color="currentColor" />
                 </span>
                 Editar
+              </button>
+              <button
+                type="button"
+                className={styles.menuItem}
+                onClick={() =>
+                  handleDuplicar(filmes.find((f) => f.id === menuAberto))
+                }
+              >
+                <span className={styles.menuItemIcon}>
+                  <DuplicarIcon size={24} color="currentColor" />
+                </span>
+                Duplicar
               </button>
             </div>
             <div className={styles.menuGrupo}>
@@ -391,7 +432,7 @@ export default function AdmDublagens() {
                 }
               >
                 <span className={styles.menuItemIcon}>
-                  <DeletarIcon />
+                  <DeletarIcon size={24} />
                 </span>
                 Deletar
               </button>

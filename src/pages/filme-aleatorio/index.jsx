@@ -30,7 +30,14 @@ import BookmarkIcon from "@/components/icons/BookmarkIcon";
 import ListIcon from "@/components/icons/ListIcon";
 import { useAuth } from "@/contexts/auth";
 import { db } from "@/services/firebaseConection";
-import { collection, getDocs, query as fsQuery, where, doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query as fsQuery,
+  where,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import ElencoDobragem from "@/components/detalhesfilmes/elenco-dublagem";
 import styles from "./index.module.scss";
 
@@ -171,7 +178,10 @@ export default function FilmeAleatorio() {
       const fetchDublagem = async (tmdbId) => {
         const tmdbIdNum = parseInt(tmdbId);
         try {
-          const q = fsQuery(collection(db, "filmes"), where("idFilme", "==", tmdbIdNum));
+          const q = fsQuery(
+            collection(db, "filmes"),
+            where("idFilme", "==", tmdbIdNum),
+          );
           const snap = await getDocs(q);
 
           let dubladores = [];
@@ -190,8 +200,12 @@ export default function FilmeAleatorio() {
               const dSnap = await getDoc(doc(db, "dubladores", e.idDublador));
               return {
                 ...e,
-                nomeArtistico: dSnap.exists() ? (dSnap.data().nomeArtistico ?? "") : e.idDublador,
-                imagemUrl: dSnap.exists() ? (dSnap.data().imagemUrl ?? null) : null,
+                nomeArtistico: dSnap.exists()
+                  ? (dSnap.data().nomeArtistico ?? "")
+                  : e.idDublador,
+                imagemUrl: dSnap.exists()
+                  ? (dSnap.data().imagemUrl ?? null)
+                  : null,
               };
             }),
           );
@@ -362,8 +376,14 @@ export default function FilmeAleatorio() {
                 </SectionCard>
               </div>
               {elencoDublagem.length > 0 && (
-                <SectionCard title="Elenco de dublagem" scrollRef={elencoDoblagemRef}>
-                  <ElencoDobragem ref={elencoDoblagemRef} items={elencoDublagem} />
+                <SectionCard
+                  title="Elenco de dublagem"
+                  scrollRef={elencoDoblagemRef}
+                >
+                  <ElencoDobragem
+                    ref={elencoDoblagemRef}
+                    items={elencoDublagem}
+                  />
                 </SectionCard>
               )}
               <SectionCard title="Elenco" scrollRef={elencoRef}>
@@ -375,6 +395,17 @@ export default function FilmeAleatorio() {
                   showCharacter={false}
                 />
               </SectionCard>
+              {filme.production_companies?.length > 0 && (
+                <SectionCard title="Produção">
+                  <div className={styles.producoes}>
+                    {filme.production_companies.map((c) => (
+                      <div key={c.id} className={styles.producaoItem}>
+                        {c.name}
+                      </div>
+                    ))}
+                  </div>
+                </SectionCard>
+              )}
               <SectionCard title="Recomendações" scrollRef={recomendacoesRef}>
                 <div
                   ref={recomendacoesRef}

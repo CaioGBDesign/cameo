@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { db } from "@/services/firebaseConection";
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { createPortal } from "react-dom";
+import { useToast } from "@/contexts/toast";
 import AdmLayout from "@/components/adm/layout";
 import Button from "@/components/button";
 import TrashIcon from "@/components/icons/TrashIcon";
@@ -76,6 +77,7 @@ const POR_PAGINA = 10;
 
 export default function AdmDubladores() {
   const router = useRouter();
+  const { toast } = useToast();
 
   const [dubladores, setDubladores] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -95,6 +97,18 @@ export default function AdmDubladores() {
   const [menuAberto, setMenuAberto] = useState(null);
   const [menuPos, setMenuPos] = useState({ top: 0, left: 0 });
   const menuRef = useRef(null);
+
+  // ─── Toast de redirect ────────────────────────────────────
+  useEffect(() => {
+    if (router.query.toast === "salvo") {
+      toast.success("Alterações salvas com sucesso", {
+        duration: 3000,
+        buttons: [{ label: "Fechar" }],
+        bg: "var(--primitive-verde-01)",
+      });
+      router.replace("/adm/dubladores", undefined, { shallow: true });
+    }
+  }, [router.query.toast]);
 
   // ─── Popover deletar ──────────────────────────────────────
   const [deletandoId, setDeletandoId] = useState(null);
@@ -324,6 +338,7 @@ export default function AdmDubladores() {
                       />
                     </button>
                   </th>
+                  <th style={{ width: 80 }}>Verificar</th>
                   <th className={styles.colAcoes}>Ações</th>
                 </tr>
               </thead>
@@ -331,7 +346,7 @@ export default function AdmDubladores() {
                 {dubladoresPagina.length === 0 ? (
                   <tr>
                     <td
-                      colSpan={8}
+                      colSpan={9}
                       style={{ textAlign: "center" }}
                       className={styles.empty}
                     >
@@ -395,6 +410,9 @@ export default function AdmDubladores() {
                         </td>
                         <td className={styles.tempo}>
                           {tempoRelativo(editadoEm)}
+                        </td>
+                        <td className={styles.tempo}>
+                          {dublador.verificarFamiliares ? "Sim" : "—"}
                         </td>
                         <td
                           className={styles.colAcoes}
@@ -557,7 +575,10 @@ export default function AdmDubladores() {
                 className={styles.colDropdownBusca}
                 placeholder="Buscar dublador..."
                 value={busca}
-                onChange={(e) => { setBusca(e.target.value); setPagina(1); }}
+                onChange={(e) => {
+                  setBusca(e.target.value);
+                  setPagina(1);
+                }}
               />
             </div>
             <div className={styles.colDropdownGrupo}>
@@ -566,7 +587,10 @@ export default function AdmDubladores() {
                 className={`${styles.colDropdownItem} ${sortCol === "nomeArtistico" && sortDir === "asc" ? styles.colDropdownItemAtivo : ""}`}
                 onClick={() => setSort("nomeArtistico", "asc")}
               >
-                <SortIcon active={sortCol === "nomeArtistico" && sortDir === "asc"} dir="asc" />{" "}
+                <SortIcon
+                  active={sortCol === "nomeArtistico" && sortDir === "asc"}
+                  dir="asc"
+                />{" "}
                 Crescente
               </button>
               <button
@@ -574,7 +598,10 @@ export default function AdmDubladores() {
                 className={`${styles.colDropdownItem} ${sortCol === "nomeArtistico" && sortDir === "desc" ? styles.colDropdownItemAtivo : ""}`}
                 onClick={() => setSort("nomeArtistico", "desc")}
               >
-                <SortIcon active={sortCol === "nomeArtistico" && sortDir === "desc"} dir="desc" />{" "}
+                <SortIcon
+                  active={sortCol === "nomeArtistico" && sortDir === "desc"}
+                  dir="desc"
+                />{" "}
                 Decrescente
               </button>
             </div>

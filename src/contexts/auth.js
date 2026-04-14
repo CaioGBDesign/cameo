@@ -801,7 +801,9 @@ function AuthProvider({ children }) {
     const novasListas = sessaoPipoca
       ? [sessaoPipoca]
       : [{ id: uuidv4(), nome: "Sessão pipoca", filmes: [] }];
-    await updateDoc(doc(db, "users", user.uid), { listasQueroVer: novasListas });
+    await updateDoc(doc(db, "users", user.uid), {
+      listasQueroVer: novasListas,
+    });
     setUser((prev) => ({ ...prev, listasQueroVer: novasListas }));
   };
 
@@ -811,23 +813,31 @@ function AuthProvider({ children }) {
     if (listas.length >= LISTAS_LIMITE) return;
     const novaLista = { id: uuidv4(), nome, filmes: [] };
     const novasListas = [...listas, novaLista];
-    await updateDoc(doc(db, "users", user.uid), { listasQueroVer: novasListas });
+    await updateDoc(doc(db, "users", user.uid), {
+      listasQueroVer: novasListas,
+    });
     setUser((prev) => ({ ...prev, listasQueroVer: novasListas }));
   };
 
   const renomearLista = async (listaId, novoNome) => {
     if (!user) return;
     const novasListas = (user.listasQueroVer || []).map((l) =>
-      l.id === listaId ? { ...l, nome: novoNome } : l
+      l.id === listaId ? { ...l, nome: novoNome } : l,
     );
-    await updateDoc(doc(db, "users", user.uid), { listasQueroVer: novasListas });
+    await updateDoc(doc(db, "users", user.uid), {
+      listasQueroVer: novasListas,
+    });
     setUser((prev) => ({ ...prev, listasQueroVer: novasListas }));
   };
 
   const deletarLista = async (listaId) => {
     if (!user) return;
-    const novasListas = (user.listasQueroVer || []).filter((l) => l.id !== listaId);
-    await updateDoc(doc(db, "users", user.uid), { listasQueroVer: novasListas });
+    const novasListas = (user.listasQueroVer || []).filter(
+      (l) => l.id !== listaId,
+    );
+    await updateDoc(doc(db, "users", user.uid), {
+      listasQueroVer: novasListas,
+    });
     setUser((prev) => ({ ...prev, listasQueroVer: novasListas }));
   };
 
@@ -836,9 +846,16 @@ function AuthProvider({ children }) {
     const novasListas = (user.listasQueroVer || []).map((l) => {
       if (l.id !== listaId) return l;
       const jaEsta = l.filmes.includes(filmeId);
-      return { ...l, filmes: jaEsta ? l.filmes.filter((id) => id !== filmeId) : [...l.filmes, filmeId] };
+      return {
+        ...l,
+        filmes: jaEsta
+          ? l.filmes.filter((id) => id !== filmeId)
+          : [...l.filmes, filmeId],
+      };
     });
-    await updateDoc(doc(db, "users", user.uid), { listasQueroVer: novasListas });
+    await updateDoc(doc(db, "users", user.uid), {
+      listasQueroVer: novasListas,
+    });
     setUser((prev) => ({ ...prev, listasQueroVer: novasListas }));
   };
 

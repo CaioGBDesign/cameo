@@ -530,6 +530,31 @@
   background: var(--bg-overlay);
 }
 
+// ─── Toast ──────────────────────────────────────────────
+
+.toast {
+  position: fixed;
+  bottom: var(--space-2xl);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-lg);
+  padding: var(--space-sm) var(--space-2xl);
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-base);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+  animation: toastIn 0.2s ease;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
 // ─── Ações ──────────────────────────────────────────────
 
 .btnAcoes {

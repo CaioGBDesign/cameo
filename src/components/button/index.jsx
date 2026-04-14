@@ -31,6 +31,7 @@ export default function Button({
   href,
   onClick,
   type = "button",
+  form,
   bg,
   color,
   border,
@@ -80,6 +81,7 @@ export default function Button({
   return (
     <button
       type={type}
+      form={form}
       onClick={onClick}
       style={inlineStyle}
       className={className}

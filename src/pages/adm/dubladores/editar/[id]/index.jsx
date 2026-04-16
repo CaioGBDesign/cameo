@@ -5,6 +5,8 @@ import { db, storage } from "@/services/firebaseConection";
 import {
   doc,
   getDoc,
+  getDocs,
+  collection,
   updateDoc,
   deleteDoc,
   serverTimestamp,
@@ -20,6 +22,8 @@ import AdmEditor from "@/components/adm/editor";
 import Button from "@/components/button";
 import PlusIcon from "@/components/icons/PlusIcon";
 import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
+import { FamiliarNomeInput } from "../../criar/index";
+import { REDES_SOCIAIS, REDE_PLACEHOLDER, gerarUrlRede } from "@/utils/redes";
 import styles from "../../criar/index.module.scss";
 
 const ESTADOS_BR = [
@@ -87,10 +91,6 @@ const PARENTESCO_OPTS = [
   "Avó",
   "Outro",
 ].map((p) => ({ value: p, label: p }));
-
-const REDES_SOCIAIS = ["Instagram", "YouTube", "TikTok", "IMDB", "Site"].map(
-  (r) => ({ value: r, label: r }),
-);
 
 const STATUS_ATIVIDADE = [
   { value: "Ativo", label: "Ativo" },
@@ -208,10 +208,11 @@ export default function AdmEditarDublador() {
   const [bio, setBio] = useState("");
   const [ocupacoes, setOcupacoes] = useState([]);
   const [familiares, setFamiliares] = useState([
-    { nome: "", parentesco: "", link: "" },
+    { nome: "", parentesco: "", idDublador: null },
   ]);
-  const [links, setLinks] = useState([{ tipo: "", url: "" }]);
+  const [links, setLinks] = useState([{ tipo: "", usuario: "" }]);
   const [statusPublicacao, setStatusPublicacao] = useState("rascunho");
+  const [dubladores, setDubladores] = useState([]);
 
   const [loading, setLoading] = useState(false);
   const [loadingRascunho, setLoadingRascunho] = useState(false);
@@ -223,6 +224,12 @@ export default function AdmEditarDublador() {
   const [menuPos, setMenuPos] = useState({ top: 0, left: 0 });
   const menuRef = useRef(null);
   const menuBtnRef = useRef(null);
+
+  useEffect(() => {
+    getDocs(collection(db, "dubladores")).then((snap) =>
+      setDubladores(snap.docs.map((d) => ({ id: d.id, ...d.data() }))),
+    );
+  }, []);
 
   const isDirty = nomeArtistico !== "";
   useUnsavedChanges(isDirty && !loading && !deletando);
@@ -250,15 +257,15 @@ export default function AdmEditarDublador() {
         setFamiliares(
           d.familiares?.length
             ? d.familiares
-            : [{ nome: "", parentesco: "", link: "" }],
+            : [{ nome: "", parentesco: "", idDublador: null }],
         );
         setLinks(
           d.links?.length
             ? d.links.map((l) => ({
                 tipo: l.type || l.tipo || "",
-                url: l.url || "",
+                usuario: l.usuario || l.url || "",
               }))
-            : [{ tipo: "", url: "" }],
+            : [{ tipo: "", usuario: "" }],
         );
         setStatusPublicacao(d.statusPublicacao || "publicado");
         setImagemAtual(d.imagemUrl || null);
@@ -306,8 +313,16 @@ export default function AdmEditarDublador() {
       ativoNaDublagem,
       bio,
       ocupacoes,
-      familiares: familiares.filter((f) => f.nome.trim()),
-      links: links.filter((l) => l.tipo && l.url.trim()),
+      familiares: familiares
+        .filter((f) => f.nome.trim())
+        .map(({ nome, parentesco, idDublador }) => ({
+          nome,
+          parentesco,
+          idDublador: idDublador ?? null,
+        })),
+      links: links
+        .filter((l) => l.tipo && l.usuario.trim())
+        .map((l) => ({ tipo: l.tipo, usuario: l.usuario, url: gerarUrlRede(l.tipo, l.usuario) })),
       imagemUrl,
       statusPublicacao: status,
       ...(status === "publicado" && statusPublicacao !== "publicado"
@@ -458,10 +473,16 @@ export default function AdmEditarDublador() {
         <label className={styles.label}>Familiares</label>
         {familiares.map((f, idx) => (
           <div key={idx} className={styles.listaRow}>
-            <TextInput
-              placeholder="Nome completo"
+            <FamiliarNomeInput
               value={f.nome}
-              onChange={(e) => setFamiliar(idx, "nome", e.target.value)}
+              dubladores={dubladores}
+              onChange={(nome, idDublador) =>
+                setFamiliares((prev) =>
+                  prev.map((x, i) =>
+                    i === idx ? { ...x, nome, idDublador } : x,
+                  ),
+                )
+              }
             />
             <Select
               placeholder="Parentesco"
@@ -469,11 +490,6 @@ export default function AdmEditarDublador() {
               value={f.parentesco}
               onChange={(e) => setFamiliar(idx, "parentesco", e.target.value)}
               width="160px"
-            />
-            <TextInput
-              placeholder="Link (se profissional)"
-              value={f.link}
-              onChange={(e) => setFamiliar(idx, "link", e.target.value)}
             />
             {familiares.length > 1 && (
               <button
@@ -495,7 +511,7 @@ export default function AdmEditarDublador() {
           type="button"
           width="220px"
           onClick={() =>
-            setFamiliares((p) => [...p, { nome: "", parentesco: "", link: "" }])
+            setFamiliares((p) => [...p, { nome: "", parentesco: "", idDublador: null }])
           }
         />
       </div>
@@ -512,10 +528,10 @@ export default function AdmEditarDublador() {
               width="160px"
             />
             <TextInput
-              placeholder="URL do perfil"
+              placeholder={REDE_PLACEHOLDER[l.tipo] ?? "Ex: philippemaiasuper"}
               width="100%"
-              value={l.url}
-              onChange={(e) => setLink(idx, "url", e.target.value)}
+              value={l.usuario}
+              onChange={(e) => setLink(idx, "usuario", e.target.value)}
             />
             {links.length > 1 && (
               <button
@@ -534,7 +550,7 @@ export default function AdmEditarDublador() {
           icon={<PlusIcon size={16} color="currentColor" />}
           type="button"
           width="220px"
-          onClick={() => setLinks((p) => [...p, { tipo: "", url: "" }])}
+          onClick={() => setLinks((p) => [...p, { tipo: "", usuario: "" }])}
         />
       </div>
 
@@ -544,7 +560,7 @@ export default function AdmEditarDublador() {
 
   // ── Área central: editor + preview ───────────────────────────────────────────
   const fotoSrc = imagem?.preview ?? imagemAtual ?? null;
-  const linksValidos = links.filter((l) => l.tipo && l.url.trim());
+  const linksValidos = links.filter((l) => l.tipo && l.usuario?.trim());
   const familiaresValidos = familiares.filter((f) => f.nome.trim());
 
   const central = (
@@ -698,7 +714,10 @@ export default function AdmEditarDublador() {
               type="button"
               className={styles.menuItem}
               onClick={() => {
-                window.open(`/dubladores/${toSlug(nomeArtistico || id)}`, "_blank");
+                window.open(
+                  `/dubladores/${toSlug(nomeArtistico || id)}`,
+                  "_blank",
+                );
                 setMenuAberto(false);
               }}
             >

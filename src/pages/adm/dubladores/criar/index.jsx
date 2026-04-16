@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { db, storage } from "@/services/firebaseConection";
@@ -21,6 +21,7 @@ import Button from "@/components/button";
 import PlusIcon from "@/components/icons/PlusIcon";
 import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
 import styles from "./index.module.scss";
+import { REDES_SOCIAIS, REDE_PLACEHOLDER, gerarUrlRede } from "@/utils/redes";
 
 const ESTADOS_BR = [
   "AC",
@@ -88,10 +89,6 @@ const PARENTESCO_OPTS = [
   "Outro",
 ].map((p) => ({ value: p, label: p }));
 
-const REDES_SOCIAIS = ["Instagram", "YouTube", "TikTok", "IMDB", "Site"].map(
-  (r) => ({ value: r, label: r }),
-);
-
 const STATUS_ATIVIDADE = [
   { value: "Ativo", label: "Ativo" },
   { value: "Inativo", label: "Inativo" },
@@ -153,6 +150,65 @@ function OcupacoesInput({ value = [], onChange }) {
   );
 }
 
+
+export function FamiliarNomeInput({ value, onChange, dubladores = [] }) {
+  const [aberto, setAberto] = useState(false);
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target))
+        setAberto(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const filtrados =
+    value.trim().length > 1
+      ? dubladores
+          .filter((d) =>
+            (d.nomeArtistico || d.nomeCompleto || '')
+              .toLowerCase()
+              .includes(value.toLowerCase()),
+          )
+          .slice(0, 6)
+      : [];
+
+  const selecionar = (d) => {
+    const nome = d.nomeArtistico || d.nomeCompleto;
+    onChange(nome, d.id);
+    setAberto(false);
+  };
+
+  return (
+    <div ref={wrapperRef} className={styles.familiarNomeWrapper}>
+      <TextInput
+        placeholder="Nome completo"
+        value={value}
+        onChange={(e) => {
+          onChange(e.target.value, null);
+          setAberto(true);
+        }}
+      />
+      {aberto && filtrados.length > 0 && (
+        <div className={styles.familiarDropdown}>
+          {filtrados.map((d) => (
+            <button
+              key={d.id}
+              type="button"
+              className={styles.familiarDropdownItem}
+              onMouseDown={() => selecionar(d)}
+            >
+              {d.nomeArtistico || d.nomeCompleto}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 async function gerarProximoId() {
   const snap = await getDocs(collection(db, "dubladores"));
   let max = 0;
@@ -186,13 +242,20 @@ export default function AdmCriarDublador() {
   const [bio, setBio] = useState("");
   const [ocupacoes, setOcupacoes] = useState([]);
   const [familiares, setFamiliares] = useState([
-    { nome: "", parentesco: "", link: "" },
+    { nome: "", parentesco: "", idDublador: null },
   ]);
-  const [links, setLinks] = useState([{ tipo: "", url: "" }]);
+  const [links, setLinks] = useState([{ tipo: "", usuario: "" }]);
+  const [dubladores, setDubladores] = useState([]);
 
   const [loading, setLoading] = useState(false);
   const [loadingRascunho, setLoadingRascunho] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    getDocs(collection(db, "dubladores")).then((snap) =>
+      setDubladores(snap.docs.map((d) => ({ id: d.id, ...d.data() }))),
+    );
+  }, []);
 
   const isDirty =
     nomeCompleto !== "" ||
@@ -221,8 +284,16 @@ export default function AdmCriarDublador() {
       ativoNaDublagem,
       bio,
       ocupacoes,
-      familiares: familiares.filter((f) => f.nome.trim()),
-      links: links.filter((l) => l.tipo && l.url.trim()),
+      familiares: familiares
+        .filter((f) => f.nome.trim())
+        .map(({ nome, parentesco, idDublador }) => ({
+          nome,
+          parentesco,
+          idDublador: idDublador ?? null,
+        })),
+      links: links
+        .filter((l) => l.tipo && l.usuario.trim())
+        .map((l) => ({ tipo: l.tipo, usuario: l.usuario, url: gerarUrlRede(l.tipo, l.usuario) })),
       imagemUrl,
       statusPublicacao: status,
       autor: user
@@ -371,10 +442,16 @@ export default function AdmCriarDublador() {
         <label className={styles.label}>Familiares</label>
         {familiares.map((f, idx) => (
           <div key={idx} className={styles.listaRow}>
-            <TextInput
-              placeholder="Nome completo"
+            <FamiliarNomeInput
               value={f.nome}
-              onChange={(e) => setFamiliar(idx, "nome", e.target.value)}
+              dubladores={dubladores}
+              onChange={(nome, idDublador) =>
+                setFamiliares((prev) =>
+                  prev.map((x, i) =>
+                    i === idx ? { ...x, nome, idDublador } : x,
+                  ),
+                )
+              }
             />
             <Select
               placeholder="Parentesco"
@@ -382,11 +459,6 @@ export default function AdmCriarDublador() {
               value={f.parentesco}
               onChange={(e) => setFamiliar(idx, "parentesco", e.target.value)}
               width="160px"
-            />
-            <TextInput
-              placeholder="Link (se profissional)"
-              value={f.link}
-              onChange={(e) => setFamiliar(idx, "link", e.target.value)}
             />
             {familiares.length > 1 && (
               <button
@@ -408,7 +480,7 @@ export default function AdmCriarDublador() {
           type="button"
           width="220px"
           onClick={() =>
-            setFamiliares((p) => [...p, { nome: "", parentesco: "", link: "" }])
+            setFamiliares((p) => [...p, { nome: "", parentesco: "", idDublador: null }])
           }
         />
       </div>
@@ -425,9 +497,9 @@ export default function AdmCriarDublador() {
               width="160px"
             />
             <TextInput
-              placeholder="URL do perfil"
-              value={l.url}
-              onChange={(e) => setLink(idx, "url", e.target.value)}
+              placeholder={REDE_PLACEHOLDER[l.tipo] ?? "Ex: philippemaiasuper"}
+              value={l.usuario}
+              onChange={(e) => setLink(idx, "usuario", e.target.value)}
             />
             {links.length > 1 && (
               <button
@@ -446,7 +518,7 @@ export default function AdmCriarDublador() {
           icon={<PlusIcon size={16} color="currentColor" />}
           type="button"
           width="220px"
-          onClick={() => setLinks((p) => [...p, { tipo: "", url: "" }])}
+          onClick={() => setLinks((p) => [...p, { tipo: "", usuario: "" }])}
         />
       </div>
 
@@ -456,7 +528,7 @@ export default function AdmCriarDublador() {
 
   // ── Área central: editor + preview ───────────────────────────────────────────
   const fotoSrc = imagem?.preview ?? null;
-  const linksValidos = links.filter((l) => l.tipo && l.url.trim());
+  const linksValidos = links.filter((l) => l.tipo && l.usuario?.trim());
   const familiaresValidos = familiares.filter((f) => f.nome.trim());
 
   const central = (

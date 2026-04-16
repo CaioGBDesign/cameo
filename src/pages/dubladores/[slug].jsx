@@ -16,6 +16,7 @@ import TwitchIcon from "@/components/icons/TwitchIcon";
 import LinktreeIcon from "@/components/icons/LinktreeIcon";
 import ThreadsIcon from "@/components/icons/ThreadsIcon";
 import GlobeIcon from "@/components/icons/GlobeIcon";
+import { gerarUrlRede } from "@/utils/redes";
 import styles from "./perfil.module.scss";
 
 const REDE_ICONE_MAP = {
@@ -127,7 +128,7 @@ export default function DubladorPage({ dublador }) {
 
         {/* ── Foto Status ─────────────────────────────────── */}
         <div className={styles.sectionPage}>
-          <div className={styles.article} style={{ alignSelf: "stretch" }}>
+          <div className={styles.article} style={{ width: "auto" }}>
             <div className={styles.containerColumn}>
               <div className={styles.imageDublador}>
                 {imagemUrl && (
@@ -165,10 +166,7 @@ export default function DubladorPage({ dublador }) {
 
           {/* ── Identidade ─────────────────────────────────── */}
 
-          <div
-            className={styles.article}
-            style={{ width: "100%", alignSelf: "stretch" }}
-          >
+          <div className={styles.article} style={{ alignSelf: "stretch" }}>
             <div className={styles.containerColumn}>
               <div className={styles.nomeArtisticoRedes}>
                 <div className={styles.nomeArtistico}>
@@ -176,14 +174,14 @@ export default function DubladorPage({ dublador }) {
                 </div>
 
                 <div className={styles.nomeRedes}>
-                  {links.filter((l) => l.url?.trim()).length > 0 && (
+                  {links.filter((l) => (l.url || gerarUrlRede(l.tipo, l.usuario))?.trim()).length > 0 && (
                     <ul>
                       {links
-                        .filter((l) => l.url?.trim())
+                        .filter((l) => (l.url || gerarUrlRede(l.tipo, l.usuario))?.trim())
                         .map((l, i) => (
                           <li key={i}>
                             <a
-                              href={l.url}
+                              href={l.url || gerarUrlRede(l.tipo, l.usuario)}
                               target="_blank"
                               rel="noopener noreferrer"
                             >
@@ -286,6 +284,37 @@ export default function DubladorPage({ dublador }) {
               )}
             </div>
           </div>
+
+          {/* ── Familiares ─────────────────────────────────── */}
+          {familiares.filter((f) => f.nome?.trim()).length > 0 && (
+            <div className={styles.article}>
+              <div
+                className={styles.containerColumn}
+                style={{ gap: "var(--space-lg)", alignItems: "start" }}
+              >
+                <span>Familiares</span>
+
+                <div className={styles.contentFamiliares}>
+                  <ul>
+                    {familiares
+                      .filter((f) => f.nome?.trim())
+                      .map((f, i) => (
+                        <li key={i}>
+                          <span>{f.parentesco}</span>
+                          {f.idDublador ? (
+                            <a href={`/dubladores/${toSlug(f.nome)}`}>
+                              <p>{f.nome}</p>
+                            </a>
+                          ) : (
+                            <p>{f.nome}</p>
+                          )}
+                        </li>
+                      ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* ── Bio ────────────────────────────────────────── */}
@@ -293,22 +322,6 @@ export default function DubladorPage({ dublador }) {
           <section>
             <h2>Sobre</h2>
             <div dangerouslySetInnerHTML={{ __html: bio }} />
-          </section>
-        )}
-
-        {/* ── Familiares ─────────────────────────────────── */}
-        {familiares.filter((f) => f.nome?.trim()).length > 0 && (
-          <section>
-            <h2>Familiares</h2>
-            <ul>
-              {familiares
-                .filter((f) => f.nome?.trim())
-                .map((f, i) => (
-                  <li key={i}>
-                    {f.nome} ({f.parentesco})
-                  </li>
-                ))}
-            </ul>
           </section>
         )}
 

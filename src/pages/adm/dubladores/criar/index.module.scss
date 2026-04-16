@@ -412,6 +412,45 @@
   font-style: italic;
 }
 
+// ─── Familiar nome input com dropdown ────────────────────
+
+.familiarNomeWrapper {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.familiarDropdown {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.familiarDropdownItem {
+  display: block;
+  width: 100%;
+  padding: var(--space-sm) var(--space-lg);
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  color: var(--text-base);
+  font-size: 0.875rem;
+  font-style: italic;
+  transition: background 0.1s;
+
+  &:hover {
+    background: var(--bg-overlay);
+  }
+}
+
 // ─── Menu dropdown (header) ───────────────────────────────
 
 .menuWrapper {

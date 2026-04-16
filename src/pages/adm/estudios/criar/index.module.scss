@@ -1,25 +1,145 @@
-// ─── Sidebar content ──────────────────────────────────────
+// ─── Serviços (pills field) ──────────────────────────────
 
-.sidebarContent {
+.fieldWrapper {
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
-  padding: var(--space-xl);
-  overflow-y: auto;
-  height: 100%;
-  scrollbar-width: none;
+  gap: var(--space-xs);
+  width: 100%;
+}
 
-  &::-webkit-scrollbar {
-    display: none;
+.label {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text-sub);
+}
+
+.pillsField {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+
+  padding: var(--space-lg);
+
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+
+  min-height: 44px;
+  cursor: text;
+
+  &:focus-within {
+    border-color: var(--stroke-solid);
   }
 }
 
-// ─── Row ──────────────────────────────────────────────────
-
-.row {
+.pill {
   display: flex;
+  padding: var(--space-sm);
+  justify-content: center;
+  align-items: center;
   gap: var(--space-sm);
-  align-items: flex-end;
+
+  border-radius: var(--space-xs);
+  border: 1px solid var(--stroke-base);
+  background: var(--bg-quintenario);
+
+  color: var(--text-base);
+  text-align: center;
+  leading-trim: both;
+  text-edge: cap;
+  font-size: 15px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.pillRemove {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: none;
+  border: none;
+  color: var(--text-sub);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0;
+
+  &:hover {
+    color: var(--text-base);
+  }
+}
+
+.pillInput {
+  flex: 1;
+  min-width: 120px;
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-base);
+
+  &::placeholder {
+    color: var(--text-sub);
+  }
+}
+
+// ─── Serviços + Localização ──────────────────────────────
+
+.bioSection {
+  width: 100%;
+
+  display: flex;
+  padding: var(--space-lg);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: var(--LG, 20px);
+  border: 1px solid var(--stroke-base);
+  background: var(--bg-overlay);
+}
+
+.servicosLocalizacaoRow {
+  display: flex;
+  gap: var(--space-lg);
+  width: 100%;
+  align-items: flex-start;
+}
+
+.servicosCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  flex: 1;
+}
+
+.localizacaoCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  flex: 1;
+}
+
+.ativoRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+}
+
+.ativoLabel {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-sub);
+}
+
+.paisEstadoRow {
+  display: flex;
+  gap: var(--space-lg);
   width: 100%;
 
   > * {
@@ -28,90 +148,51 @@
   }
 }
 
-// ─── Field wrapper ────────────────────────────────────────
+// ─── Menu "•••" ──────────────────────────────────────────
 
-.fieldWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-  width: 100%;
-}
+.menuWrapper {
+  position: relative;
+  margin-right: auto;
 
-.fieldLabel {
-  font-size: 0.875rem;
-  font-style: italic;
-  color: var(--text-sub);
-}
+  .menuDropdown {
+    position: fixed;
+    background: var(--bg-overlay);
+    border: 1px solid var(--stroke-base);
+    border-radius: var(--space-sm);
+    overflow: hidden;
+    padding: var(--space-sm);
+    min-width: 160px;
+    z-index: 200;
 
-// ─── Listas dinâmicas ────────────────────────────────────
+    .menuItem {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      width: 100%;
+      padding: var(--space-sm) var(--space-lg);
+      background: transparent;
+      border: none;
+      color: var(--text-sub);
+      font-size: 0.875rem;
+      font-style: italic;
+      text-align: left;
+      cursor: pointer;
+      transition:
+        background 0.15s,
+        color 0.15s;
 
-.listaWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
+      &:hover {
+        background: var(--bg-base);
+        color: var(--text-base);
+      }
+    }
 
-.listaRow {
-  display: flex;
-  gap: var(--space-sm);
-  align-items: center;
-  width: 100%;
-}
-
-.listaInput {
-  flex: 1;
-  min-width: 0;
-  height: 44px;
-  padding: 0 var(--space-lg);
-  background: var(--bg-base);
-  border: 1px solid var(--stroke-base);
-  border-radius: var(--space-sm);
-  color: var(--text-base);
-  font-size: 0.875rem;
-  font-style: italic;
-  outline: none;
-  transition: border-color 0.15s;
-
-  &::placeholder {
-    color: var(--text-sub);
+    .menuItemDisabled {
+      opacity: 0.4;
+      cursor: default;
+      pointer-events: none;
+    }
   }
-
-  &:focus {
-    border-color: var(--stroke-solid);
-  }
-}
-
-.listaRemover {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  flex-shrink: 0;
-  background: none;
-  border: 1px solid var(--stroke-base);
-  border-radius: var(--space-sm);
-  color: var(--text-sub);
-  cursor: pointer;
-  transition:
-    background 0.15s,
-    color 0.15s,
-    border-color 0.15s;
-
-  &:hover {
-    background: var(--bg-base);
-    color: var(--color-error, #e53935);
-    border-color: var(--color-error, #e53935);
-  }
-}
-
-// ─── Toggle ───────────────────────────────────────────────
-
-.toggleRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-lg);
 }
 
 // ─── Central ─────────────────────────────────────────────
@@ -119,104 +200,117 @@
 .central {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xl);
+  justify-content: start;
+  align-items: center;
+  gap: var(--space-2xl);
+
   padding: var(--space-2xl);
   padding-top: var(--space-nn);
-  width: 100%;
-}
 
-// ─── Preview card ─────────────────────────────────────────
+  .titulo {
+    display: flex;
+    justify-content: start;
+    align-items: center;
 
-.previewCard {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xl);
-  background: var(--bg-overlay);
-  border: 1px solid var(--stroke-base);
-  border-radius: var(--space-lg);
-}
+    width: 100%;
+    height: 150px;
 
-.previewImagem {
-  width: 100%;
-  aspect-ratio: 1;
-  border-radius: var(--space-lg);
-  object-fit: cover;
-}
+    h1 {
+      color: var(--text-base);
+      font-size: 50px;
+      font-style: italic;
+      font-weight: 700;
+      line-height: normal;
+    }
+  }
 
-.previewImagemPlaceholder {
-  width: 50%;
-  aspect-ratio: 1;
-  border-radius: var(--space-lg);
-  background: var(--bg-base);
-  border: 1px solid var(--stroke-base);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 4rem;
-  font-style: italic;
-  color: var(--text-sub);
-}
+  .listCardsGrid {
+    display: flex;
+    gap: var(--space-lg);
+    width: 100%;
+  }
 
-// ─── Preview info grid ────────────────────────────────────
+  .contentArticle {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    gap: var(--space-lg);
 
-.previewInfoGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: var(--space-md);
-}
+    width: 100%;
 
-.previewInfoItem {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
+    .uploadImage {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-.previewInfoLabel {
-  font-size: 0.75rem;
-  font-style: italic;
-  color: var(--text-sub);
-}
+    .contentNomeSlogan {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: start;
+      gap: var(--space-lg);
 
-.previewInfoValue {
-  font-size: 0.875rem;
-  color: var(--text-base);
-}
+      width: 100%;
 
-// ─── Preview sections ─────────────────────────────────────
+      .boxTitle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: var(--space-sm);
 
-.previewSection {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
+        .boxIconTitle {
+          display: flex;
+          justify-content: center;
+          align-items: center;
 
-.previewSectionTitle {
-  font-size: 0.875rem;
-  font-style: italic;
-  color: var(--text-sub);
-  font-weight: 600;
-}
+          padding: var(--space-sm);
 
-.previewPills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-sm);
-}
+          background: var(--bg-base);
+          border: solid 1px var(--stroke-base);
+          border-radius: var(--space-sm);
+        }
 
-.previewPill {
-  padding: 2px var(--space-sm);
-  border-radius: var(--space-xs);
-  border: 1px solid var(--stroke-base);
-  font-size: 0.75rem;
-  font-style: italic;
-  color: var(--text-sub);
-  background: var(--bg-base);
-}
+        span {
+          color: var(--text-base);
+          font-size: 20px;
+          font-style: italic;
+          font-weight: 700;
+          line-height: 20px;
+        }
+      }
 
-.previewBio {
-  font-size: 0.875rem;
-  color: var(--text-sub);
-  line-height: 1.6;
-  margin: 0;
-  white-space: pre-wrap;
+      .previewNomeSlogan {
+        display: flex;
+        height: 170px;
+        padding: var(--space-lg);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-sm);
+
+        border-radius: var(--LG, 20px);
+        border: 1px solid var(--Brand-Stroke-base, #2f2b2f);
+        background: url("/background/bg-nome-slogan.jpg") right center / cover
+          no-repeat;
+
+        width: 100%;
+
+        .titleNomeSlogan {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          width: 100%;
+
+          span {
+            color: var(--text-sub);
+            font-size: 14px;
+            font-style: italic;
+            font-weight: 500;
+            line-height: 20px;
+          }
+        }
+      }
+    }
+  }
 }

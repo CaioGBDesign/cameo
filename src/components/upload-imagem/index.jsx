@@ -4,7 +4,7 @@ import Button from "@/components/button";
 import EditIcon from "@/components/icons/EditIcon";
 import CloudUploadIcon from "@/components/icons/CloudUploadIcon";
 
-const UploadImagem = ({ imagem, onImagemChange, dimensoes }) => {
+const UploadImagem = ({ imagem, onImagemChange, dimensoes = true }) => {
   const fileInputRef = useRef(null);
 
   const handleFileChange = (e) => {
@@ -25,9 +25,11 @@ const UploadImagem = ({ imagem, onImagemChange, dimensoes }) => {
             <div className={styles.uploadIcon}>
               <CloudUploadIcon size={24} color="white" />
             </div>
-            <div className={styles.textos}>
-              <span className={styles.subTextoLabel}>{dimensoes}</span>
-            </div>
+            {dimensoes && (
+              <div className={styles.textos}>
+                <span className={styles.subTextoLabel}>{dimensoes}</span>
+              </div>
+            )}
           </span>
         )}
 

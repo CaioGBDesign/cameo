@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { toSlug } from "@/utils/slug";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { db } from "@/services/firebaseConection";
@@ -233,7 +234,7 @@ export default function AdmDubladores() {
     setMenuAberto(null);
     if (acao === "editar") router.push(`/adm/dubladores/editar/${dublador.id}`);
     if (acao === "visualizar")
-      router.push(`/dubladores/detalhes-dubladores/${dublador.id}`);
+      router.push(`/dubladores/${toSlug(dublador.nomeArtistico || dublador.id)}`);
     if (acao === "deletar") {
       setDeletandoId(dublador.id);
       setDeletandoNome(dublador.nomeArtistico);

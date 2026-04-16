@@ -1,6 +1,7 @@
 import styles from "./index.module.scss";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { toSlug } from "@/utils/slug";
 import { db } from "@/services/firebaseConection";
 import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { useIsMobile } from "@/components/DeviceProvider";
@@ -59,7 +60,7 @@ export default function DubladoresPage() {
               <div className={styles.boxDublador}>
                 <Link
                   key={dublador.id}
-                  href={`/dubladores/detalhes-dubladores/${dublador.id}`}
+                  href={`/dubladores/${toSlug(dublador.nomeArtistico || dublador.id)}`}
                   passHref
                 >
                   <div className={styles.imagemDublador}>

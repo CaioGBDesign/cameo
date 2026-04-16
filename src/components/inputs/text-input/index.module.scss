@@ -119,6 +119,11 @@
     cursor: not-allowed;
   }
 
+  // remove ícone nativo do type=date
+  &[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+  }
+
   // remove setas do input type=number
   &[type="number"] {
     appearance: textfield;

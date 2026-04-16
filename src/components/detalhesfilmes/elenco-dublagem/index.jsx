@@ -1,5 +1,7 @@
 import { forwardRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { toSlug } from "@/utils/slug";
 import styles from "./index.module.scss";
 
 const placeholder =
@@ -14,14 +16,15 @@ const ElencoDobragem = forwardRef(({ items = [] }, ref) => {
         <ul className={styles.carrosselElenco}>
           {items.map((pessoa, i) => (
             <li key={`${pessoa.idDublador || "unk"}_${i}`} className={styles.atorContent}>
-              <div className={styles.ator}>
+              <Link
+                href={`/dubladores/${toSlug(pessoa.nomeArtistico || pessoa.idDublador || "")}`}
+                className={styles.ator}
+              >
                 <div className={styles.imagemArtista}>
                   <Image
                     unoptimized
                     src={pessoa.imagemUrl || placeholder}
-                    alt={
-                      pessoa.nomeArtistico || pessoa.idDublador || "Dublador"
-                    }
+                    alt={pessoa.nomeArtistico || pessoa.idDublador || "Dublador"}
                     width={50}
                     height={50}
                     style={{ objectFit: "cover" }}
@@ -31,7 +34,7 @@ const ElencoDobragem = forwardRef(({ items = [] }, ref) => {
                   <p>{pessoa.nomeArtistico || pessoa.idDublador}</p>
                   {pessoa.personagem && <span>{pessoa.personagem}</span>}
                 </div>
-              </div>
+              </Link>
             </li>
           ))}
         </ul>

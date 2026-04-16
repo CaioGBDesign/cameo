@@ -1,0 +1,97 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  flex: 1;
+  min-width: 0;
+
+  .titleRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+
+    .titleIcon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: var(--space-sm);
+      background: var(--bg-base);
+      border: solid 1px var(--stroke-base);
+      border-radius: var(--space-sm);
+      flex-shrink: 0;
+    }
+
+    .titulo {
+      color: var(--text-base);
+      font-size: 20px;
+      font-style: italic;
+      font-weight: 700;
+      line-height: 20px;
+    }
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-lg);
+    min-height: 170px;
+    width: 100%;
+    flex: 1;
+    box-sizing: border-box;
+    border-radius: var(--LG, 20px);
+    border: 1px solid var(--Brand-Stroke-base, #2f2b2f);
+    background: var(--bg-overlay);
+    cursor: pointer;
+
+    .cardTop {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-shrink: 0;
+
+      .cardPlaceholder {
+        color: var(--text-sub);
+        font-size: 14px;
+        font-style: italic;
+        font-weight: 500;
+        line-height: 20px;
+      }
+    }
+
+    .cardContent {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      padding: var(--space-sm) 0;
+    }
+
+    .cardBottom {
+      display: flex;
+      justify-content: flex-end;
+      flex-shrink: 0;
+    }
+  }
+}
+
+.cardItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+
+  .cardItemDate {
+    color: var(--text-base);
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 700;
+    line-height: 20px;
+  }
+
+  .cardItemName {
+    color: var(--text-sub);
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 20px;
+  }
+}

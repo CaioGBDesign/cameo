@@ -29,7 +29,7 @@
         gap: var(--space-lg);
 
         .subTextoLabel {
-          font-size: 16px;
+          font-size: 10px;
           font-style: italic;
           color: var(--text-sub);
 
@@ -85,10 +85,10 @@
     align-items: center;
 
     width: 90%;
-    height: 150px;
-    background: none;
+    height: 170px;
+    background: var(--bg-overlay);
     border: dashed #ffffff20 2px;
-    border-radius: 10px;
+    border-radius: var(--space-lg);
 
     transition: 0.2s;
 
@@ -100,7 +100,7 @@
     cursor: pointer;
 
     &:hover {
-      background: #ffffff10;
+      background: var(--bg-quintenario);
     }
   }
 }

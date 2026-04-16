@@ -1,0 +1,82 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  width: 100%;
+
+  .boxTitle {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+
+    .boxIcon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: var(--space-sm);
+      background: var(--bg-base);
+      border: solid 1px var(--stroke-base);
+      border-radius: var(--space-sm);
+    }
+
+    .titulo {
+      color: var(--text-base);
+      font-size: 20px;
+      font-style: italic;
+      font-weight: 700;
+      line-height: 20px;
+    }
+  }
+
+  .preview {
+    display: flex;
+    height: 170px;
+    padding: var(--space-lg);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: var(--LG, 20px);
+    border: 1px solid var(--Brand-Stroke-base, #2f2b2f);
+    background: url("/background/bg-nome-slogan.jpg") right center / cover no-repeat;
+    cursor: pointer;
+
+    .previewRow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+
+      .placeholder {
+        color: var(--text-sub);
+        font-size: 14px;
+        font-style: italic;
+        font-weight: 500;
+        line-height: 20px;
+      }
+    }
+
+    .previewConteudo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+
+      .valor {
+        color: var(--text-base);
+        font-size: 14px;
+        font-style: italic;
+        font-weight: 700;
+        line-height: 20px;
+      }
+
+      .data {
+        color: var(--text-sub);
+        font-size: 14px;
+        font-style: italic;
+        font-weight: 400;
+        line-height: 20px;
+      }
+    }
+  }
+}

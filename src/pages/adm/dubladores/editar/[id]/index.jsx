@@ -698,7 +698,7 @@ export default function AdmEditarDublador() {
               type="button"
               className={styles.menuItem}
               onClick={() => {
-                window.open(`/dubladores/detalhes-dubladores/${id}`, "_blank");
+                window.open(`/dubladores/${toSlug(nomeArtistico || id)}`, "_blank");
                 setMenuAberto(false);
               }}
             >

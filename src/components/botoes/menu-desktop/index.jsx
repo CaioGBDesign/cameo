@@ -20,7 +20,13 @@ const DUBLAGEM_BASE = [
 const MenuDesktop = () => {
   const router = useRouter();
   const { user } = useContext(AuthContext);
-  const { noticiasHabilitado, resenhasHabilitado, dubladoresHabilitado, estudiosHabilitado } = useConfiguracoes();
+  const {
+    noticiasHabilitado,
+    resenhasHabilitado,
+    dubladoresHabilitado,
+    estudiosHabilitado,
+    gameHabilitado,
+  } = useConfiguracoes();
 
   const isActive = (path) => (router.pathname === path ? styles.active : "");
 
@@ -96,11 +102,13 @@ const MenuDesktop = () => {
             </Link>
           </li>
         )}
-        <li>
-          <Link href="/game" className={isActive("/game")}>
-            Game
-          </Link>
-        </li>
+        {gameHabilitado && (
+          <li>
+            <Link href="/desafio" className={isActive("/desafio")}>
+              Desafio
+            </Link>
+          </li>
+        )}
       </ul>
     </nav>
   );

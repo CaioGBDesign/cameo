@@ -845,12 +845,13 @@ function AuthProvider({ children }) {
     if (!user) return;
     const novasListas = (user.listasQueroVer || []).map((l) => {
       if (l.id !== listaId) return l;
-      const jaEsta = l.filmes.includes(filmeId);
+      const filmes = l.filmes ?? [];
+      const jaEsta = filmes.includes(filmeId);
       return {
         ...l,
         filmes: jaEsta
-          ? l.filmes.filter((id) => id !== filmeId)
-          : [...l.filmes, filmeId],
+          ? filmes.filter((id) => id !== filmeId)
+          : [...filmes, filmeId],
       };
     });
     await updateDoc(doc(db, "users", user.uid), {

@@ -7,6 +7,7 @@ const ConfiguracoesContext = createContext({
   resenhasHabilitado: true,
   dubladoresHabilitado: true,
   estudiosHabilitado: true,
+  gameHabilitado: true,
 });
 
 export function ConfiguracoesProvider({ children }) {
@@ -15,6 +16,7 @@ export function ConfiguracoesProvider({ children }) {
     resenhasHabilitado: true,
     dubladoresHabilitado: true,
     estudiosHabilitado: true,
+    gameHabilitado: true,
   });
 
   useEffect(() => {

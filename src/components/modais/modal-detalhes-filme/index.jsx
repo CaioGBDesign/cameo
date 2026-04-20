@@ -21,6 +21,7 @@ export default function ModalDetalhesFilme({
   indexInicial = 0,
   onClose,
   lista,
+  listaNomeCustom,
   onRemover,
 }) {
   const { user, darNota } = useAuth();
@@ -201,7 +202,8 @@ export default function ModalDetalhesFilme({
   );
 
   const listaNome =
-    lista === "favoritos" ? "seus favoritos"
+    listaNomeCustom ? `a lista "${listaNomeCustom}"`
+    : lista === "favoritos" ? "seus favoritos"
     : lista === "assistir" ? "sua lista para ver"
     : "seus filmes vistos";
 

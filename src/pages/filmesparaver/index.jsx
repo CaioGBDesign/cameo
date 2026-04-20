@@ -26,7 +26,7 @@ const TMDB_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 const ITEMS_PER_PAGE = 24;
 
 export default function FilmesParaVer() {
-  const { user, removerAssistir } = useAuth();
+  const { user, removerAssistir, toggleFilmeNaLista } = useAuth();
   const isMobile = useIsMobile();
   const pillsRef = useRef(null);
   const router = useRouter();
@@ -57,7 +57,18 @@ export default function FilmesParaVer() {
   }, [router.isReady, router.query.lista, listas.length]);
 
   useEffect(() => {
-    const ids = Array.isArray(user?.assistir) ? user.assistir : [];
+    if (!listaSelecionada) return;
+    const atualizada = listas.find((l) => l.id === listaSelecionada.id);
+    if (atualizada) setListaSelecionada(atualizada);
+  }, [user?.listasQueroVer]);
+
+  useEffect(() => {
+    const assistir = Array.isArray(user?.assistir) ? user.assistir : [];
+    const customIds = (user?.listasQueroVer || []).flatMap(
+      (l) => l.filmes ?? [],
+    );
+    const ids = [...new Set([...assistir, ...customIds])];
+
     if (!ids.length) {
       setLoading(false);
       return;
@@ -93,7 +104,7 @@ export default function FilmesParaVer() {
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, [user?.assistir]);
+  }, [user?.assistir, user?.listasQueroVer]);
 
   useEffect(() => {
     const base = listaSelecionada
@@ -312,10 +323,15 @@ export default function FilmesParaVer() {
             filmes={filmesPaginados}
             indexInicial={modalDetalhes.index}
             onClose={() => setModalDetalhes({ aberto: false, index: 0 })}
-            lista="assistir"
+            lista={listaSelecionada ? "custom" : "assistir"}
+            listaNomeCustom={listaSelecionada?.nome}
             onRemover={(id) => {
-              removerAssistir(String(id));
-              setFilmes((prev) => prev.filter((f) => f.id !== id));
+              if (listaSelecionada) {
+                toggleFilmeNaLista(listaSelecionada.id, String(id));
+              } else {
+                removerAssistir(String(id));
+                setFilmes((prev) => prev.filter((f) => f.id !== id));
+              }
             }}
           />
         )}

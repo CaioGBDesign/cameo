@@ -21,15 +21,16 @@ const LISTAS_BASE = [
   { value: "/favoritos", label: "Favoritos" },
 ];
 
-const DUBLAGEM = [
-  { value: "/dubladores", label: "Dubladores" },
-  { value: "/estudios", label: "Estúdios" },
-];
-
 const MenuMobile = ({ open, onClose }) => {
   const router = useRouter();
   const { user, logout } = useContext(AuthContext);
-  const { noticiasHabilitado, resenhasHabilitado, dubladoresHabilitado, estudiosHabilitado } = useConfiguracoes();
+  const {
+    noticiasHabilitado,
+    resenhasHabilitado,
+    dubladoresHabilitado,
+    estudiosHabilitado,
+    gameHabilitado,
+  } = useConfiguracoes();
   const [listasOpen, setListasOpen] = useState(false);
 
   const listas = [
@@ -190,6 +191,16 @@ const MenuMobile = ({ open, onClose }) => {
             >
               <StarIcon size={20} color="currentColor" />
               <span>Resenhas</span>
+            </Link>
+          )}
+
+          {gameHabilitado && (
+            <Link
+              href="/desafio"
+              className={`${styles.item} ${isActive("/desafio")}`}
+              onClick={onClose}
+            >
+              <span>Desafio</span>
             </Link>
           )}
         </div>

@@ -349,7 +349,7 @@ export default function FilmeAleatorio() {
               <div className={styles.btnListas}>
                 <Button
                   variant="submit"
-                  label="Adicionar a lista"
+                  label="Adicionar à lista"
                   icon={<AddToListIcon size={20} color="currentColor" />}
                   onClick={abrirModalLista}
                   width="100%"

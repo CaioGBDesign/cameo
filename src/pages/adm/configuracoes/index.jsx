@@ -27,6 +27,11 @@ const CONFIGURACOES = [
     titulo: "Estúdios",
     descricao: "Habilita a page de estúdios publicamente",
   },
+  {
+    key: "gameHabilitado",
+    titulo: "Desafio",
+    descricao: "Habilita a page de desafio publicamente",
+  },
 ];
 
 export default function Configuracoes() {
@@ -35,6 +40,7 @@ export default function Configuracoes() {
     resenhasHabilitado: true,
     dubladoresHabilitado: true,
     estudiosHabilitado: true,
+    gameHabilitado: true,
   });
   const [salvando, setSalvando] = useState(null);
 

@@ -53,10 +53,13 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-sm);
-  padding: var(--space-sm) var(--space-lg);
-  background: var(--bg-base);
+
+  padding: var(--space-lg);
+
+  background: var(--bg-overlay);
   border: 1px solid var(--stroke-base);
   border-radius: var(--space-sm);
+
   min-height: 44px;
   cursor: text;
 
@@ -66,20 +69,31 @@
 }
 
 .pill {
-  display: inline-flex;
+  display: flex;
+  padding: var(--space-sm);
+  justify-content: center;
   align-items: center;
-  gap: var(--space-xs);
-  padding: 2px var(--space-sm);
-  background: var(--bg-overlay);
-  border: 1px solid var(--stroke-base);
+  gap: var(--space-sm);
+
   border-radius: var(--space-xs);
-  font-size: 0.875rem;
-  font-style: italic;
+  border: 1px solid var(--stroke-base);
+  background: var(--bg-quintenario);
+
   color: var(--text-base);
-  white-space: nowrap;
+  text-align: center;
+  leading-trim: both;
+  text-edge: cap;
+  font-size: 15px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .pillRemove {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   background: none;
   border: none;
   color: var(--text-sub);
@@ -125,7 +139,6 @@
   > * {
     min-width: 0;
   }
-
 }
 
 .btnRemover {
@@ -206,11 +219,53 @@
 .previewCard {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xl);
-  background: var(--bg-overlay);
-  border: 1px solid var(--stroke-base);
-  border-radius: var(--space-lg);
-  padding: var(--space-2xl);
+  align-items: center;
+  gap: var(--space-lg);
+  width: 100%;
+
+  .sectionPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: var(--space-lg);
+
+    width: 100%;
+
+    .article {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      padding: var(--space-2xl);
+
+      background: var(--bg-overlay);
+      border: solid 1px var(--stroke-base);
+      border-radius: var(--space-lg);
+
+      width: 100%;
+
+      .containerColumn {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        gap: var(--space-4xl);
+
+        width: 100%;
+
+        span {
+          color: var(--text-base);
+          leading-trim: both;
+          text-edge: cap;
+          font-size: 14px;
+          font-style: italic;
+          font-weight: 700;
+        }
+      }
+    }
+  }
 }
 
 .previewAvatarRow {
@@ -404,6 +459,166 @@
   background: var(--bg-base);
 }
 
+// ─── Preview: nome + status ───────────────────────────────
+
+.nomeArtisticoStatus {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-lg);
+  width: 100%;
+}
+
+.nomeArtisticoRedes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  .nomeRedes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    ul {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-sm);
+
+      li a {
+        text-decoration: none;
+        color: var(--icon-secondary);
+        transition: 0.2s;
+
+        &:hover {
+          color: var(--icon-base);
+        }
+      }
+    }
+  }
+}
+
+.nomeArtistico {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+
+  h1 {
+    leading-trim: both;
+    text-edge: cap;
+    font-size: 30px;
+    font-style: italic;
+    font-weight: 700;
+
+    padding: 4px 20px;
+    margin: -4px -20px;
+
+    background: linear-gradient(
+      90deg,
+      var(--primitive-rosa-01) 0%,
+      var(--primitive-amarelo-01) 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+// ─── Preview: detalhes grid ───────────────────────────────
+
+.detalhesDublador {
+  display: inline-grid;
+  row-gap: 20px;
+  column-gap: 20px;
+  align-self: stretch;
+  grid-template-rows: repeat(2, fit-content(100%));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  .detalhesItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: var(--space-xs);
+
+    span {
+      color: var(--text-base);
+      font-size: 14px;
+      font-style: italic;
+      font-weight: 700;
+    }
+
+    ul {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    p,
+    li {
+      color: var(--text-sub);
+      font-size: 14px;
+      font-style: italic;
+      font-weight: 400;
+    }
+  }
+}
+
+// ─── Preview: ocupações ───────────────────────────────────
+
+.ocupacoes {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-self: stretch;
+}
+
+// ─── Preview: familiares ──────────────────────────────────
+
+.contentFamiliares {
+  width: 100%;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    width: 100%;
+
+    li {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      gap: var(--space-lg);
+
+      background: var(--bg-base);
+      border: solid 1px var(--stroke-base);
+      border-radius: var(--space-xs);
+      padding: var(--space-md);
+      width: 100%;
+      height: 54px;
+
+      span {
+        color: var(--text-sub);
+        font-size: 14px;
+        font-style: italic;
+        font-weight: 400;
+      }
+
+      p {
+        color: var(--text-sub);
+        font-size: 14px;
+        font-style: italic;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
 // ─── Erro ─────────────────────────────────────────────────
 
 .error {
@@ -571,4 +786,19 @@
     opacity: 0.6;
     cursor: default;
   }
+}
+
+// ─── Toggle ───────────────────────────────────────────────
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+}
+
+.toggleLabel {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-sub);
 }

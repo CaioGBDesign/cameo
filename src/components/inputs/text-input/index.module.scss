@@ -77,6 +77,14 @@
   border-color: var(--primitive-erro-01, #e53935) !important;
 }
 
+.inputRowSuccess {
+  background: var(--bg-base) !important;
+
+  .field {
+    background: var(--bg-base) !important;
+  }
+}
+
 .prefix {
   display: flex;
   align-items: center;

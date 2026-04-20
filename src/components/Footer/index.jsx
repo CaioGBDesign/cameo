@@ -59,21 +59,21 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <InstagramIcon />
+              <InstagramIcon color="var(--icon-base)" />
             </a>
             <a
               href="https://www.tiktok.com/@cameo.fun"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <TiktokIcon />
+              <TiktokIcon color="var(--icon-base)" />
             </a>
             <a
               href="https://www.youtube.com/@cameo_fun"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <YoutubeIcon />
+              <YoutubeIcon color="var(--icon-base)" />
             </a>
           </div>
         </div>

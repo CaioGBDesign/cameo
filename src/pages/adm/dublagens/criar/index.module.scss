@@ -1,9 +1,22 @@
 // ─── Sidebar ─────────────────────────────────────────────
 
 .sidebarContent {
+  overflow: hidden;
+  height: 100%;
+}
+
+.slidingViews {
+  display: flex;
+  width: 200%;
+  height: 100%;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slideView {
+  width: 50%;
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
+  gap: var(--space-4xl);
   padding: var(--space-xl);
   overflow-y: auto;
   height: 100%;
@@ -11,6 +24,30 @@
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  .dadosTecnicos {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+
+    width: 100%;
+
+    h2 {
+      color: var(--text-base);
+      font-size: 20px;
+      font-style: italic;
+      font-weight: 600;
+      line-height: normal;
+    }
+  }
+
+  .formElenco {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-xl);
   }
 }
 
@@ -36,12 +73,83 @@
   gap: var(--space-lg);
 }
 
-.cardTitulo {
-  font-size: 0.875rem;
-  font-weight: normal;
+// ─── Importar botão ──────────────────────────────────────
+
+.importarWrapper {
+  position: relative;
+  align-self: flex-start;
+}
+
+.importarBtn {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  overflow: hidden;
   font-style: italic;
+  font-size: 0.9rem;
+  color: var(--text-base);
+  height: 60px;
+}
+
+.importarBtnMain {
+  background: none;
+  border: none;
+  padding: var(--space-sm) var(--space-lg);
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+
+  &:hover {
+    background: var(--bg-overlay);
+  }
+}
+
+.importarBtnChevron {
+  background: none;
+  border: none;
+  border-left: 1px solid var(--stroke-base);
+  padding: var(--space-sm) var(--space-md);
+  cursor: pointer;
   color: var(--text-sub);
-  margin: 0;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background: var(--bg-overlay);
+  }
+}
+
+.importarDropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 100%;
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  overflow: hidden;
+  z-index: 50;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.importarDropdownItem {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: var(--space-md) var(--space-lg);
+  cursor: pointer;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--text-base);
+
+  &:hover {
+    background: var(--bg-overlay);
+  }
+
+  color: var(--text-sub);
 }
 
 // ─── Elenco header ───────────────────────────────────────
@@ -90,28 +198,213 @@
 
 .btnRemover {
   background: none;
-  border: 1px solid var(--stroke-base);
-  border-radius: var(--space-sm);
+  border: none;
   color: var(--text-sub);
   width: 36px;
-  height: 44px;
+  height: 60px;
   cursor: pointer;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 1px;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
 
   &:hover:not(:disabled) {
-    background: var(--bg-base);
     color: var(--color-error, #e53935);
-    border-color: var(--color-error, #e53935);
   }
 
   &:disabled {
     opacity: 0.3;
     cursor: default;
+  }
+}
+
+// ─── Estúdio search ──────────────────────────────────────
+
+.searchField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.searchLabel {
+  color: var(--text-sub);
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.pillsField {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+
+  padding: var(--space-lg);
+
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+
+  min-height: 44px;
+  cursor: text;
+
+  &:focus-within {
+    border-color: var(--stroke-solid);
+  }
+}
+
+.pill {
+  display: flex;
+  padding: var(--space-sm);
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-sm);
+
+  border-radius: var(--space-xs);
+  border: 1px solid var(--stroke-base);
+  background: var(--bg-quintenario);
+
+  color: var(--text-base);
+  text-align: center;
+  leading-trim: both;
+  text-edge: cap;
+  font-size: 15px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.pillRemove {
+  background: none;
+  border: none;
+  color: var(--text-sub);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0;
+
+  &:hover {
+    color: var(--text-base);
+  }
+}
+
+.pillInput {
+  flex: 1;
+  min-width: 120px;
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-base);
+
+  &::placeholder {
+    color: var(--text-sub);
+  }
+}
+
+.searchWrapper {
+  position: relative;
+}
+
+.searchDropdown {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.searchDropdownItem {
+  display: block;
+  width: 100%;
+  padding: var(--space-sm) var(--space-lg);
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  color: var(--text-base);
+  font-size: 0.875rem;
+  font-style: italic;
+  transition: background 0.1s;
+
+  &:hover {
+    background: var(--bg-quintenario);
+  }
+}
+
+.separador {
+  background: var(--stroke-base);
+
+  width: 100%;
+  height: 1px;
+}
+
+// ─── Sidebar nav ─────────────────────────────────────────
+
+.viewNavBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover {
+    background: var(--bg-overlay);
+  }
+
+  span {
+    color: var(--text-base);
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 400;
+  }
+}
+
+.viewNavBack {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+
+  h2,
+  span {
+    color: var(--text-base);
+    font-size: 20px;
+    font-style: italic;
+    font-weight: 600;
+    line-height: normal;
+  }
+}
+
+.viewNavBackBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover {
+    background: var(--bg-overlay);
   }
 }
 
@@ -121,4 +414,105 @@
   display: flex;
   justify-content: flex-start;
   padding-top: var(--space-sm);
+}
+
+// ─── Equipe técnica ──────────────────────────────────────
+
+.contentEquipeTecnica {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-sm);
+
+  width: 100%;
+}
+
+.equipeFuncaoBloco {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+
+  padding: var(--space-lg);
+
+  background: var(--bg-base);
+  border-radius: var(--space-sm);
+
+  width: 100%;
+}
+
+.profissionalRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.profissionalCampos {
+  display: flex;
+  align-items: end;
+  gap: var(--space-sm);
+
+  > *:first-child {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+}
+
+.toggleLabel {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-sub);
+}
+
+.uploadCompact {
+  flex-shrink: 0;
+  border-radius: var(--space-sm);
+  overflow: hidden;
+}
+
+.equipeRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+.equipeFields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  min-width: 0;
+}
+
+.funcaoSelect {
+  width: 100%;
+  height: 44px;
+  padding: 0 var(--space-lg);
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  color: var(--text-base);
+  font-size: 0.875rem;
+  font-style: italic;
+  cursor: pointer;
+  appearance: none;
+  outline: none;
+  transition: border-color 0.15s;
+
+  &:focus {
+    border-color: var(--stroke-solid);
+  }
+
+  option {
+    background: var(--bg-base);
+    color: var(--text-base);
+    font-style: italic;
+  }
 }

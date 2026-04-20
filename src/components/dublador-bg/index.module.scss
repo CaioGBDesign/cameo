@@ -1,0 +1,87 @@
+.wrapperDesktop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  width: 60%;
+  height: 650px;
+  overflow: hidden;
+  pointer-events: none;
+  animation: fadeIn 0.4s ease-out;
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @media only screen and (max-width: 768px) {
+    display: none;
+  }
+
+  .imagem {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.3;
+  }
+
+  .gradienteEsquerda {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, var(--primitive-roxo-06) 0%, rgba(37, 13, 47, 0) 60%);
+    z-index: 1;
+  }
+
+  .gradienteTopo {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, var(--primitive-roxo-06) 0%, rgba(37, 13, 47, 0) 40%);
+    z-index: 1;
+  }
+
+  .gradienteBase {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--primitive-roxo-06) 0%, rgba(37, 13, 47, 0) 50%);
+    z-index: 1;
+  }
+}
+
+.wrapperMobile {
+  display: none;
+
+  @media only screen and (max-width: 768px) {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: -1;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    pointer-events: none;
+    animation: fadeIn 0.4s ease-out;
+  }
+
+  .imagem {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    opacity: 0.2;
+  }
+
+  .gradienteTopo {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, var(--primitive-roxo-06) 0%, rgba(37, 13, 47, 0) 40%);
+    z-index: 1;
+  }
+
+  .gradienteBase {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--primitive-roxo-06) 0%, rgba(37, 13, 47, 0) 50%);
+    z-index: 1;
+  }
+}

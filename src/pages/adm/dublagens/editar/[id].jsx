@@ -17,7 +17,10 @@ export default function EditarDublagem() {
     const fetch = async () => {
       try {
         const snap = await getDoc(doc(db, "filmes", id));
-        if (!snap.exists()) { setNotFound(true); return; }
+        if (!snap.exists()) {
+          setNotFound(true);
+          return;
+        }
         setInitialData({ id: snap.id, ...snap.data() });
       } finally {
         setLoading(false);
@@ -27,7 +30,18 @@ export default function EditarDublagem() {
   }, [id]);
 
   if (loading) return null;
-  if (notFound) return <p style={{ padding: "2rem", fontStyle: "italic", color: "var(--text-sub)" }}>Dublagem não encontrada.</p>;
+  if (notFound)
+    return (
+      <p
+        style={{
+          padding: "2rem",
+          fontStyle: "italic",
+          color: "var(--text-sub)",
+        }}
+      >
+        Dublagem não encontrada.
+      </p>
+    );
 
   return <CriarDublagem id={id} initialData={initialData} />;
 }

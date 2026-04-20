@@ -19,6 +19,9 @@ const TextInput = ({
   suffix,
   inputMode,
   error = false,
+  success = false,
+  onFocus,
+  onBlur,
 }) => {
   return (
     <div className={styles.wrapper} style={width ? { width } : undefined}>
@@ -33,7 +36,7 @@ const TextInput = ({
           )}
         </label>
       )}
-      <div className={`${styles.inputRow} ${error ? styles.inputRowError : ""}`}>
+      <div className={`${styles.inputRow} ${error ? styles.inputRowError : ""} ${success ? styles.inputRowSuccess : ""}`}>
         {prefix && <div className={styles.prefix}>{prefix}</div>}
         <input
           id={id}
@@ -42,6 +45,8 @@ const TextInput = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          onFocus={onFocus}
+          onBlur={onBlur}
           onWheel={type === "number" ? (e) => e.target.blur() : undefined}
           min={min}
           max={max}

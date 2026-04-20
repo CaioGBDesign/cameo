@@ -20,11 +20,46 @@ import MultiSelect from "@/components/inputs/multi-select";
 import TextInput from "@/components/inputs/text-input";
 import AdmEditor from "@/components/adm/editor";
 import Button from "@/components/button";
+import Badge from "@/components/badge";
+import InstagramIcon from "@/components/icons/InstagramIcon";
+import YoutubeIcon from "@/components/icons/YoutubeIcon";
+import TiktokIcon from "@/components/icons/TiktokIcon";
+import IMDBIcon from "@/components/icons/IMDBIcon";
+import FacebookIcon from "@/components/icons/FacebookIcon";
+import XIcon from "@/components/icons/XIcon";
+import BlueSkyIcon from "@/components/icons/BlueSkyIcon";
+import TwitchIcon from "@/components/icons/TwitchIcon";
+import LinktreeIcon from "@/components/icons/LinktreeIcon";
+import ThreadsIcon from "@/components/icons/ThreadsIcon";
+import GlobeIcon from "@/components/icons/GlobeIcon";
 import PlusIcon from "@/components/icons/PlusIcon";
 import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
 import { FamiliarNomeInput } from "../../criar/index";
 import { REDES_SOCIAIS, REDE_PLACEHOLDER, gerarUrlRede } from "@/utils/redes";
+import { toSlug } from "@/utils/slug";
+import Switch from "@/components/inputs/switch";
+import AvatarDublador from "@/components/avatar-dublador";
 import styles from "../../criar/index.module.scss";
+
+const REDE_ICONE_MAP = {
+  instagram: <InstagramIcon size={24} color="currentColor" />,
+  youtube: <YoutubeIcon size={24} color="currentColor" />,
+  tiktok: <TiktokIcon size={24} color="currentColor" />,
+  imdb: <IMDBIcon size={24} color="currentColor" />,
+  facebook: <FacebookIcon size={24} color="currentColor" />,
+  x: <XIcon size={24} color="currentColor" />,
+  twitter: <XIcon size={24} color="currentColor" />,
+  bluesky: <BlueSkyIcon size={24} color="currentColor" />,
+  "blue sky": <BlueSkyIcon size={24} color="currentColor" />,
+  twitch: <TwitchIcon size={24} color="currentColor" />,
+  linktree: <LinktreeIcon size={24} color="currentColor" />,
+  threads: <ThreadsIcon size={24} color="currentColor" />,
+  site: <GlobeIcon size={24} color="currentColor" />,
+};
+
+function redeIcone(tipo) {
+  return REDE_ICONE_MAP[tipo?.toLowerCase()] ?? tipo;
+}
 
 const ESTADOS_BR = [
   "AC",
@@ -87,6 +122,8 @@ const PARENTESCO_OPTS = [
   "Prima",
   "Tio",
   "Tia",
+  "Sobrinho",
+  "Sobrinha",
   "Avô",
   "Avó",
   "Outro",
@@ -153,13 +190,6 @@ function OcupacoesInput({ value = [], onChange }) {
   );
 }
 
-function formatarData(iso) {
-  if (!iso) return null;
-  const [y, m, d] = iso.split("-");
-  if (!y || !m || !d) return iso;
-  return `${d}/${m}/${y}`;
-}
-
 const IcoVisualizar = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
     <path
@@ -201,6 +231,9 @@ export default function AdmEditarDublador() {
   const [nomeArtistico, setNomeArtistico] = useState("");
   const [dataNascimento, setDataNascimento] = useState("");
   const [anoInicioDublagem, setAnoInicioDublagem] = useState("");
+  const [exibirDataInicioCompleta, setExibirDataInicioCompleta] =
+    useState(false);
+  const [verificarFamiliares, setVerificarFamiliares] = useState(false);
   const [nacionalidade, setNacionalidade] = useState("");
   const [estadoNatal, setEstadoNatal] = useState("");
   const [ondeAtua, setOndeAtua] = useState([]);
@@ -215,7 +248,6 @@ export default function AdmEditarDublador() {
   const [dubladores, setDubladores] = useState([]);
 
   const [loading, setLoading] = useState(false);
-  const [loadingRascunho, setLoadingRascunho] = useState(false);
   const [loadingPagina, setLoadingPagina] = useState(true);
   const [deletando, setDeletando] = useState(false);
   const [confirmarDeletar, setConfirmarDeletar] = useState(false);
@@ -248,6 +280,8 @@ export default function AdmEditarDublador() {
         setNomeArtistico(d.nomeArtistico || "");
         setDataNascimento(d.dataNascimento || "");
         setAnoInicioDublagem(d.anoInicioDublagem || "");
+        setExibirDataInicioCompleta(d.exibirDataInicioCompleta ?? false);
+        setVerificarFamiliares(d.verificarFamiliares ?? false);
         setNacionalidade(d.nacionalidade || "");
         setEstadoNatal(d.estadoNatal || "");
         setOndeAtua(d.ondeAtua || []);
@@ -307,6 +341,8 @@ export default function AdmEditarDublador() {
       nomeArtistico,
       dataNascimento,
       anoInicioDublagem,
+      exibirDataInicioCompleta,
+      verificarFamiliares,
       nacionalidade,
       estadoNatal,
       ondeAtua,
@@ -322,7 +358,11 @@ export default function AdmEditarDublador() {
         })),
       links: links
         .filter((l) => l.tipo && l.usuario.trim())
-        .map((l) => ({ tipo: l.tipo, usuario: l.usuario, url: gerarUrlRede(l.tipo, l.usuario) })),
+        .map((l) => ({
+          tipo: l.tipo,
+          usuario: l.usuario,
+          url: gerarUrlRede(l.tipo, l.usuario),
+        })),
       imagemUrl,
       statusPublicacao: status,
       ...(status === "publicado" && statusPublicacao !== "publicado"
@@ -330,26 +370,6 @@ export default function AdmEditarDublador() {
         : {}),
       ...(status === "rascunho" ? { dataRascunho: serverTimestamp() } : {}),
     };
-  };
-
-  const salvarRascunho = async () => {
-    if (!nomeArtistico.trim()) {
-      setError("Nome artístico é obrigatório");
-      return;
-    }
-    setLoadingRascunho(true);
-    setError("");
-    try {
-      await updateDoc(
-        doc(db, "dubladores", id),
-        await montarPayload("rascunho"),
-      );
-      setStatusPublicacao("rascunho");
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoadingRascunho(false);
-    }
   };
 
   const handleSubmit = async (e) => {
@@ -433,6 +453,17 @@ export default function AdmEditarDublador() {
         />
       </div>
 
+      <div className={styles.toggleRow}>
+        <label className={styles.toggleLabel} htmlFor="exibir-data-inicio">
+          Exibir data início completa?
+        </label>
+        <Switch
+          id="exibir-data-inicio"
+          checked={exibirDataInicioCompleta}
+          onChange={(e) => setExibirDataInicioCompleta(e.target.checked)}
+        />
+      </div>
+
       <div className={styles.row}>
         <Select
           label="Nacionalidade"
@@ -511,8 +542,22 @@ export default function AdmEditarDublador() {
           type="button"
           width="220px"
           onClick={() =>
-            setFamiliares((p) => [...p, { nome: "", parentesco: "", idDublador: null }])
+            setFamiliares((p) => [
+              ...p,
+              { nome: "", parentesco: "", idDublador: null },
+            ])
           }
+        />
+      </div>
+
+      <div className={styles.toggleRow}>
+        <label className={styles.toggleLabel} htmlFor="verificar-familiares">
+          Verificar familiares?
+        </label>
+        <Switch
+          id="verificar-familiares"
+          checked={verificarFamiliares}
+          onChange={(e) => setVerificarFamiliares(e.target.checked)}
         />
       </div>
 
@@ -560,136 +605,201 @@ export default function AdmEditarDublador() {
 
   // ── Área central: editor + preview ───────────────────────────────────────────
   const fotoSrc = imagem?.preview ?? imagemAtual ?? null;
-  const linksValidos = links.filter((l) => l.tipo && l.usuario?.trim());
-  const familiaresValidos = familiares.filter((f) => f.nome.trim());
-
   const central = (
     <div className={styles.centralWrapper}>
-      <form id="form-dublador-editar" onSubmit={handleSubmit}>
-        <AdmEditor value={bio} onChange={setBio} />
-      </form>
-
       <div className={styles.previewCard}>
-        <div className={styles.previewAvatarRow}>
-          {fotoSrc ? (
-            <img
-              src={fotoSrc}
-              alt={nomeArtistico}
-              className={styles.previewAvatar}
-              unoptimized
-            />
-          ) : (
-            <div className={styles.previewAvatarPlaceholder}>
-              <span>
-                {nomeArtistico ? nomeArtistico[0].toUpperCase() : "?"}
-              </span>
-            </div>
-          )}
-          <div className={styles.previewNameBlock}>
-            <h2 className={styles.previewNomeArtistico}>
-              {nomeArtistico || (
-                <span className={styles.previewPlaceholder}>
-                  Nome artístico
-                </span>
+        {/* ── Foto Status ─────────────────────────────────── */}
+        <div className={styles.sectionPage}>
+          <div
+            className={styles.article}
+            style={{
+              width: "auto",
+            }}
+          >
+            <div className={styles.containerColumn}>
+              {fotoSrc ? (
+                <AvatarDublador src={fotoSrc} alt={nomeArtistico} size={100} />
+              ) : (
+                <div className={styles.previewAvatarPlaceholder}>
+                  <span>
+                    {nomeArtistico ? nomeArtistico[0].toUpperCase() : "?"}
+                  </span>
+                </div>
               )}
-            </h2>
-            {nomeCompleto && (
-              <p className={styles.previewNomeCompleto}>{nomeCompleto}</p>
-            )}
-            {ativoNaDublagem && (
-              <span
-                className={`${styles.previewBadge} ${styles[`badge${ativoNaDublagem}`]}`}
-              >
-                {ativoNaDublagem}
-              </span>
-            )}
+
+              <div className={styles.nomeArtisticoStatus}>
+                {ativoNaDublagem && (
+                  <Badge
+                    label={ativoNaDublagem}
+                    variant="outline"
+                    width="100%"
+                    borda={
+                      ativoNaDublagem === "Falecido"
+                        ? "--primitive-roxo-07"
+                        : ativoNaDublagem === "Ativo"
+                          ? "--primitive-azul-01"
+                          : "--primitive-erro-01"
+                    }
+                    color={
+                      ativoNaDublagem === "Falecido"
+                        ? "--primitive-roxo-07"
+                        : ativoNaDublagem === "Ativo"
+                          ? "--primitive-azul-01"
+                          : "--primitive-erro-01"
+                    }
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* ── Identidade ─────────────────────────────────── */}
+
+          <div
+            className={styles.article}
+            style={{
+              alignSelf: "stretch",
+            }}
+          >
+            <div className={styles.containerColumn}>
+              <div className={styles.nomeArtisticoRedes}>
+                <div className={styles.nomeArtistico}>
+                  <h1>{nomeArtistico}</h1>
+                </div>
+
+                <div className={styles.nomeRedes}>
+                  {links.filter((l) =>
+                    (l.url || gerarUrlRede(l.tipo, l.usuario))?.trim(),
+                  ).length > 0 && (
+                    <ul>
+                      {links
+                        .filter((l) =>
+                          (l.url || gerarUrlRede(l.tipo, l.usuario))?.trim(),
+                        )
+                        .map((l, i) => (
+                          <li key={i}>
+                            <a
+                              href={l.url || gerarUrlRede(l.tipo, l.usuario)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {redeIcone(l.tipo)}
+                            </a>
+                          </li>
+                        ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+
+              {/* ── Identidade completa ─────────────────────────────────── */}
+
+              <div className={styles.detalhesDublador}>
+                {nomeCompleto && (
+                  <div className={styles.detalhesItem}>
+                    <span>Nome completo</span>
+                    <p>{nomeCompleto}</p>
+                  </div>
+                )}
+
+                {ondeAtua.length > 0 && (
+                  <div className={styles.detalhesItem}>
+                    <span>Onde atua</span>
+                    <ul>
+                      {ondeAtua.map((e, i) => (
+                        <li key={i}>
+                          {e}
+                          {i < ondeAtua.length - 1 ? "," : ""}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* ── Identidade aqui ─────────────────────────────────── */}
+
+                {dataNascimento && (
+                  <div className={styles.detalhesItem}>
+                    <span>Data de nascimento</span>
+                    <p>{dataNascimento}</p>
+                  </div>
+                )}
+
+                {/* ── anosAtividade aqui ─────────────────────────────────── */}
+
+                {anoInicioDublagem && (
+                  <div className={styles.detalhesItem}>
+                    <span>Dublando desde</span>
+                    <p>{anoInicioDublagem}</p>
+                  </div>
+                )}
+
+                {nacionalidade && (
+                  <div className={styles.detalhesItem}>
+                    <span>Nacionalidade</span>
+                    <p>{nacionalidade}</p>
+                  </div>
+                )}
+
+                {estadoNatal && (
+                  <div className={styles.detalhesItem}>
+                    <span>Estado natal</span>
+                    <p>{estadoNatal}</p>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
-        {(dataNascimento ||
-          anoInicioDublagem ||
-          nacionalidade ||
-          estadoNatal) && (
-          <div className={styles.previewInfoGrid}>
-            {dataNascimento && (
-              <div className={styles.previewInfoItem}>
-                <span className={styles.previewInfoLabel}>Aniversário</span>
-                <span className={styles.previewInfoValue}>
-                  {formatarData(dataNascimento)}
-                </span>
+        {/* ── Ocupações + Familiares ─────────────────────────────────── */}
+        {(ocupacoes.length > 0 ||
+          familiares.filter((f) => f.nome?.trim()).length > 0) && (
+          <div className={styles.sectionPage}>
+            {ocupacoes.length > 0 && (
+              <div className={styles.article} style={{ alignSelf: "stretch" }}>
+                <div
+                  className={styles.containerColumn}
+                  style={{ gap: "var(--space-lg)", alignItems: "start" }}
+                >
+                  <span>Ocupações</span>
+                  <div className={styles.ocupacoes}>
+                    {ocupacoes.map((o, i) => (
+                      <Badge key={i} label={o} variant="soft" bg="--bg-base" />
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
-            {anoInicioDublagem && (
-              <div className={styles.previewInfoItem}>
-                <span className={styles.previewInfoLabel}>
-                  Início na dublagem
-                </span>
-                <span className={styles.previewInfoValue}>
-                  {formatarData(anoInicioDublagem)}
-                </span>
+            {familiares.filter((f) => f.nome?.trim()).length > 0 && (
+              <div className={styles.article}>
+                <div
+                  className={styles.containerColumn}
+                  style={{ gap: "var(--space-lg)", alignItems: "start" }}
+                >
+                  <span>Familiares</span>
+                  <div className={styles.contentFamiliares}>
+                    <ul>
+                      {familiares
+                        .filter((f) => f.nome?.trim())
+                        .map((f, i) => (
+                          <li key={i}>
+                            <span>{f.parentesco}</span>
+                            <p>{f.nome}</p>
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                </div>
               </div>
             )}
-            {nacionalidade && (
-              <div className={styles.previewInfoItem}>
-                <span className={styles.previewInfoLabel}>Nacionalidade</span>
-                <span className={styles.previewInfoValue}>{nacionalidade}</span>
-              </div>
-            )}
-            {estadoNatal && (
-              <div className={styles.previewInfoItem}>
-                <span className={styles.previewInfoLabel}>Estado natal</span>
-                <span className={styles.previewInfoValue}>{estadoNatal}</span>
-              </div>
-            )}
-          </div>
-        )}
-
-        {ocupacoes.length > 0 && (
-          <div className={styles.previewOcupacoes}>
-            {ocupacoes.map((o) => (
-              <span key={o} className={styles.previewOcupacaoPill}>
-                {o}
-              </span>
-            ))}
-          </div>
-        )}
-
-        {bio && (
-          <div
-            className={styles.previewBio}
-            dangerouslySetInnerHTML={{ __html: bio }}
-          />
-        )}
-
-        {familiaresValidos.length > 0 && (
-          <div className={styles.previewSection}>
-            <h3 className={styles.previewSectionTitle}>Familiares</h3>
-            {familiaresValidos.map((f, i) => (
-              <div key={i} className={styles.previewFamiliarItem}>
-                <span className={styles.previewFamiliarNome}>{f.nome}</span>
-                {f.parentesco && (
-                  <span className={styles.previewFamiliarParentesco}>
-                    {f.parentesco}
-                  </span>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-
-        {linksValidos.length > 0 && (
-          <div className={styles.previewSection}>
-            <h3 className={styles.previewSectionTitle}>Redes sociais</h3>
-            <div className={styles.previewLinks}>
-              {linksValidos.map((l, i) => (
-                <span key={i} className={styles.previewLinkPill}>
-                  {l.tipo}
-                </span>
-              ))}
-            </div>
           </div>
         )}
       </div>
+
+      <form id="form-dublador-editar" onSubmit={handleSubmit}>
+        <AdmEditor value={bio} onChange={setBio} />
+      </form>
     </div>
   );
 
@@ -742,14 +852,6 @@ export default function AdmEditarDublador() {
           </div>
         )}
       </div>
-      <Button
-        variant="ghost"
-        label={loadingRascunho ? "Salvando..." : "Salvar rascunho"}
-        type="button"
-        disabled={loadingRascunho}
-        onClick={salvarRascunho}
-        border="var(--stroke-base)"
-      />
       <Button
         variant="ghost"
         label={loading ? "Salvando..." : "Salvar alterações"}

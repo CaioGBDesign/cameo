@@ -1,4 +1,4 @@
-.container {
+.page {
   margin-top: 8%;
   display: flex;
   flex-direction: column;
@@ -13,201 +13,295 @@
     margin-top: 30%;
   }
 
-  .sectionPage {
+  .container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-
     gap: var(--space-lg);
-
     width: 100%;
 
-    .article {
+    .sectionPage {
       display: flex;
       justify-content: center;
       align-items: center;
 
-      padding: var(--space-4xl);
-
-      background: var(--bg-overlay);
-      border: solid 1px var(--stroke-base);
-      border-radius: var(--space-lg);
+      gap: var(--space-lg);
 
       width: 100%;
 
-      .containerColumn {
-        display: flex;
+      @media only screen and (max-width: 768px) {
         flex-direction: column;
+      }
+
+      .article {
+        display: flex;
         justify-content: center;
         align-items: center;
 
-        gap: var(--space-4xl);
+        padding: var(--space-2xl);
+
+        background: rgba(22, 18, 22, 0.2);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        border: solid 1px var(--stroke-base);
+        border-radius: var(--space-lg);
 
         width: 100%;
 
-        span {
-          color: var(--text-base);
-          leading-trim: both;
-          text-edge: cap;
-          font-size: 14px;
-          font-style: italic;
-          font-weight: 700;
+        @media only screen and (max-width: 768px) {
+          width: 90% !important;
+          align-self: auto !important;
+
+          padding: var(--space-lg);
         }
 
-        .imageDublador {
+        .containerColumn {
           display: flex;
-          width: 100px;
-          height: 100px;
-          align-items: center;
-
-          border-radius: 150px;
-
-          overflow: hidden;
-
-          img {
-            width: 100px;
-            height: 100px;
-          }
-        }
-
-        .nomeArtisticoRedes {
-          display: flex;
+          flex-direction: column;
           justify-content: center;
           align-items: center;
 
+          gap: var(--space-4xl);
+
           width: 100%;
 
-          .nomeArtistico {
+          @media only screen and (max-width: 768px) {
+            gap: var(--space-lg);
+
+            padding: var(--space-lg);
+          }
+
+          .nomeArtisticoStatus {
             display: flex;
-            justify-content: start;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
+            gap: var(--space-lg);
 
-            width: 100%;
+            .nomeArtistico {
+              display: flex;
+              justify-content: start;
+              align-items: center;
 
-            h1 {
-              leading-trim: both;
-              text-edge: cap;
-              font-size: 30px;
-              font-style: italic;
-              font-weight: 700;
+              width: 100%;
 
-              background: linear-gradient(
-                90deg,
-                var(--primitive-rosa-01) 0%,
-                var(--primitive-amarelo-01) 100%
-              );
-              background-clip: text;
-              -webkit-background-clip: text;
-              -webkit-text-fill-color: transparent;
+              h1 {
+                leading-trim: both;
+                text-edge: cap;
+                font-size: 30px;
+                font-style: italic;
+                font-weight: 700;
+
+                padding: 4px 20px;
+                margin: -4px -20px;
+
+                background: linear-gradient(
+                  90deg,
+                  var(--primitive-rosa-01) 0%,
+                  var(--primitive-amarelo-01) 100%
+                );
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+              }
             }
           }
 
-          .nomeRedes {
+          span {
+            color: var(--text-base);
+            leading-trim: both;
+            text-edge: cap;
+            font-size: 14px;
+            font-style: italic;
+            font-weight: 700;
+          }
+
+          .imageDublador {
+            display: flex;
+            width: 100px;
+            height: 100px;
+            align-items: center;
+
+            border-radius: 150px;
+            border: solid 3px var(--stroke-submit);
+
+            overflow: hidden;
+
+            img {
+              width: 100px;
+              height: 100px;
+            }
+          }
+
+          .nomeArtisticoRedes {
             display: flex;
             justify-content: center;
             align-items: center;
 
-            ul {
+            width: 100%;
+
+            .nomeArtistico {
+              display: flex;
+              justify-content: start;
+              align-items: center;
+
+              width: 100%;
+
+              h1 {
+                leading-trim: both;
+                text-edge: cap;
+                font-size: 30px;
+                font-style: italic;
+                font-weight: 700;
+
+                padding: 4px 20px;
+                margin: -4px -20px;
+
+                background: linear-gradient(
+                  90deg,
+                  var(--primitive-rosa-01) 0%,
+                  var(--primitive-amarelo-01) 100%
+                );
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+              }
+            }
+
+            .nomeRedes {
               display: flex;
               justify-content: center;
               align-items: center;
-              gap: var(--space-sm);
 
-              li {
-                a {
-                  text-decoration: none;
-                  color: var(--icon-secondary);
+              @media only screen and (max-width: 768px) {
+                width: 100%;
+              }
+
+              ul {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: var(--space-xs);
+
+                @media only screen and (max-width: 768px) {
+                  justify-content: start;
+                  flex-wrap: wrap;
+
+                  width: 100%;
+                }
+
+                li {
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+
+                  padding: var(--space-sm);
+
+                  border-radius: 12px;
+                  background: var(--bg-overlay);
 
                   transition: 0.2s;
 
+                  a {
+                    text-decoration: none;
+                    color: #fff;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  }
+
+                  &[data-rede="instagram"] {
+                    background: var(--primitive-rosa-02);
+                  }
+                  &[data-rede="youtube"] {
+                    background: var(--primitive-erro-01);
+                  }
+                  &[data-rede="tiktok"] {
+                    background: var(--primitive-roxo-05);
+                  }
+                  &[data-rede="facebook"] {
+                    background: #1877f2;
+                  }
+                  &[data-rede="x"],
+                  &[data-rede="twitter"] {
+                    background: var(--primitive-roxo-06);
+                  }
+                  &[data-rede="bluesky"],
+                  &[data-rede="blue sky"] {
+                    background: var(--primitive-azul-02);
+                  }
+                  &[data-rede="twitch"] {
+                    background: var(--primitive-roxo-04);
+                  }
+                  &[data-rede="threads"] {
+                    background: var(--primitive-rosa-02);
+                  }
+                  &[data-rede="imdb"] {
+                    background: var(--primitive-amarelo-02);
+                    a {
+                      color: #000;
+                    }
+                  }
+                  &[data-rede="linktree"] {
+                    background: var(--primitive-amarelo-01);
+                    a {
+                      color: #000;
+                    }
+                  }
+                  &[data-rede="site"] {
+                    background: var(--primitive-azul-01);
+                  }
+
                   &:hover {
-                    color: var(--icon-base);
+                    opacity: 0.85;
                   }
                 }
               }
             }
           }
-        }
 
-        .detalhesDublador {
-          display: inline-grid;
-          row-gap: 30px;
-          column-gap: 30px;
-          align-self: stretch;
-          grid-template-rows: repeat(2, fit-content(100%));
-          grid-template-columns: repeat(5, minmax(0, 1fr));
+          .detalhesDublador {
+            display: inline-grid;
+            row-gap: 30px;
+            column-gap: 30px;
+            align-self: stretch;
+            grid-template-rows: repeat(2, fit-content(100%));
+            grid-template-columns: repeat(5, minmax(0, 1fr));
 
-          .detalhesItem {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: start;
-            gap: var(--space-xs);
-
-            span {
-              color: var(--text-base);
-              leading-trim: both;
-              text-edge: cap;
-              font-size: 14px;
-              font-style: italic;
-              font-weight: 700;
+            @media only screen and (max-width: 768px) {
+              display: inline-grid;
+              row-gap: 30px;
+              column-gap: 30px;
+              align-self: stretch;
+              grid-template-rows: repeat(5, fit-content(100%));
+              grid-template-columns: repeat(2, fit-content(100%));
             }
 
-            ul {
+            .detalhesItem {
               display: flex;
+              flex-direction: column;
               justify-content: center;
-              align-items: center;
+              align-items: start;
               gap: var(--space-xs);
-            }
-
-            p,
-            li {
-              color: var(--text-sub);
-              leading-trim: both;
-              text-edge: cap;
-              font-size: 14px;
-              font-style: italic;
-              font-weight: 400;
-            }
-          }
-        }
-
-        .ocupacoes {
-          display: flex;
-          align-items: center;
-          align-content: center;
-          flex-wrap: wrap;
-          gap: 10px;
-
-          align-self: stretch;
-        }
-
-        .contentFamiliares {
-          width: 100%;
-
-          ul {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: start;
-            gap: var(--space-sm);
-
-            li {
-              display: flex;
-              justify-content: start;
-              align-items: center;
-              gap: var(--space-lg);
-
-              background: var(--bg-base);
-              border: solid 1px var(--stroke-base);
-              border-radius: var(--space-xs);
-
-              padding: var(--space-md);
-
-              width: 100%;
-              height: 54px;
 
               span {
+                color: var(--text-base);
+                leading-trim: both;
+                text-edge: cap;
+                font-size: 14px;
+                font-style: italic;
+                font-weight: 700;
+              }
+
+              ul {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: var(--space-xs);
+              }
+
+              p,
+              li {
                 color: var(--text-sub);
                 leading-trim: both;
                 text-edge: cap;
@@ -215,19 +309,145 @@
                 font-style: italic;
                 font-weight: 400;
               }
+            }
+          }
 
-              p {
-                color: var(--text-sub);
-                leading-trim: both;
-                text-edge: cap;
-                font-size: 14px;
-                font-style: italic;
-                font-weight: bold;
+          .ocupacoes {
+            display: flex;
+            align-items: center;
+            align-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+
+            align-self: stretch;
+          }
+
+          .contentFamiliares {
+            width: 100%;
+
+            ul {
+              display: inline-grid;
+              row-gap: 10px;
+              column-gap: 10px;
+              align-self: stretch;
+              grid-template-rows: repeat(2, fit-content(100%));
+              grid-template-columns: repeat(2, minmax(0, 1fr));
+
+              width: 100%;
+
+              @media only screen and (max-width: 768px) {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+                align-self: stretch;
+              }
+
+              li {
+                display: flex;
+                justify-content: start;
+                align-items: center;
+                gap: var(--space-lg);
+
+                position: relative;
+
+                background: var(--bg-base);
+                border: solid 1px var(--stroke-base);
+                border-radius: var(--space-xs);
+
+                padding: var(--space-md);
+
+                width: 100%;
+                height: 54px;
+
+                span {
+                  color: var(--text-sub);
+                  leading-trim: both;
+                  text-edge: cap;
+                  font-size: 14px;
+                  font-style: italic;
+                  font-weight: 400;
+                }
+
+                p {
+                  color: var(--text-sub);
+                  leading-trim: both;
+                  text-edge: cap;
+                  font-size: 14px;
+                  font-style: italic;
+                  font-weight: bold;
+                }
+
+                a {
+                  position: absolute;
+                  inset: 0;
+                  text-decoration: none;
+                }
+
+                &.familiarComLink {
+                  transition: 0.2s;
+
+                  p {
+                    color: var(--text-base);
+                  }
+
+                  svg {
+                    color: var(--text-sub);
+                    flex-shrink: 0;
+                    margin-left: auto;
+                  }
+
+                  &:hover {
+                    background: var(--bg-quintenario);
+                  }
+                }
               }
             }
           }
         }
       }
+    }
+
+    // ── Dublagens grid ─────────────────────────────────────────
+    .dublagensGrid {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      align-content: center;
+      align-self: stretch;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+
+      @media only screen and (max-width: 600px) {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.contentImg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+
+  .boxImg {
+    width: 500px;
+    height: 500px;
+
+    border-radius: 20px;
+    overflow: hidden;
+
+    @media only screen and (max-width: 600px) {
+      width: 100%;
+      height: auto;
+    }
+
+    img {
+      width: 100%;
+      object-fit: contain;
+      display: block;
     }
   }
 }

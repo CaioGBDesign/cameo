@@ -234,7 +234,7 @@ export default function AdmDubladores() {
     setMenuAberto(null);
     if (acao === "editar") router.push(`/adm/dubladores/editar/${dublador.id}`);
     if (acao === "visualizar")
-      router.push(`/dubladores/${toSlug(dublador.nomeArtistico || dublador.id)}`);
+      window.open(`/dubladores/${toSlug(dublador.nomeArtistico || dublador.id)}`, "_blank");
     if (acao === "deletar") {
       setDeletandoId(dublador.id);
       setDeletandoNome(dublador.nomeArtistico);

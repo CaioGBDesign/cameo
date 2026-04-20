@@ -1,0 +1,44 @@
+.clickable {
+  cursor: pointer;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  padding: var(--space-sm);
+
+  width: 110px;
+  height: 110px;
+
+  border: solid 1px var(--stroke-base);
+  border-radius: 150px;
+
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+    height: auto;
+  }
+
+  .contentAvatar {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+
+    width: 90px;
+    height: 90px;
+
+    border-radius: 150px;
+
+    @media only screen and (max-width: 600px) {
+      width: 100%;
+      height: auto;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}

@@ -19,12 +19,14 @@ export default function SectionCard({
   pagination,
   search,
   children,
+  bg,
+  style,
 }) {
   const hasHeader =
     title || showListIcon || count || avatars || actions || verTodos || scrollRef || search;
 
   return (
-    <div className={styles.sectionCard}>
+    <div className={styles.sectionCard} style={{ ...(bg ? { background: bg.startsWith("--") ? `var(${bg})` : bg } : {}), ...style }}>
       {hasHeader && (
         <div className={styles.header}>
           <div className={styles.info}>

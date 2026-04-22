@@ -155,9 +155,11 @@
 
           .contTags {
             @media only screen and (max-width: 600px) {
-              width: 350px;
+              width: 100%;
+              max-width: 100%;
 
-              overflow-y: scroll;
+              overflow-x: auto;
+              overflow-y: hidden;
 
               display: flex;
               justify-content: start;
@@ -291,8 +293,15 @@
       }
 
       .metaInfo {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+
         @media only screen and (max-width: 600px) {
           order: 0;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
         }
 
         .tempoLeitura {
@@ -319,6 +328,11 @@
       align-items: flex-start;
       gap: 40px;
       width: 100%;
+
+      @media only screen and (max-width: 600px) {
+        flex-direction: column;
+        gap: 30px;
+      }
     }
 
     .separadorVertical {
@@ -326,6 +340,10 @@
       background: var(--stroke-base);
       align-self: stretch;
       flex-shrink: 0;
+
+      @media only screen and (max-width: 600px) {
+        display: none;
+      }
     }
 
     // ─── Sidebar ───────────────────────────────────────────
@@ -336,6 +354,10 @@
       display: flex;
       flex-direction: column;
       gap: 24px;
+
+      @media only screen and (max-width: 600px) {
+        width: 100%;
+      }
     }
 
     .sidebarTopo {

@@ -5,7 +5,7 @@ import ClockIcon from "@/components/icons/ClockIcon";
 import materiaPadrao from "@/components/background/materia-padrao.jpg";
 import styles from "./index.module.scss";
 
-const BannerNoticias = ({ noticias, tagLabel = "Notícia", tagCor }) => {
+const BannerNoticias = ({ noticias, tagLabel = "Notícia", tagCor, basePath = "/noticias/detalhes" }) => {
   const [ativo, setAtivo] = useState(0);
   const total = noticias.length;
 
@@ -30,7 +30,7 @@ const BannerNoticias = ({ noticias, tagLabel = "Notícia", tagCor }) => {
         {noticias.map((noticia, index) => (
           <Link
             key={noticia.id}
-            href={`/noticias/detalhes/${noticia.id}`}
+            href={`${basePath}/${noticia.id}`}
             className={`${styles.slide} ${index === ativo ? styles.ativo : ""}`}
           >
             <img

@@ -124,7 +124,7 @@ const Resenhas = ({ criticas, noticias }) => {
 
       <main className={styles.pageMateria}>
         <section className={styles.bannerResenhas}>
-          <BannerNoticias noticias={criticasDestaque} tagLabel="Resenha" tagCor="var(--primitive-rosa-01)" />
+          <BannerNoticias noticias={criticasDestaque} tagLabel="Resenha" tagCor="var(--primitive-rosa-01)" basePath="/resenhas/detalhes" />
         </section>
 
         <article className={styles.page}>

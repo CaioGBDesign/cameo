@@ -45,7 +45,7 @@ export async function getServerSideProps({ params, query: qs }) {
         query(
           collection(db, "noticias"),
           orderBy("dataPublicacao", "desc"),
-          limit(4),
+          limit(10),
         ),
       ),
     ]);
@@ -61,9 +61,10 @@ export async function getServerSideProps({ params, query: qs }) {
       return { notFound: true };
     }
 
-    const noticias = noticiasSnap.docs.map((d) =>
-      serializarFirestore({ ...d.data(), id: d.id }),
-    );
+    const noticias = noticiasSnap.docs
+      .map((d) => serializarFirestore({ ...d.data(), id: d.id }))
+      .filter((n) => !n.status || n.status?.toLowerCase() === "publicado")
+      .slice(0, 4);
 
     return { props: { critica, id, isPreview, noticias } };
   } catch (error) {

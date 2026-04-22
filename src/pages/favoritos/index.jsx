@@ -32,20 +32,31 @@ export default function Favoritos() {
   const [busca, setBusca] = useState("");
   const [generoSelecionado, setGeneroSelecionado] = useState("");
   const generosRef = useRef(null);
-  const [modalDetalhes, setModalDetalhes] = useState({ aberto: false, index: 0 });
+  const [modalDetalhes, setModalDetalhes] = useState({
+    aberto: false,
+    index: 0,
+  });
 
   const generos = Array.from(
-    new Map(
-      filmes.flatMap((f) => f.genres).map((g) => [g.id, g])
-    ).values()
+    new Map(filmes.flatMap((f) => f.genres).map((g) => [g.id, g])).values(),
   ).sort((a, b) => a.name.localeCompare(b.name));
 
   const normalizar = (str) =>
-    str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    str
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
 
   const filmesFiltrados = filmes
-    .filter((f) => !generoSelecionado || f.genres.some((g) => String(g.id) === generoSelecionado))
-    .filter((f) => !busca.trim() || normalizar(f.title).includes(normalizar(busca.trim())));
+    .filter(
+      (f) =>
+        !generoSelecionado ||
+        f.genres.some((g) => String(g.id) === generoSelecionado),
+    )
+    .filter(
+      (f) =>
+        !busca.trim() || normalizar(f.title).includes(normalizar(busca.trim())),
+    );
 
   const totalPages = Math.ceil(filmesFiltrados.length / ITEMS_PER_PAGE);
   const filmesPaginados = filmesFiltrados.slice(
@@ -101,7 +112,6 @@ export default function Favoritos() {
           trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : null,
         );
         setReleaseDates(rnd.release_dates);
-
       })
       .catch(() => {});
   }, [user?.favoritos]);
@@ -139,7 +149,10 @@ export default function Favoritos() {
                   name="genero"
                   label="Todos"
                   checked={generoSelecionado === ""}
-                  onChange={() => { setGeneroSelecionado(""); setCurrentPage(1); }}
+                  onChange={() => {
+                    setGeneroSelecionado("");
+                    setCurrentPage(1);
+                  }}
                   iconVariant="none"
                 />
                 {generos.map((g) => (
@@ -149,7 +162,10 @@ export default function Favoritos() {
                     name="genero"
                     label={g.name}
                     checked={generoSelecionado === String(g.id)}
-                    onChange={() => { setGeneroSelecionado(String(g.id)); setCurrentPage(1); }}
+                    onChange={() => {
+                      setGeneroSelecionado(String(g.id));
+                      setCurrentPage(1);
+                    }}
                     iconVariant="none"
                   />
                 ))}
@@ -166,7 +182,10 @@ export default function Favoritos() {
             <TextInput
               placeholder="Buscar filme..."
               value={busca}
-              onChange={(e) => { setBusca(e.target.value); setCurrentPage(1); }}
+              onChange={(e) => {
+                setBusca(e.target.value);
+                setCurrentPage(1);
+              }}
               prefix={<SearchIcon size={20} color="var(--text-sub)" />}
             />
           }

@@ -1,8 +1,37 @@
+.elencoImagens {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 2;
+
+  @media only screen and (max-width: 600px) {
+    display: none;
+  }
+}
+
+.elencoAvatar {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+
+  margin-left: -10px;
+
+  border-radius: 50%;
+
+  overflow: hidden;
+
+  img {
+    width: 50px;
+    height: 50px;
+  }
+}
+
 .hero {
   position: relative;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: end;
   gap: var(--space-xl);
 
   padding: var(--space-4xl) var(--space-10xl);

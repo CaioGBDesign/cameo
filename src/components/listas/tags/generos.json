@@ -61,6 +61,11 @@
   },
   {
     "id": "genero",
+    "name": "Música",
+    "Exibir": "Sim"
+  },
+  {
+    "id": "genero",
     "name": "Terror",
     "Exibir": "Sim"
   },

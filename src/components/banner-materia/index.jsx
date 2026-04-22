@@ -4,6 +4,7 @@ import styles from "./index.module.scss";
 const TIPO_CONFIG = {
   noticia: { label: "Notícia", cor: "#2ba8e2" },
   critica: { label: "Resenha", cor: "#f314fb" },
+  resenha: { label: "Resenha", cor: "var(--primitive-rosa-01)" },
 };
 
 export default function BannerMateria({ src, tipo = "noticia", alt = "" }) {

@@ -19,7 +19,6 @@ import Breadcrumb from "@/components/breadcrumb";
 import BannerMateria from "@/components/banner-materia";
 import Badge from "@/components/badge";
 import CardMateria from "@/components/card-materia";
-import materiapadrao from "@/components/background/materia-padrao.jpg";
 import ClockIcon from "@/components/icons/ClockIcon";
 import ListaMateriaIcon from "@/components/icons/ListaMateriaIcon";
 
@@ -86,10 +85,8 @@ export default function NoticiaDetalhe({
   resenhas = [],
 }) {
   const imagemSrc =
-    process.env.NODE_ENV === "development"
-      ? materiapadrao
-      : noticia.imagem ||
-        noticia.elementos?.find((el) => el.tipo === "imagem")?.conteudo;
+    noticia.imagem ||
+    noticia.elementos?.find((el) => el.tipo === "imagem")?.conteudo;
 
   const imagemUrl = typeof imagemSrc === "object" ? imagemSrc?.src : imagemSrc;
 
@@ -110,12 +107,18 @@ export default function NoticiaDetalhe({
     };
   }, [temInstagram]);
 
+  const canonicalUrl = `https://cameo.fun/noticias/detalhes/${id}`;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": canonicalUrl,
+    },
     headline: noticia.titulo,
     description: noticia.subtitulo || "",
-    image: imagemUrl || "",
+    ...(imagemUrl && { image: [imagemUrl] }),
     author: {
       "@type": "Person",
       name: noticia.autor?.nome || "",
@@ -124,9 +127,14 @@ export default function NoticiaDetalhe({
       "@type": "Organization",
       name: "Cameo",
       url: "https://cameo.fun",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://cameo.fun/logo.png",
+      },
     },
     datePublished: noticia.dataPublicacao || "",
-    url: `https://cameo.fun/noticias/${id}`,
+    dateModified: noticia.dataAtualizacao || noticia.dataPublicacao || "",
+    url: canonicalUrl,
   };
 
   const statusLabel = STATUS_LABEL[noticia.status?.toLowerCase()];
@@ -150,44 +158,42 @@ export default function NoticiaDetalhe({
       <Header />
       <Head>
         <title>{noticia.titulo} — Cameo</title>
-        <meta
-          name="description"
-          content={noticia.subtitulo || noticia.titulo}
-        />
-
-        <link rel="canonical" href={`https://cameo.fun/noticias/${id}`} />
-
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://cameo.fun/noticias/${id}`} />
-        <meta property="og:title" content={noticia.titulo} />
-        <meta property="og:description" content={noticia.subtitulo || ""} />
-        <meta property="og:image" content={imagemUrl || ""} />
-        {dataPublicacao && (
+        <meta name="description" content={noticia.subtitulo || noticia.titulo} />
+        {noticia.generos?.length > 0 && (
           <meta
-            property="article:published_time"
-            content={dataPublicacao.toISOString()}
+            name="keywords"
+            content={[...(noticia.generos || []), ...(noticia.empresas || [])].join(", ")}
           />
         )}
+        <meta name="robots" content="index,follow" />
+
+        <link rel="canonical" href={canonicalUrl} />
+        <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="Cameo News Feed" />
+        <link rel="alternate" href={canonicalUrl} hrefLang="pt-BR" />
+
+        <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="Cameo" />
+        <meta property="og:locale" content="pt_BR" />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:title" content={noticia.titulo} />
+        <meta property="og:description" content={noticia.subtitulo || noticia.titulo} />
+        {imagemUrl && <meta property="og:image" content={imagemUrl} />}
+        {imagemUrl && <meta property="og:image:alt" content={noticia.titulo} />}
+        {dataPublicacao && (
+          <meta property="article:published_time" content={dataPublicacao.toISOString()} />
+        )}
         <meta property="article:author" content={noticia.autor?.nome || ""} />
+        {noticia.generos?.map((g) => (
+          <meta key={g} property="article:tag" content={g} />
+        ))}
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={noticia.titulo} />
-        <meta name="twitter:description" content={noticia.subtitulo || ""} />
-        <meta name="twitter:image" content={imagemUrl || ""} />
-        <meta name="robots" content="index,follow" />
+        <meta name="twitter:description" content={noticia.subtitulo || noticia.titulo} />
+        {imagemUrl && <meta name="twitter:image" content={imagemUrl} />}
+        {imagemUrl && <meta name="twitter:image:alt" content={noticia.titulo} />}
 
         {imagemUrl && <link rel="preload" as="image" href={imagemUrl} />}
-        <link
-          rel="alternate"
-          type="application/rss+xml"
-          href="/feed.xml"
-          title="Cameo News Feed"
-        />
-        <link
-          rel="alternate"
-          href={`https://cameo.fun/noticias/${id}`}
-          hrefLang="pt-BR"
-        />
 
         <script
           type="application/ld+json"

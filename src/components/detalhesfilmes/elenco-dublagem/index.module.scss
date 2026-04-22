@@ -22,6 +22,38 @@
     }
   }
 
+  .carrosselWrap {
+    flex-wrap: wrap;
+    justify-content: center;
+
+    @media only screen and (max-width: 768px) {
+      .atorContent {
+        width: calc(50% - var(--space-sm) / 2);
+
+        .ator {
+          width: 100% !important;
+          height: calc((50vw - 24px) * 1.2);
+
+          .imagemArtista {
+            width: 100% !important;
+            height: 100% !important;
+
+            &::after {
+              width: 100% !important;
+              height: 100% !important;
+            }
+
+            img {
+              width: 100% !important;
+              height: 100% !important;
+              object-fit: cover;
+            }
+          }
+        }
+      }
+    }
+  }
+
   .carrosselElenco {
     display: flex;
     justify-content: start;
@@ -49,6 +81,8 @@
 
         width: 180px;
         height: 217px;
+
+        text-decoration: none;
 
         overflow: hidden;
 

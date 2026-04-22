@@ -1,0 +1,114 @@
+.page {
+  width: 85%;
+  margin-inline: auto;
+  margin-top: 8%;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  font-style: italic;
+
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+    padding: 0 var(--space-lg);
+    margin-top: 30%;
+  }
+}
+
+.topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+
+  h1 {
+    font-size: 24px;
+    font-style: italic;
+    font-weight: 700;
+    color: var(--text-base);
+    white-space: nowrap;
+  }
+
+  @media only screen and (max-width: 600px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.busca {
+  height: 44px;
+  padding: 0 var(--space-lg);
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  color: var(--text-base);
+  font-size: 0.875rem;
+  font-style: italic;
+  outline: none;
+  width: 280px;
+
+  &::placeholder {
+    color: var(--text-sub);
+  }
+
+  &:focus {
+    border-color: var(--stroke-solid);
+  }
+
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+  }
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+
+  @media only screen and (max-width: 600px) {
+    flex-direction: column;
+  }
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-lg) var(--space-xl);
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-lg);
+  text-decoration: none;
+  transition: border-color 0.15s;
+  width: calc(50% - var(--space-lg) / 2);
+
+  &:hover {
+    border-color: var(--stroke-solid);
+  }
+
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+  }
+}
+
+.cardInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  min-width: 0;
+}
+
+.nome {
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--text-base);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nomePopular {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--text-sub);
+}

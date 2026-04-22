@@ -8,6 +8,7 @@ import { useAuth } from "@/contexts/auth";
 import AdmLayout from "@/components/adm/layout";
 import UploadImagem from "@/components/upload-imagem";
 import MultiSelect from "@/components/inputs/multi-select";
+import Select from "@/components/inputs/select";
 import generosList from "@/components/listas/tags/generos.json";
 import empresasList from "@/components/listas/tags/empresas.json";
 import Button from "@/components/button";
@@ -38,6 +39,14 @@ const empresaOptions = empresasList.map((e) => ({
   value: e.name,
   label: e.name,
 }));
+const classificacaoOptions = [
+  { value: "", label: "Sem avaliação" },
+  { value: 1, label: "★" },
+  { value: 2, label: "★★" },
+  { value: 3, label: "★★★" },
+  { value: 4, label: "★★★★" },
+  { value: 5, label: "★★★★★" },
+];
 
 const TIPO_IMAGEM = "imagem";
 
@@ -52,6 +61,7 @@ export default function AdmCriarResenha() {
   const [imagemElemento, setImagemElemento] = useState(null);
   const [empresas, setEmpresas] = useState([]);
   const [generos, setGeneros] = useState([]);
+  const [classificacao, setClassificacao] = useState("");
   const [tags, setTags] = useState([]);
   const [slugValue, setSlugValue] = useState("");
   const [slugEditado, setSlugEditado] = useState(false);
@@ -148,6 +158,7 @@ export default function AdmCriarResenha() {
         conteudo,
         tagIds: tags.map((t) => t.id),
         imagem: imagemUrl,
+        ...(classificacao !== "" && { classificacao: Number(classificacao) }),
         autor: {
           id: user.uid,
           nome: userData.nome,
@@ -320,12 +331,15 @@ export default function AdmCriarResenha() {
           width="100%"
         />
       </div>
-      <TagInput
-        label="Tags"
-        selected={tags}
-        onChange={setTags}
+      <Select
+        label="Avaliação"
+        options={classificacaoOptions}
+        value={classificacao}
+        onChange={(e) => setClassificacao(e.target.value)}
+        placeholder="Selecione a avaliação"
         width="100%"
       />
+      <TagInput label="Tags" selected={tags} onChange={setTags} width="100%" />
       {error && <p className={styles.error}>{error}</p>}
     </>
   );

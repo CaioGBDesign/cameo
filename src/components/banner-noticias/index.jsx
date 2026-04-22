@@ -5,7 +5,7 @@ import ClockIcon from "@/components/icons/ClockIcon";
 import materiaPadrao from "@/components/background/materia-padrao.jpg";
 import styles from "./index.module.scss";
 
-const BannerNoticias = ({ noticias }) => {
+const BannerNoticias = ({ noticias, tagLabel = "Notícia", tagCor }) => {
   const [ativo, setAtivo] = useState(0);
   const total = noticias.length;
 
@@ -42,7 +42,7 @@ const BannerNoticias = ({ noticias }) => {
             <div className={styles.gradiente} />
 
             <div className={styles.info}>
-              <span className={styles.tag}>Notícia</span>
+              <span className={styles.tag} style={tagCor ? { background: tagCor } : undefined}>{tagLabel}</span>
               <h2 className={styles.titulo}>{noticia.titulo}</h2>
               {noticia.numero && (
                 <p className={styles.leitura}>

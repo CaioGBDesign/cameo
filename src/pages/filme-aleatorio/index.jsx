@@ -38,7 +38,7 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
-import ElencoDobragem from "@/components/detalhesfilmes/elenco-dublagem";
+import ElencoDublagem from "@/components/detalhesfilmes/elenco-dublagem";
 import styles from "./index.module.scss";
 
 const Header = dynamic(() => import("@/components/Header"));
@@ -380,7 +380,7 @@ export default function FilmeAleatorio() {
                   title="Elenco de dublagem"
                   scrollRef={elencoDoblagemRef}
                 >
-                  <ElencoDobragem
+                  <ElencoDublagem
                     ref={elencoDoblagemRef}
                     items={elencoDublagem}
                   />

@@ -19,8 +19,8 @@ import Breadcrumb from "@/components/breadcrumb";
 import BannerMateria from "@/components/banner-materia";
 import Badge from "@/components/badge";
 import CardMateria from "@/components/card-materia";
-import materiapadrao from "@/components/background/materia-padrao.jpg";
 import ClockIcon from "@/components/icons/ClockIcon";
+import StarRatingIcon from "@/components/icons/StarRatingIcon";
 import ListaMateriaIcon from "@/components/icons/ListaMateriaIcon";
 
 function serializarFirestore(valor) {
@@ -93,10 +93,8 @@ export default function ResenhaDetalhe({
   noticias = [],
 }) {
   const imagemSrc =
-    process.env.NODE_ENV === "development"
-      ? materiapadrao
-      : critica.imagem ||
-        critica.elementos?.find((el) => el.tipo === "imagem")?.conteudo;
+    critica.imagem ||
+    critica.elementos?.find((el) => el.tipo === "imagem")?.conteudo;
 
   const imagemUrl = typeof imagemSrc === "object" ? imagemSrc?.src : imagemSrc;
 
@@ -117,16 +115,22 @@ export default function ResenhaDetalhe({
     };
   }, [temInstagram]);
 
+  const canonicalUrl = `https://cameo.fun/resenhas/detalhes/${id}`;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Review",
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": canonicalUrl,
+    },
     itemReviewed: {
       "@type": "CreativeWork",
       name: critica.titulo,
     },
     headline: critica.titulo,
     description: critica.subtitulo || "",
-    image: imagemUrl || "",
+    ...(imagemUrl && { image: [imagemUrl] }),
     author: {
       "@type": "Person",
       name: critica.autor?.nome || "",
@@ -143,9 +147,14 @@ export default function ResenhaDetalhe({
       "@type": "Organization",
       name: "Cameo",
       url: "https://cameo.fun",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://cameo.fun/logo.png",
+      },
     },
     datePublished: critica.dataPublicacao || "",
-    url: `https://cameo.fun/resenhas/detalhes/${id}`,
+    dateModified: critica.dataAtualizacao || critica.dataPublicacao || "",
+    url: canonicalUrl,
   };
 
   const statusLabel = STATUS_LABEL[critica.status?.toLowerCase()];
@@ -173,14 +182,30 @@ export default function ResenhaDetalhe({
           name="description"
           content={critica.subtitulo || critica.titulo}
         />
+        {critica.generos?.length > 0 && (
+          <meta
+            name="keywords"
+            content={[
+              ...(critica.generos || []),
+              ...(critica.empresas || []),
+            ].join(", ")}
+          />
+        )}
+        <meta name="robots" content="index,follow" />
 
-        <link rel="canonical" href={`https://cameo.fun/resenhas/detalhes/${id}`} />
+        <link rel="canonical" href={canonicalUrl} />
 
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://cameo.fun/resenhas/detalhes/${id}`} />
+        <meta property="og:site_name" content="Cameo" />
+        <meta property="og:locale" content="pt_BR" />
+        <meta property="og:url" content={canonicalUrl} />
         <meta property="og:title" content={`${critica.titulo} — Resenha`} />
-        <meta property="og:description" content={critica.subtitulo || ""} />
-        <meta property="og:image" content={imagemUrl || ""} />
+        <meta
+          property="og:description"
+          content={critica.subtitulo || critica.titulo}
+        />
+        {imagemUrl && <meta property="og:image" content={imagemUrl} />}
+        {imagemUrl && <meta property="og:image:alt" content={critica.titulo} />}
         {dataPublicacao && (
           <meta
             property="article:published_time"
@@ -188,12 +213,20 @@ export default function ResenhaDetalhe({
           />
         )}
         <meta property="article:author" content={critica.autor?.nome || ""} />
+        {critica.generos?.map((g) => (
+          <meta key={g} property="article:tag" content={g} />
+        ))}
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${critica.titulo} — Resenha`} />
-        <meta name="twitter:description" content={critica.subtitulo || ""} />
-        <meta name="twitter:image" content={imagemUrl || ""} />
-        <meta name="robots" content="index,follow" />
+        <meta
+          name="twitter:description"
+          content={critica.subtitulo || critica.titulo}
+        />
+        {imagemUrl && <meta name="twitter:image" content={imagemUrl} />}
+        {imagemUrl && (
+          <meta name="twitter:image:alt" content={critica.titulo} />
+        )}
 
         {imagemUrl && <link rel="preload" as="image" href={imagemUrl} />}
 
@@ -292,11 +325,32 @@ export default function ResenhaDetalhe({
                   dangerouslySetInnerHTML={{
                     __html: DOMPurify.sanitize(critica.conteudo, {
                       ALLOWED_TAGS: [
-                        "p", "strong", "em", "u", "a", "ul", "ol", "li",
-                        "blockquote", "br", "h1", "h2", "h3", "h4", "mark",
-                        "div", "img",
+                        "p",
+                        "strong",
+                        "em",
+                        "u",
+                        "a",
+                        "ul",
+                        "ol",
+                        "li",
+                        "blockquote",
+                        "br",
+                        "h1",
+                        "h2",
+                        "h3",
+                        "h4",
+                        "mark",
+                        "div",
+                        "img",
                       ],
-                      ALLOWED_ATTR: ["href", "target", "rel", "data-type", "src", "alt"],
+                      ALLOWED_ATTR: [
+                        "href",
+                        "target",
+                        "rel",
+                        "data-type",
+                        "src",
+                        "alt",
+                      ],
                     }),
                   }}
                 />
@@ -343,20 +397,17 @@ export default function ResenhaDetalhe({
                   </h3>
                   <div className={styles.avaliacaoDoAutor}>
                     <div className={styles.classificacaoEstrelas}>
-                      {Array.from({ length: 5 }, (_, index) => {
-                        const isFilled = index < critica.classificacao;
-                        return (
-                          <img
-                            key={index}
-                            src={`/icones/estrela-${isFilled ? "preenchida" : "vazia"}.svg`}
-                            alt={isFilled ? "Estrela preenchida" : "Estrela vazia"}
-                            className={styles.estrela}
-                          />
-                        );
-                      })}
+                      {Array.from({ length: 5 }, (_, index) => (
+                        <StarRatingIcon
+                          key={index}
+                          size={24}
+                          filled={index < critica.classificacao}
+                        />
+                      ))}
                     </div>
                     <div className={styles.textoAvaliacao}>
-                      {textoClassificacao[critica.classificacao] || "Avaliação indisponível"}
+                      {textoClassificacao[critica.classificacao] ||
+                        "Avaliação indisponível"}
                     </div>
                   </div>
                 </div>
@@ -368,7 +419,10 @@ export default function ResenhaDetalhe({
             <aside className={styles.sidebar}>
               <div className={styles.sidebarTopo}>
                 <span className={styles.sidebarTitulo}>
-                  <ListaMateriaIcon size={24} color="var(--primitive-azul-01)" />
+                  <ListaMateriaIcon
+                    size={24}
+                    color="var(--primitive-azul-01)"
+                  />
                   últimas notícias
                 </span>
                 <a href="/noticias" className={styles.sidebarVerTodas}>

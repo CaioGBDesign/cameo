@@ -28,9 +28,22 @@ const LISTA_CORES = [
   "--primitive-azul-03",
 ];
 
-export default function FilmeHero({ filme, trailerLink, releaseDates, showMetas = true, showNotas = true }) {
-  const { user, salvarFilme, removerFilme, assistirFilme, removerAssistir, toggleFilmeNaLista } =
-    useAuth();
+export default function FilmeHero({
+  filme,
+  trailerLink,
+  releaseDates,
+  showMetas = true,
+  showNotas = true,
+  elencoImagens = [],
+}) {
+  const {
+    user,
+    salvarFilme,
+    removerFilme,
+    assistirFilme,
+    removerAssistir,
+    toggleFilmeNaLista,
+  } = useAuth();
   const isMobile = useIsMobile();
   const [modalListaAberto, setModalListaAberto] = useState(false);
   const [selecionarFavorito, setSelecionarFavorito] = useState(false);
@@ -149,8 +162,8 @@ export default function FilmeHero({ filme, trailerLink, releaseDates, showMetas 
           </div>
 
           <div className={styles.botoes}>
-            {(!isMobile || showNotas) && (
-              user.visto?.[filme.id]?.nota > 0 ? (
+            {(!isMobile || showNotas) &&
+              (user.visto?.[filme.id]?.nota > 0 ? (
                 <Button
                   variant={isMobile ? "ghost" : "outline"}
                   stars={user.visto[filme.id].nota}
@@ -172,8 +185,7 @@ export default function FilmeHero({ filme, trailerLink, releaseDates, showMetas 
                     bg: "none",
                   })}
                 />
-              )
-            )}
+              ))}
 
             {!isMobile && (
               <Button
@@ -188,6 +200,16 @@ export default function FilmeHero({ filme, trailerLink, releaseDates, showMetas 
           </div>
         </div>
       </div>
+
+      {elencoImagens.length > 0 && (
+        <div className={styles.elencoImagens}>
+          {elencoImagens.map((img, i) => (
+            <div className={styles.elencoAvatar}>
+              <img key={i} src={img} alt="" />
+            </div>
+          ))}
+        </div>
+      )}
 
       {!isMobile && showMetas && (
         <div className={styles.metasDesktop}>

@@ -13,7 +13,9 @@ const ElencoDublagem = forwardRef(({ items = [], wrap = false }, ref) => {
   return (
     <div className={styles.elencoContainer}>
       <div ref={ref} className={wrap ? undefined : styles.scrollWrapper}>
-        <ul className={`${styles.carrosselElenco} ${wrap ? styles.carrosselWrap : ""}`}>
+        <ul
+          className={`${styles.carrosselElenco} ${wrap ? styles.carrosselWrap : ""}`}
+        >
           {items.map((pessoa, i) => (
             <li
               key={`${pessoa.idDublador || "unk"}_${i}`}
@@ -24,6 +26,7 @@ const ElencoDublagem = forwardRef(({ items = [], wrap = false }, ref) => {
                 className={styles.ator}
               >
                 <div className={styles.imagemArtista}>
+                  <span className={styles.detalhes}>Detalhes</span>
                   <Image
                     unoptimized
                     src={pessoa.imagemUrl || placeholder}

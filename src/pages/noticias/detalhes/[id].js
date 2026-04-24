@@ -158,17 +158,28 @@ export default function NoticiaDetalhe({
       <Header />
       <Head>
         <title>{noticia.titulo} — Cameo</title>
-        <meta name="description" content={noticia.subtitulo || noticia.titulo} />
+        <meta
+          name="description"
+          content={noticia.subtitulo || noticia.titulo}
+        />
         {noticia.generos?.length > 0 && (
           <meta
             name="keywords"
-            content={[...(noticia.generos || []), ...(noticia.empresas || [])].join(", ")}
+            content={[
+              ...(noticia.generos || []),
+              ...(noticia.empresas || []),
+            ].join(", ")}
           />
         )}
         <meta name="robots" content="index,follow" />
 
         <link rel="canonical" href={canonicalUrl} />
-        <link rel="alternate" type="application/rss+xml" href="/feed.xml" title="Cameo News Feed" />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          href="/feed.xml"
+          title="Cameo News Feed"
+        />
         <link rel="alternate" href={canonicalUrl} hrefLang="pt-BR" />
 
         <meta property="og:type" content="article" />
@@ -176,11 +187,17 @@ export default function NoticiaDetalhe({
         <meta property="og:locale" content="pt_BR" />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:title" content={noticia.titulo} />
-        <meta property="og:description" content={noticia.subtitulo || noticia.titulo} />
+        <meta
+          property="og:description"
+          content={noticia.subtitulo || noticia.titulo}
+        />
         {imagemUrl && <meta property="og:image" content={imagemUrl} />}
         {imagemUrl && <meta property="og:image:alt" content={noticia.titulo} />}
         {dataPublicacao && (
-          <meta property="article:published_time" content={dataPublicacao.toISOString()} />
+          <meta
+            property="article:published_time"
+            content={dataPublicacao.toISOString()}
+          />
         )}
         <meta property="article:author" content={noticia.autor?.nome || ""} />
         {noticia.generos?.map((g) => (
@@ -189,9 +206,14 @@ export default function NoticiaDetalhe({
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={noticia.titulo} />
-        <meta name="twitter:description" content={noticia.subtitulo || noticia.titulo} />
+        <meta
+          name="twitter:description"
+          content={noticia.subtitulo || noticia.titulo}
+        />
         {imagemUrl && <meta name="twitter:image" content={imagemUrl} />}
-        {imagemUrl && <meta name="twitter:image:alt" content={noticia.titulo} />}
+        {imagemUrl && (
+          <meta name="twitter:image:alt" content={noticia.titulo} />
+        )}
 
         {imagemUrl && <link rel="preload" as="image" href={imagemUrl} />}
 
@@ -308,7 +330,14 @@ export default function NoticiaDetalhe({
                         "div",
                         "img",
                       ],
-                      ALLOWED_ATTR: ["href", "target", "rel", "data-type", "src", "alt"],
+                      ALLOWED_ATTR: [
+                        "href",
+                        "target",
+                        "rel",
+                        "data-type",
+                        "src",
+                        "alt",
+                      ],
                     }),
                   }}
                 />
@@ -354,7 +383,10 @@ export default function NoticiaDetalhe({
             <aside className={styles.sidebar}>
               <div className={styles.sidebarTopo}>
                 <span className={styles.sidebarTitulo}>
-                  <ListaMateriaIcon size={24} color="var(--primitive-azul-01)" />
+                  <ListaMateriaIcon
+                    size={24}
+                    color="var(--primitive-azul-01)"
+                  />
                   últimas resenhas
                 </span>
                 <a href="/resenhas" className={styles.sidebarVerTodas}>

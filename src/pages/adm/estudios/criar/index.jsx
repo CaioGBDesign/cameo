@@ -11,7 +11,6 @@ import {
   doc,
   getDoc,
   setDoc,
-  updateDoc,
   serverTimestamp,
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -445,7 +444,11 @@ export default function CriarEstudio({ id = null, initialData = null }) {
       setNovoProprietarioSelecionado(p.id ? { id: p.id, nome: p.nome } : null);
     } else {
       setNovoProprietarioNome(p.nome);
-      setNovoProprietarioImagem(p.imagem ?? null);
+      setNovoProprietarioImagem(
+        typeof p.imagem === "string"
+          ? { preview: p.imagem, file: null }
+          : (p.imagem ?? null),
+      );
     }
     setNovoProprietarioData(p.data);
     setNovoProprietarioExibirDataCompleta(p.exibirDataCompleta);
@@ -597,9 +600,11 @@ export default function CriarEstudio({ id = null, initialData = null }) {
       </div>
     ) : undefined;
 
-  // ── Salvar rascunho ───────────────────────────────────────────────────────
-  const salvarRascunho = async () => {
-    setLoadingRascunho(true);
+  // ── Salvar (rascunho ou publicado) ───────────────────────────────────────
+  const salvar = async (statusPublicacao) => {
+    const isPublicar = statusPublicacao === "publicado";
+    if (isPublicar) setLoadingPublicar(true);
+    else setLoadingRascunho(true);
     try {
       const docId = isEdit ? id : await gerarProximoId();
       const imagemUrl = imagem?.file
@@ -613,6 +618,22 @@ export default function CriarEstudio({ id = null, initialData = null }) {
           })()
         : (imagem?.preview ?? null);
 
+      const proprietariosParaSalvar = await Promise.all(
+        proprietarios.map(async (p) => {
+          if (p.imagem?.file) {
+            const storageRef = ref(
+              storage,
+              `estudios/${docId}_prop_${p.imagem.file.name}`,
+            );
+            await uploadBytes(storageRef, p.imagem.file);
+            const url = await getDownloadURL(storageRef);
+            return { ...p, imagem: url };
+          }
+          if (p.imagem?.preview) return { ...p, imagem: p.imagem.preview };
+          return p;
+        }),
+      );
+
       await setDoc(
         doc(db, "estudios", docId),
         {
@@ -623,7 +644,7 @@ export default function CriarEstudio({ id = null, initialData = null }) {
           slogans,
           fundacoes,
           fundadores,
-          proprietarios,
+          proprietarios: proprietariosParaSalvar,
           redes,
           servicos,
           ativo,
@@ -633,7 +654,7 @@ export default function CriarEstudio({ id = null, initialData = null }) {
           cidade,
           bio,
           imagemUrl,
-          statusPublicacao: "rascunho",
+          ...(!isEdit && { statusPublicacao }),
           autor: user
             ? {
                 id: user.uid,
@@ -641,34 +662,24 @@ export default function CriarEstudio({ id = null, initialData = null }) {
                 avatarUrl: user.avatarUrl || "",
               }
             : null,
-          dataRascunho: serverTimestamp(),
+          ...(isPublicar
+            ? { dataPublicacao: serverTimestamp() }
+            : { dataRascunho: serverTimestamp() }),
         },
         { merge: true },
       );
       router.push("/adm/estudios");
     } catch (err) {
       console.error(err);
+      alert(`Erro ao salvar: ${err.message}`);
     } finally {
       setLoadingRascunho(false);
-    }
-  };
-
-  // ── Publicar ─────────────────────────────────────────────────────────────
-  const publicar = async () => {
-    if (!isEdit) return;
-    setLoadingPublicar(true);
-    try {
-      await updateDoc(doc(db, "estudios", id), {
-        statusPublicacao: "publicado",
-        dataPublicacao: serverTimestamp(),
-      });
-      router.push("/adm/estudios");
-    } catch (err) {
-      console.error(err);
-    } finally {
       setLoadingPublicar(false);
     }
   };
+
+  const salvarRascunho = () => salvar("rascunho");
+  const publicar = () => salvar("publicado");
 
   // ── Menu "•••" ────────────────────────────────────────────────────────────
   const [menuAberto, setMenuAberto] = useState(false);
@@ -894,10 +905,18 @@ export default function CriarEstudio({ id = null, initialData = null }) {
         )}
       </div>
       {isEdit ? (
+        <Button
+          variant="ghost"
+          label={loadingRascunho ? "Salvando..." : "Salvar alterações"}
+          type="button"
+          border="var(--stroke-base)"
+          onClick={salvarRascunho}
+        />
+      ) : (
         <>
           <Button
             variant="ghost"
-            label={loadingRascunho ? "Salvando..." : "Salvar alterações"}
+            label={loadingRascunho ? "Salvando..." : "Salvar rascunho"}
             type="button"
             border="var(--stroke-base)"
             onClick={salvarRascunho}
@@ -910,14 +929,6 @@ export default function CriarEstudio({ id = null, initialData = null }) {
             onClick={publicar}
           />
         </>
-      ) : (
-        <Button
-          variant="ghost"
-          label={loadingRascunho ? "Salvando..." : "Salvar rascunho"}
-          type="button"
-          border="var(--stroke-base)"
-          onClick={salvarRascunho}
-        />
       )}
     </>
   );

@@ -74,13 +74,14 @@
   z-index: 1;
 
   @media only screen and (max-width: 600px) {
-    padding: 10px 15px;
-    border-radius: 0px 15px 0px 0px;
+    padding: var(--space-sm);
+    border-radius: var(--space-md);
   }
 
   span {
     color: #fff;
     font-size: 20px;
+    font-style: italic;
     font-weight: 800;
     line-height: 90%;
     text-transform: uppercase;

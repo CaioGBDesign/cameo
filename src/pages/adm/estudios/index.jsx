@@ -8,6 +8,7 @@ import {
   doc,
   deleteDoc,
   setDoc,
+  updateDoc,
   serverTimestamp,
 } from "firebase/firestore";
 import { createPortal } from "react-dom";
@@ -187,10 +188,24 @@ export default function AdmEstudios() {
     setMenuAberto(null);
     if (acao === "editar") router.push(`/adm/estudios/editar/${estudio.id}`);
     if (acao === "duplicar") handleDuplicar(estudio);
+    if (acao === "publicar") handlePublicar(estudio);
     if (acao === "deletar") {
       setDeletandoId(estudio.id);
       setDeletandoNome(estudio.nome || estudio.id);
     }
+  };
+
+  // ─── Publicar ────────────────────────────────────────────
+  const handlePublicar = async (estudio) => {
+    await updateDoc(doc(db, "estudios", estudio.id), {
+      statusPublicacao: "publicado",
+      dataPublicacao: serverTimestamp(),
+    });
+    setEstudios((prev) =>
+      prev.map((e) =>
+        e.id === estudio.id ? { ...e, statusPublicacao: "publicado" } : e,
+      ),
+    );
   };
 
   // ─── Duplicar ────────────────────────────────────────────
@@ -452,6 +467,18 @@ export default function AdmEstudios() {
                       </span>
                       Editar
                     </button>
+                    {(e.statusPublicacao ?? "rascunho") === "rascunho" && (
+                      <button
+                        type="button"
+                        className={styles.menuItem}
+                        onClick={() => handleAcao("publicar", e)}
+                      >
+                        <span className={styles.menuItemIcon}>
+                          <StatusPublicadoIcon size={16} color="currentColor" />
+                        </span>
+                        Publicar
+                      </button>
+                    )}
                     <button
                       type="button"
                       className={styles.menuItem}

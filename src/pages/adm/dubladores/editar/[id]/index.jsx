@@ -117,6 +117,8 @@ const PARENTESCO_OPTS = [
   "Irmã",
   "Filho",
   "Filha",
+  "Nora",
+  "Genro",
   "Cônjuge",
   "Primo",
   "Prima",
@@ -126,6 +128,8 @@ const PARENTESCO_OPTS = [
   "Sobrinha",
   "Avô",
   "Avó",
+  "Neto",
+  "Neta",
   "Outro",
 ].map((p) => ({ value: p, label: p }));
 

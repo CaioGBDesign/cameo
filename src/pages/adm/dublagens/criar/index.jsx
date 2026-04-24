@@ -67,7 +67,12 @@ function FuncaoSearchInput({ opcoes = [], onSelecionar }) {
   );
 }
 
-function EstudioSearchInput({ value, onChange, estudios = [], estudioId = null }) {
+function EstudioSearchInput({
+  value,
+  onChange,
+  estudios = [],
+  estudioId = null,
+}) {
   const [aberto, setAberto] = useState(false);
   const wrapperRef = useRef(null);
 
@@ -183,7 +188,8 @@ export default function CriarDublagem({ id = null, initialData = null }) {
       ? initialData.dubladores.map((e) => ({
           ...ENTRADA_VAZIA,
           ...e,
-          nomeDublador: "",
+          nomeDublador: e.nomeDublador ?? "",
+          dubladorValido: e.idDublador != null,
         }))
       : [{ ...ENTRADA_VAZIA }],
   );
@@ -197,7 +203,10 @@ export default function CriarDublagem({ id = null, initialData = null }) {
   const importDropdownRef = useRef(null);
   useEffect(() => {
     const handler = (e) => {
-      if (importDropdownRef.current && !importDropdownRef.current.contains(e.target))
+      if (
+        importDropdownRef.current &&
+        !importDropdownRef.current.contains(e.target)
+      )
         setImportDropdownAberto(false);
     };
     document.addEventListener("mousedown", handler);
@@ -373,15 +382,28 @@ export default function CriarDublagem({ id = null, initialData = null }) {
       const novasEntradas = [];
       rows.forEach((row) => {
         const nome = (row["Nome"] || row["nome"] || "").toString().trim();
-        const personagem = (row["Personagem"] || row["personagem"] || "").toString().trim();
-        const atorOriginal = (row["Ator Original"] || row["ator original"] || row["Ator original"] || "").toString().trim();
+        const personagem = (row["Personagem"] || row["personagem"] || "")
+          .toString()
+          .trim();
+        const atorOriginal = (
+          row["Ator Original"] ||
+          row["ator original"] ||
+          row["Ator original"] ||
+          ""
+        )
+          .toString()
+          .trim();
         if (!nome) return;
-        const found = dubladores.find((d) =>
-          (d.nomeArtistico || d.nomeCompleto || "").toLowerCase() === nome.toLowerCase()
+        const found = dubladores.find(
+          (d) =>
+            (d.nomeArtistico || d.nomeCompleto || "").toLowerCase() ===
+            nome.toLowerCase(),
         );
         novasEntradas.push({
           idDublador: found ? found.id : "",
-          nomeDublador: found ? (found.nomeArtistico || found.nomeCompleto) : nome,
+          nomeDublador: found
+            ? found.nomeArtistico || found.nomeCompleto
+            : nome,
           dubladorValido: !!found,
           personagem,
           atorOriginal,
@@ -391,7 +413,11 @@ export default function CriarDublagem({ id = null, initialData = null }) {
       setEntradas((prev) => {
         const existentes = prev.filter((e) => e.nomeDublador.trim());
         const novos = novasEntradas.filter(
-          (n) => !existentes.some((e) => e.nomeDublador.toLowerCase() === n.nomeDublador.toLowerCase())
+          (n) =>
+            !existentes.some(
+              (e) =>
+                e.nomeDublador.toLowerCase() === n.nomeDublador.toLowerCase(),
+            ),
         );
         const merged = [...existentes, ...novos];
         return merged.length > 0 ? merged : [{ ...ENTRADA_VAZIA }];
@@ -413,18 +439,26 @@ export default function CriarDublagem({ id = null, initialData = null }) {
       const rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
 
       const novaEquipe = {};
-      let novaDirecaoNome = null, novaDirecaoId = null;
-      let novaTraducaoNome = null, novaTraducaoId = null;
+      let novaDirecaoNome = null,
+        novaDirecaoId = null;
+      let novaTraducaoNome = null,
+        novaTraducaoId = null;
 
       rows.forEach((row) => {
-        const funcao = (row["Função"] || row["funcao"] || row["Funcao"] || "").toString().trim();
+        const funcao = (row["Função"] || row["funcao"] || row["Funcao"] || "")
+          .toString()
+          .trim();
         const nome = (row["Nome"] || row["nome"] || "").toString().trim();
         if (!funcao || !nome) return;
         const funcaoLower = funcao.toLowerCase();
-        const found = dubladores.find((d) =>
-          (d.nomeArtistico || d.nomeCompleto || "").toLowerCase() === nome.toLowerCase()
+        const found = dubladores.find(
+          (d) =>
+            (d.nomeArtistico || d.nomeCompleto || "").toLowerCase() ===
+            nome.toLowerCase(),
         );
-        const nomeResolvido = found ? (found.nomeArtistico || found.nomeCompleto) : nome;
+        const nomeResolvido = found
+          ? found.nomeArtistico || found.nomeCompleto
+          : nome;
         const idResolvido = found ? found.id : null;
 
         if (funcaoLower.includes("dire")) {
@@ -443,17 +477,32 @@ export default function CriarDublagem({ id = null, initialData = null }) {
         }
       });
 
-      if (novaDirecaoNome) { setDirecaoNome(novaDirecaoNome); setDirecaoId(novaDirecaoId); }
-      if (novaTraducaoNome) { setTraducaoNome(novaTraducaoNome); setTraducaoId(novaTraducaoId); }
+      if (novaDirecaoNome) {
+        setDirecaoNome(novaDirecaoNome);
+        setDirecaoId(novaDirecaoId);
+      }
+      if (novaTraducaoNome) {
+        setTraducaoNome(novaTraducaoNome);
+        setTraducaoId(novaTraducaoId);
+      }
 
       setEquipeTecnica((prev) => {
         const updated = [...prev];
         Object.entries(novaEquipe).forEach(([funcao, profissionais]) => {
-          const idx = updated.findIndex((e) => e.funcao.toLowerCase() === funcao.toLowerCase());
+          const idx = updated.findIndex(
+            (e) => e.funcao.toLowerCase() === funcao.toLowerCase(),
+          );
           if (idx >= 0) {
-            const existentesNomes = updated[idx].profissionais.map((p) => p.nome?.toLowerCase());
-            const novos = profissionais.filter((p) => !existentesNomes.includes(p.nome?.toLowerCase()));
-            updated[idx] = { ...updated[idx], profissionais: [...updated[idx].profissionais, ...novos] };
+            const existentesNomes = updated[idx].profissionais.map((p) =>
+              p.nome?.toLowerCase(),
+            );
+            const novos = profissionais.filter(
+              (p) => !existentesNomes.includes(p.nome?.toLowerCase()),
+            );
+            updated[idx] = {
+              ...updated[idx],
+              profissionais: [...updated[idx].profissionais, ...novos],
+            };
           } else {
             updated.push({ funcao, profissionais });
           }
@@ -489,7 +538,7 @@ export default function CriarDublagem({ id = null, initialData = null }) {
     setImportDropdownAberto(false);
   };
 
-    // ── Salvar ─────────────────────────────────────────────────────────────────
+  // ── Salvar ─────────────────────────────────────────────────────────────────
   // ── Importar planilha ─────────────────────────────────────────────────────
   const handleImportarPlanilha = (e) => {
     const file = e.target.files?.[0];
@@ -505,19 +554,35 @@ export default function CriarDublagem({ id = null, initialData = null }) {
       const novaEquipe = {};
 
       rows.forEach((row) => {
-        const tipo = (row["Tipo"] || row["tipo"] || "").toString().trim().toLowerCase();
-        const personagem = (row["Personagem"] || row["personagem"] || "").toString().trim();
-        const atorOriginal = (row["Ator Original"] || row["ator original"] || row["Ator original"] || "").toString().trim();
+        const tipo = (row["Tipo"] || row["tipo"] || "")
+          .toString()
+          .trim()
+          .toLowerCase();
+        const personagem = (row["Personagem"] || row["personagem"] || "")
+          .toString()
+          .trim();
+        const atorOriginal = (
+          row["Ator Original"] ||
+          row["ator original"] ||
+          row["Ator original"] ||
+          ""
+        )
+          .toString()
+          .trim();
         const nome = (row["Nome"] || row["nome"] || "").toString().trim();
         if (!nome) return;
 
         if (tipo === "dublador") {
-          const found = dubladores.find((d) =>
-            (d.nomeArtistico || d.nomeCompleto || "").toLowerCase() === nome.toLowerCase()
+          const found = dubladores.find(
+            (d) =>
+              (d.nomeArtistico || d.nomeCompleto || "").toLowerCase() ===
+              nome.toLowerCase(),
           );
           novasEntradas.push({
             idDublador: found ? found.id : "",
-            nomeDublador: found ? (found.nomeArtistico || found.nomeCompleto) : nome,
+            nomeDublador: found
+              ? found.nomeArtistico || found.nomeCompleto
+              : nome,
             dubladorValido: !!found,
             personagem,
             atorOriginal,
@@ -525,12 +590,14 @@ export default function CriarDublagem({ id = null, initialData = null }) {
         } else if (tipo) {
           const funcao = tipo.charAt(0).toUpperCase() + tipo.slice(1);
           if (!novaEquipe[funcao]) novaEquipe[funcao] = [];
-          const found = dubladores.find((d) =>
-            (d.nomeArtistico || d.nomeCompleto || "").toLowerCase() === nome.toLowerCase()
+          const found = dubladores.find(
+            (d) =>
+              (d.nomeArtistico || d.nomeCompleto || "").toLowerCase() ===
+              nome.toLowerCase(),
           );
           novaEquipe[funcao].push({
             tipo: "Pessoa",
-            nome: found ? (found.nomeArtistico || found.nomeCompleto) : nome,
+            nome: found ? found.nomeArtistico || found.nomeCompleto : nome,
             idPessoa: found ? found.id : null,
           });
         }
@@ -539,7 +606,11 @@ export default function CriarDublagem({ id = null, initialData = null }) {
       setEntradas((prev) => {
         const existentes = prev.filter((e) => e.nomeDublador.trim());
         const novos = novasEntradas.filter(
-          (n) => !existentes.some((e) => e.nomeDublador.toLowerCase() === n.nomeDublador.toLowerCase())
+          (n) =>
+            !existentes.some(
+              (e) =>
+                e.nomeDublador.toLowerCase() === n.nomeDublador.toLowerCase(),
+            ),
         );
         const merged = [...existentes, ...novos];
         return merged.length > 0 ? merged : [{ ...ENTRADA_VAZIA }];
@@ -548,11 +619,20 @@ export default function CriarDublagem({ id = null, initialData = null }) {
       setEquipeTecnica((prev) => {
         const updated = [...prev];
         Object.entries(novaEquipe).forEach(([funcao, profissionais]) => {
-          const idx = updated.findIndex((e) => e.funcao.toLowerCase() === funcao.toLowerCase());
+          const idx = updated.findIndex(
+            (e) => e.funcao.toLowerCase() === funcao.toLowerCase(),
+          );
           if (idx >= 0) {
-            const existentesNomes = updated[idx].profissionais.map((p) => p.nome?.toLowerCase());
-            const novos = profissionais.filter((p) => !existentesNomes.includes(p.nome?.toLowerCase()));
-            updated[idx] = { ...updated[idx], profissionais: [...updated[idx].profissionais, ...novos] };
+            const existentesNomes = updated[idx].profissionais.map((p) =>
+              p.nome?.toLowerCase(),
+            );
+            const novos = profissionais.filter(
+              (p) => !existentesNomes.includes(p.nome?.toLowerCase()),
+            );
+            updated[idx] = {
+              ...updated[idx],
+              profissionais: [...updated[idx].profissionais, ...novos],
+            };
           } else {
             updated.push({ funcao, profissionais });
           }
@@ -586,8 +666,6 @@ export default function CriarDublagem({ id = null, initialData = null }) {
       if (!idFilme.trim()) e.idFilme = true;
       if (!nomeFilme.trim()) e.nomeFilme = true;
       entradas.forEach((entrada, i) => {
-        if (!entrada.idDublador || !entrada.dubladorValido)
-          e[`idDublador_${i}`] = true;
         if (!entrada.personagem.trim()) e[`personagem_${i}`] = true;
         if (!entrada.atorOriginal.trim()) e[`atorOriginal_${i}`] = true;
       });
@@ -618,7 +696,8 @@ export default function CriarDublagem({ id = null, initialData = null }) {
           }))
           .filter((e) => e.profissionais.length > 0),
         dubladores: entradas.map((e) => ({
-          idDublador: e.idDublador.trim().toUpperCase(),
+          idDublador: e.dubladorValido ? e.idDublador.trim().toUpperCase() : null,
+          nomeDublador: e.nomeDublador.trim(),
           personagem: e.personagem.trim(),
           atorOriginal: e.atorOriginal.trim(),
         })),
@@ -1049,11 +1128,6 @@ export default function CriarDublagem({ id = null, initialData = null }) {
                       setErros((p) => ({ ...p, [`idDublador_${i}`]: false }));
                     }}
                   />
-                  {!!erros[`idDublador_${i}`] && (
-                    <span className={styles.nomeDubladorErro}>
-                      Selecione um dublador válido
-                    </span>
-                  )}
                 </div>
 
                 <TextInput

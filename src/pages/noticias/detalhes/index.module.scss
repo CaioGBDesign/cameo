@@ -284,19 +284,23 @@
 
           @media only screen and (max-width: 650px) {
             margin-top: -40px;
+            gap: var(--space-2xl);
+
+            padding: var(--space-lg);
           }
 
           .contTags {
             @media only screen and (max-width: 600px) {
-              width: 350px;
+              width: 100%;
+              max-width: 100%;
 
-              overflow-y: scroll;
+              overflow-x: auto;
+              overflow-y: hidden;
 
               display: flex;
               justify-content: start;
               align-items: center;
 
-              /* width */
               &::-webkit-scrollbar {
                 display: none;
               }
@@ -307,6 +311,13 @@
               justify-content: center;
               align-items: center;
               gap: 10px;
+
+              align-self: stretch;
+              flex-wrap: wrap;
+
+              @media only screen and (max-width: 600px) {
+                justify-content: start;
+              }
 
               .tag {
                 background: var(--stroke-quaternary);
@@ -332,7 +343,7 @@
             color: var(--text-base);
 
             @media only screen and (max-width: 600px) {
-              font-size: 34px;
+              font-size: 25px;
             }
           }
 
@@ -443,8 +454,15 @@
       }
 
       .metaInfo {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+
         @media only screen and (max-width: 600px) {
           order: 0;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
         }
 
         .tempoLeitura {
@@ -468,6 +486,7 @@
 
     .conteudoLayout {
       display: flex;
+      flex-direction: column;
       align-items: flex-start;
       gap: 40px;
       width: 100%;
@@ -488,6 +507,10 @@
       display: flex;
       flex-direction: column;
       gap: 24px;
+
+      @media only screen and (max-width: 600px) {
+        width: 100%;
+      }
     }
 
     .sidebarTopo {

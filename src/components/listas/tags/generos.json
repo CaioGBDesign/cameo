@@ -51,6 +51,16 @@
   },
   {
     "id": "genero",
+    "name": "HQ",
+    "Exibir": "Sim"
+  },
+  {
+    "id": "genero",
+    "name": "Livros",
+    "Exibir": "Sim"
+  },
+  {
+    "id": "genero",
     "name": "História",
     "Exibir": "Não"
   },

@@ -287,7 +287,10 @@
   color: var(--text-sub);
   font-size: 0.875rem;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
 
   &:hover:not(:disabled) {
     background: var(--bg-overlay);
@@ -499,8 +502,12 @@
   font-style: italic;
   outline: none;
 
-  &::placeholder { color: var(--text-sub); }
-  &:focus { border-color: var(--stroke-solid); }
+  &::placeholder {
+    color: var(--text-sub);
+  }
+  &:focus {
+    border-color: var(--stroke-solid);
+  }
 }
 
 .colDropdownItem {
@@ -517,7 +524,9 @@
   font-style: italic;
   text-align: left;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 
   &:hover {
     background: var(--bg-overlay);
@@ -551,8 +560,14 @@
 }
 
 @keyframes toastIn {
-  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
-  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 // ─── Ações ──────────────────────────────────────────────
@@ -566,7 +581,9 @@
   border-radius: var(--space-sm);
   font-size: 1rem;
   letter-spacing: 2px;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 
   &:hover {
     background: var(--bg-base);

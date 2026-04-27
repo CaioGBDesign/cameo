@@ -486,10 +486,13 @@
 
     .conteudoLayout {
       display: flex;
-      flex-direction: column;
       align-items: flex-start;
       gap: 40px;
       width: 100%;
+
+      @media only screen and (max-width: 600px) {
+        flex-direction: column;
+      }
     }
 
     .separadorVertical {

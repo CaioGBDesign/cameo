@@ -46,6 +46,16 @@
   },
   {
     "id": "empresa",
+    "name": "MEC Livros",
+    "Exibir": "Não"
+  },
+  {
+    "id": "empresa",
+    "name": "Ministério da Educação",
+    "Exibir": "Não"
+  },
+  {
+    "id": "empresa",
     "name": "Netflix",
     "Exibir": "Sim"
   },

@@ -113,6 +113,8 @@ const PARENTESCO_OPTS = [
   "Irmã",
   "Filho",
   "Filha",
+  "Enteado",
+  "Enteada",
   "Nora",
   "Genro",
   "Cônjuge",
@@ -122,10 +124,16 @@ const PARENTESCO_OPTS = [
   "Tia",
   "Sobrinho",
   "Sobrinha",
+  "Afilhado",
+  "Afilhada",
   "Avô",
   "Avó",
   "Neto",
   "Neta",
+  "Bisneto",
+  "Bisneta",
+  "Padrasto",
+  "Madrasta",
   "Outro",
 ].map((p) => ({ value: p, label: p }));
 
@@ -273,6 +281,13 @@ function formatarData(iso) {
   return `${d}/${m}/${y}`;
 }
 
+function mascaraData(valor) {
+  const d = valor.replace(/\D/g, "").slice(0, 8);
+  if (d.length <= 4) return d;
+  if (d.length <= 6) return `${d.slice(0, 2)}/${d.slice(2)}`;
+  return `${d.slice(0, 2)}/${d.slice(2, 4)}/${d.slice(4)}`;
+}
+
 export default function AdmCriarDublador() {
   const { user } = useAuth();
   const router = useRouter();
@@ -282,8 +297,6 @@ export default function AdmCriarDublador() {
   const [nomeArtistico, setNomeArtistico] = useState("");
   const [dataNascimento, setDataNascimento] = useState("");
   const [anoInicioDublagem, setAnoInicioDublagem] = useState("");
-  const [exibirDataInicioCompleta, setExibirDataInicioCompleta] =
-    useState(false);
   const [verificarFamiliares, setVerificarFamiliares] = useState(false);
   const [nacionalidade, setNacionalidade] = useState("");
   const [estadoNatal, setEstadoNatal] = useState("");
@@ -328,7 +341,6 @@ export default function AdmCriarDublador() {
       nomeArtistico,
       dataNascimento,
       anoInicioDublagem,
-      exibirDataInicioCompleta,
       verificarFamiliares,
       nacionalidade,
       estadoNatal,
@@ -452,20 +464,9 @@ export default function AdmCriarDublador() {
         />
         <TextInput
           label="Início na dublagem"
+          placeholder="DD/MM/AAAA"
           value={anoInicioDublagem}
-          onChange={(e) => setAnoInicioDublagem(e.target.value)}
-          type="date"
-        />
-      </div>
-
-      <div className={styles.toggleRow}>
-        <label className={styles.toggleLabel} htmlFor="exibir-data-inicio">
-          Exibir data início completa?
-        </label>
-        <Switch
-          id="exibir-data-inicio"
-          checked={exibirDataInicioCompleta}
-          onChange={(e) => setExibirDataInicioCompleta(e.target.checked)}
+          onChange={(e) => setAnoInicioDublagem(mascaraData(e.target.value))}
         />
       </div>
 

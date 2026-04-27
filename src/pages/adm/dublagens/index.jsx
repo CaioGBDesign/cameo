@@ -55,6 +55,11 @@ export default function AdmDublagens() {
   const [deletandoId, setDeletandoId] = useState(null);
   const [deletandoNome, setDeletandoNome] = useState("");
 
+  const [busca, setBusca] = useState("");
+  const [colDropdown, setColDropdown] = useState(null);
+  const [colDropdownPos, setColDropdownPos] = useState({ top: 0, left: 0 });
+  const colDropdownRef = useRef(null);
+
   useEffect(() => {
     const fetchFilmes = async () => {
       try {
@@ -72,10 +77,18 @@ export default function AdmDublagens() {
     const handler = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target))
         setMenuAberto(null);
+      if (colDropdownRef.current && !colDropdownRef.current.contains(e.target))
+        setColDropdown(null);
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+
+  const setSort = (col, dir) => {
+    setSortCol(col);
+    setSortDir(dir);
+    setColDropdown(null);
+  };
 
   const toggleSort = (col) => {
     if (sortCol === col) setSortDir((d) => (d === "asc" ? "desc" : "asc"));
@@ -83,6 +96,13 @@ export default function AdmDublagens() {
       setSortCol(col);
       setSortDir("asc");
     }
+  };
+
+  const abrirColDropdown = (col, e) => {
+    e.stopPropagation();
+    const rect = e.currentTarget.getBoundingClientRect();
+    setColDropdownPos({ top: rect.bottom + window.scrollY + 4, left: rect.left + window.scrollX });
+    setColDropdown((prev) => (prev === col ? null : col));
   };
 
   const tempoRelativo = (timestamp) => {
@@ -95,7 +115,11 @@ export default function AdmDublagens() {
     return `${dias} dias`;
   };
 
-  const filmesOrdenados = [...filmes].sort((a, b) => {
+  const filmesFiltrados = busca.trim()
+    ? filmes.filter((f) => (f.nomeFilme ?? "").toLowerCase().includes(busca.toLowerCase()))
+    : filmes;
+
+  const filmesOrdenados = [...filmesFiltrados].sort((a, b) => {
     let va, vb;
     if (sortCol === "nomeFilme") {
       va = a.nomeFilme ?? "";
@@ -202,14 +226,11 @@ export default function AdmDublagens() {
                   <th className={styles.colNome}>
                     <button
                       type="button"
-                      className={`${styles.thBtn} ${sortCol === "nomeFilme" ? styles.thBtnAtivo : ""}`}
-                      onClick={() => toggleSort("nomeFilme")}
+                      className={`${styles.thBtn} ${colDropdown === "nomeFilme" ? styles.thBtnAtivo : ""}`}
+                      onClick={(e) => abrirColDropdown("nomeFilme", e)}
                     >
                       Nome do filme{" "}
-                      <SortIcon
-                        active={sortCol === "nomeFilme"}
-                        dir={sortDir}
-                      />
+                      <SortIcon active={sortCol === "nomeFilme"} dir={sortDir} />
                     </button>
                   </th>
                   <th style={{ width: 120 }}>
@@ -382,6 +403,47 @@ export default function AdmDublagens() {
           </div>
         )}
       </div>
+
+      {/* ─── Col dropdown nome do filme ─────────────────────── */}
+      {colDropdown === "nomeFilme" &&
+        createPortal(
+          <div
+            ref={colDropdownRef}
+            className={styles.colDropdown}
+            style={{ top: colDropdownPos.top, left: colDropdownPos.left }}
+          >
+            <div className={styles.colDropdownGrupo}>
+              <input
+                autoFocus
+                type="text"
+                className={styles.colDropdownBusca}
+                placeholder="Buscar filme..."
+                value={busca}
+                onChange={(e) => {
+                  setBusca(e.target.value);
+                  setPagina(1);
+                }}
+              />
+            </div>
+            <div className={styles.colDropdownGrupo}>
+              <button
+                type="button"
+                className={`${styles.colDropdownItem} ${sortCol === "nomeFilme" && sortDir === "asc" ? styles.colDropdownItemAtivo : ""}`}
+                onClick={() => setSort("nomeFilme", "asc")}
+              >
+                <SortIcon active={sortCol === "nomeFilme" && sortDir === "asc"} dir="asc" /> Crescente
+              </button>
+              <button
+                type="button"
+                className={`${styles.colDropdownItem} ${sortCol === "nomeFilme" && sortDir === "desc" ? styles.colDropdownItemAtivo : ""}`}
+                onClick={() => setSort("nomeFilme", "desc")}
+              >
+                <SortIcon active={sortCol === "nomeFilme" && sortDir === "desc"} dir="desc" /> Decrescente
+              </button>
+            </div>
+          </div>,
+          document.body,
+        )}
 
       {/* ─── Menu dropdown ações ─────────────────────────────── */}
       {menuAberto &&

@@ -90,7 +90,8 @@ function EstudioSearchInput({
       (e) =>
         !value.trim() || e.nome?.toLowerCase().includes(value.toLowerCase()),
     )
-    .slice(0, 6);
+    .sort((a, b) => (a.nome ?? "").localeCompare(b.nome ?? "", "pt"))
+    .slice(0, 20);
 
   const selecionar = (e) => {
     onChange(e.nome, e.id);

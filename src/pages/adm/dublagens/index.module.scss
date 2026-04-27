@@ -1,3 +1,71 @@
+// ─── Col Dropdown ────────────────────────────────────────
+
+.colDropdown {
+  position: fixed;
+  z-index: 300;
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-lg);
+  min-width: 200px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.colDropdownGrupo {
+  padding: var(--space-sm);
+
+  & + & {
+    border-top: 1px solid var(--stroke-base);
+    padding-top: var(--space-sm);
+  }
+}
+
+.colDropdownBusca {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  color: var(--text-base);
+  font-size: 0.875rem;
+  font-style: italic;
+  outline: none;
+
+  &::placeholder { color: var(--text-sub); }
+  &:focus { border-color: var(--stroke-solid); }
+}
+
+.colDropdownItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
+  padding: var(--space-sm);
+  background: transparent;
+  border: none;
+  border-radius: var(--space-xs);
+  color: var(--text-sub);
+  font-size: 0.875rem;
+  font-style: italic;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    background: var(--bg-overlay);
+    color: var(--text-base);
+  }
+}
+
+.colDropdownItemAtivo {
+  color: var(--text-base);
+  background: var(--bg-overlay);
+}
+
+// ─────────────────────────────────────────────────────────
+
 .page {
   padding: var(--space-2xl);
   padding-top: var(--space-nn);

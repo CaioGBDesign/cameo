@@ -27,7 +27,10 @@ function calcularItemsPorPagina() {
   if (typeof window === "undefined") return 56;
   const isMobile = window.innerWidth <= 768;
   const containerWidth = window.innerWidth * (isMobile ? 1 : 0.85);
-  const cols = Math.max(1, Math.floor(containerWidth / (CARD_WIDTH + CARD_GAP)));
+  const cols = Math.max(
+    1,
+    Math.floor(containerWidth / (CARD_WIDTH + CARD_GAP)),
+  );
   return cols * (isMobile ? LINHAS_MOBILE : LINHAS_DESKTOP);
 }
 
@@ -64,11 +67,15 @@ export default function DubladoresPage() {
     getDocs(collection(db, "filmes")).then(async (snap) => {
       const comElenco = snap.docs
         .map((d) => d.data())
-        .filter((f) => Array.isArray(f.dubladores) && f.dubladores.length > 0 && f.idFilme);
+        .filter(
+          (f) =>
+            Array.isArray(f.dubladores) && f.dubladores.length > 0 && f.idFilme,
+        );
 
       if (!comElenco.length) return;
 
-      const rndFirestore = comElenco[Math.floor(Math.random() * comElenco.length)];
+      const rndFirestore =
+        comElenco[Math.floor(Math.random() * comElenco.length)];
 
       const ids = (rndFirestore.dubladores ?? [])
         .map((e) => e.idDublador)
@@ -78,7 +85,7 @@ export default function DubladoresPage() {
         await Promise.all(
           ids.map((id) =>
             getDoc(doc(db, "dubladores", id))
-              .then((s) => s.exists() ? s.data().imagemUrl ?? null : null)
+              .then((s) => (s.exists() ? (s.data().imagemUrl ?? null) : null))
               .catch(() => null),
           ),
         )
@@ -114,7 +121,9 @@ export default function DubladoresPage() {
         const trailer = data.videos?.results?.find(
           (v) => v.type === "Trailer" && v.site === "YouTube",
         );
-        setTrailerLink(trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : null);
+        setTrailerLink(
+          trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : null,
+        );
         setReleaseDates(data.release_dates?.results || []);
       } catch {}
     });

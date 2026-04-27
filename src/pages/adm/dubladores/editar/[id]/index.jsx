@@ -121,6 +121,8 @@ const PARENTESCO_OPTS = [
   "Enteada",
   "Nora",
   "Genro",
+  "Sogro",
+  "Sogra",
   "Cônjuge",
   "Primo",
   "Prima",

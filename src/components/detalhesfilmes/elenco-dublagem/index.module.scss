@@ -196,13 +196,17 @@
 
           span {
             color: var(--text-sub);
-            text-align: center;
+            text-align: left;
             leading-trim: both;
             text-edge: cap;
             font-size: 12px;
             font-style: italic;
             font-weight: 400;
             line-height: normal;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 140px;
           }
         }
       }

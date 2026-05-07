@@ -195,6 +195,9 @@ export default function AdmDubladores() {
     } else if (sortCol === "statusPublicacao") {
       va = a.statusPublicacao ?? "";
       vb = b.statusPublicacao ?? "";
+    } else if (sortCol === "codigo") {
+      va = a.id ?? "";
+      vb = b.id ?? "";
     } else if (sortCol === "criadoEm") {
       va = a.dataCadastro?.toMillis() ?? 0;
       vb = b.dataCadastro?.toMillis() ?? 0;
@@ -234,7 +237,10 @@ export default function AdmDubladores() {
     setMenuAberto(null);
     if (acao === "editar") router.push(`/adm/dubladores/editar/${dublador.id}`);
     if (acao === "visualizar")
-      window.open(`/dubladores/${toSlug(dublador.nomeArtistico || dublador.id)}`, "_blank");
+      window.open(
+        `/dubladores/${toSlug(dublador.nomeArtistico || dublador.id)}`,
+        "_blank",
+      );
     if (acao === "deletar") {
       setDeletandoId(dublador.id);
       setDeletandoNome(dublador.nomeArtistico);
@@ -301,7 +307,16 @@ export default function AdmDubladores() {
                       />
                     </button>
                   </th>
-                  <th style={{ width: 110 }}>Código</th>
+                  <th style={{ width: 110 }}>
+                    <button
+                      type="button"
+                      className={`${styles.thBtn} ${sortCol === "codigo" ? styles.thBtnAtivo : ""}`}
+                      onClick={() => toggleSort("codigo")}
+                    >
+                      Código{" "}
+                      <SortIcon active={sortCol === "codigo"} dir={sortDir} />
+                    </button>
+                  </th>
                   <th style={{ width: 150 }}>
                     <button
                       type="button"

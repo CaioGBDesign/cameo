@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { db } from "@/services/firebaseConection";
+import { db, storage } from "@/services/firebaseConection";
 import {
   collection,
   getDocs,
@@ -10,6 +10,7 @@ import {
   updateDoc,
   serverTimestamp,
 } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import CloseIcon from "@/components/icons/CloseIcon";
 import * as XLSX from "xlsx";
 import { FamiliarNomeInput } from "@/pages/adm/dubladores/criar";
@@ -197,7 +198,18 @@ export default function CriarDublagem({ id = null, initialData = null }) {
 
   const [sidebarView, setSidebarView] = useState(0);
   const [equipeTecnica, setEquipeTecnica] = useState(
-    Array.isArray(initialData?.equipeTecnica) ? initialData.equipeTecnica : [],
+    Array.isArray(initialData?.equipeTecnica)
+      ? initialData.equipeTecnica.map((e) => ({
+          ...e,
+          profissionais: e.profissionais.map((p) => ({
+            ...p,
+            imagem:
+              typeof p.imagem === "string"
+                ? { preview: p.imagem, file: null }
+                : (p.imagem ?? null),
+          })),
+        }))
+      : [],
   );
   const [loading, setLoading] = useState(false);
   const [importDropdownAberto, setImportDropdownAberto] = useState(false);
@@ -673,6 +685,33 @@ export default function CriarDublagem({ id = null, initialData = null }) {
       setErros(e);
       if (Object.keys(e).length > 0) return;
 
+      const docId = isEdit ? id : await gerarId();
+
+      const equipeTecnicaParaSalvar = (
+        await Promise.all(
+          equipeTecnica.map(async (e) => {
+            const profsFiltrados =
+              e.funcao === "Data de Gravação"
+                ? e.profissionais.filter((p) => p.data)
+                : e.profissionais.filter((p) => p.nome?.trim());
+
+            const profsProcessados = await Promise.all(
+              profsFiltrados.map(async (p) => {
+                if (p.imagem?.file) {
+                  const storageRef = ref(storage, `filmes/${docId}_prof_${p.imagem.file.name}`);
+                  await uploadBytes(storageRef, p.imagem.file);
+                  const url = await getDownloadURL(storageRef);
+                  return { ...p, imagem: url };
+                }
+                if (p.imagem?.preview) return { ...p, imagem: p.imagem.preview };
+                return p;
+              }),
+            );
+            return { funcao: e.funcao, profissionais: profsProcessados };
+          }),
+        )
+      ).filter((e) => e.profissionais.length > 0);
+
       const dados = {
         idFilme: parseInt(idFilme) || idFilme.trim(),
         nomeFilme: nomeFilme.trim(),
@@ -687,17 +726,11 @@ export default function CriarDublagem({ id = null, initialData = null }) {
             ? { id: null, nome: traducaoNome.trim() }
             : null,
         producao,
-        equipeTecnica: equipeTecnica
-          .map((e) => ({
-            funcao: e.funcao,
-            profissionais:
-              e.funcao === "Data de Gravação"
-                ? e.profissionais.filter((p) => p.data)
-                : e.profissionais.filter((p) => p.nome?.trim()),
-          }))
-          .filter((e) => e.profissionais.length > 0),
+        equipeTecnica: equipeTecnicaParaSalvar,
         dubladores: entradas.map((e) => ({
-          idDublador: e.dubladorValido ? e.idDublador.trim().toUpperCase() : null,
+          idDublador: e.dubladorValido
+            ? e.idDublador.trim().toUpperCase()
+            : null,
           nomeDublador: e.nomeDublador.trim(),
           personagem: e.personagem.trim(),
           atorOriginal: e.atorOriginal.trim(),
@@ -708,11 +741,10 @@ export default function CriarDublagem({ id = null, initialData = null }) {
       if (isEdit) {
         await updateDoc(doc(db, "filmes", id), dados);
       } else {
-        const newId = await gerarId();
         dados.autorId = user?.uid ?? null;
         dados.autorNome = user?.nome ?? null;
         dados.dataCadastro = serverTimestamp();
-        await setDoc(doc(db, "filmes", newId), dados);
+        await setDoc(doc(db, "filmes", docId), dados);
       }
       router.push("/adm/dublagens");
     } finally {

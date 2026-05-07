@@ -119,6 +119,8 @@ const PARENTESCO_OPTS = [
   "Genro",
   "Sogro",
   "Sogra",
+  "Cunhado",
+  "Cunhada",
   "Cônjuge",
   "Primo",
   "Prima",

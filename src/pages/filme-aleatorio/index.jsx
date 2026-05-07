@@ -210,7 +210,24 @@ export default function FilmeAleatorio() {
             }),
           );
 
-          setElencoDublagem(comInfo);
+          const chave = (e) => e.idDublador || e.nomeDublador || e.nomeArtistico || "";
+          const agrupado = [];
+          const visto = new Map();
+          for (const e of comInfo) {
+            const k = chave(e);
+            if (visto.has(k)) {
+              const idx = visto.get(k);
+              const personagens = agrupado[idx].personagem
+                ? `${agrupado[idx].personagem}, ${e.personagem}`
+                : e.personagem;
+              agrupado[idx] = { ...agrupado[idx], personagem: personagens };
+            } else {
+              visto.set(k, agrupado.length);
+              agrupado.push({ ...e });
+            }
+          }
+
+          setElencoDublagem(agrupado);
         } catch {}
       };
 

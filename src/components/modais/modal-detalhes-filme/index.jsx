@@ -12,6 +12,7 @@ import Button from "@/components/button";
 import ChevronDownIcon from "@/components/icons/ChevronDownIcon";
 import StarRatingIcon from "@/components/icons/StarRatingIcon";
 import TrashIcon from "@/components/icons/TrashIcon";
+import { toSlug } from "@/utils/slug";
 import styles from "./index.module.scss";
 
 const TMDB_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
@@ -304,7 +305,7 @@ export default function ModalDetalhesFilme({
             variant="solid"
             label="Ver detalhes"
             onClick={() => {
-              router.push(`/filme-aleatorio?id=${filmeAtual.id}`);
+              router.push(`/filme-aleatorio/${toSlug(filmeAtual.title)}-${filmeAtual.id}`);
               onClose();
             }}
             width={isMobile ? "100%" : "220px"}

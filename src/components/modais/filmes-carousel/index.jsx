@@ -7,6 +7,7 @@ import DeletarFilme from "@/components/modais/deletar-filmes";
 import HeartIcon from "@/components/icons/HeartIcon";
 import { useIsMobile } from "@/components/DeviceProvider";
 import Estrelas from "@/components/estrelas";
+import { toSlug } from "@/utils/slug";
 
 const FilmesCarousel = ({
   filmes,
@@ -58,9 +59,7 @@ const FilmesCarousel = ({
   // Função para atualizar a URL ao clicar na imagem
   const handleImageClick = () => {
     if (selectedFilm) {
-      router.push(`/filme-aleatorio/?id=${selectedFilm.id}`, undefined, {
-        shallow: true,
-      });
+      router.push(`/filme-aleatorio/${toSlug(selectedFilm.title)}-${selectedFilm.id}`);
     }
   };
 

@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from "react";
+import { toSlug } from "@/utils/slug";
 import { useRouter } from "next/router";
 import { useIsMobile } from "@/components/DeviceProvider";
 import Head from "next/head";
@@ -50,7 +51,7 @@ const Busca = () => {
   }, [query, fetchFilmes]);
 
   const handleFilmeClick = (filme) => {
-    router.push({ pathname: "/filme-aleatorio", query: { id: filme.id } });
+    router.push(`/filme-aleatorio/${toSlug(filme.title)}-${filme.id}`);
   };
 
   return (

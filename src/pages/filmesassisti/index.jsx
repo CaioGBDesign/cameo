@@ -39,7 +39,10 @@ export default function FilmesAssisti() {
   const [currentPage, setCurrentPage] = useState(1);
   const [busca, setBusca] = useState("");
   const [modalMetaAberto, setModalMetaAberto] = useState(false);
-  const [modalDetalhes, setModalDetalhes] = useState({ aberto: false, index: 0 });
+  const [modalDetalhes, setModalDetalhes] = useState({
+    aberto: false,
+    index: 0,
+  });
   const [metaParaAbrir, setMetaParaAbrir] = useState(null);
   const ITEMS_PER_PAGE = 24;
 
@@ -59,7 +62,10 @@ export default function FilmesAssisti() {
       const metasUsuario = Array.isArray(user.metas) ? user.metas : [];
       const encontrada = metasUsuario.find((m) => m.id === metaId);
       if (encontrada) {
-        const filmesVistosPeriodo = contarFilmesPorPeriodo(user.visto || {}, encontrada.periodo);
+        const filmesVistosPeriodo = contarFilmesPorPeriodo(
+          user.visto || {},
+          encontrada.periodo,
+        );
         setMetaParaAbrir({ ...encontrada, filmesVistosPeriodo });
       }
       router.replace("/filmesassisti", undefined, { shallow: true });
@@ -81,10 +87,15 @@ export default function FilmesAssisti() {
     );
 
   const normalizar = (str) =>
-    str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    str
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
 
   const filmesFiltrados = busca.trim()
-    ? filmesVistos.filter((f) => normalizar(f.title).includes(normalizar(busca.trim())))
+    ? filmesVistos.filter((f) =>
+        normalizar(f.title).includes(normalizar(busca.trim())),
+      )
     : filmesVistos;
 
   const totalPages = Math.ceil(filmesFiltrados.length / ITEMS_PER_PAGE);
@@ -172,7 +183,9 @@ export default function FilmesAssisti() {
           >
             <div className={styles.conteudoMetas}>
               <div className={styles.scrollMetas}>
-                <div className={`${styles.metasMobile} ${metas.length === 1 ? styles.metaUnica : ""}`}>
+                <div
+                  className={`${styles.metasMobile} ${metas.length === 1 ? styles.metaUnica : ""}`}
+                >
                   {metas.map((meta) => (
                     <CardMeta
                       key={meta.id}
@@ -219,7 +232,10 @@ export default function FilmesAssisti() {
             <TextInput
               placeholder="Buscar filme..."
               value={busca}
-              onChange={(e) => { setBusca(e.target.value); setCurrentPage(1); }}
+              onChange={(e) => {
+                setBusca(e.target.value);
+                setCurrentPage(1);
+              }}
               prefix={<SearchIcon size={20} color="var(--text-sub)" />}
             />
           }

@@ -277,7 +277,9 @@ export default function FilmeDetalhe({ seoData, initialId }) {
     router.push("/filme-aleatorio");
   };
 
-  const pageTitle = seoData ? `${seoData.titulo} — Dublagem | Cameo` : "Cameo – Filme";
+  const pageTitle = seoData
+    ? `${seoData.titulo}${seoData.nomesDubladores.length > 0 ? " — Dublagem" : ""} | Cameo`
+    : "Cameo – Filme";
   const pageDescription = seoData?.descricao || "Veja detalhes e elenco de dublagem no Cameo.";
 
   const jsonLd = seoData

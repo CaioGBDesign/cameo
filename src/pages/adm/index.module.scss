@@ -1,62 +1,384 @@
 .page {
-  min-height: 100vh;
-  background: var(--bg-base);
-  color: var(--text-base);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+  padding: var(--space-2xl);
 }
 
-.header {
+// ─── Cabeçalho ───────────────────────────────────────────
+
+.cabecalho {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-2xl);
-  border-bottom: 1px solid var(--stroke-base);
+  gap: var(--space-lg);
 }
 
-.logo {
-  font-size: 1.25rem;
-  font-weight: bold;
+.titulo {
+  font-size: 2rem;
   font-style: italic;
-  color: var(--text-header);
+  font-weight: 800;
+  color: var(--text-base);
+  margin: 0;
 }
 
-.usuario {
+.filtros {
+  display: flex;
+  align-items: center;
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  overflow: hidden;
+}
+
+.filtroBtnItem {
+  padding: var(--space-sm) var(--space-lg);
+  background: none;
+  border: none;
   font-size: 0.875rem;
   font-style: italic;
   color: var(--text-sub);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--text-base);
+  }
 }
 
-.cards {
-  display: flex;
-  gap: var(--space-lg);
-  padding: var(--space-2xl);
-  flex-wrap: wrap;
+.filtroBtnAtivo {
+  background: var(--bg-base);
+  color: var(--text-base);
+  font-weight: 600;
+  border-radius: var(--space-xs);
+  margin: 2px;
 }
+
+// ─── Grid ────────────────────────────────────────────────
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+
+  @media only screen and (max-width: 1100px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media only screen and (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ─── Card ────────────────────────────────────────────────
 
 .card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: var(--space-4xl);
+
   padding: var(--space-2xl);
   background: var(--bg-overlay);
   border: 1px solid var(--stroke-base);
   border-radius: var(--space-lg);
-  text-decoration: none;
-  min-width: 200px;
-  transition: border-color 0.2s;
-
-  &:hover {
-    border-color: var(--stroke-submit);
-  }
 }
 
-.cardTitle {
-  font-size: 1.125rem;
+.cardTopo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.cardNomeWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.cardIcone {
+  display: flex;
+  align-items: center;
+  color: var(--text-sub);
+
+  background: var(--bg-base);
+  border: solid 1px var(--stroke-base);
+  border-radius: var(--space-sm);
+
+  padding: var(--space-sm);
+}
+
+.cardNome {
+  font-size: 1rem;
   font-style: italic;
+  font-weight: 500;
   color: var(--text-base);
 }
 
-.cardDesc {
-  font-size: 0.875rem;
+.cardInfo {
+  font-size: 0.75rem;
+  color: var(--text-sub);
+  cursor: default;
+  opacity: 0.6;
+}
+
+.cardPeriodo {
+  font-size: 0.75rem;
   font-style: italic;
   color: var(--text-sub);
+  white-space: nowrap;
+}
+
+.cardCorpo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+}
+
+.cardEsquerda {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.cardNumero {
+  font-size: 40px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text-base);
+  line-height: 1;
+}
+
+// ─── Badge ───────────────────────────────────────────────
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px;
+
+  border-radius: var(--space-sm);
+  border: 1px solid currentColor;
+
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.badgePositivo {
+  color: var(--primitive-azul-01);
+  border-color: var(--primitive-azul-01);
+}
+
+.badgeNegativo {
+  color: var(--primitive-rosa-01);
+  border-color: var(--primitive-rosa-01);
+}
+
+// ─── Botão ───────────────────────────────────────────────
+
+.cardBtn {
+  background: none;
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-base);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+
+  &:hover {
+    background: var(--bg-base);
+    border-color: var(--stroke-solid);
+  }
+}
+
+// ─── Seções recentes ─────────────────────────────────────
+
+.secoes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2xl);
+
+  @media only screen and (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.secao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.secaoTitulo {
+  font-size: 1.5rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--text-sub);
+  margin: 0;
+}
+
+.secaoGrid {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-lg);
+}
+
+.secaoColuna {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4xl);
+  padding: var(--space-lg);
+
+  width: 100%;
+
+  &:first-child {
+    border-right: solid 1px var(--stroke-base);
+  }
+}
+
+.secaoCabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.topoSubtitulo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.secaoSubtitulo {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--text-sub);
+}
+
+.secaoSubtituloQuantidade {
+  color: var(--text-base);
+  font-size: 15px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.secaoTabela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.secaoTabelaHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 var(--space-sm);
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--text-sub);
+}
+
+.secaoItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: border-color 0.15s;
+
+  &:hover {
+    border-color: var(--stroke-solid);
+  }
+}
+
+.secaoItemTitulo {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-base);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.secaoItemPrioridade {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--text-sub);
+}
+
+.secaoVazio {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--text-sub);
+  padding: var(--space-sm);
+}
+
+// ─── Barras de prioridade ────────────────────────────────
+
+.bars {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 1px;
+  height: 14px;
+}
+
+.bar {
+  width: 3px;
+  border-radius: 4px;
+  background: var(--stroke-base);
+
+  &:nth-child(1) {
+    height: 4px;
+  }
+  &:nth-child(2) {
+    height: 6px;
+  }
+  &:nth-child(3) {
+    height: 8px;
+  }
+  &:nth-child(4) {
+    height: 10px;
+  }
+  &:nth-child(5) {
+    height: 12px;
+  }
+  &:nth-child(6) {
+    height: 14px;
+  }
+}
+
+[data-nivel="1"] .barAtivo {
+  background: #1af5eb;
+}
+[data-nivel="2"] .barAtivo {
+  background: #ffd600;
+}
+[data-nivel="3"] .barAtivo {
+  background: #f218c0;
 }

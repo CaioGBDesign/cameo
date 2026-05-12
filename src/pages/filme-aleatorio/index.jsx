@@ -329,7 +329,7 @@ export default function FilmeAleatorio({ seoData }) {
   };
 
   const pageTitle = seoData
-    ? `${seoData.titulo} — Dublagem | Cameo`
+    ? `${seoData.titulo}${seoData.nomesDubladores.length > 0 ? " — Dublagem" : ""} | Cameo`
     : "Cameo – Filme Aleatório";
 
   const pageDescription =

@@ -39,6 +39,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import ElencoDublagem from "@/components/detalhesfilmes/elenco-dublagem";
+import MicIcon from "@/components/icons/MicIcon";
 import styles from "./index.module.scss";
 
 const Header = dynamic(() => import("@/components/Header"));
@@ -52,6 +53,8 @@ import Cast from "@/components/detalhesfilmes/cast";
 import CardFilme from "@/components/card-filme";
 import ModalDetalhesFilme from "@/components/modais/modal-detalhes-filme";
 import ModalFiltros from "@/components/modais/filtros";
+import ModalDetalhes from "@/components/modais/modal-detalhes";
+import { toSlug } from "@/utils/slug";
 
 export async function getServerSideProps({ query }) {
   const { id } = query;
@@ -143,6 +146,8 @@ export default function FilmeAleatorio({ seoData }) {
 
   const [elencoDublagem, setElencoDublagem] = useState([]);
   const elencoDoblagemRef = useRef(null);
+  const [dublagemDetalhes, setDublagemDetalhes] = useState(null);
+  const [modalDublagem, setModalDublagem] = useState(false);
 
   const [loading, setLoading] = useState(true);
   const [modalType, setModalType] = useState(null);
@@ -250,8 +255,10 @@ export default function FilmeAleatorio({ seoData }) {
           const snap = await getDocs(q);
 
           let dubladores = [];
+          let firestoreFilme = null;
           if (!snap.empty) {
-            dubladores = snap.docs[0].data().dubladores || [];
+            firestoreFilme = snap.docs[0].data();
+            dubladores = firestoreFilme.dubladores || [];
           } else {
             const oldSnap = await getDoc(doc(db, "filmes", String(tmdbId)));
             if (oldSnap.exists()) dubladores = oldSnap.data().dubladores || [];
@@ -294,6 +301,41 @@ export default function FilmeAleatorio({ seoData }) {
           }
 
           setElencoDublagem(agrupado);
+
+          if (firestoreFilme) {
+            const {
+              direcaoDublagem,
+              traducao,
+              equipeTecnica = [],
+              estudioId,
+              estudioNome,
+            } = firestoreFilme;
+            let estudio = null;
+            if (estudioId) {
+              try {
+                const estSnap = await getDoc(doc(db, "estudios", estudioId));
+                if (estSnap.exists()) {
+                  const d = estSnap.data();
+                  estudio = {
+                    nome: d.nomePopular || d.nome || estudioNome,
+                    imagemUrl: d.imagemUrl || null,
+                  };
+                } else {
+                  estudio = { nome: estudioNome, imagemUrl: null };
+                }
+              } catch {
+                estudio = { nome: estudioNome, imagemUrl: null };
+              }
+            } else if (estudioNome) {
+              estudio = { nome: estudioNome, imagemUrl: null };
+            }
+            setDublagemDetalhes({
+              estudio,
+              direcaoDublagem,
+              traducao,
+              equipeTecnica,
+            });
+          }
         } catch {}
       };
 
@@ -522,6 +564,7 @@ export default function FilmeAleatorio({ seoData }) {
                   />
                 </SectionCard>
               </div>
+
               {elencoDublagem.length > 0 && (
                 <SectionCard
                   title="Elenco de dublagem"
@@ -533,6 +576,63 @@ export default function FilmeAleatorio({ seoData }) {
                   />
                 </SectionCard>
               )}
+
+              {dublagemDetalhes &&
+                (() => {
+                  const itens = [];
+                  if (dublagemDetalhes.estudio)
+                    itens.push({
+                      label: "Estúdio",
+                      valor: dublagemDetalhes.estudio.nome,
+                      imagem: dublagemDetalhes.estudio.imagemUrl,
+                    });
+                  if (dublagemDetalhes.direcaoDublagem?.nome)
+                    itens.push({
+                      label: "Direção de Dublagem",
+                      valor: dublagemDetalhes.direcaoDublagem.nome,
+                    });
+                  if (dublagemDetalhes.traducao?.nome)
+                    itens.push({
+                      label: "Tradução",
+                      valor: dublagemDetalhes.traducao.nome,
+                    });
+                  for (const e of dublagemDetalhes.equipeTecnica) {
+                    if (itens.length >= 5) break;
+                    itens.push({
+                      label: e.funcao,
+                      valor:
+                        e.profissionais
+                          ?.map((p) => p.nome)
+                          .filter(Boolean)
+                          .join(", ") || "—",
+                    });
+                  }
+                  return (
+                    <SectionCard title="Dublagem detalhes" verTodos={{ label: "Ver todos", onClick: () => setModalDublagem(true) }}>
+                      <div className={styles.dublagemDetalhesGrid}>
+                        {itens.map((item, i) => (
+                          <div key={i} className={styles.dublagemDetalheItem}>
+                            <div className={styles.dublagemDetalheIcone}>
+                              {item.imagem ? (
+                                <img src={item.imagem} alt={item.valor} />
+                              ) : (
+                                <MicIcon size={20} color="var(--text-sub)" />
+                              )}
+                            </div>
+                            <div className={styles.dublagemDetalheTexto}>
+                              <span className={styles.dublagemDetalheLabel}>
+                                {item.label}
+                              </span>
+                              <span className={styles.dublagemDetalheValor}>
+                                {item.valor}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </SectionCard>
+                  );
+                })()}
               <SectionCard title="Elenco" scrollRef={elencoRef}>
                 <Cast ref={elencoRef} items={cast} />
               </SectionCard>
@@ -700,6 +800,31 @@ export default function FilmeAleatorio({ seoData }) {
             ))}
           </div>
         </Modal>
+      )}
+      {modalDublagem && dublagemDetalhes && (
+        <ModalDetalhes
+          title="Dublagem detalhes"
+          onClose={() => setModalDublagem(false)}
+          itens={[
+            ...(dublagemDetalhes.estudio ? [{ label: "Estúdio", valor: dublagemDetalhes.estudio.nome }] : []),
+            ...(dublagemDetalhes.direcaoDublagem?.nome ? [{
+              label: "Direção",
+              valor: dublagemDetalhes.direcaoDublagem.id
+                ? { nome: dublagemDetalhes.direcaoDublagem.nome, href: `/dubladores/${toSlug(dublagemDetalhes.direcaoDublagem.nome)}` }
+                : dublagemDetalhes.direcaoDublagem.nome,
+            }] : []),
+            ...(dublagemDetalhes.traducao?.nome ? [{
+              label: "Tradução",
+              valor: dublagemDetalhes.traducao.id
+                ? { nome: dublagemDetalhes.traducao.nome, href: `/dubladores/${toSlug(dublagemDetalhes.traducao.nome)}` }
+                : dublagemDetalhes.traducao.nome,
+            }] : []),
+            ...dublagemDetalhes.equipeTecnica.map((e) => ({
+              label: e.funcao,
+              valor: e.profissionais?.map((p) => p.nome).filter(Boolean),
+            })),
+          ]}
+        />
       )}
     </>
   );

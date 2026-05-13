@@ -1,0 +1,146 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal {
+  width: 520px;
+  max-width: calc(100vw - var(--space-2xl) * 2);
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2xl);
+  padding-bottom: var(--space-lg);
+}
+
+.title {
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: normal;
+  color: var(--text-base);
+}
+
+.closeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-base);
+  padding: 0;
+}
+
+/* ── Content ── */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-lg);
+  overflow-y: auto;
+  max-height: 70vh;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-2xl);
+  padding: var(--space-lg) var(--space-lg);
+
+  &:nth-child(odd) {
+    background: var(--bg-base);
+  }
+
+  &:nth-child(even) {
+    background: transparent;
+  }
+}
+
+.label {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-sub);
+  white-space: nowrap;
+  padding-top: 1px;
+}
+
+.valor {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  text-align: right;
+
+  span,
+  .valorLink {
+    font-size: 0.875rem;
+    font-style: italic;
+    color: var(--text-base);
+    text-decoration: none;
+  }
+
+  .valorLink {
+    color: var(--primitive-azul-01);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+/* ── Mobile ── */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+.modalMobile {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-width: 100%;
+  max-height: 90vh;
+  border-radius: var(--space-2xl) var(--space-2xl) 0 0;
+}
+
+.slideUp {
+  animation: slideUp 300ms ease-out forwards;
+}
+.slideDown {
+  animation: slideDown 300ms ease-in forwards;
+}

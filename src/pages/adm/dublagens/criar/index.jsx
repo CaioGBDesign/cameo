@@ -152,14 +152,18 @@ const ENTRADA_VAZIA = {
 
 const FUNCOES_TECNICAS_OPTIONS = [
   "Adaptação Musical",
+  "Assistente de Produção",
   "Assistência de Produção",
   "Audiodescrição",
+  "Audiodescrição Narrada",
   "Data de Gravação",
   "Direção de Audiodescrição",
   "Direção Musical",
   "Dublagem",
   "Edição",
   "Gerenciamento de Projeto",
+  "Gerente Criativo",
+  "Gerente de Estúdio",
   "Gravação",
   "Gravação de Audiodescrição",
   "Leitura de Placas",
@@ -168,6 +172,8 @@ const FUNCOES_TECNICAS_OPTIONS = [
   "Produção",
   "Revisão de Tradução",
   "Supervisão de Produção",
+  "Técnico de Edição",
+  "Técnico de Gravação",
   "Tradução",
   "Tradução de Audiodescrição",
   "Tradução e Adaptação",
@@ -474,10 +480,10 @@ export default function CriarDublagem({ id = null, initialData = null }) {
           : nome;
         const idResolvido = found ? found.id : null;
 
-        if (funcaoLower.includes("dire")) {
+        if (funcaoLower === "direção de dublagem") {
           novaDirecaoNome = nomeResolvido;
           novaDirecaoId = idResolvido;
-        } else if (funcaoLower.includes("tradu")) {
+        } else if (funcaoLower === "tradução") {
           novaTraducaoNome = nomeResolvido;
           novaTraducaoId = idResolvido;
         } else {

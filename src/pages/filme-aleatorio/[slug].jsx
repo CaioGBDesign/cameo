@@ -46,6 +46,7 @@ import CardFilme from "@/components/card-filme";
 import ModalDetalhesFilme from "@/components/modais/modal-detalhes-filme";
 import ModalFiltros from "@/components/modais/filtros";
 import ModalDetalhes from "@/components/modais/modal-detalhes";
+import Link from "next/link";
 import { toSlug } from "@/utils/slug";
 import styles from "./index.module.scss";
 
@@ -569,14 +570,21 @@ export default function FilmeDetalhe({ seoData, initialId }) {
                     itens.push({
                       label: "Direção de Dublagem",
                       valor: dublagemDetalhes.direcaoDublagem.nome,
+                      href: dublagemDetalhes.direcaoDublagem.id
+                        ? `/dubladores/${toSlug(dublagemDetalhes.direcaoDublagem.nome)}`
+                        : null,
                     });
                   if (dublagemDetalhes.traducao?.nome)
                     itens.push({
                       label: "Tradução",
                       valor: dublagemDetalhes.traducao.nome,
+                      href: dublagemDetalhes.traducao.id
+                        ? `/dubladores/${toSlug(dublagemDetalhes.traducao.nome)}`
+                        : null,
                     });
                   for (const e of dublagemDetalhes.equipeTecnica) {
                     if (itens.length >= 5) break;
+                    if (e.funcao?.toLowerCase() === "voz adicional") continue;
                     itens.push({
                       label: e.funcao,
                       valor:
@@ -602,9 +610,15 @@ export default function FilmeDetalhe({ seoData, initialId }) {
                               <span className={styles.dublagemDetalheLabel}>
                                 {item.label}
                               </span>
-                              <span className={styles.dublagemDetalheValor}>
-                                {item.valor}
-                              </span>
+                              {item.href ? (
+                                <Link href={item.href} className={styles.dublagemDetalheValorLink}>
+                                  {item.valor}
+                                </Link>
+                              ) : (
+                                <span className={styles.dublagemDetalheValor}>
+                                  {item.valor}
+                                </span>
+                              )}
                             </div>
                           </div>
                         ))}

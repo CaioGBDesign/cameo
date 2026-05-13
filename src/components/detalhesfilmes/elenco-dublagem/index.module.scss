@@ -88,6 +88,10 @@
 
         position: relative;
 
+        &.atorSemLink {
+          cursor: default;
+        }
+
         .imagemArtista {
           display: flex;
           justify-content: center;

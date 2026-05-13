@@ -16,35 +16,42 @@ const ElencoDublagem = forwardRef(({ items = [], wrap = false }, ref) => {
         <ul
           className={`${styles.carrosselElenco} ${wrap ? styles.carrosselWrap : ""}`}
         >
-          {items.map((pessoa, i) => (
-            <li
-              key={`${pessoa.idDublador || "unk"}_${i}`}
-              className={styles.atorContent}
-            >
-              <Link
-                href={`/dubladores/${toSlug(pessoa.nomeArtistico || pessoa.idDublador || "")}`}
-                className={styles.ator}
-              >
+          {items.map((pessoa, i) => {
+            const nome = pessoa.nomeArtistico || pessoa.nomeDublador || pessoa.idDublador || "Dublador";
+            const cadastrado = !!pessoa.idDublador;
+            const inner = (
+              <>
                 <div className={styles.imagemArtista}>
-                  <span className={styles.detalhes}>Detalhes</span>
+                  {cadastrado && <span className={styles.detalhes}>Detalhes</span>}
                   <Image
                     unoptimized
                     src={pessoa.imagemUrl || placeholder}
-                    alt={
-                      pessoa.nomeArtistico || pessoa.idDublador || "Dublador"
-                    }
+                    alt={nome}
                     width={50}
                     height={50}
                     style={{ objectFit: "cover" }}
                   />
                 </div>
                 <div className={styles.nomePersonagem}>
-                  <p>{pessoa.nomeArtistico || pessoa.idDublador}</p>
+                  <p>{nome}</p>
                   {pessoa.personagem && <span>{pessoa.personagem}</span>}
                 </div>
-              </Link>
-            </li>
-          ))}
+              </>
+            );
+            return (
+              <li key={`${pessoa.idDublador || pessoa.nomeDublador || i}_${i}`} className={styles.atorContent}>
+                {cadastrado ? (
+                  <Link href={`/dubladores/${toSlug(pessoa.nomeArtistico || pessoa.idDublador)}`} className={styles.ator}>
+                    {inner}
+                  </Link>
+                ) : (
+                  <div className={`${styles.ator} ${styles.atorSemLink}`}>
+                    {inner}
+                  </div>
+                )}
+              </li>
+            );
+          })}
         </ul>
       </div>
     </div>

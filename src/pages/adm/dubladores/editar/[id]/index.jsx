@@ -259,6 +259,7 @@ export default function AdmEditarDublador() {
   const [estadoNatal, setEstadoNatal] = useState("");
   const [ondeAtua, setOndeAtua] = useState([]);
   const [ativoNaDublagem, setAtivoNaDublagem] = useState("");
+  const [dataTerminoDublagem, setDataTerminoDublagem] = useState("");
   const [bio, setBio] = useState("");
   const [ocupacoes, setOcupacoes] = useState([]);
   const [familiares, setFamiliares] = useState([
@@ -306,6 +307,7 @@ export default function AdmEditarDublador() {
         setEstadoNatal(d.estadoNatal || "");
         setOndeAtua(d.ondeAtua || []);
         setAtivoNaDublagem(d.ativoNaDublagem || "");
+        setDataTerminoDublagem(d.dataTerminoDublagem || "");
         setBio(d.bio || "");
         setOcupacoes(d.ocupacoes || []);
         setFamiliares(
@@ -366,6 +368,7 @@ export default function AdmEditarDublador() {
       estadoNatal,
       ondeAtua,
       ativoNaDublagem,
+      dataTerminoDublagem: ["Inativo", "Falecido"].includes(ativoNaDublagem) ? dataTerminoDublagem : "",
       bio,
       ocupacoes,
       familiares: familiares
@@ -505,6 +508,15 @@ export default function AdmEditarDublador() {
           onChange={(e) => setAtivoNaDublagem(e.target.value)}
         />
       </div>
+
+      {["Inativo", "Falecido"].includes(ativoNaDublagem) && (
+        <TextInput
+          label="Quando terminou na dublagem"
+          placeholder="DD/MM/AAAA"
+          value={dataTerminoDublagem}
+          onChange={(e) => setDataTerminoDublagem(mascaraData(e.target.value))}
+        />
+      )}
 
       <OcupacoesInput value={ocupacoes} onChange={setOcupacoes} />
 

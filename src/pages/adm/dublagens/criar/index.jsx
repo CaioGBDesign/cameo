@@ -704,12 +704,16 @@ export default function CriarDublagem({ id = null, initialData = null }) {
             const profsProcessados = await Promise.all(
               profsFiltrados.map(async (p) => {
                 if (p.imagem?.file) {
-                  const storageRef = ref(storage, `filmes/${docId}_prof_${p.imagem.file.name}`);
+                  const storageRef = ref(
+                    storage,
+                    `filmes/${docId}_prof_${p.imagem.file.name}`,
+                  );
                   await uploadBytes(storageRef, p.imagem.file);
                   const url = await getDownloadURL(storageRef);
                   return { ...p, imagem: url };
                 }
-                if (p.imagem?.preview) return { ...p, imagem: p.imagem.preview };
+                if (p.imagem?.preview)
+                  return { ...p, imagem: p.imagem.preview };
                 return p;
               }),
             );

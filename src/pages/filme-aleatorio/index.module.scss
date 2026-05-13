@@ -180,11 +180,24 @@
     white-space: nowrap;
   }
 
-  .dublagemDetalheValor {
+  .dublagemDetalheValor,
+  .dublagemDetalheValorLink {
     font-size: 0.9rem;
     font-style: italic;
     font-weight: 600;
-    color: var(--text-base);
     white-space: nowrap;
+  }
+
+  .dublagemDetalheValor {
+    color: var(--text-base);
+  }
+
+  .dublagemDetalheValorLink {
+    color: var(--primitive-azul-01);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }

@@ -1,21 +1,393 @@
 .page {
+  padding: var(--space-2xl);
+  padding-top: var(--space-nn);
   display: flex;
   flex-direction: column;
-  gap: var(--space-2xl);
-  padding: var(--space-2xl);
-}
-
-.cabecalho {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   gap: var(--space-lg);
 }
 
-.titulo {
-  font-size: 2rem;
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+}
+
+.pageTitulo {
+  font-size: 1rem;
+  font-weight: normal;
   font-style: italic;
-  font-weight: 800;
   color: var(--text-base);
   margin: 0;
+}
+
+.loading,
+.empty {
+  font-style: italic;
+  color: var(--text-sub);
+  padding: var(--space-2xl) 0;
+}
+
+// ─── Tabela ─────────────────────────────────────────────
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  background: var(--bg-overlay);
+  border: solid 1px var(--stroke-base);
+  border-radius: var(--space-lg);
+  padding: var(--space-2xl);
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 var(--space-sm);
+  font-size: 0.875rem;
+
+  thead tr th {
+    padding: var(--space-sm) 20px;
+    text-align: left;
+    font-weight: normal;
+    font-style: italic;
+    color: var(--text-sub);
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  tbody tr {
+    background: var(--bg-overlay);
+    border: 1px solid var(--stroke-base);
+    border-radius: 10px;
+    transition: background 0.15s;
+
+    td:first-child { border-radius: 10px 0 0 10px; }
+    td:last-child  { border-radius: 0 10px 10px 0; }
+  }
+
+  tbody tr.trClicavel {
+    cursor: pointer;
+    &:hover { background: var(--bg-base); }
+  }
+
+  td {
+    padding: 20px;
+    vertical-align: middle;
+    color: var(--text-base);
+    border-top: 1px solid var(--stroke-base);
+    border-bottom: 1px solid var(--stroke-base);
+
+    &:first-child { border-left: 1px solid var(--stroke-base); }
+    &:last-child  { border-right: 1px solid var(--stroke-base); }
+  }
+}
+
+.colTitulo { min-width: 200px; }
+.colAcoes  { text-align: center !important; }
+
+// ─── Título cell ─────────────────────────────────────────
+
+.tituloCell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.tituloImagem {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--space-sm);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+}
+
+.tituloImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tituloImgPlaceholder {
+  width: 100%;
+  height: 100%;
+  background: var(--bg-base);
+}
+
+.tituloTexto {
+  font-style: italic;
+  color: var(--text-base);
+  font-size: 0.875rem;
+}
+
+// ─── Status badge ────────────────────────────────────────
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-style: italic;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.badgeIcon {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.badgeText { line-height: 1; }
+
+.statusPublicado {
+  background: rgba(243, 20, 251, 0.15);
+  color: var(--primitive-rosa-01);
+}
+
+.statusRascunho {
+  background: rgba(0, 230, 200, 0.12);
+  color: #00e6c8;
+}
+
+// ─── Avatar ──────────────────────────────────────────────
+
+.avatarFallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-base);
+  border: 1px solid var(--stroke-base);
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--text-sub);
+  text-transform: uppercase;
+}
+
+// ─── Th button ───────────────────────────────────────────
+
+.thBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-sub);
+  padding: 0;
+
+  &:hover { color: var(--text-base); }
+}
+
+.thBtnAtivo { color: var(--text-base); }
+
+// ─── Tempo ───────────────────────────────────────────────
+
+.tempo {
+  font-style: italic;
+  color: var(--text-sub);
+  white-space: nowrap;
+}
+
+// ─── Ações ───────────────────────────────────────────────
+
+.btnAcoes {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-sub);
+  font-size: 1rem;
+  padding: 4px 8px;
+  border-radius: var(--space-xs);
+  transition: background 0.15s;
+
+  &:hover { background: var(--bg-base); color: var(--text-base); }
+}
+
+// ─── Menu dropdown ───────────────────────────────────────
+
+.menuDropdown {
+  position: fixed;
+  z-index: 1000;
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  min-width: 160px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  transform: translateX(-100%);
+}
+
+.menuGrupo {
+  & + & { border-top: 1px solid var(--stroke-base); }
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
+  padding: var(--space-sm) var(--space-lg);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-base);
+  text-align: left;
+  transition: background 0.12s;
+
+  &:hover { background: var(--bg-base); }
+}
+
+.menuItemDanger { color: var(--primitive-erro-01, #e05c5c); }
+
+// ─── Col dropdown ────────────────────────────────────────
+
+.colDropdown {
+  position: fixed;
+  z-index: 1000;
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  min-width: 180px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+.colDropdownGrupo {
+  padding: var(--space-xs);
+  & + & { border-top: 1px solid var(--stroke-base); }
+}
+
+.colDropdownItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
+  padding: 6px var(--space-sm);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--text-base);
+  text-align: left;
+  border-radius: 4px;
+  transition: background 0.12s;
+
+  &:hover { background: var(--bg-base); }
+}
+
+.colDropdownItemAtivo { background: var(--bg-base); }
+
+// ─── Popover confirmar ───────────────────────────────────
+
+.popoverOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popover {
+  background: var(--bg-overlay);
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-lg);
+  padding: var(--space-2xl);
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.popoverTexto {
+  font-style: italic;
+  color: var(--text-base);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.popoverAcoes {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: flex-end;
+}
+
+.popoverCancelar {
+  padding: var(--space-sm) var(--space-lg);
+  background: none;
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+  font-style: italic;
+  color: var(--text-base);
+  cursor: pointer;
+}
+
+.popoverConfirmar {
+  padding: var(--space-sm) var(--space-lg);
+  background: var(--primitive-erro-01, #e05c5c);
+  border: none;
+  border-radius: var(--space-sm);
+  font-style: italic;
+  color: white;
+  cursor: pointer;
+}
+
+// ─── Paginação ───────────────────────────────────────────
+
+.paginacao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.paginacaoInfo {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--text-sub);
+}
+
+.paginacaoBotoes {
+  display: flex;
+  gap: 4px;
+}
+
+.btnPagina {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 var(--space-xs);
+  background: none;
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-xs);
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--text-sub);
+  cursor: pointer;
+  transition: background 0.12s;
+
+  &:hover:not(:disabled) { background: var(--bg-base); color: var(--text-base); }
+  &:disabled { opacity: 0.3; cursor: not-allowed; }
+}
+
+.btnPaginaAtivo {
+  background: var(--bg-base);
+  color: var(--text-base);
+  border-color: var(--stroke-solid);
 }

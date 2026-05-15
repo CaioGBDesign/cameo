@@ -1,0 +1,143 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+}
+
+.titulo {
+  font-size: 2.5rem;
+  font-style: italic;
+  font-weight: 800;
+  color: var(--text-base);
+  margin: 0;
+}
+
+// ── Grid de slots ─────────────────────────────────────────
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.gridLinha {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+.slot {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: none;
+  border: none;
+
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+
+  &:hover {
+    border-color: var(--stroke-solid);
+  }
+}
+
+.slotAtivo {
+  border-color: var(--primitive-roxo-02);
+  box-shadow: 0 0 0 2px var(--primitive-roxo-02);
+}
+
+.slotComImagem {
+  border-color: var(--stroke-solid);
+}
+
+.slotImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholderSlot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .svgUpload {
+    z-index: 1;
+  }
+
+  .moldura {
+    position: absolute;
+  }
+}
+
+// ── Sidebar direita ───────────────────────────────────────
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.sidebarTitulo {
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--text-base);
+  margin: 0;
+}
+
+.sidebarUpload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  min-height: 160px;
+  background: var(--bg-base);
+  border: 1px dashed var(--stroke-base);
+  border-radius: var(--space-lg);
+  cursor: pointer;
+  transition: border-color 0.15s;
+
+  &:not(.sidebarUploadDisabled):hover {
+    border-color: var(--stroke-solid);
+  }
+}
+
+.sidebarUploadDisabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.sidebarImg {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: var(--space-lg);
+}
+
+.sidebarUploadDim {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--text-sub);
+  text-align: center;
+}
+
+.sidebarCampos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  transition: opacity 0.15s;
+}
+
+.sidebarCamposDisabled {
+  opacity: 0.4;
+  pointer-events: none;
+}

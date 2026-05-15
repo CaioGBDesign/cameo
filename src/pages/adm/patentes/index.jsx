@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { createPortal } from "react-dom";
 import { db } from "@/services/firebaseConection";
 import {
@@ -12,17 +13,10 @@ import {
 } from "firebase/firestore";
 import AdmLayout from "@/components/adm/layout";
 import Button from "@/components/button";
-import ModalCriarPatente from "@/components/modais/modal-criar-patente";
-import StatusPublicadoIcon from "@/components/icons/StatusPublicadoIcon";
-import StatusRascunhoIcon from "@/components/icons/StatusRascunhoIcon";
+import StatusBadge from "@/components/adm/status-badge";
 import styles from "./index.module.scss";
 
 const POR_PAGINA = 10;
-
-const STATUS_CONFIG = {
-  publicado: { label: "Publicado", className: styles.statusPublicado, Icon: StatusPublicadoIcon },
-  rascunho:  { label: "Rascunho",  className: styles.statusRascunho,  Icon: StatusRascunhoIcon  },
-};
 
 const tempoRelativo = (ts) => {
   if (!ts) return "—";
@@ -39,16 +33,6 @@ const SortIcon = ({ active = false, dir = "asc" }) => (
   </svg>
 );
 
-const StatusBadge = ({ status }) => {
-  const cfg = STATUS_CONFIG[status?.toLowerCase()] ?? STATUS_CONFIG.rascunho;
-  const { Icon } = cfg;
-  return (
-    <span className={`${styles.statusBadge} ${cfg.className}`}>
-      <span className={styles.badgeIcon}><Icon /></span>
-      <span className={styles.badgeText}>{cfg.label}</span>
-    </span>
-  );
-};
 
 const aplicarSort = (lista, col, dir) => [...lista].sort((a, b) => {
   let va, vb;
@@ -74,6 +58,7 @@ const aplicarSort = (lista, col, dir) => [...lista].sort((a, b) => {
 });
 
 export default function AdmPatentes() {
+  const router = useRouter();
   const [patentes, setPatentes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [pagina, setPagina] = useState(1);
@@ -85,7 +70,6 @@ export default function AdmPatentes() {
   const [filtroStatus, setFiltroStatus] = useState(null);
   const [colDropdown, setColDropdown] = useState(null);
   const [colDropdownPos, setColDropdownPos] = useState({ top: 0, left: 0 });
-  const [modalCriarAberto, setModalCriarAberto] = useState(false);
   const menuRef = useRef(null);
   const colDropdownRef = useRef(null);
 
@@ -163,14 +147,13 @@ export default function AdmPatentes() {
 
   const headerActions = (
     <Button variant="ghost" label="Criar patente" type="button"
-      onClick={() => setModalCriarAberto(true)} border="var(--stroke-base)" />
+      onClick={() => router.push("/adm/patentes/criar")} border="var(--stroke-base)" />
   );
 
   return (
     <AdmLayout headerActions={headerActions}>
       <Head><title>Cameo ADM — Patentes</title></Head>
 
-      {modalCriarAberto && <ModalCriarPatente onClose={() => setModalCriarAberto(false)} />}
 
       {confirmarDeletar && createPortal(
         <div className={styles.popoverOverlay} onClick={() => setConfirmarDeletar(null)}>
@@ -296,18 +279,29 @@ export default function AdmPatentes() {
                     </tr>
                   ) : (
                     patentesPagina.map((patente) => {
+                      const imagensGrupo = patente.tipo === "grupo"
+                        ? (patente.slots ?? []).filter((s) => s.imagemUrl).slice(0, 3).map((s) => s.imagemUrl)
+                        : [];
                       const primeiraImagem = patente.slots?.find((s) => s.imagemUrl)?.imagemUrl ?? null;
                       return (
-                        <tr key={patente.id} className={styles.trClicavel}>
+                        <tr key={patente.id} className={styles.trClicavel} onClick={() => router.push(`/adm/patentes/editar/${patente.id}`)}>
                           <td className={styles.colTitulo}>
                             <div className={styles.tituloCell}>
-                              <div className={styles.tituloImagem}>
-                                {primeiraImagem
-                                  ? <img src={primeiraImagem} alt="" className={styles.tituloImg} />
-                                  : <div className={styles.tituloImgPlaceholder} />}
-                              </div>
+                              {imagensGrupo.length > 0 ? (
+                                <div className={styles.tituloImagensGrupo}>
+                                  {imagensGrupo.map((url, i) => (
+                                    <img key={i} src={url} alt="" className={styles.tituloImgGrupo} style={{ zIndex: imagensGrupo.length - i }} />
+                                  ))}
+                                </div>
+                              ) : (
+                                <div className={styles.tituloImagem}>
+                                  {primeiraImagem
+                                    ? <img src={primeiraImagem} alt="" className={styles.tituloImg} />
+                                    : <div className={styles.tituloImgPlaceholder} />}
+                                </div>
+                              )}
                               <span className={styles.tituloTexto}>
-                                {patente.tipo ? patente.tipo.charAt(0).toUpperCase() + patente.tipo.slice(1) : "—"}
+                                {patente.nomePatente || "—"}
                               </span>
                             </div>
                           </td>

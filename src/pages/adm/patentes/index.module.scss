@@ -62,13 +62,19 @@
     border-radius: 10px;
     transition: background 0.15s;
 
-    td:first-child { border-radius: 10px 0 0 10px; }
-    td:last-child  { border-radius: 0 10px 10px 0; }
+    td:first-child {
+      border-radius: 10px 0 0 10px;
+    }
+    td:last-child {
+      border-radius: 0 10px 10px 0;
+    }
   }
 
   tbody tr.trClicavel {
     cursor: pointer;
-    &:hover { background: var(--bg-base); }
+    &:hover {
+      background: var(--bg-base);
+    }
   }
 
   td {
@@ -78,13 +84,21 @@
     border-top: 1px solid var(--stroke-base);
     border-bottom: 1px solid var(--stroke-base);
 
-    &:first-child { border-left: 1px solid var(--stroke-base); }
-    &:last-child  { border-right: 1px solid var(--stroke-base); }
+    &:first-child {
+      border-left: 1px solid var(--stroke-base);
+    }
+    &:last-child {
+      border-right: 1px solid var(--stroke-base);
+    }
   }
 }
 
-.colTitulo { min-width: 200px; }
-.colAcoes  { text-align: center !important; }
+.colTitulo {
+  min-width: 200px;
+}
+.colAcoes {
+  text-align: center !important;
+}
 
 // ─── Título cell ─────────────────────────────────────────
 
@@ -100,8 +114,6 @@
   border-radius: var(--space-sm);
   overflow: hidden;
   flex-shrink: 0;
-  background: var(--bg-base);
-  border: 1px solid var(--stroke-base);
 }
 
 .tituloImg {
@@ -116,6 +128,23 @@
   background: var(--bg-base);
 }
 
+.tituloImagensGrupo {
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+}
+
+.tituloImgGrupo {
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  margin-left: -15px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
 .tituloTexto {
   font-style: italic;
   color: var(--text-base);
@@ -127,31 +156,33 @@
 .statusBadge {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-xs);
-  padding: 6px 10px;
-  border-radius: 20px;
-  font-size: 0.8rem;
+  gap: 8px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  font-weight: 700;
   font-style: italic;
-  font-weight: 500;
   white-space: nowrap;
+  min-width: 120px;
+  height: 25px;
+  justify-content: center;
 }
 
 .badgeIcon {
   display: flex;
   align-items: center;
-  font-size: 14px;
+  color: var(--icon-primary);
 }
 
-.badgeText { line-height: 1; }
+.badgeText {
+  color: var(--text-solid);
+}
 
 .statusPublicado {
-  background: rgba(243, 20, 251, 0.15);
-  color: var(--primitive-rosa-01);
+  background: var(--primitive-rosa-02);
 }
-
 .statusRascunho {
-  background: rgba(0, 230, 200, 0.12);
-  color: #00e6c8;
+  background: var(--primitive-azul-01);
 }
 
 // ─── Avatar ──────────────────────────────────────────────
@@ -185,10 +216,14 @@
   color: var(--text-sub);
   padding: 0;
 
-  &:hover { color: var(--text-base); }
+  &:hover {
+    color: var(--text-base);
+  }
 }
 
-.thBtnAtivo { color: var(--text-base); }
+.thBtnAtivo {
+  color: var(--text-base);
+}
 
 // ─── Tempo ───────────────────────────────────────────────
 
@@ -210,7 +245,10 @@
   border-radius: var(--space-xs);
   transition: background 0.15s;
 
-  &:hover { background: var(--bg-base); color: var(--text-base); }
+  &:hover {
+    background: var(--bg-base);
+    color: var(--text-base);
+  }
 }
 
 // ─── Menu dropdown ───────────────────────────────────────
@@ -223,12 +261,14 @@
   border-radius: var(--space-sm);
   min-width: 160px;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   transform: translateX(-100%);
 }
 
 .menuGrupo {
-  & + & { border-top: 1px solid var(--stroke-base); }
+  & + & {
+    border-top: 1px solid var(--stroke-base);
+  }
 }
 
 .menuItem {
@@ -246,10 +286,14 @@
   text-align: left;
   transition: background 0.12s;
 
-  &:hover { background: var(--bg-base); }
+  &:hover {
+    background: var(--bg-base);
+  }
 }
 
-.menuItemDanger { color: var(--primitive-erro-01, #e05c5c); }
+.menuItemDanger {
+  color: var(--primitive-erro-01, #e05c5c);
+}
 
 // ─── Col dropdown ────────────────────────────────────────
 
@@ -261,12 +305,14 @@
   border-radius: var(--space-sm);
   min-width: 180px;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 .colDropdownGrupo {
   padding: var(--space-xs);
-  & + & { border-top: 1px solid var(--stroke-base); }
+  & + & {
+    border-top: 1px solid var(--stroke-base);
+  }
 }
 
 .colDropdownItem {
@@ -285,10 +331,14 @@
   border-radius: 4px;
   transition: background 0.12s;
 
-  &:hover { background: var(--bg-base); }
+  &:hover {
+    background: var(--bg-base);
+  }
 }
 
-.colDropdownItemAtivo { background: var(--bg-base); }
+.colDropdownItemAtivo {
+  background: var(--bg-base);
+}
 
 // ─── Popover confirmar ───────────────────────────────────
 
@@ -296,7 +346,7 @@
   position: fixed;
   inset: 0;
   z-index: 1100;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -382,8 +432,14 @@
   cursor: pointer;
   transition: background 0.12s;
 
-  &:hover:not(:disabled) { background: var(--bg-base); color: var(--text-base); }
-  &:disabled { opacity: 0.3; cursor: not-allowed; }
+  &:hover:not(:disabled) {
+    background: var(--bg-base);
+    color: var(--text-base);
+  }
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
 }
 
 .btnPaginaAtivo {

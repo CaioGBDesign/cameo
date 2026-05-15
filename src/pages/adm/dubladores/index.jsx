@@ -12,10 +12,7 @@ import TrashIcon from "@/components/icons/TrashIcon";
 import EditIcon from "@/components/icons/EditIcon";
 import VisualizarIcon from "@/components/icons/VisualizarIcon";
 import DeletarIcon from "@/components/icons/DeletarIcon";
-import StatusPublicadoIcon from "@/components/icons/StatusPublicadoIcon";
-import StatusRascunhoIcon from "@/components/icons/StatusRascunhoIcon";
-import StatusAgendadoIcon from "@/components/icons/StatusAgendadoIcon";
-import StatusArquivadoIcon from "@/components/icons/StatusArquivadoIcon";
+import StatusBadge from "@/components/adm/status-badge";
 import styles from "./index.module.scss";
 
 const SortIcon = ({ active, dir }) => (
@@ -37,42 +34,6 @@ const SortIcon = ({ active, dir }) => (
 
 // ─── Status de publicação ─────────────────────────────────────────────────────
 
-const STATUS_CONFIG = {
-  publicado: {
-    label: "Publicado",
-    className: styles.statusPublicado,
-    Icon: StatusPublicadoIcon,
-  },
-  rascunho: {
-    label: "Rascunho",
-    className: styles.statusRascunho,
-    Icon: StatusRascunhoIcon,
-  },
-  agendado: {
-    label: "Agendado",
-    className: styles.statusAgendado,
-    Icon: StatusAgendadoIcon,
-  },
-  arquivado: {
-    label: "Arquivado",
-    className: styles.statusArquivado,
-    Icon: StatusArquivadoIcon,
-  },
-};
-
-const StatusBadge = ({ status }) => {
-  const config =
-    STATUS_CONFIG[status?.toLowerCase()] || STATUS_CONFIG.publicado;
-  const { Icon } = config;
-  return (
-    <span className={`${styles.statusBadge} ${config.className}`}>
-      <span className={styles.badgeIcon}>
-        <Icon />
-      </span>
-      <span className={styles.badgeText}>{config.label}</span>
-    </span>
-  );
-};
 
 const POR_PAGINA = 10;
 

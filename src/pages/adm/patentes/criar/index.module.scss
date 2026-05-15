@@ -28,7 +28,7 @@
 
 .slot {
   width: 160px;
-  height: 160px;
+  height: 170px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -40,7 +40,7 @@
   overflow: hidden;
   transition:
     border-color 0.15s,
-    box-shadow 0.15s;
+    "" box-shadow 0.15s;
 
   &:hover {
     border-color: var(--stroke-solid);
@@ -54,6 +54,12 @@
 
 .slotComImagem {
   border-color: var(--stroke-solid);
+
+  transition: 0.2s;
+
+  &:hover {
+    opacity: 0.5;
+  }
 }
 
 .slotImg {
@@ -140,4 +146,21 @@
 .sidebarCamposDisabled {
   opacity: 0.4;
   pointer-events: none;
+}
+
+// ── Modal de slot ─────────────────────────────────────────
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding-bottom: var(--space-2xl);
+}
+
+.modalCampos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding: var(--space-2xl);
+  padding-top: var(--space-lg);
 }

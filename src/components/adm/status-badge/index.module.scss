@@ -1,0 +1,30 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-style: italic;
+  white-space: nowrap;
+  min-width: 120px;
+  height: 25px;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  color: var(--icon-primary);
+}
+
+.label {
+  color: var(--text-solid);
+}
+
+.rascunho  { background: var(--primitive-azul-01);    }
+.revisao   { background: var(--primitive-roxo-02);    }
+.agendado  { background: var(--primitive-amarelo-02); }
+.publicado { background: var(--primitive-rosa-02);    }
+.arquivado { background: var(--primitive-roxo-07);    }

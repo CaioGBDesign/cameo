@@ -18,7 +18,6 @@ import PatentesIcon from "@/components/icons/PatentesIcon";
 import EventosIcon from "@/components/icons/EventosIcon";
 import PermissoesIcon from "@/components/icons/PermissoesIcon";
 import ModalCriarPergunta from "@/components/modais/modal-criar-pergunta";
-import ModalCriarPatente from "@/components/modais/modal-criar-patente";
 import styles from "./index.module.scss";
 
 const NAV = [
@@ -97,7 +96,7 @@ const NAV = [
         icon: PatentesIcon,
         base: "/adm/patentes",
         children: [
-          { label: "Criar patente", modal: "criar-patente" },
+          { href: "/adm/patentes/criar", label: "Criar patente" },
           { href: "/adm/patentes", label: "Todas as patentes" },
         ],
       },
@@ -129,7 +128,6 @@ export default function AdmSidebar({ collapsed, onCollapse }) {
 
   // ── Modal criar pergunta ───────────────────────────────────────────────────
   const [modalCriarPergunta, setModalCriarPergunta] = useState(false);
-  const [modalCriarPatente, setModalCriarPatente] = useState(false);
 
   const toggleItem = (label) =>
     setOpenItems((prev) => ({ ...prev, [label]: !prev[label] }));
@@ -221,20 +219,6 @@ export default function AdmSidebar({ collapsed, onCollapse }) {
                                 type="button"
                                 className={styles.subItem}
                                 onClick={() => setModalCriarPergunta(true)}
-                              >
-                                <div className={styles.subBotao}>
-                                  {child.label}
-                                </div>
-                              </button>
-                            );
-                          }
-                          if (child.modal === "criar-patente") {
-                            return (
-                              <button
-                                key="criar-patente"
-                                type="button"
-                                className={styles.subItem}
-                                onClick={() => setModalCriarPatente(true)}
                               >
                                 <div className={styles.subBotao}>
                                   {child.label}
@@ -358,9 +342,6 @@ export default function AdmSidebar({ collapsed, onCollapse }) {
       </div>
       {modalCriarPergunta && (
         <ModalCriarPergunta onClose={() => setModalCriarPergunta(false)} />
-      )}
-      {modalCriarPatente && (
-        <ModalCriarPatente onClose={() => setModalCriarPatente(false)} />
       )}
     </aside>
   );

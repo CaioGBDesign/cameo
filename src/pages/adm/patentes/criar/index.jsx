@@ -12,8 +12,10 @@ import {
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useAuth } from "@/contexts/auth";
 import AdmLayout from "@/components/adm/layout";
+import AdmModal from "@/components/adm/modal";
 import Button from "@/components/button";
 import Select from "@/components/inputs/select";
+import TextInput from "@/components/inputs/text-input";
 import CloudUploadIcon from "@/components/icons/CloudUploadIcon";
 import styles from "./index.module.scss";
 
@@ -34,23 +36,18 @@ const SLOT_VAZIO = (i) => ({
   imagem: null,
   nome: NIVEIS[i] ?? "",
   qtdPerguntas: String((i + 1) * 5),
-  tema: "",
-  origem: "",
   dificuldade: i < 3 ? "facil" : i < 7 ? "medio" : "dificil",
 });
 
-const NOME_OPTIONS = [
-  "Aspirante",
-  "Entusiasta",
-  "Apreciador",
-  "Conhecedor",
-  "Colecionador",
-  "Especialista",
-  "Referência",
-  "Mestre",
-  "Ícone",
-  "Lenda",
-].map((n) => ({ value: n.toLowerCase(), label: n }));
+const TIPO_OPTIONS = [
+  { value: "grupo", label: "Grupo" },
+  { value: "especial", label: "Especial" },
+];
+
+const NOME_OPTIONS = NIVEIS.map((n) => ({
+  value: n,
+  label: n.charAt(0).toUpperCase() + n.slice(1),
+}));
 
 const QTD_OPTIONS = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50].map((n) => ({
   value: String(n),
@@ -63,7 +60,7 @@ const TEMA_OPTIONS = [
   { value: "terror", label: "Terror" },
   { value: "drama", label: "Drama" },
   { value: "dublagem", label: "Dublagem" },
-  { value: "cinema", label: "Cinema" },
+  { value: "selecao-variada", label: "Seleção variada" },
 ];
 
 const ORIGEM_OPTIONS = [
@@ -83,26 +80,38 @@ const LINHAS = [
   [7, 8, 9],
 ];
 
-export default function CriarPatenteGrupo() {
+export default function CriarPatente() {
   const router = useRouter();
   const { user } = useAuth();
-  const [slots, setSlots] = useState(Array.from({ length: 10 }, (_, i) => SLOT_VAZIO(i)));
-  const [slotAtivo, setSlotAtivo] = useState(null);
+
+  const [slots, setSlots] = useState(
+    Array.from({ length: 10 }, (_, i) => SLOT_VAZIO(i)),
+  );
+  const [slotModal, setSlotModal] = useState(null);
+  const [nomePatente, setNomePatente] = useState("");
+  const [tipo, setTipo] = useState("grupo");
+  const [tema, setTema] = useState("");
+  const [origem, setOrigem] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const slot = slotAtivo !== null ? slots[slotAtivo] : null;
-  const disabled = slotAtivo === null;
+  const slotAtual = slotModal !== null ? slots[slotModal] : null;
 
   const updateSlot = (campo, valor) => {
-    if (slotAtivo === null) return;
+    if (slotModal === null) return;
     setSlots((prev) =>
-      prev.map((s, i) => (i === slotAtivo ? { ...s, [campo]: valor } : s)),
+      prev.map((s, i) => (i === slotModal ? { ...s, [campo]: valor } : s)),
     );
   };
 
   const handleImagem = (file) => {
-    if (!file) return;
-    updateSlot("imagem", { preview: URL.createObjectURL(file), file });
+    if (!file || slotModal === null) return;
+    setSlots((prev) =>
+      prev.map((s, i) =>
+        i === slotModal
+          ? { ...s, imagem: { preview: URL.createObjectURL(file), file } }
+          : s,
+      ),
+    );
   };
 
   const gerarId = async () => {
@@ -127,7 +136,6 @@ export default function CriarPatenteGrupo() {
     setLoading(true);
     try {
       const newId = await gerarId();
-
       const slotsParaSalvar = await Promise.all(
         slots.map(async (s, i) => {
           const imagemUrl = s.imagem?.file
@@ -136,8 +144,6 @@ export default function CriarPatenteGrupo() {
           return {
             nome: s.nome,
             qtdPerguntas: s.qtdPerguntas,
-            tema: s.tema,
-            origem: s.origem,
             dificuldade: s.dificuldade,
             imagemUrl,
           };
@@ -145,7 +151,10 @@ export default function CriarPatenteGrupo() {
       );
 
       await setDoc(doc(db, "patentes", newId), {
-        tipo: "grupo",
+        nomePatente,
+        tipo,
+        tema,
+        origem,
         slots: slotsParaSalvar,
         status,
         autorId: user?.uid ?? null,
@@ -183,73 +192,34 @@ export default function CriarPatenteGrupo() {
 
   const rightSidebar = (
     <div className={styles.sidebar}>
-      <h2 className={styles.sidebarTitulo}>Detalhes da patente</h2>
-
-      <label className={styles.sidebarUpload}>
-        {slot?.imagem ? (
-          <img src={slot.imagem.preview} alt="" className={styles.sidebarImg} />
-        ) : (
-          <>
-            <CloudUploadIcon size={28} color="var(--text-sub)" />
-            <span className={styles.sidebarUploadDim}>
-              Dimensões recomendadas 1500x1500
-            </span>
-            <span className={styles.sidebarUploadDim}>
-              Arquivos aceitos: JPG e PNG
-            </span>
-          </>
-        )}
-        <input
-          type="file"
-          accept="image/jpeg,image/png"
-          style={{ display: "none" }}
-          disabled={disabled}
-          onChange={(e) => e.target.files[0] && handleImagem(e.target.files[0])}
+      <h2 className={styles.sidebarTitulo}>Detalhes do grupo</h2>
+      <div className={styles.sidebarCampos}>
+        <TextInput
+          label="Nome da patente"
+          placeholder="Digite o nome da patente"
+          value={nomePatente}
+          onChange={(e) => setNomePatente(e.target.value)}
         />
-      </label>
-
-      <div
-        className={`${styles.sidebarCampos} ${disabled ? styles.sidebarCamposDisabled : ""}`}
-      >
         <Select
-          label="Nível da patente"
+          label="Tipo"
           placeholder="Selecione"
-          options={NOME_OPTIONS}
-          value={slot?.nome ?? ""}
-          onChange={(e) => updateSlot("nome", e.target.value)}
-          disabled={disabled}
+          options={TIPO_OPTIONS}
+          value={tipo}
+          onChange={(e) => setTipo(e.target.value)}
         />
         <Select
-          label="Quantidade de perguntas necessárias"
-          placeholder="Selecione"
-          options={QTD_OPTIONS}
-          value={slot?.qtdPerguntas ?? ""}
-          onChange={(e) => updateSlot("qtdPerguntas", e.target.value)}
-          disabled={disabled}
-        />
-        <Select
-          label="Tema exigido"
+          label="Tema"
           placeholder="Selecione"
           options={TEMA_OPTIONS}
-          value={slot?.tema ?? ""}
-          onChange={(e) => updateSlot("tema", e.target.value)}
-          disabled={disabled}
+          value={tema}
+          onChange={(e) => setTema(e.target.value)}
         />
         <Select
-          label="Selecione a origem"
+          label="Origem"
           placeholder="Selecione"
           options={ORIGEM_OPTIONS}
-          value={slot?.origem ?? ""}
-          onChange={(e) => updateSlot("origem", e.target.value)}
-          disabled={disabled}
-        />
-        <Select
-          label="Dificuldade necessária"
-          placeholder="Selecione"
-          options={DIFICULDADE_OPTIONS}
-          value={slot?.dificuldade ?? ""}
-          onChange={(e) => updateSlot("dificuldade", e.target.value)}
-          disabled={disabled}
+          value={origem}
+          onChange={(e) => setOrigem(e.target.value)}
         />
       </div>
     </div>
@@ -271,8 +241,8 @@ export default function CriarPatenteGrupo() {
                 <button
                   key={idx}
                   type="button"
-                  className={`${styles.slot} ${slotAtivo === idx ? styles.slotAtivo : ""} ${slots[idx].imagem ? styles.slotComImagem : ""}`}
-                  onClick={() => setSlotAtivo(idx)}
+                  className={`${styles.slot} ${slotModal === idx ? styles.slotAtivo : ""} ${slots[idx].imagem ? styles.slotComImagem : ""}`}
+                  onClick={() => setSlotModal(idx)}
                 >
                   {slots[idx].imagem ? (
                     <img
@@ -285,7 +255,6 @@ export default function CriarPatenteGrupo() {
                       <div className={styles.svgUpload}>
                         <CloudUploadIcon size={40} color="var(--text-sub)" />
                       </div>
-
                       <div className={styles.moldura}>
                         <svg
                           width="148"
@@ -308,6 +277,74 @@ export default function CriarPatenteGrupo() {
           ))}
         </div>
       </div>
+
+      <AdmModal
+        isOpen={slotModal !== null}
+        onClose={() => setSlotModal(null)}
+        title={
+          slotModal !== null
+            ? NIVEIS[slotModal]?.charAt(0).toUpperCase() +
+              NIVEIS[slotModal]?.slice(1)
+            : ""
+        }
+      >
+        <div className={styles.modalBody}>
+          <label
+            className={styles.sidebarUpload}
+            style={{ margin: "var(--space-2xl)", marginBottom: 0 }}
+          >
+            {slotAtual?.imagem ? (
+              <img
+                src={slotAtual.imagem.preview}
+                alt=""
+                className={styles.sidebarImg}
+              />
+            ) : (
+              <>
+                <CloudUploadIcon size={28} color="var(--text-sub)" />
+                <span className={styles.sidebarUploadDim}>
+                  Dimensões recomendadas 1500x1500
+                </span>
+                <span className={styles.sidebarUploadDim}>
+                  Arquivos aceitos: JPG e PNG
+                </span>
+              </>
+            )}
+            <input
+              type="file"
+              accept="image/jpeg,image/png"
+              style={{ display: "none" }}
+              onChange={(e) =>
+                e.target.files[0] && handleImagem(e.target.files[0])
+              }
+            />
+          </label>
+
+          <div className={styles.modalCampos}>
+            <Select
+              label="Nível da patente"
+              placeholder="Selecione"
+              options={NOME_OPTIONS}
+              value={slotAtual?.nome ?? ""}
+              onChange={(e) => updateSlot("nome", e.target.value)}
+            />
+            <Select
+              label="Quantidade de perguntas necessárias"
+              placeholder="Selecione"
+              options={QTD_OPTIONS}
+              value={slotAtual?.qtdPerguntas ?? ""}
+              onChange={(e) => updateSlot("qtdPerguntas", e.target.value)}
+            />
+            <Select
+              label="Dificuldade necessária"
+              placeholder="Selecione"
+              options={DIFICULDADE_OPTIONS}
+              value={slotAtual?.dificuldade ?? ""}
+              onChange={(e) => updateSlot("dificuldade", e.target.value)}
+            />
+          </div>
+        </div>
+      </AdmModal>
     </AdmLayout>
   );
 }

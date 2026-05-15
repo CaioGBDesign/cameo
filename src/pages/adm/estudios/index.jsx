@@ -18,9 +18,7 @@ import EditIcon from "@/components/icons/EditIcon";
 import DuplicarIcon from "@/components/icons/DuplicarIcon";
 import DeletarIcon from "@/components/icons/DeletarIcon";
 import TrashIcon from "@/components/icons/TrashIcon";
-import StatusPublicadoIcon from "@/components/icons/StatusPublicadoIcon";
-import StatusRascunhoIcon from "@/components/icons/StatusRascunhoIcon";
-import StatusArquivadoIcon from "@/components/icons/StatusArquivadoIcon";
+import StatusBadge from "@/components/adm/status-badge";
 import styles from "./index.module.scss";
 
 const SortIcon = ({ active, dir }) => (
@@ -42,37 +40,6 @@ const SortIcon = ({ active, dir }) => (
 
 // ─── Badge de publicação ──────────────────────────────────────────────────────
 
-const STATUS_PUB_CONFIG = {
-  publicado: {
-    label: "Publicado",
-    className: styles.statusPublicado,
-    Icon: StatusPublicadoIcon,
-  },
-  rascunho: {
-    label: "Rascunho",
-    className: styles.statusRascunho,
-    Icon: StatusRascunhoIcon,
-  },
-  arquivado: {
-    label: "Arquivado",
-    className: styles.statusArquivado,
-    Icon: StatusArquivadoIcon,
-  },
-};
-
-const StatusBadge = ({ status }) => {
-  const config =
-    STATUS_PUB_CONFIG[status?.toLowerCase()] ?? STATUS_PUB_CONFIG.rascunho;
-  const { Icon } = config;
-  return (
-    <span className={`${styles.statusBadge} ${config.className}`}>
-      <span className={styles.badgeIcon}>
-        <Icon />
-      </span>
-      <span className={styles.badgeText}>{config.label}</span>
-    </span>
-  );
-};
 
 // ─── Badge ativo/inativo ──────────────────────────────────────────────────────
 

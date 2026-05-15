@@ -33,8 +33,11 @@ const SKIP_WITH_CHILD = new Set(["noticias", "resenhas", "dubladores", "dublagen
 export default function AdmHeader({ actions, collapsed, breadcrumb }) {
   const router = useRouter();
 
-  // ["", "adm", "noticias", ...]
-  const segments = router.pathname.split("/").filter(Boolean);
+  // ["", "adm", "noticias", ...] — substitui [param] pelo valor real da query
+  const segments = router.pathname.split("/").filter(Boolean).map((seg) => {
+    const m = seg.match(/^\[(.+)\]$/);
+    return m ? (router.query[m[1]] ?? seg) : seg;
+  });
 
   const fullPath = "/" + segments.join("/");
   const lastSeg = segments[segments.length - 1];

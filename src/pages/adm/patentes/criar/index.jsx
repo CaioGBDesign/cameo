@@ -15,6 +15,7 @@ import AdmLayout from "@/components/adm/layout";
 import AdmModal from "@/components/adm/modal";
 import Button from "@/components/button";
 import Select from "@/components/inputs/select";
+import MultiSelect from "@/components/inputs/multi-select";
 import TextInput from "@/components/inputs/text-input";
 import CloudUploadIcon from "@/components/icons/CloudUploadIcon";
 import styles from "./index.module.scss";
@@ -37,6 +38,7 @@ const SLOT_VAZIO = (i) => ({
   nome: NIVEIS[i] ?? "",
   qtdPerguntas: String((i + 1) * 5),
   dificuldade: i < 3 ? "facil" : i < 7 ? "medio" : "dificil",
+  tema: [],
 });
 
 const TIPO_OPTIONS = [
@@ -55,18 +57,20 @@ const QTD_OPTIONS = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50].map((n) => ({
 }));
 
 const TEMA_OPTIONS = [
+  { value: "cinema", label: "Cinema" },
   { value: "comedia", label: "Comédia" },
   { value: "romance", label: "Romance" },
   { value: "terror", label: "Terror" },
   { value: "drama", label: "Drama" },
   { value: "dublagem", label: "Dublagem" },
-  { value: "selecao-variada", label: "Seleção variada" },
 ];
 
 const ORIGEM_OPTIONS = [
   { value: "quiz-padrao", label: "Quiz padrão" },
   { value: "eventos", label: "Eventos" },
 ];
+
+const TEMA_SLOT_OPTIONS = TEMA_OPTIONS.filter((o) => o.value !== "cinema");
 
 const DIFICULDADE_OPTIONS = [
   { value: "facil", label: "Fácil" },
@@ -145,6 +149,7 @@ export default function CriarPatente() {
             nome: s.nome,
             qtdPerguntas: s.qtdPerguntas,
             dificuldade: s.dificuldade,
+            tema: tema === "cinema" ? s.tema : null,
             imagemUrl,
           };
         }),
@@ -342,6 +347,15 @@ export default function CriarPatente() {
               value={slotAtual?.dificuldade ?? ""}
               onChange={(e) => updateSlot("dificuldade", e.target.value)}
             />
+            {tema === "cinema" && (
+              <MultiSelect
+                label="Tema do slot"
+                placeholder="Selecione"
+                options={TEMA_SLOT_OPTIONS}
+                selected={slotAtual?.tema ?? []}
+                onChange={(val) => updateSlot("tema", val)}
+              />
+            )}
           </div>
         </div>
       </AdmModal>

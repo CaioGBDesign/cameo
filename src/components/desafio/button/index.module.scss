@@ -1,0 +1,53 @@
+.btn {
+  display: flex;
+  height: 50px;
+  padding: 0 var(--space-lg);
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-sm);
+  border-radius: var(--space-xs) var(--space-lg);
+  border: none;
+  cursor: pointer;
+  font-style: italic;
+  font-size: 1rem;
+  transition: opacity 0.15s;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.solid {
+  background: var(--bg-solid);
+  color: var(--text-solid);
+}
+
+.outline {
+  background: transparent;
+  border: 1px solid var(--stroke-solid);
+  color: var(--text-base);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+}
+
+.label {
+  white-space: nowrap;
+  text-align: center;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: uppercase;
+}
+
+.solid .label {
+  color: var(--text-solid);
+}
+
+.outline .label {
+  color: var(--text-base);
+}

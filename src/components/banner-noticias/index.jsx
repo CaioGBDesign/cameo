@@ -5,7 +5,12 @@ import ClockIcon from "@/components/icons/ClockIcon";
 import materiaPadrao from "@/components/background/materia-padrao.jpg";
 import styles from "./index.module.scss";
 
-const BannerNoticias = ({ noticias, tagLabel = "Notícia", tagCor, basePath = "/noticias/detalhes" }) => {
+const BannerNoticias = ({
+  noticias,
+  tagLabel = "Notícia",
+  tagCor,
+  basePath = "/noticias/detalhes",
+}) => {
   const [ativo, setAtivo] = useState(0);
   const total = noticias.length;
 
@@ -37,12 +42,20 @@ const BannerNoticias = ({ noticias, tagLabel = "Notícia", tagCor, basePath = "/
               src={encontrarImagem(noticia)}
               alt={noticia.titulo}
               className={styles.imagem}
-              onError={(e) => { e.target.src = materiaPadrao.src; }}
+              onError={(e) => {
+                e.target.src = materiaPadrao.src;
+              }}
+              unoptimized
             />
             <div className={styles.gradiente} />
 
             <div className={styles.info}>
-              <span className={styles.tag} style={tagCor ? { background: tagCor } : undefined}>{tagLabel}</span>
+              <span
+                className={styles.tag}
+                style={tagCor ? { background: tagCor } : undefined}
+              >
+                {tagLabel}
+              </span>
               <h2 className={styles.titulo}>{noticia.titulo}</h2>
               {noticia.numero && (
                 <p className={styles.leitura}>
@@ -55,11 +68,27 @@ const BannerNoticias = ({ noticias, tagLabel = "Notícia", tagCor, basePath = "/
         ))}
       </div>
 
-      <button className={`${styles.arrow} ${styles.arrowLeft}`} onClick={anterior} aria-label="Anterior">
-        <ChevronDownIcon size={18} color="var(--icon-base)" className={styles.chevronEsquerda} />
+      <button
+        className={`${styles.arrow} ${styles.arrowLeft}`}
+        onClick={anterior}
+        aria-label="Anterior"
+      >
+        <ChevronDownIcon
+          size={18}
+          color="var(--icon-base)"
+          className={styles.chevronEsquerda}
+        />
       </button>
-      <button className={`${styles.arrow} ${styles.arrowRight}`} onClick={proximo} aria-label="Próximo">
-        <ChevronDownIcon size={18} color="var(--icon-base)" className={styles.chevronDireita} />
+      <button
+        className={`${styles.arrow} ${styles.arrowRight}`}
+        onClick={proximo}
+        aria-label="Próximo"
+      >
+        <ChevronDownIcon
+          size={18}
+          color="var(--icon-base)"
+          className={styles.chevronDireita}
+        />
       </button>
 
       <div className={styles.dots}>

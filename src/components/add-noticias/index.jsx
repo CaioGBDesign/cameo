@@ -100,6 +100,7 @@ const AddNoticiaSimples = () => {
                   maxHeight: "200px",
                   marginTop: "1rem",
                 }}
+                unoptimized
               />
             )}
           </div>

@@ -16,6 +16,7 @@ import EstudioIcon from "@/components/icons/EstudioIcon";
 import PerguntasIcon from "@/components/icons/PerguntasIcon";
 import PatentesIcon from "@/components/icons/PatentesIcon";
 import EventosIcon from "@/components/icons/EventosIcon";
+import DesafioIcon from "@/components/icons/DesafioIcon";
 import PermissoesIcon from "@/components/icons/PermissoesIcon";
 import ModalCriarPergunta from "@/components/modais/modal-criar-pergunta";
 import styles from "./index.module.scss";
@@ -109,6 +110,7 @@ const NAV = [
           { href: "/adm/eventos", label: "Todos os eventos" },
         ],
       },
+      { href: "/adm/desafio", label: "Desafio", icon: DesafioIcon },
     ],
   },
   {

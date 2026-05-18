@@ -1,0 +1,150 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+  padding: var(--space-2xl);
+  padding-top: var(--space-nn);
+
+  .titulo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .tituloContent {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      gap: var(--space-lg);
+
+      width: 100%;
+      height: 150px;
+
+      h1 {
+        color: var(--text-base);
+        font-size: 50px;
+        font-style: italic;
+        font-weight: 700;
+        line-height: normal;
+      }
+
+      .linkDesafio {
+        display: flex;
+        padding: var(--space-xs) var(--space-sm);
+        justify-content: center;
+        align-items: center;
+        gap: var(--space-sm);
+
+        border-radius: var(--space-sm);
+        border: 1px solid var(--stroke-base);
+        background: var(--bg-overlay);
+
+        text-decoration: none;
+
+        span {
+          color: var(--text-base);
+          font-size: 20px;
+          font-style: italic;
+          font-weight: 500;
+          line-height: normal;
+        }
+      }
+    }
+
+    .logoDesafio {
+      width: 30%;
+    }
+  }
+
+  .contentArticle {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: var(--space-4xl);
+
+    .heroBanner {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: start;
+      gap: var(--space-2xl);
+
+      width: 100%;
+
+      .tituloContent {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: var(--space-sm);
+
+        .boxIcon {
+          display: flex;
+          padding: 10px;
+          align-items: center;
+          gap: var(--space-sm);
+
+          border-radius: var(--space-sm);
+          border: 1px solid var(--stroke-base);
+          background: var(--bg-overlay);
+        }
+
+        span {
+          color: var(--text-base);
+          font-size: 20px;
+          font-style: italic;
+          font-weight: 700;
+          line-height: 20px;
+        }
+      }
+
+      .uploadImages {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: var(--space-lg);
+
+        width: 100%;
+
+        .desktopImage {
+          width: 100%;
+        }
+
+        .mobileImage {
+          width: 30%;
+        }
+
+        .uploadFull {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  h2 {
+    color: var(--text-base);
+    font-size: 30px;
+    font-style: italic;
+    font-weight: 700;
+    line-height: normal;
+  }
+
+  .bannersPorTipo {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-lg);
+  }
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+  padding: var(--space-2xl);
+  flex: 1;
+  overflow-y: auto;
+}
+
+.modalCampos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}

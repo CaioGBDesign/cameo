@@ -27,6 +27,13 @@
       font-style: italic;
       font-weight: 700;
       line-height: 20px;
+      flex: 1;
+    }
+
+    .headerActions {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
     }
   }
 

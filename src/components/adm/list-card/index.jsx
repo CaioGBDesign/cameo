@@ -20,13 +20,17 @@ export default function ListCard({
   placeholder,
   children,
   onAdicionar,
+  showDocumentIcon = true,
+  headerActions,
+  cardAction,
 }) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.titleRow}>
-        <div className={styles.titleIcon}>{icon}</div>
+        {icon && <div className={styles.titleIcon}>{icon}</div>}
         <span className={styles.titulo}>{titulo}</span>
         {tooltip && <InfoIcon size={16} color="var(--icon-secondary)" />}
+        {headerActions && <div className={styles.headerActions}>{headerActions}</div>}
       </div>
 
       <div className={styles.card} onClick={onAdicionar}>
@@ -34,7 +38,9 @@ export default function ListCard({
           {placeholder && (
             <span className={styles.cardPlaceholder}>{placeholder}</span>
           )}
-          <DocumentIcon02 size={24} color="var(--icon-secondary)" />
+          {cardAction ?? (showDocumentIcon && (
+            <DocumentIcon02 size={24} color="var(--icon-secondary)" />
+          ))}
         </div>
         <div className={styles.cardContent}>{children}</div>
         <div className={styles.cardBottom}>

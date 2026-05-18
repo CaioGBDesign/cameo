@@ -117,7 +117,7 @@ const AddCriticas = ({ onClose }) => {
 
   const handleImagemChange = (file) => {
     const novosElementos = elementos.filter(
-      (el) => el.tipo !== TIPO_ELEMENTO.IMAGEM
+      (el) => el.tipo !== TIPO_ELEMENTO.IMAGEM,
     );
 
     if (file) {
@@ -163,14 +163,14 @@ const AddCriticas = ({ onClose }) => {
           if (elemento.tipo === TIPO_ELEMENTO.IMAGEM && elemento.file) {
             const storageRef = ref(
               storage,
-              `criticas/${Date.now()}_${elemento.file.name}`
+              `criticas/${Date.now()}_${elemento.file.name}`,
             );
             await uploadBytes(storageRef, elemento.file);
             const url = await getDownloadURL(storageRef);
             return { tipo: elemento.tipo, conteudo: url };
           }
           return elemento;
-        })
+        }),
       );
 
       // Cria o documento com ID customizado
@@ -332,13 +332,14 @@ const AddCriticas = ({ onClose }) => {
                     <label className={styles.customFileLabel}>
                       {/* Estado sem imagem */}
                       {!elementos.some(
-                        (el) => el.tipo === TIPO_ELEMENTO.IMAGEM
+                        (el) => el.tipo === TIPO_ELEMENTO.IMAGEM,
                       ) && (
                         <span className={styles.labelContent}>
                           <img
                             src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Fupload.svg?alt=media&token=2f137f1e-ff02-4400-9096-4812704df4b6"
                             alt="Ícone upload"
                             className={styles.uploadIcon}
+                            unoptimized
                           />
                           <div className={styles.textos}>
                             <span className={styles.textoLabel}>
@@ -353,18 +354,19 @@ const AddCriticas = ({ onClose }) => {
 
                       {/* Estado com imagem */}
                       {elementos.some(
-                        (el) => el.tipo === TIPO_ELEMENTO.IMAGEM
+                        (el) => el.tipo === TIPO_ELEMENTO.IMAGEM,
                       ) && (
                         <div className={styles.previewContainer}>
                           <div className={styles.imagemPreview}>
                             <img
                               src={
                                 elementos.find(
-                                  (el) => el.tipo === TIPO_ELEMENTO.IMAGEM
+                                  (el) => el.tipo === TIPO_ELEMENTO.IMAGEM,
                                 ).preview
                               }
                               alt="Preview"
                               className={styles.imagePreview}
+                              unoptimized
                             />
                           </div>
 
@@ -382,6 +384,7 @@ const AddCriticas = ({ onClose }) => {
                                 src="https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/icones%2Feditar.svg?alt=media&token=d70d85da-fe9d-4df9-8276-0da123d876a1"
                                 alt="Alterar"
                                 className={styles.actionIcon}
+                                unoptimized
                               />
                               <span>Alterar imagem</span>
                             </button>
@@ -433,7 +436,7 @@ const AddCriticas = ({ onClose }) => {
                         />
                       </div>
                     </div>
-                  ) : null
+                  ) : null,
                 )}
 
                 <div className={styles.BotoesAcao}>

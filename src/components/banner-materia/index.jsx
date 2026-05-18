@@ -21,6 +21,7 @@ export default function BannerMateria({ src, tipo = "noticia", alt = "" }) {
         fill
         style={{ objectFit: "cover" }}
         priority
+        unoptimized
       />
     </div>
   );

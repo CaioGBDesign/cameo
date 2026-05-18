@@ -4,7 +4,7 @@ import Button from "@/components/button";
 import EditIcon from "@/components/icons/EditIcon";
 import CloudUploadIcon from "@/components/icons/CloudUploadIcon";
 
-const UploadImagem = ({ imagem, onImagemChange, dimensoes = true }) => {
+const UploadImagem = ({ imagem, onImagemChange, dimensoes = true, className, accept = "image/*" }) => {
   const fileInputRef = useRef(null);
 
   const handleFileChange = (e) => {
@@ -18,7 +18,7 @@ const UploadImagem = ({ imagem, onImagemChange, dimensoes = true }) => {
   };
 
   return (
-    <div className={styles.uploadContainer}>
+    <div className={`${styles.uploadContainer}${className ? " " + className : ""}`}>
       <label className={styles.customFileLabel}>
         {!imagem && (
           <span className={styles.labelContent}>
@@ -55,7 +55,7 @@ const UploadImagem = ({ imagem, onImagemChange, dimensoes = true }) => {
 
         <input
           type="file"
-          accept="image/*"
+          accept={accept}
           onChange={handleFileChange}
           className={styles.hiddenFileInput}
           ref={fileInputRef}

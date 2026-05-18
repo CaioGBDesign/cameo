@@ -30,57 +30,141 @@ import styles from "./index.module.scss";
 
 const IcoParagraph = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path d="M3 5h10M3 8h10M3 11h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <path
+      d="M3 5h10M3 8h10M3 11h6"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
   </svg>
 );
 
 const IcoHeading = ({ n }) => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path d="M2 4v8M2 8h5M7 4v8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <text x="9.5" y="12.5" fontSize="6.5" fontWeight="800" fill="currentColor" fontFamily="sans-serif">{n}</text>
+    <path
+      d="M2 4v8M2 8h5M7 4v8"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <text
+      x="9.5"
+      y="12.5"
+      fontSize="6.5"
+      fontWeight="800"
+      fill="currentColor"
+      fontFamily="sans-serif"
+    >
+      {n}
+    </text>
   </svg>
 );
 
 const IcoFraseDestaque = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <rect x="1.5" y="1.5" width="13" height="13" rx="2" stroke="currentColor" strokeWidth="1.5" />
-    <path d="M4.5 6.5h7M4.5 9.5h4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <rect
+      x="1.5"
+      y="1.5"
+      width="13"
+      height="13"
+      rx="2"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    />
+    <path
+      d="M4.5 6.5h7M4.5 9.5h4.5"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
   </svg>
 );
 
 const IcoTabela = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <rect x="1.5" y="1.5" width="13" height="13" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
+    <rect
+      x="1.5"
+      y="1.5"
+      width="13"
+      height="13"
+      rx="1.5"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    />
     <path d="M1.5 6.5h13M6.5 6.5v8" stroke="currentColor" strokeWidth="1.5" />
   </svg>
 );
 
 const IcoImagem = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <rect x="1.5" y="2.5" width="13" height="11" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
+    <rect
+      x="1.5"
+      y="2.5"
+      width="13"
+      height="11"
+      rx="1.5"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    />
     <circle cx="5.5" cy="6" r="1" fill="currentColor" />
-    <path d="M1.5 11l3.5-3.5 2.5 2.5 2-2 4 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+    <path
+      d="M1.5 11l3.5-3.5 2.5 2.5 2-2 4 4.5"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 
 const IcoAudio = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path d="M2 6v4h3l4 3V3L5 6H2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-    <path d="M11.5 5.5a3 3 0 0 1 0 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <path
+      d="M2 6v4h3l4 3V3L5 6H2z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M11.5 5.5a3 3 0 0 1 0 5"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
   </svg>
 );
 
 const IcoArquivo = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path d="M9 2H5a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 5 14h6a1.5 1.5 0 0 0 1.5-1.5V5L9 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-    <path d="M9 2v3h3M5.5 8.5h5M5.5 11h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <path
+      d="M9 2H5a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 5 14h6a1.5 1.5 0 0 0 1.5-1.5V5L9 2z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M9 2v3h3M5.5 8.5h5M5.5 11h3"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
   </svg>
 );
 
 const IcoHighlight = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path d="M10.5 2.5L13.5 5.5L7 12H4v-3l6.5-6.5z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-    <path d="M2 14h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <path
+      d="M10.5 2.5L13.5 5.5L7 12H4v-3l6.5-6.5z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M2 14h12"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
   </svg>
 );
 
@@ -111,13 +195,19 @@ const ParagraphView = ({ node, getPos, editor }) => {
   if (dentroDeBloco) {
     return (
       <NodeViewWrapper suppressContentEditableWarning>
-        <NodeViewContent as="p" className={isEmpty ? styles.paragraphVazio : ""} />
+        <NodeViewContent
+          as="p"
+          className={isEmpty ? styles.paragraphVazio : ""}
+        />
       </NodeViewWrapper>
     );
   }
 
   return (
-    <NodeViewWrapper className={styles.blockWrapper} suppressContentEditableWarning>
+    <NodeViewWrapper
+      className={styles.blockWrapper}
+      suppressContentEditableWarning
+    >
       <div
         data-drag-handle
         contentEditable={false}
@@ -126,7 +216,10 @@ const ParagraphView = ({ node, getPos, editor }) => {
       >
         <DragHandleIcon />
       </div>
-      <NodeViewContent as="p" className={isEmpty ? styles.paragraphVazio : ""} />
+      <NodeViewContent
+        as="p"
+        className={isEmpty ? styles.paragraphVazio : ""}
+      />
     </NodeViewWrapper>
   );
 };
@@ -136,8 +229,16 @@ const ParagraphView = ({ node, getPos, editor }) => {
 const HeadingView = ({ node }) => {
   const tag = `h${node.attrs.level}`;
   return (
-    <NodeViewWrapper className={styles.blockWrapper} suppressContentEditableWarning>
-      <div data-drag-handle contentEditable={false} suppressContentEditableWarning className={styles.dragHandle}>
+    <NodeViewWrapper
+      className={styles.blockWrapper}
+      suppressContentEditableWarning
+    >
+      <div
+        data-drag-handle
+        contentEditable={false}
+        suppressContentEditableWarning
+        className={styles.dragHandle}
+      >
         <DragHandleIcon />
       </div>
       <NodeViewContent as={tag} />
@@ -146,8 +247,16 @@ const HeadingView = ({ node }) => {
 };
 
 const BlockquoteView = () => (
-  <NodeViewWrapper className={styles.blockWrapper} suppressContentEditableWarning>
-    <div data-drag-handle contentEditable={false} suppressContentEditableWarning className={styles.dragHandle}>
+  <NodeViewWrapper
+    className={styles.blockWrapper}
+    suppressContentEditableWarning
+  >
+    <div
+      data-drag-handle
+      contentEditable={false}
+      suppressContentEditableWarning
+      className={styles.dragHandle}
+    >
       <DragHandleIcon />
     </div>
     <NodeViewContent as="blockquote" />
@@ -157,18 +266,37 @@ const BlockquoteView = () => (
 const CalloutView = ({ node }) => {
   const isEmpty = node.textContent === "";
   return (
-    <NodeViewWrapper className={`${styles.blockWrapper} ${styles.calloutWrapper}`} suppressContentEditableWarning>
-      <div data-drag-handle contentEditable={false} suppressContentEditableWarning className={styles.dragHandle}>
+    <NodeViewWrapper
+      className={`${styles.blockWrapper} ${styles.calloutWrapper}`}
+      suppressContentEditableWarning
+    >
+      <div
+        data-drag-handle
+        contentEditable={false}
+        suppressContentEditableWarning
+        className={styles.dragHandle}
+      >
         <DragHandleIcon />
       </div>
-      <NodeViewContent as="p" className={isEmpty ? styles.paragraphVazio : undefined} />
+      <NodeViewContent
+        as="p"
+        className={isEmpty ? styles.paragraphVazio : undefined}
+      />
     </NodeViewWrapper>
   );
 };
 
 const ImageView = ({ node }) => (
-  <NodeViewWrapper className={styles.blockWrapper} suppressContentEditableWarning>
-    <div data-drag-handle contentEditable={false} suppressContentEditableWarning className={styles.dragHandle}>
+  <NodeViewWrapper
+    className={styles.blockWrapper}
+    suppressContentEditableWarning
+  >
+    <div
+      data-drag-handle
+      contentEditable={false}
+      suppressContentEditableWarning
+      className={styles.dragHandle}
+    >
       <DragHandleIcon />
     </div>
     <img
@@ -176,6 +304,7 @@ const ImageView = ({ node }) => (
       alt={node.attrs.alt || ""}
       contentEditable={false}
       className={styles.editorImage}
+      unoptimized
     />
   </NodeViewWrapper>
 );
@@ -249,7 +378,10 @@ function BubbleMenuCustom({ editor, children }) {
 
     const atualizar = () => {
       const { from, to } = editor.state.selection;
-      if (from === to) { setVisible(false); return; }
+      if (from === to) {
+        setVisible(false);
+        return;
+      }
       const start = editor.view.coordsAtPos(from);
       const end = editor.view.coordsAtPos(to);
       setCoords({ top: start.top, left: (start.left + end.left) / 2 });
@@ -329,9 +461,10 @@ const SLASH_GROUPS = [
       {
         label: "Frase de destaque",
         icone: <IcoFraseDestaque />,
-        comando: (e) => e.isActive("callout")
-          ? e.chain().focus().setNode("paragraph").run()
-          : e.chain().focus().setNode("callout").run(),
+        comando: (e) =>
+          e.isActive("callout")
+            ? e.chain().focus().setNode("paragraph").run()
+            : e.chain().focus().setNode("callout").run(),
       },
       {
         label: "Citação",
@@ -409,7 +542,10 @@ function SlashMenu({ editor, onTriggerImageUpload }) {
       const antes = textoLinha.slice(0, posNaLinha);
 
       const match = antes.match(/\/(\w*)$/);
-      if (!match) { fechar(); return; }
+      if (!match) {
+        fechar();
+        return;
+      }
 
       const q = match[1].toLowerCase();
       const posSlash = $from.pos - match[0].length;
@@ -418,7 +554,10 @@ function SlashMenu({ editor, onTriggerImageUpload }) {
       const sobrarEspaco = window.innerHeight - cursorCoords.bottom;
       const paraCima = sobrarEspaco < SLASH_MENU_HEIGHT;
 
-      setCoords({ top: paraCima ? cursorCoords.top : cursorCoords.bottom, left: cursorCoords.left });
+      setCoords({
+        top: paraCima ? cursorCoords.top : cursorCoords.bottom,
+        left: cursorCoords.left,
+      });
       setAbrirParaCima(paraCima);
       setQuery(q);
       setRange({ from: posSlash, to: $from.pos });
@@ -462,7 +601,10 @@ function SlashMenu({ editor, onTriggerImageUpload }) {
         setSelecionado((s) => (s + 1) % itensSelecionaveis.length);
       } else if (e.key === "ArrowUp") {
         e.preventDefault();
-        setSelecionado((s) => (s - 1 + itensSelecionaveis.length) % itensSelecionaveis.length);
+        setSelecionado(
+          (s) =>
+            (s - 1 + itensSelecionaveis.length) % itensSelecionaveis.length,
+        );
       } else if (e.key === "Enter") {
         e.preventDefault();
         executar(itensSelecionaveis[selecionado]);
@@ -486,7 +628,11 @@ function SlashMenu({ editor, onTriggerImageUpload }) {
       fechar();
       const url = window.prompt("URL do link:");
       if (url) {
-        editor.chain().focus().insertContent(`<a href="${url}">${url}</a>`).run();
+        editor
+          .chain()
+          .focus()
+          .insertContent(`<a href="${url}">${url}</a>`)
+          .run();
       }
     } else {
       item.comando(editor);
@@ -494,7 +640,12 @@ function SlashMenu({ editor, onTriggerImageUpload }) {
     }
   };
 
-  if (!visible || gruposFiltrados.length === 0 || typeof document === "undefined") return null;
+  if (
+    !visible ||
+    gruposFiltrados.length === 0 ||
+    typeof document === "undefined"
+  )
+    return null;
 
   let kbIdx = -1;
 
@@ -506,7 +657,9 @@ function SlashMenu({ editor, onTriggerImageUpload }) {
         position: "fixed",
         top: coords.top,
         left: coords.left,
-        transform: abrirParaCima ? "translateY(calc(-100% - 4px))" : "translateY(4px)",
+        transform: abrirParaCima
+          ? "translateY(calc(-100% - 4px))"
+          : "translateY(4px)",
         zIndex: 1000,
       }}
       onMouseDown={(e) => e.preventDefault()}
@@ -543,7 +696,9 @@ function WordCount({ editor }) {
     editor,
     selector: (ctx) => {
       const texto = ctx.editor.getText();
-      const count = texto.trim() ? texto.trim().split(/\s+/).filter(Boolean).length : 0;
+      const count = texto.trim()
+        ? texto.trim().split(/\s+/).filter(Boolean).length
+        : 0;
       return { palavras: count };
     },
   });
@@ -563,7 +718,11 @@ export default function AdmEditor({ value, onChange }) {
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
-      StarterKit.configure({ paragraph: false, heading: false, blockquote: false }),
+      StarterKit.configure({
+        paragraph: false,
+        heading: false,
+        blockquote: false,
+      }),
       CustomParagraph,
       CustomHeading,
       CustomBlockquote,
@@ -593,7 +752,10 @@ export default function AdmEditor({ value, onChange }) {
     const prev = editor.getAttributes("link").href;
     const url = window.prompt("URL do link:", prev);
     if (url === null) return;
-    if (url === "") { editor.chain().focus().unsetLink().run(); return; }
+    if (url === "") {
+      editor.chain().focus().unsetLink().run();
+      return;
+    }
     editor.chain().focus().setLink({ href: url }).run();
   };
 
@@ -616,49 +778,99 @@ export default function AdmEditor({ value, onChange }) {
   return (
     <div className={styles.wrapper}>
       <BubbleMenuCustom editor={editor}>
-        <BubbleBtn onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} active={editor.isActive("heading", { level: 1 })} title="Título 1">
+        <BubbleBtn
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 1 }).run()
+          }
+          active={editor.isActive("heading", { level: 1 })}
+          title="Título 1"
+        >
           <span className={styles.headingLabel}>H1</span>
         </BubbleBtn>
-        <BubbleBtn onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} active={editor.isActive("heading", { level: 2 })} title="Título 2">
+        <BubbleBtn
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 2 }).run()
+          }
+          active={editor.isActive("heading", { level: 2 })}
+          title="Título 2"
+        >
           <span className={styles.headingLabel}>H2</span>
         </BubbleBtn>
-        <BubbleBtn onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} active={editor.isActive("heading", { level: 3 })} title="Título 3">
+        <BubbleBtn
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 3 }).run()
+          }
+          active={editor.isActive("heading", { level: 3 })}
+          title="Título 3"
+        >
           <span className={styles.headingLabel}>H3</span>
         </BubbleBtn>
 
         <div className={styles.bubbleDivider} />
 
-        <BubbleBtn onClick={() => editor.chain().focus().toggleBold().run()} active={editor.isActive("bold")} title="Negrito">
+        <BubbleBtn
+          onClick={() => editor.chain().focus().toggleBold().run()}
+          active={editor.isActive("bold")}
+          title="Negrito"
+        >
           <BoldIcon size="16px" />
         </BubbleBtn>
-        <BubbleBtn onClick={() => editor.chain().focus().toggleItalic().run()} active={editor.isActive("italic")} title="Itálico">
+        <BubbleBtn
+          onClick={() => editor.chain().focus().toggleItalic().run()}
+          active={editor.isActive("italic")}
+          title="Itálico"
+        >
           <ItalicIcon size="16px" />
         </BubbleBtn>
-        <BubbleBtn onClick={() => editor.chain().focus().toggleUnderline().run()} active={editor.isActive("underline")} title="Sublinhado">
+        <BubbleBtn
+          onClick={() => editor.chain().focus().toggleUnderline().run()}
+          active={editor.isActive("underline")}
+          title="Sublinhado"
+        >
           <UnderlineIcon size="16px" />
         </BubbleBtn>
 
         <div className={styles.bubbleDivider} />
 
-        <BubbleBtn onClick={setLink} active={editor.isActive("link")} title="Link">
+        <BubbleBtn
+          onClick={setLink}
+          active={editor.isActive("link")}
+          title="Link"
+        >
           <LinkIcon size="16px" />
         </BubbleBtn>
-        <BubbleBtn onClick={() => editor.chain().focus().toggleBlockquote().run()} active={editor.isActive("blockquote")} title="Citação">
+        <BubbleBtn
+          onClick={() => editor.chain().focus().toggleBlockquote().run()}
+          active={editor.isActive("blockquote")}
+          title="Citação"
+        >
           <BlockquoteIcon size="16px" />
         </BubbleBtn>
 
         <div className={styles.bubbleDivider} />
 
-        <BubbleBtn onClick={() => editor.chain().focus().toggleBulletList().run()} active={editor.isActive("bulletList")} title="Lista">
+        <BubbleBtn
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          active={editor.isActive("bulletList")}
+          title="Lista"
+        >
           <BulletListIcon size="16px" />
         </BubbleBtn>
-        <BubbleBtn onClick={() => editor.chain().focus().toggleOrderedList().run()} active={editor.isActive("orderedList")} title="Lista numerada">
+        <BubbleBtn
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          active={editor.isActive("orderedList")}
+          title="Lista numerada"
+        >
           <OrderedListIcon size="16px" />
         </BubbleBtn>
 
         <div className={styles.bubbleDivider} />
 
-        <BubbleBtn onClick={() => editor.chain().focus().toggleMark("highlight").run()} active={editor.isActive("highlight")} title="Marcador de texto">
+        <BubbleBtn
+          onClick={() => editor.chain().focus().toggleMark("highlight").run()}
+          active={editor.isActive("highlight")}
+          title="Marcador de texto"
+        >
           <IcoHighlight />
         </BubbleBtn>
       </BubbleMenuCustom>

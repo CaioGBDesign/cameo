@@ -1,0 +1,48 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-lg);
+
+  padding: var(--space-md) var(--space-lg);
+
+  width: 100%;
+
+  border-radius: var(--space-sm);
+  background: var(--bg-overlay);
+
+  .imagem {
+    width: 100%;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .patenteTema {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-sm);
+
+    opacity: 0.1;
+
+    .nome {
+      color: var(--text-base);
+      text-align: center;
+      font-size: 20px;
+      font-style: italic;
+      font-weight: 700;
+    }
+
+    .tema {
+      color: var(--primitive-roxo-02);
+      text-align: center;
+      font-size: 16px;
+      font-style: italic;
+      font-weight: 400;
+    }
+  }
+}

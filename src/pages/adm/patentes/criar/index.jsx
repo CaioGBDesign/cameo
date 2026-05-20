@@ -37,6 +37,7 @@ const SLOT_VAZIO = (i) => ({
   imagem: null,
   nome: NIVEIS[i] ?? "",
   qtdPerguntas: String((i + 1) * 5),
+  xpNecessario: "",
   dificuldade: i < 3 ? "facil" : i < 7 ? "medio" : "dificil",
   tema: [],
 });
@@ -149,6 +150,7 @@ export default function CriarPatente() {
             nome: s.nome,
             qtdPerguntas: s.qtdPerguntas,
             dificuldade: s.dificuldade,
+            xpNecessario: s.xpNecessario ?? "",
             tema: tema === "cinema" ? s.tema : null,
             imagemUrl,
           };
@@ -346,6 +348,13 @@ export default function CriarPatente() {
               options={DIFICULDADE_OPTIONS}
               value={slotAtual?.dificuldade ?? ""}
               onChange={(e) => updateSlot("dificuldade", e.target.value)}
+            />
+            <TextInput
+              label="Nível de XP necessário"
+              placeholder="Digite o XP"
+              type="number"
+              value={slotAtual?.xpNecessario ?? ""}
+              onChange={(e) => updateSlot("xpNecessario", e.target.value)}
             />
             {tema === "cinema" && (
               <MultiSelect

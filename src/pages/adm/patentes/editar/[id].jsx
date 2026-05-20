@@ -32,6 +32,7 @@ const SLOT_VAZIO = (i) => ({
   nome: NIVEIS[i] ?? "",
   qtdPerguntas: String((i + 1) * 5),
   dificuldade: i < 3 ? "facil" : i < 7 ? "medio" : "dificil",
+  xpNecessario: "",
   tema: [],
 });
 
@@ -118,6 +119,7 @@ export default function EditarPatenteGrupo() {
               nome: s.nome ?? NIVEIS[i] ?? "",
               qtdPerguntas: s.qtdPerguntas ?? String((i + 1) * 5),
               dificuldade: s.dificuldade ?? (i < 3 ? "facil" : i < 7 ? "medio" : "dificil"),
+              xpNecessario: s.xpNecessario ?? "",
               tema: Array.isArray(s.tema) ? s.tema : (s.tema ? [s.tema] : []),
             };
           }),
@@ -162,6 +164,7 @@ export default function EditarPatenteGrupo() {
             nome: s.nome,
             qtdPerguntas: s.qtdPerguntas,
             dificuldade: s.dificuldade,
+            xpNecessario: s.xpNecessario ?? "",
             tema: tema === "cinema" ? s.tema : null,
             imagemUrl,
           };
@@ -394,6 +397,13 @@ export default function EditarPatenteGrupo() {
               options={DIFICULDADE_OPTIONS}
               value={slotAtual?.dificuldade ?? ""}
               onChange={(e) => updateSlot("dificuldade", e.target.value)}
+            />
+            <TextInput
+              label="Nível de XP necessário"
+              placeholder="Digite o XP"
+              type="number"
+              value={slotAtual?.xpNecessario ?? ""}
+              onChange={(e) => updateSlot("xpNecessario", e.target.value)}
             />
             {tema === "cinema" && (
               <MultiSelect

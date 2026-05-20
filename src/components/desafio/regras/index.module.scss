@@ -1,0 +1,382 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal {
+  position: relative;
+  background-color: var(--bg-base);
+  background-image: url("/background/grades.png");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: 100% 300px;
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-lg);
+  padding: var(--space-2xl);
+  max-width: 950px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: scaleIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.close {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-sub);
+  font-size: 1rem;
+  line-height: 1;
+  padding: var(--space-xs);
+  border-radius: var(--space-xs);
+  transition: color 0.15s;
+
+  &:hover {
+    color: var(--text-base);
+  }
+}
+
+.contentModal {
+  display: flex;
+  padding: var(--space-4xl);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-4xl);
+
+  .guiaCompleto {
+    display: flex;
+    padding: var(--space-sm) var(--space-lg);
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-sm);
+    border-radius: var(--space-lg);
+    border: 1px solid var(--stroke-base);
+    background: var(--bg-overlay);
+
+    .pontoGuia {
+      background: var(--primitive-roxo-01);
+      width: 5px;
+      height: 5px;
+    }
+
+    span {
+      color: var(--text-base);
+      text-align: center;
+      font-size: 16px;
+      font-style: italic;
+      font-weight: 400;
+      line-height: normal;
+    }
+  }
+
+  .topoRegras {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-sm);
+
+    h1 {
+      color: var(--text-base);
+      text-align: center;
+      font-size: 30px;
+      font-style: italic;
+      font-weight: 900;
+      line-height: 75px;
+
+      span { color: var(--text-header); }
+    }
+
+    p {
+      color: var(--text-sub);
+      text-align: center;
+      font-size: 16px;
+      font-style: italic;
+      font-weight: 400;
+      line-height: normal;
+    }
+  }
+
+  .sectionRegras {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: var(--space-4xl);
+    width: 100%;
+
+    .tituloRegra {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-lg);
+
+      .numeroRegra {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: var(--bg-submit);
+        border-radius: var(--space-4xl);
+        width: 40px;
+        height: 40px;
+
+        span {
+          color: var(--text-base);
+          font-size: 25px;
+          font-style: italic;
+          font-weight: 400;
+          line-height: normal;
+        }
+      }
+
+      h2 {
+        color: var(--text-base);
+        font-size: 25px;
+        font-style: italic;
+        font-weight: 700;
+        line-height: normal;
+      }
+    }
+
+    p {
+      color: var(--text-sub);
+      font-size: 16px;
+      font-style: italic;
+      font-weight: 400;
+      line-height: normal;
+      align-self: stretch;
+    }
+
+    .contentBoxes {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-sm);
+      width: 100%;
+
+      .boxRegra {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 72px;
+        border-radius: var(--space-xs) var(--space-lg);
+        border: 1px solid var(--stroke-base);
+        background: var(--bg-overlay);
+
+        span {
+          color: var(--text-sub);
+          font-size: 14px;
+          font-style: italic;
+          font-weight: 400;
+          line-height: normal;
+        }
+
+        .conteudoDificuldade {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: var(--space-2xl);
+          width: 100%;
+
+          .boxJoia {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+        }
+      }
+    }
+
+    .contentXP {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-sm);
+      align-self: stretch;
+
+      .contentXPBox {
+        display: flex;
+        padding: var(--space-lg);
+        align-items: center;
+        gap: var(--space-lg);
+        align-self: stretch;
+        border-radius: var(--space-xs) var(--space-lg);
+        border: 1px solid var(--stroke-base);
+        background: var(--bg-overlay);
+
+        .boxIconRegras {
+          display: flex;
+          padding: var(--space-sm);
+          justify-content: center;
+          align-items: center;
+          border-radius: var(--space-sm);
+          border: 1px solid var(--stroke-base);
+          background: var(--bg-quintenario);
+        }
+
+        .boxXPDescricao {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: var(--space-xs);
+
+          p {
+            color: var(--text-sub);
+            font-size: 16px;
+            font-style: italic;
+            font-weight: 700;
+
+            &:last-child {
+              font-size: 14px;
+              font-weight: 400;
+            }
+          }
+        }
+      }
+    }
+
+    .containerPatentes {
+      display: flex;
+      padding: var(--space-lg);
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-lg);
+      align-self: stretch;
+      border-radius: var(--LG, 20px);
+      border: 1px solid var(--stroke-base);
+      background: var(--bg-overlay);
+
+      h2 {
+        color: var(--text-base);
+        font-size: 25px;
+        font-style: italic;
+        font-weight: 700;
+        line-height: normal;
+      }
+    }
+
+    .contentPatentesRegras {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-xs);
+      width: 100%;
+
+      .BoxPatenteRegras {
+        display: flex;
+        padding: var(--space-sm);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: var(--space-sm);
+        flex: 1 0 0;
+        border-radius: var(--space-sm);
+        background: var(--bg-overlay);
+        width: 100%;
+
+        svg { width: 100%; }
+
+        span {
+          color: var(--text-base);
+          text-align: center;
+          font-size: 10px;
+          font-style: italic;
+          font-weight: 700;
+          line-height: normal;
+        }
+      }
+    }
+  }
+
+  .sectionIdeia {
+    display: flex;
+    padding: var(--space-lg);
+    align-items: center;
+    gap: var(--space-lg);
+    align-self: stretch;
+    border-radius: var(--space-lg);
+    border: 1px solid var(--stroke-base);
+    background: var(--bg-quintenario);
+
+    .sectionIdeiaSVG {
+      width: 24px;
+      height: 24px;
+    }
+
+    span {
+      color: var(--text-sub);
+      font-size: 16px;
+      font-style: italic;
+      font-weight: 400;
+      line-height: normal;
+      width: 100%;
+
+      strong { font-weight: bold; }
+    }
+  }
+
+  .sectionFinal {
+    display: flex;
+    padding: var(--space-lg);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-lg);
+    align-self: stretch;
+    border-radius: var(--space-lg);
+    border: 1px solid var(--stroke-base);
+    background: var(--bg-overlay);
+
+    h2 {
+      color: var(--text-base);
+      text-align: center;
+      font-size: 25px;
+      font-style: italic;
+      font-weight: 700;
+      line-height: normal;
+
+      span { color: var(--text-header); }
+    }
+
+    p {
+      color: var(--text-sub);
+      text-align: center;
+      font-size: 16px;
+      font-style: italic;
+      font-weight: 400;
+      line-height: normal;
+    }
+  }
+
+  .separador {
+    width: 100%;
+    height: 1px;
+    background: var(--stroke-base);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}

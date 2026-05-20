@@ -244,8 +244,15 @@ export default function DesafioPage({
         </div>
       </main>
       <Footer />
-      <DesafioRegras isOpen={modalRegras} onClose={() => setModalRegras(false)} />
-      <ModalJogar isOpen={modalJogar} onClose={() => setModalJogar(false)} tipoFiltro={tipoFiltroModal} />
+      <DesafioRegras
+        isOpen={modalRegras}
+        onClose={() => setModalRegras(false)}
+      />
+      <ModalJogar
+        isOpen={modalJogar}
+        onClose={() => setModalJogar(false)}
+        tipoFiltro={tipoFiltroModal}
+      />
     </>
   );
 }

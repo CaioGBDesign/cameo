@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { db } from "@/services/firebaseConection";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import {
@@ -16,6 +16,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import CloseIcon from "@/components/icons/CloseIcon";
+import DesafioButton from "@/components/desafio/button";
 import JoiaRosaIcon from "@/components/icons/JoiaRosaIcon";
 import JoiaAmarelaIcon from "@/components/icons/JoiaAmarelaIcon";
 import JoiaAzulIcon from "@/components/icons/JoiaAzulIcon";
@@ -37,7 +38,9 @@ const profileUrl = (path) =>
     : null;
 
 const renderTextoHtml = (t) =>
-  (t || "").replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>").replace(/\n/g, "<br/>");
+  (t || "")
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\n/g, "<br/>");
 
 function Joias({ dificuldade }) {
   if (dificuldade === "1")
@@ -74,8 +77,14 @@ function Joias({ dificuldade }) {
 }
 
 function SortableFilmCard({ idStr, index, nome, backdropUrl, cardClass }) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-    useSortable({ id: idStr });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: idStr });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -85,11 +94,17 @@ function SortableFilmCard({ idStr, index, nome, backdropUrl, cardClass }) {
   };
 
   return (
-    <div ref={setNodeRef} style={style} className={`${styles.filmCard} ${cardClass}`}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`${styles.filmCard} ${cardClass}`}
+    >
       <div className={styles.filmCardDrag} {...attributes} {...listeners}>
         <DragHandleIcon size={20} color="var(--text-sub)" />
       </div>
-      <span className={styles.filmCardNome}>{nome || `Filme ${index + 1}`}</span>
+      <span className={styles.filmCardNome}>
+        {nome || `Filme ${index + 1}`}
+      </span>
       {backdropUrl ? (
         <img src={backdropUrl} alt={nome} className={styles.filmCardBackdrop} />
       ) : (
@@ -108,8 +123,8 @@ function QuizTextInput({ value, status, placeholder, onChange }) {
           status === "correta"
             ? styles.previewTextInputCorreta
             : status === "errada"
-            ? styles.previewTextInputErrada
-            : ""
+              ? styles.previewTextInputErrada
+              : ""
         }`}
         placeholder={placeholder}
         value={value}
@@ -135,10 +150,13 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
   const [tmdbBackdrops, setTmdbBackdrops] = useState({});
   const [tmdbReleaseDates, setTmdbReleaseDates] = useState({});
   const [ordemUsuario, setOrdemUsuario] = useState([]);
+  const [postConfirmPhase, setPostConfirmPhase] = useState(null);
 
+  const loadingTimerRef = useRef(null);
   const sensors = useSensors(useSensor(PointerSensor));
 
   const resetAll = () => {
+    if (loadingTimerRef.current) clearTimeout(loadingTimerRef.current);
     setPergunta(null);
     setPreviewSelected(null);
     setPreviewConfirmed(false);
@@ -149,6 +167,7 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
     setTmdbBackdrops({});
     setTmdbReleaseDates({});
     setOrdemUsuario([]);
+    setPostConfirmPhase(null);
   };
 
   useEffect(() => {
@@ -170,7 +189,7 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
       idFilmes.forEach((id) => {
         const idStr = String(id);
         fetch(
-          `https://api.themoviedb.org/3/movie/${idStr}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=pt-BR`
+          `https://api.themoviedb.org/3/movie/${idStr}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=pt-BR`,
         )
           .then((r) => (r.ok ? r.json() : null))
           .then((data) => {
@@ -180,7 +199,10 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
             if (data.backdrop_path)
               setTmdbBackdrops((p) => ({ ...p, [idStr]: data.backdrop_path }));
             if (data.release_date)
-              setTmdbReleaseDates((p) => ({ ...p, [idStr]: data.release_date }));
+              setTmdbReleaseDates((p) => ({
+                ...p,
+                [idStr]: data.release_date,
+              }));
             if (data.title)
               setTmdbTitulos((p) => ({ ...p, [idStr]: data.title }));
           })
@@ -230,7 +252,7 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
   const handleConfirmText = () => {
     const digitado = previewResposta.trim().toLowerCase();
     const acertou = (pergunta?.respostasAceitas ?? []).some(
-      (r) => r.trim().toLowerCase() === digitado
+      (r) => r.trim().toLowerCase() === digitado,
     );
     setPreviewStatus(acertou ? "correta" : "errada");
   };
@@ -238,7 +260,7 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
   const ordemCorreta12 =
     pergunta?.tipo === 12 && pergunta.idFilmes
       ? [...pergunta.idFilmes.map(String)].sort((a, b) =>
-          (tmdbReleaseDates[a] ?? "").localeCompare(tmdbReleaseDates[b] ?? "")
+          (tmdbReleaseDates[a] ?? "").localeCompare(tmdbReleaseDates[b] ?? ""),
         )
       : [];
 
@@ -250,12 +272,28 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
     setPreviewConfirmed(false);
   };
 
+  const triggerLoading = (onConfirmFn) => {
+    onConfirmFn();
+    setPostConfirmPhase("loading");
+    loadingTimerRef.current = setTimeout(
+      () => setPostConfirmPhase("proxima"),
+      2000,
+    );
+  };
+
+  const handleProxima = () => {
+    resetAll();
+    fetchRandom();
+  };
+
   // ── Render parts ─────────────────────────────────────────────────────────────
 
   const Header = () => (
     <div className={styles.previewHeader}>
       <h2 className={styles.previewTitle}>{pergunta.titulo}</h2>
-      {pergunta.subtitulo && <p className={styles.previewSubtitle}>{pergunta.subtitulo}</p>}
+      {pergunta.subtitulo && (
+        <p className={styles.previewSubtitle}>{pergunta.subtitulo}</p>
+      )}
     </div>
   );
 
@@ -264,14 +302,29 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
       <div className={styles.previewJoias}>
         <Joias dificuldade={pergunta.dificuldade} />
       </div>
-      <button
-        className={styles.previewConfirm}
-        type="button"
-        disabled={!canConfirm || previewConfirmed}
-        onClick={onConfirm}
-      >
-        CONFIRMAR
-      </button>
+      {postConfirmPhase === "loading" ? (
+        <DesafioButton
+          variant="loading"
+          label="Confirmar"
+          width="220px"
+          duration={2000}
+        />
+      ) : postConfirmPhase === "proxima" ? (
+        <DesafioButton
+          variant="solid"
+          label="Próxima"
+          width="220px"
+          onClick={handleProxima}
+        />
+      ) : (
+        <DesafioButton
+          variant="solid"
+          label="Confirmar"
+          width="220px"
+          disabled={!canConfirm || previewConfirmed}
+          onClick={onConfirm}
+        />
+      )}
     </div>
   );
 
@@ -307,12 +360,12 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
     </div>
   );
 
-
   // ── Content per tipo ─────────────────────────────────────────────────────────
 
   const renderContent = () => {
     if (!pergunta) return null;
-    const { tipo, imagem, imagemUrl, imagemRespostaUrl, tagFilme, nomeFilme } = pergunta;
+    const { tipo, imagem, imagemUrl, imagemRespostaUrl, tagFilme, nomeFilme } =
+      pergunta;
 
     switch (tipo) {
       case 1: {
@@ -324,12 +377,19 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
             <Header />
             <div className={styles.previewImageWrapper}>
               {backdropUrl ? (
-                <img src={backdropUrl} alt={nomeFilme} className={styles.previewImage} />
+                <img
+                  src={backdropUrl}
+                  alt={nomeFilme}
+                  className={styles.previewImage}
+                />
               ) : (
                 <div className={styles.previewImagePlaceholder} />
               )}
             </div>
-            <div className={styles.previewPhraseTag} style={{ marginTop: "-95px" }}>
+            <div
+              className={styles.previewPhraseTag}
+              style={{ marginTop: "-95px" }}
+            >
               {(tagFilme || nomeFilme) && (
                 <div className={styles.previewImageLabel}>
                   <span className={styles.previewImageTag}>
@@ -354,7 +414,10 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
               </div>
             </div>
             <Options />
-            <Footer canConfirm={!!previewSelected} onConfirm={() => setPreviewConfirmed(true)} />
+            <Footer
+              canConfirm={!!previewSelected}
+              onConfirm={() => triggerLoading(() => setPreviewConfirmed(true))}
+            />
           </>
         );
       }
@@ -362,13 +425,17 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
       case 2: {
         const cast = [...(pergunta.elenco ?? [])].slice(0, 4);
         while (cast.length < 4) cast.push(null);
-        const canConfirm = !!previewResposta.trim() && previewStatus !== "correta";
+        const canConfirm =
+          !!previewResposta.trim() && previewStatus !== "correta";
         return (
           <>
             <Header />
             <div className={styles.previewCastGrid}>
               {cast.map((ator, i) => (
-                <div key={ator?.id ?? `ph-${i}`} className={styles.previewCastItem}>
+                <div
+                  key={ator?.id ?? `ph-${i}`}
+                  className={styles.previewCastItem}
+                >
                   {ator ? (
                     <>
                       <img
@@ -376,7 +443,9 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
                         alt={ator.name}
                         className={styles.previewCastFoto}
                       />
-                      <span className={styles.previewCastNome}>{ator.name}</span>
+                      <span className={styles.previewCastNome}>
+                        {ator.name}
+                      </span>
                     </>
                   ) : (
                     <div className={styles.previewCastPlaceholder} />
@@ -388,9 +457,15 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
               value={previewResposta}
               status={previewStatus}
               placeholder="Digite o nome do filme"
-              onChange={(e) => { setPreviewResposta(e.target.value); setPreviewStatus(null); }}
+              onChange={(e) => {
+                setPreviewResposta(e.target.value);
+                setPreviewStatus(null);
+              }}
             />
-            <Footer canConfirm={canConfirm} onConfirm={handleConfirmText} />
+            <Footer
+              canConfirm={canConfirm}
+              onConfirm={() => triggerLoading(handleConfirmText)}
+            />
           </>
         );
       }
@@ -400,16 +475,22 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
           <>
             <Header />
             <div className={styles.previewAnoWrapper}>
-              <span className={styles.previewAno}>{pergunta.anoLancamento}</span>
+              <span className={styles.previewAno}>
+                {pergunta.anoLancamento}
+              </span>
             </div>
             <Options />
-            <Footer canConfirm={!!previewSelected} onConfirm={() => setPreviewConfirmed(true)} />
+            <Footer
+              canConfirm={!!previewSelected}
+              onConfirm={() => triggerLoading(() => setPreviewConfirmed(true))}
+            />
           </>
         );
       }
 
       case 4: {
-        const canConfirm = !!previewResposta.trim() && previewStatus !== "correta";
+        const canConfirm =
+          !!previewResposta.trim() && previewStatus !== "correta";
         return (
           <>
             <Header />
@@ -420,21 +501,32 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
               value={previewResposta}
               status={previewStatus}
               placeholder="Digite o nome do filme"
-              onChange={(e) => { setPreviewResposta(e.target.value); setPreviewStatus(null); }}
+              onChange={(e) => {
+                setPreviewResposta(e.target.value);
+                setPreviewStatus(null);
+              }}
             />
-            <Footer canConfirm={canConfirm} onConfirm={handleConfirmText} />
+            <Footer
+              canConfirm={canConfirm}
+              onConfirm={() => triggerLoading(handleConfirmText)}
+            />
           </>
         );
       }
 
       case 5: {
-        const canConfirm = !!previewResposta.trim() && previewStatus !== "correta";
+        const canConfirm =
+          !!previewResposta.trim() && previewStatus !== "correta";
         return (
           <>
             <Header />
             <div className={styles.previewImageWrapper}>
               {imagemUrl ? (
-                <img src={imagemUrl} alt="Imagem" className={styles.previewImage} />
+                <img
+                  src={imagemUrl}
+                  alt="Imagem"
+                  className={styles.previewImage}
+                />
               ) : (
                 <div className={styles.previewImagePlaceholder} />
               )}
@@ -443,9 +535,15 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
               value={previewResposta}
               status={previewStatus}
               placeholder="Digite o que está faltando"
-              onChange={(e) => { setPreviewResposta(e.target.value); setPreviewStatus(null); }}
+              onChange={(e) => {
+                setPreviewResposta(e.target.value);
+                setPreviewStatus(null);
+              }}
             />
-            <Footer canConfirm={canConfirm} onConfirm={handleConfirmText} />
+            <Footer
+              canConfirm={canConfirm}
+              onConfirm={() => triggerLoading(handleConfirmText)}
+            />
           </>
         );
       }
@@ -456,13 +554,20 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
             <Header />
             <div className={styles.previewImageWrapper}>
               {imagemUrl ? (
-                <img src={imagemUrl} alt="Imagem" className={styles.previewImage} />
+                <img
+                  src={imagemUrl}
+                  alt="Imagem"
+                  className={styles.previewImage}
+                />
               ) : (
                 <div className={styles.previewImagePlaceholder} />
               )}
             </div>
             <Options />
-            <Footer canConfirm={!!previewSelected} onConfirm={() => setPreviewConfirmed(true)} />
+            <Footer
+              canConfirm={!!previewSelected}
+              onConfirm={() => triggerLoading(() => setPreviewConfirmed(true))}
+            />
           </>
         );
       }
@@ -472,7 +577,10 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
           <>
             <Header />
             <Options />
-            <Footer canConfirm={!!previewSelected} onConfirm={() => setPreviewConfirmed(true)} />
+            <Footer
+              canConfirm={!!previewSelected}
+              onConfirm={() => triggerLoading(() => setPreviewConfirmed(true))}
+            />
           </>
         );
       }
@@ -483,9 +591,16 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
         return (
           <>
             <Header />
-            <ImageWrapper src={backdropUrl} tagFilme={tagFilme} nomeFilme={nomeFilme} />
+            <ImageWrapper
+              src={backdropUrl}
+              tagFilme={tagFilme}
+              nomeFilme={nomeFilme}
+            />
             <Options />
-            <Footer canConfirm={!!previewSelected} onConfirm={() => setPreviewConfirmed(true)} />
+            <Footer
+              canConfirm={!!previewSelected}
+              onConfirm={() => triggerLoading(() => setPreviewConfirmed(true))}
+            />
           </>
         );
       }
@@ -506,7 +621,11 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
               {posteresList.length > 0
                 ? posteresList.map(({ id, url, nome }) => (
                     <div key={id} className={styles.previewPosterItem}>
-                      <img src={url} alt={nome} className={styles.previewPosterImg} />
+                      <img
+                        src={url}
+                        alt={nome}
+                        className={styles.previewPosterImg}
+                      />
                     </div>
                   ))
                 : ids.map((id) => (
@@ -516,7 +635,10 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
                   ))}
             </div>
             <Options />
-            <Footer canConfirm={!!previewSelected} onConfirm={() => setPreviewConfirmed(true)} />
+            <Footer
+              canConfirm={!!previewSelected}
+              onConfirm={() => triggerLoading(() => setPreviewConfirmed(true))}
+            />
           </>
         );
       }
@@ -524,8 +646,12 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
       case 11: {
         const OPCOES_VF = ["verdadeiro", "falso"];
         const getVFClass = (opcao) => {
-          if (!previewConfirmed) return previewSelected === opcao ? styles.previewOptionSelected : "";
-          if (opcao === pergunta.respostaCorreta) return styles.previewOptionCorreta;
+          if (!previewConfirmed)
+            return previewSelected === opcao
+              ? styles.previewOptionSelected
+              : "";
+          if (opcao === pergunta.respostaCorreta)
+            return styles.previewOptionCorreta;
           if (opcao === previewSelected) return styles.previewOptionErro;
           return "";
         };
@@ -553,8 +679,13 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
                 <div
                   key={opcao}
                   className={`${styles.previewOption} ${getVFClass(opcao)}`}
-                  onClick={() => { if (!previewConfirmed) setPreviewSelected(opcao); }}
-                  style={{ justifyContent: "center", textTransform: "capitalize" }}
+                  onClick={() => {
+                    if (!previewConfirmed) setPreviewSelected(opcao);
+                  }}
+                  style={{
+                    justifyContent: "center",
+                    textTransform: "capitalize",
+                  }}
                 >
                   {opcao}
                 </div>
@@ -563,10 +694,15 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
             {previewConfirmed && pergunta.respostaTexto?.trim() && (
               <div className={styles.previewRespostaTexto}>
                 <div className={styles.separador} />
-                <span dangerouslySetInnerHTML={{ __html: pergunta.respostaTexto }} />
+                <span
+                  dangerouslySetInnerHTML={{ __html: pergunta.respostaTexto }}
+                />
               </div>
             )}
-            <Footer canConfirm={!!previewSelected} onConfirm={() => setPreviewConfirmed(true)} />
+            <Footer
+              canConfirm={!!previewSelected}
+              onConfirm={() => triggerLoading(() => setPreviewConfirmed(true))}
+            />
           </>
         );
       }
@@ -575,14 +711,23 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
         return (
           <>
             <Header />
-            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-              <SortableContext items={ordemUsuario} strategy={verticalListSortingStrategy}>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={ordemUsuario}
+                strategy={verticalListSortingStrategy}
+              >
                 <div className={styles.filmCardList}>
                   {ordemUsuario.map((idStr, i) => {
                     const bdPath = tmdbBackdrops[idStr];
                     const bdUrl = bdPath ? tmdbImg(bdPath, "w780") : null;
-                    const isCorrect = previewConfirmed && ordemUsuario[i] === ordemCorreta12[i];
-                    const isWrong = previewConfirmed && ordemUsuario[i] !== ordemCorreta12[i];
+                    const isCorrect =
+                      previewConfirmed && ordemUsuario[i] === ordemCorreta12[i];
+                    const isWrong =
+                      previewConfirmed && ordemUsuario[i] !== ordemCorreta12[i];
                     return (
                       <SortableFilmCard
                         key={idStr}
@@ -590,31 +735,52 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
                         index={i}
                         nome={tmdbTitulos[idStr] ?? ""}
                         backdropUrl={bdUrl}
-                        cardClass={isCorrect ? styles.filmCardCorreta : isWrong ? styles.filmCardErro : ""}
+                        cardClass={
+                          isCorrect
+                            ? styles.filmCardCorreta
+                            : isWrong
+                              ? styles.filmCardErro
+                              : ""
+                        }
                       />
                     );
                   })}
                   {ordemUsuario.length === 0 && (
-                    <p style={{ opacity: 0.4, fontSize: 14, textAlign: "center", fontStyle: "italic" }}>
+                    <p
+                      style={{
+                        opacity: 0.4,
+                        fontSize: 14,
+                        textAlign: "center",
+                        fontStyle: "italic",
+                      }}
+                    >
                       Carregando filmes...
                     </p>
                   )}
                 </div>
               </SortableContext>
             </DndContext>
-            <Footer canConfirm={ordemUsuario.length > 0} onConfirm={() => setPreviewConfirmed(true)} />
+            <Footer
+              canConfirm={ordemUsuario.length > 0}
+              onConfirm={() => triggerLoading(() => setPreviewConfirmed(true))}
+            />
           </>
         );
       }
 
       case 14: {
-        const imagemAtual = previewConfirmed && imagemRespostaUrl ? imagemRespostaUrl : imagemUrl;
+        const imagemAtual =
+          previewConfirmed && imagemRespostaUrl ? imagemRespostaUrl : imagemUrl;
         return (
           <>
             <Header />
             <div className={styles.previewImageWrapper14}>
               {imagemAtual ? (
-                <img src={imagemAtual} alt="Imagem" className={styles.previewImage14} />
+                <img
+                  src={imagemAtual}
+                  alt="Imagem"
+                  className={styles.previewImage14}
+                />
               ) : (
                 <div className={styles.previewImagePlaceholder} />
               )}
@@ -628,7 +794,10 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
               )}
             </div>
             <Options />
-            <Footer canConfirm={!!previewSelected} onConfirm={() => setPreviewConfirmed(true)} />
+            <Footer
+              canConfirm={!!previewSelected}
+              onConfirm={() => triggerLoading(() => setPreviewConfirmed(true))}
+            />
           </>
         );
       }
@@ -640,18 +809,30 @@ export default function ModalJogar({ isOpen, onClose, tipoFiltro = null }) {
             <div className={styles.previewTrueFalse}>
               <span
                 className={styles.previewPhraseTrueFalse}
-                dangerouslySetInnerHTML={{ __html: renderTextoHtml(pergunta.texto ?? "") }}
+                dangerouslySetInnerHTML={{
+                  __html: renderTextoHtml(pergunta.texto ?? ""),
+                }}
               />
             </div>
             <Options />
-            <Footer canConfirm={!!previewSelected} onConfirm={() => setPreviewConfirmed(true)} />
+            <Footer
+              canConfirm={!!previewSelected}
+              onConfirm={() => triggerLoading(() => setPreviewConfirmed(true))}
+            />
           </>
         );
       }
 
       default:
         return (
-          <p style={{ color: "var(--text-sub)", fontStyle: "italic", textAlign: "center", padding: "2rem 0" }}>
+          <p
+            style={{
+              color: "var(--text-sub)",
+              fontStyle: "italic",
+              textAlign: "center",
+              padding: "2rem 0",
+            }}
+          >
             Tipo de pergunta não suportado.
           </p>
         );

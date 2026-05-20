@@ -29,6 +29,13 @@
   color: var(--text-base);
 }
 
+.loading {
+  position: relative;
+  overflow: hidden;
+  background: var(--primitive-azul-04);
+  cursor: default;
+}
+
 .icon {
   display: flex;
   align-items: center;
@@ -42,6 +49,8 @@
   font-weight: 700;
   line-height: normal;
   text-transform: uppercase;
+  position: relative;
+  z-index: 1;
 }
 
 .solid .label {
@@ -50,4 +59,27 @@
 
 .outline .label {
   color: var(--text-base);
+}
+
+.loading .label {
+  color: var(--text-solid);
+}
+
+.fillBar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0%;
+  background: #00e5cc;
+  animation: fillProgress var(--loading-duration, 5s) linear forwards;
+}
+
+@keyframes fillProgress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
 }

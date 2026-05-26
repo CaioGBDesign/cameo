@@ -25,7 +25,6 @@ import PublicarIcon from "@/components/icons/PublicarIcon";
 import StatusBadge from "@/components/adm/status-badge";
 import styles from "./index.module.scss";
 
-
 const tempoRelativo = (timestamp) => {
   if (!timestamp) return "—";
   const dias = Math.floor(
@@ -52,7 +51,6 @@ const SortIcon = ({ active = false, dir = "asc" }) => (
     <path d="M6 10L3 7H9L6 10Z" fill="currentColor" />
   </svg>
 );
-
 
 const ACOES_POR_STATUS = {
   rascunho: ["editar", "visualizar", "duplicar", "---", "deletar"],
@@ -128,6 +126,27 @@ const aplicarSort = (lista, col, dir) =>
     }
   });
 
+const TIPO_COR = {
+  1:  "var(--primitive-roxo-01)",
+  2:  "var(--primitive-rosa-01)",
+  3:  "var(--primitive-azul-01)",
+  4:  "var(--primitive-amarelo-01)",
+  5:  "var(--primitive-verde-01)",
+  6:  "var(--primitive-roxo-02)",
+  7:  "var(--primitive-rosa-01)",
+  8:  "var(--primitive-verde-01)",
+  9:  "var(--primitive-amarelo-02)",
+  10: "var(--primitive-verde-02)",
+  11: "var(--primitive-roxo-03)",
+  12: "var(--primitive-azul-01)",
+  13: "var(--primitive-azul-04)",
+  14: "var(--primitive-verde-02)",
+  15: "var(--primitive-rosa-01)",
+  16: "var(--primitive-azul-01)",
+  17: "var(--primitive-amarelo-01)",
+  18: "var(--primitive-azul-04)",
+};
+
 const TIPO_BADGE_CLASS = {
   2: "tipoBadgeTipo2",
   3: "tipoBadgeTipo3",
@@ -157,6 +176,7 @@ export default function AdmPerguntas() {
   const [sortDir, setSortDir] = useState("desc");
   const [filtroStatus, setFiltroStatus] = useState(null);
   const [filtroTitulo, setFiltroTitulo] = useState("");
+  const [filtroTipo, setFiltroTipo] = useState(null);
   const [colDropdown, setColDropdown] = useState(null);
   const [colDropdownPos, setColDropdownPos] = useState({ top: 0, left: 0 });
   const colDropdownRef = useRef(null);
@@ -288,24 +308,27 @@ export default function AdmPerguntas() {
     setSortDir(dir);
   };
 
-  const temFiltros = filtroStatus !== null || filtroTitulo !== "";
+  const contagemPorTipo = {};
+  perguntas.forEach((p) => {
+    const t = p.tipo ?? 0;
+    contagemPorTipo[t] = (contagemPorTipo[t] ?? 0) + 1;
+  });
+
+  const temFiltros = filtroStatus !== null || filtroTitulo !== "" || filtroTipo !== null;
   const limparFiltros = () => {
     setFiltroStatus(null);
     setFiltroTitulo("");
+    setFiltroTipo(null);
     setColDropdown(null);
     setPagina(1);
   };
 
   const perguntasFiltradas = perguntas.filter((p) => {
-    if (
-      filtroStatus &&
-      (p.status?.toLowerCase() || "rascunho") !== filtroStatus
-    )
+    if (filtroStatus && (p.status?.toLowerCase() || "rascunho") !== filtroStatus)
       return false;
-    if (
-      filtroTitulo &&
-      !p.id?.toLowerCase().includes(filtroTitulo.toLowerCase())
-    )
+    if (filtroTitulo && !p.id?.toLowerCase().includes(filtroTitulo.toLowerCase()))
+      return false;
+    if (filtroTipo !== null && p.tipo !== filtroTipo)
       return false;
     return true;
   });
@@ -592,6 +615,21 @@ export default function AdmPerguntas() {
               Limpar filtros
             </button>
           )}
+        </div>
+
+        <div className={styles.tiposChips}>
+          {Array.from({ length: 18 }, (_, i) => i + 1).map((tipo) => (
+            <button
+              key={tipo}
+              type="button"
+              className={`${styles.tipoChip} ${filtroTipo === tipo ? styles.tipoChipAtivo : ""}`}
+              onClick={() => { setFiltroTipo(filtroTipo === tipo ? null : tipo); setPagina(1); }}
+            >
+              <span className={styles.tipoChipDot} style={{ background: TIPO_COR[tipo] }} />
+              <span className={styles.tipoChipNum}>{String(tipo).padStart(2, "0")}</span>
+              <span className={styles.tipoChipCount}>({contagemPorTipo[tipo] ?? 0})</span>
+            </button>
+          ))}
         </div>
 
         {loading ? (

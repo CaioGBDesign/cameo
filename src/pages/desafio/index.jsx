@@ -1,6 +1,7 @@
 ﻿import { useState } from "react";
 import Head from "next/head";
 import { db } from "@/services/firebaseConection";
+import { checkPageAccess } from "@/utils/checkPageAccess";
 import { doc, getDoc } from "firebase/firestore";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -13,14 +14,20 @@ import ModalJogar from "@/components/desafio/modal-jogar";
 import CartasIcon from "@/components/icons/CartasIcon";
 import styles from "./index.module.scss";
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ query }) {
   const [configSnap, desafioSnap] = await Promise.all([
     getDoc(doc(db, "configuracoes", "site")),
     getDoc(doc(db, "configuracoes", "desafio")),
   ]);
 
   const config = configSnap.exists() ? configSnap.data() : {};
-  if (config.gameHabilitado === false) return { notFound: true };
+
+  const acesso = checkPageAccess(config, {
+    modoTesteKey: "desafioModoTeste",
+    habilitadoKey: "gameHabilitado",
+    query,
+  });
+  if (acesso) return acesso;
 
   const desafio = desafioSnap.exists() ? desafioSnap.data() : {};
 

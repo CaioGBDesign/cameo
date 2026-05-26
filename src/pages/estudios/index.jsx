@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { db } from "@/services/firebaseConection";
+import { checkPageAccess } from "@/utils/checkPageAccess";
 import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -16,10 +17,11 @@ const TMDB_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 const PLACEHOLDER =
   "https://firebasestorage.googleapis.com/v0/b/cameo-67dc1.appspot.com/o/background%2Fcameo-placeholder-cast.jpg?alt=media&token=f0331d80-cf03-4240-b33c-f90c773c8520";
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ query }) {
   const configSnap = await getDoc(doc(db, "configuracoes", "site"));
   const config = configSnap.exists() ? configSnap.data() : {};
-  if (config.estudiosHabilitado === false) return { notFound: true };
+  const acesso = checkPageAccess(config, { modoTesteKey: "estudiosModoTeste", habilitadoKey: "estudiosHabilitado", query });
+  if (acesso) return acesso;
   return { props: {} };
 }
 

@@ -1,4 +1,5 @@
 import styles from "./index.module.scss";
+import { checkPageAccess } from "@/utils/checkPageAccess";
 import { useState, useEffect, useRef } from "react";
 import { db } from "@/services/firebaseConection";
 import { collection, getDocs, query, orderBy, doc, getDoc } from "firebase/firestore";
@@ -31,11 +32,12 @@ const converterCampo = (data, campo) => {
   return data[campo] || [];
 };
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ query }) {
   try {
     const configSnap = await getDoc(doc(db, "configuracoes", "site"));
     const config = configSnap.exists() ? configSnap.data() : {};
-    if (config.resenhasHabilitado === false) return { notFound: true };
+    const acesso = checkPageAccess(config, { modoTesteKey: "resenhasModoTeste", habilitadoKey: "resenhasHabilitado", query });
+    if (acesso) return acesso;
 
     const [criticasSnap, noticiasSnap] = await Promise.all([
       getDocs(query(collection(db, "criticas"), orderBy("dataPublicacao", "desc"))),

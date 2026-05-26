@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import { db } from "@/services/firebaseConection";
+import { checkPageAccess } from "@/utils/checkPageAccess";
 import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -11,10 +12,11 @@ import styles from "./index.module.scss";
 
 const TMDB_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ query }) {
   const configSnap = await getDoc(doc(db, "configuracoes", "site"));
   const config = configSnap.exists() ? configSnap.data() : {};
-  if (config.dubladoresHabilitado === false) return { notFound: true };
+  const acesso = checkPageAccess(config, { modoTesteKey: "dubladoresModoTeste", habilitadoKey: "dubladoresHabilitado", query });
+  if (acesso) return acesso;
   return { props: {} };
 }
 

@@ -34,16 +34,34 @@
 
     padding: var(--space-4xl);
 
-    .linha {
-      display: flex;
+    .cabecalho {
+      display: grid;
+      grid-template-columns: 1fr 140px 140px;
       align-items: center;
-      justify-content: space-between;
-      gap: var(--space-lg);
+      padding: 0 var(--space-lg);
+
+      .cabecalhoTitulo {
+        font-size: 13px;
+        font-style: italic;
+        color: var(--text-sub);
+      }
+
+      .cabecalhoColuna {
+        font-size: 13px;
+        font-style: italic;
+        color: var(--text-sub);
+        text-align: center;
+      }
+    }
+
+    .linha {
+      display: grid;
+      grid-template-columns: 1fr 140px 140px;
+      align-items: center;
       padding: var(--space-lg);
       background: var(--bg-overlay);
       border: 1px solid var(--stroke-base);
       border-radius: var(--space-md);
-      position: relative;
 
       .info {
         display: flex;
@@ -64,12 +82,19 @@
         }
       }
 
+      .switchCell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-sm);
+        position: relative;
+      }
+
       .salvando {
-        position: absolute;
-        right: 70px;
-        font-size: 12px;
+        font-size: 11px;
         font-style: italic;
         color: var(--text-sub);
+        white-space: nowrap;
       }
     }
   }

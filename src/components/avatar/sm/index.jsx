@@ -9,13 +9,17 @@ const AvatarSm = ({ href = "/perfil", children }) => {
 
   const conteudo = user ? (
     <div className={styles.fotoPerfilMiniatura}>
-      <Image unoptimized
-        src={user.avatarUrl}
-        alt={user.nome ?? "Usuário"}
-        layout="fill"
-        objectFit="cover"
-        quality={50}
-      />
+      {user.avatarUrl ? (
+        <Image unoptimized
+          src={user.avatarUrl}
+          alt={user.nome ?? "Usuário"}
+          layout="fill"
+          objectFit="cover"
+          quality={50}
+        />
+      ) : (
+        <div className={styles.avatarPlaceholder} aria-label={user.nome ?? "Usuário"} />
+      )}
     </div>
   ) : (
     <div className={styles.entrar}>

@@ -1,5 +1,4 @@
-import { db } from "@/services/firebaseConection";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { adminDb } from "@/lib/firebaseAdmin";
 import { Resend } from "resend";
 import crypto from "crypto";
 
@@ -25,10 +24,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    const userRef = doc(db, "users", uid);
-    const userSnap = await getDoc(userRef);
+    const userRef = adminDb.doc(`users/${uid}`);
+    const userSnap = await userRef.get();
 
-    if (!userSnap.exists()) {
+    if (!userSnap.exists) {
       return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
@@ -50,7 +49,7 @@ export default async function handler(req, res) {
     const hash = hashOtp(otp);
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
-    await updateDoc(userRef, {
+    await userRef.update({
       otp: { hash, expiresAt, attempts: 0 },
     });
 
@@ -80,7 +79,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ success: true });
   } catch (error) {
-    console.error("Erro ao enviar OTP:", error);
+    console.error("Erro em send-otp:", error);
     return res.status(500).json({ error: "Erro ao enviar código de verificação" });
   }
 }

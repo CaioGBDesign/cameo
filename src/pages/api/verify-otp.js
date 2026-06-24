@@ -1,5 +1,4 @@
-import { db } from "@/services/firebaseConection";
-import { doc, getDoc, updateDoc, deleteField } from "firebase/firestore";
+import { adminDb, FieldValue } from "@/lib/firebaseAdmin";
 import crypto from "crypto";
 
 function hashOtp(otp) {
@@ -18,10 +17,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    const userRef = doc(db, "users", uid);
-    const userSnap = await getDoc(userRef);
+    const userRef = adminDb.doc(`users/${uid}`);
+    const userSnap = await userRef.get();
 
-    if (!userSnap.exists()) {
+    if (!userSnap.exists) {
       return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
@@ -54,7 +53,7 @@ export default async function handler(req, res) {
     const hash = hashOtp(code.trim());
 
     if (hash !== otpData.hash) {
-      await updateDoc(userRef, { "otp.attempts": otpData.attempts + 1 });
+      await userRef.update({ "otp.attempts": otpData.attempts + 1 });
       const restantes = 4 - otpData.attempts;
       return res.status(400).json({
         error: `Código incorreto. ${restantes} tentativa${restantes !== 1 ? "s" : ""} restante${restantes !== 1 ? "s" : ""}.`,
@@ -62,14 +61,14 @@ export default async function handler(req, res) {
     }
 
     // Código válido — marca e-mail como verificado e remove o OTP
-    await updateDoc(userRef, {
+    await userRef.update({
       emailVerified: true,
-      otp: deleteField(),
+      otp: FieldValue.delete(),
     });
 
     return res.status(200).json({ success: true });
   } catch (error) {
-    console.error("Erro ao verificar OTP:", error);
+    console.error("Erro em verify-otp:", error);
     return res.status(500).json({ error: "Erro ao verificar código" });
   }
 }

@@ -161,16 +161,32 @@ function AuthProvider({ children }) {
         throw new Error("Por favor, verifique seu e-mail antes de fazer login.");
       }
 
-      let userData = {
-        uid: uid,
-        email: value.user.email,
-        ...docSnap.data(),
-      };
-
       const tokenResult = await value.user.getIdTokenResult();
       const isAdmin = tokenResult.claims.adm || false;
 
-      setUser({ ...userData, isAdmin });
+      let userData = {
+        uid: uid,
+        email: value.user.email,
+        handle: docSnap.data().handle,
+        nome: docSnap.data().nome,
+        avatarUrl: docSnap.data().avatarUrl,
+        genero: docSnap.data().genero,
+        estilo: docSnap.data().estilo,
+        favoritos: docSnap.data().favoritos || [],
+        assistir: docSnap.data().assistir || [],
+        visto: docSnap.data().visto || {},
+        metas: docSnap.data().metas || [],
+        listasQueroVer: docSnap.data().listasQueroVer || null,
+        isAdmin,
+      };
+
+      if (!userData.listasQueroVer) {
+        const listasPadrao = [{ id: uuidv4(), nome: "Sessão pipoca", filmes: [] }];
+        await updateDoc(docRef, { listasQueroVer: listasPadrao });
+        userData.listasQueroVer = listasPadrao;
+      }
+
+      setUser(userData);
       storageUser(userData);
       router.push(isAdmin ? "/adm" : "/");
 

@@ -18,6 +18,8 @@ const TextInput = ({
   prefix,
   suffix,
   inputMode,
+  autoComplete,
+  "aria-label": ariaLabel,
   error = false,
   success = false,
   onFocus,
@@ -53,6 +55,8 @@ const TextInput = ({
           disabled={disabled}
           required={required}
           inputMode={inputMode}
+          autoComplete={autoComplete}
+          aria-label={ariaLabel}
           className={styles.field}
         />
         {suffix && <div className={styles.suffix}>{suffix}</div>}

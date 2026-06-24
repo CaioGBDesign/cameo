@@ -9,6 +9,8 @@ import Button from "@/components/button";
 import TextInput from "@/components/inputs/text-input";
 import EyeIcon from "@/components/icons/EyeIcon";
 import EyeOffIcon from "@/components/icons/EyeOffIcon";
+import bgDesktop from "@/components/background/background-desktop.jpg";
+import bgMobile from "@/components/background/background-mobile.jpg";
 import styles from "./index.module.scss";
 
 const Login = () => {
@@ -64,16 +66,29 @@ const Login = () => {
   };
 
   return (
-    <main className={styles.background}>
+    <div className={styles.background}>
       <Head>
-        <title>Cameo - Login</title>
+        <title>Entrar | Cameo</title>
+        <meta name="robots" content="noindex, nofollow" />
         <meta
           name="description"
           content="Acesse sua conta Cameo para gerenciar suas listas de filmes, receber recomendações e muito mais. Entre agora e descubra o que assistir!"
         />
+        <link
+          rel="preload"
+          as="image"
+          href={bgDesktop.src}
+          media="(min-width: 600px)"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href={bgMobile.src}
+          media="(max-width: 599px)"
+        />
       </Head>
       <Header showBuscar={false} showFotoPerfil={false} />
-      <div className={styles.login}>
+      <main className={styles.login}>
         <div className={styles.contFormulario}>
           <div className={styles.formulario}>
             <div className={styles.tituloSenha}>
@@ -83,6 +98,10 @@ const Login = () => {
             <form onSubmit={handleSignIn}>
               <div className={styles.inputCont}>
                 <TextInput
+                  id="email"
+                  name="email"
+                  aria-label="E-mail"
+                  autoComplete="email"
                   type="email"
                   placeholder="E-mail"
                   value={email}
@@ -91,6 +110,10 @@ const Login = () => {
                   width="100%"
                 />
                 <TextInput
+                  id="senha"
+                  name="password"
+                  aria-label="Senha"
+                  autoComplete="current-password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Senha"
                   value={senha}
@@ -139,8 +162,8 @@ const Login = () => {
             </form>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
   );
 };
 

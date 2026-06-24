@@ -8,10 +8,13 @@ import TextInput from "@/components/inputs/text-input";
 import AtIcon from "@/components/icons/AtIcon";
 import EyeIcon from "@/components/icons/EyeIcon";
 import EyeOffIcon from "@/components/icons/EyeOffIcon";
+import bgDesktop from "@/components/background/background-desktop.jpg";
+import bgMobile from "@/components/background/background-mobile.jpg";
 import styles from "./index.module.scss";
 
 const Cadastro = () => {
   const [handle, setHandle] = useState("");
+  const [primeiroNome, setPrimeiroNome] = useState("");
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -26,7 +29,7 @@ const Cadastro = () => {
     e.preventDefault();
     clearError();
 
-    if (!nome || !email || !senha || !handle) {
+    if (!primeiroNome || !nome || !email || !senha || !handle) {
       setError({
         field: "geral",
         message: "Todos os campos são obrigatórios.",
@@ -35,7 +38,7 @@ const Cadastro = () => {
     }
 
     try {
-      await signUp(email, senha, nome, handle);
+      await signUp(email, senha, `${primeiroNome} ${nome}`.trim(), handle);
     } catch (err) {
       if (err.message.includes("Esse nome de usuário já está em uso")) {
         setError({
@@ -61,17 +64,29 @@ const Cadastro = () => {
   }
 
   return (
-    <main className={styles.background}>
+    <div className={styles.background}>
       <Head>
-        <title>Cameo - Cadastro</title>
+        <title>Criar conta | Cameo</title>
+        <meta name="robots" content="noindex, nofollow" />
         <meta
           name="description"
           content="Junte-se à comunidade Cameo! Crie sua conta para receber sugestões personalizadas de filmes, gerenciar suas listas e compartilhar suas avaliações. É rápido e fácil—comece sua jornada cinematográfica hoje!"
         />
+        <link
+          rel="preload"
+          as="image"
+          href={bgDesktop.src}
+          media="(min-width: 600px)"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href={bgMobile.src}
+          media="(max-width: 599px)"
+        />
       </Head>
       <Header showBuscar={false} showFotoPerfil={false} />
-
-      <div className={styles.cadastro}>
+      <main className={styles.cadastro}>
         <div className={styles.contFormulario}>
           <div className={styles.formulario}>
             <div className={styles.tituloSenha}>
@@ -81,6 +96,10 @@ const Cadastro = () => {
             <form onSubmit={handleSubmit}>
               <div className={styles.inputCont}>
                 <TextInput
+                  id="handle"
+                  name="username"
+                  aria-label="Usuário"
+                  autoComplete="username"
                   type="text"
                   placeholder="usuário"
                   value={handle}
@@ -97,6 +116,23 @@ const Cadastro = () => {
                 )}
 
                 <TextInput
+                  id="primeiroNome"
+                  name="given-name"
+                  aria-label="Primeiro nome"
+                  autoComplete="given-name"
+                  type="text"
+                  placeholder="Primeiro nome"
+                  value={primeiroNome}
+                  onChange={(e) => setPrimeiroNome(e.target.value)}
+                  required
+                  width="100%"
+                />
+
+                <TextInput
+                  id="nome"
+                  name="family-name"
+                  aria-label="Nome completo"
+                  autoComplete="family-name"
                   type="text"
                   placeholder="Nome completo"
                   value={nome}
@@ -106,6 +142,10 @@ const Cadastro = () => {
                 />
 
                 <TextInput
+                  id="email"
+                  name="email"
+                  aria-label="E-mail"
+                  autoComplete="email"
                   type="email"
                   placeholder="E-mail"
                   value={email}
@@ -121,6 +161,10 @@ const Cadastro = () => {
                 )}
 
                 <TextInput
+                  id="senha"
+                  name="password"
+                  aria-label="Senha"
+                  autoComplete="new-password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Senha (mínimo 8 caracteres)"
                   value={senha}
@@ -165,8 +209,8 @@ const Cadastro = () => {
             </form>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
   );
 };
 

@@ -134,6 +134,47 @@
   width: 100%;
 }
 
+.otpInfo {
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 1.6;
+  margin: 0;
+
+  strong {
+    color: var(--static-light);
+    font-weight: 500;
+  }
+}
+
+.otpReenviar {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.otpReenviarBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 14px;
+  color: var(--primitive-rosa-01);
+  cursor: pointer;
+
+  &:disabled {
+    color: var(--text-sub);
+    cursor: default;
+  }
+}
+
+.voltarBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 16px;
+  color: var(--primitive-rosa-01);
+  cursor: pointer;
+}
+
 .loginCadastro {
   display: flex;
   justify-content: end;

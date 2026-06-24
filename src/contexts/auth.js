@@ -5,7 +5,6 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-  sendEmailVerification,
 } from "firebase/auth";
 import {
   updateDoc,
@@ -16,12 +15,10 @@ import {
   setDoc,
   getDocs,
   collection,
-  deleteDoc,
   query,
   where,
 } from "firebase/firestore";
 import { useRouter } from "next/router";
-import ModalConfirmacaoCadastro from "@/components/modais/confirmacao-cadastro";
 import { deleteField } from "firebase/firestore";
 import { useToast } from "@/contexts/toast";
 import Loading from "@/components/loading";
@@ -36,10 +33,6 @@ function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loadingAuth, setLoadingAuth] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [errorPassword, setErrorPassword] = useState("");
 
   const router = useRouter();
 
@@ -51,6 +44,12 @@ function AuthProvider({ children }) {
           const docSnap = await getDoc(docRef);
           if (!docSnap.exists()) {
             throw new Error("Usuário não encontrado no Firestore.");
+          }
+
+          // Ignora usuários que ainda não verificaram o e-mail (fluxo OTP)
+          if (!docSnap.data().emailVerified) {
+            setLoading(false);
+            return;
           }
 
           let userData = {
@@ -140,27 +139,10 @@ function AuthProvider({ children }) {
     return () => unsubscribe();
   }, []);
 
-  async function signIn(email, senha) {
+  async function signIn(email, senha, { successMessage } = {}) {
     setLoadingAuth(true);
     try {
-      // Tenta fazer login
       const value = await signInWithEmailAndPassword(auth, email, senha);
-
-      // Atualiza o objeto do usuário
-      await value.user.reload();
-
-      // Verifica se o e-mail está verificado
-      if (!value.user.emailVerified) {
-        await signOut(auth); // Deslogar o usuário
-
-        toast.warn("Verifique seu e-mail antes de fazer login.", {
-          duration: 5000,
-        });
-
-        throw new Error(
-          "Por favor, verifique seu e-mail antes de fazer login.",
-        );
-      }
 
       const uid = value.user.uid;
       const docRef = doc(db, "users", uid);
@@ -168,6 +150,15 @@ function AuthProvider({ children }) {
 
       if (!docSnap.exists()) {
         throw new Error("Usuário não encontrado.");
+      }
+
+      // Verifica emailVerified no Firestore (fluxo OTP)
+      if (!docSnap.data().emailVerified) {
+        await signOut(auth);
+        toast.warn("Verifique seu e-mail antes de fazer login.", {
+          duration: 5000,
+        });
+        throw new Error("Por favor, verifique seu e-mail antes de fazer login.");
       }
 
       let userData = {
@@ -183,7 +174,7 @@ function AuthProvider({ children }) {
       storageUser(userData);
       router.push(isAdmin ? "/adm" : "/");
 
-      toast.success("Login realizado com sucesso!", {
+      toast.success(successMessage ?? "Login realizado com sucesso!", {
         duration: 3000,
         buttons: [{ label: "Fechar" }],
         bg: "var(--primitive-verde-01)",
@@ -204,27 +195,25 @@ function AuthProvider({ children }) {
   async function signUp(email, senha, nome, handle) {
     setLoadingAuth(true);
 
-    // Valida a senha
     if (!validatePassword(senha)) {
       throw new Error("A senha deve ter pelo menos 8 caracteres.");
     }
 
     try {
-      // Verifica se o handle já está em uso
       const usersRef = collection(db, "users");
       const q = query(usersRef, where("handle", "==", handle));
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        throw new Error("Esse nome de usuário já está em uso. Escolha outro."); // Aqui é onde você lança o erro
+        throw new Error("Esse nome de usuário já está em uso. Escolha outro.");
       }
 
       const value = await createUserWithEmailAndPassword(auth, email, senha);
-      let uid = value.user.uid;
+      const uid = value.user.uid;
 
       await setDoc(doc(db, "users", uid), {
-        handle: handle,
-        nome: nome,
+        handle,
+        nome,
         avatarUrl: null,
         genero: null,
         estilo: null,
@@ -235,37 +224,27 @@ function AuthProvider({ children }) {
         emailVerified: false,
       });
 
-      const actionCodeSettings = {
-        url: "https://www.cameo.fun/login?emailVerified=true",
-        handleCodeInApp: true,
-      };
+      // Envia OTP por e-mail via API route
+      const res = await fetch("/api/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ uid, email, nome }),
+      });
 
-      await sendEmailVerification(value.user, actionCodeSettings);
-      console.log("E-mail de verificação enviado com sucesso.");
+      if (!res.ok) {
+        throw new Error("Erro ao enviar código de verificação.");
+      }
 
-      // Recarga do usuário e desconexão
-      await value.user.reload(); // Opcional, mas pode ajudar a garantir que o estado está atualizado
-      await signOut(auth); // Desconectar o usuário
-
-      setModalMessage(
-        "Cadastro realizado! Verifique seu e-mail para ativar sua conta.",
-      );
-      setModalVisible(true);
+      return uid;
     } catch (error) {
       console.error("Erro ao tentar registrar:", error);
-      throw error; // Lança o erro para ser capturado no componente de cadastro
+      throw error;
     } finally {
+      // Sempre desloga após o cadastro — login só ocorre após verificação OTP
+      await signOut(auth);
       setLoadingAuth(false);
     }
   }
-
-  const handleModalClose = () => {
-    setModalVisible(false);
-    signOut(auth).then(() => {
-      localStorage.clear(); // Limpa o localStorage
-      router.push("/login"); // Redireciona após a confirmação
-    });
-  };
 
   function storageUser(data) {
     localStorage.setItem("@ticketsPro", JSON.stringify(data));
@@ -276,26 +255,6 @@ function AuthProvider({ children }) {
     localStorage.removeItem("@ticketsPro");
     setUser(null);
     router.push("/");
-  }
-
-  async function deleteUnverifiedUsers() {
-    const usersRef = collection(db, "users");
-    const querySnapshot = await getDocs(usersRef);
-
-    querySnapshot.forEach(async (userDoc) => {
-      const userData = userDoc.data();
-      const createdAt = userData.createdAt.toDate();
-      const now = new Date();
-      const diffTime = Math.abs(now - createdAt);
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-      if (!userData.emailVerified && diffDays > 1) {
-        await deleteDoc(doc(db, "users", userDoc.id));
-        console.log(
-          `Usuário ${userDoc.id} deletado por não verificar o e-mail.`,
-        );
-      }
-    });
   }
 
   async function salvarFilme(filmeId) {
@@ -911,12 +870,6 @@ function AuthProvider({ children }) {
       }}
     >
       {children}
-      {modalVisible && (
-        <ModalConfirmacaoCadastro
-          message={modalMessage}
-          onClose={handleModalClose}
-        />
-      )}
     </AuthContext.Provider>
   );
 }

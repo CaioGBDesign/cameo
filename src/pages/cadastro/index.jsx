@@ -14,6 +14,7 @@ import Head from "next/head";
 import Header from "@/components/Header";
 import Button from "@/components/button";
 import TextInput from "@/components/inputs/text-input";
+import OtpInput from "@/components/inputs/otp-input";
 import AtIcon from "@/components/icons/AtIcon";
 import EyeIcon from "@/components/icons/EyeIcon";
 import EyeOffIcon from "@/components/icons/EyeOffIcon";
@@ -295,22 +296,12 @@ const Cadastro = () => {
                       <strong>{maskEmail(email)}</strong>. Insira abaixo para ativar sua conta.
                     </p>
 
-                    <TextInput
-                      id="otp"
-                      name="one-time-code"
-                      aria-label="Código de verificação"
-                      autoComplete="one-time-code"
-                      type="text"
-                      inputMode="numeric"
-                      placeholder="000000"
+                    <OtpInput
                       value={otpCode}
-                      onChange={(e) => {
-                        const v = e.target.value.replace(/\D/g, "").slice(0, 6);
-                        setOtpCode(v);
-                        setOtpError("");
-                      }}
-                      required
-                      width="100%"
+                      onChange={(code) => { setOtpCode(code); setOtpError(""); }}
+                      onComplete={(code) => setOtpCode(code)}
+                      disabled={otpLoading}
+                      error={!!otpError}
                     />
 
                     {otpError && <p className={styles.errorMsg}>{otpError}</p>}

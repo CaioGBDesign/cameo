@@ -1,0 +1,48 @@
+.container {
+  display: flex;
+  gap: var(--space-sm);
+  width: 100%;
+  justify-content: space-between;
+}
+
+.cell {
+  flex: 1;
+  min-width: 0;
+  aspect-ratio: 1;
+  max-width: 72px;
+
+  background: transparent;
+  border: 1px solid var(--stroke-base);
+  border-radius: var(--space-sm);
+
+  color: var(--text-base);
+  font-size: 28px;
+  font-weight: 600;
+  text-align: center;
+
+  caret-color: transparent;
+  outline: none;
+  transition: border-color 0.15s;
+
+  &:focus {
+    border-color: var(--static-light);
+  }
+
+  &.filled {
+    border-color: var(--stroke-base);
+  }
+
+  &.cellError {
+    border-color: var(--color-error);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  @media only screen and (max-width: 400px) {
+    font-size: 22px;
+    border-radius: var(--space-xs);
+  }
+}
